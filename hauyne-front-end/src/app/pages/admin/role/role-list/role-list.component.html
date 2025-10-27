@@ -1,0 +1,165 @@
+<form nz-form class="role-list-search-form">
+    <div nz-row>
+        <div nz-col nzXl="8" nzXXl="6">
+            <nz-form-item class="ant-form-item">
+                <nz-form-control>
+                    <button *appAuthority="'sys-role:add'" nz-button nzType="primary" (click)="showFormDialog()"
+                            nzSize="small">
+                        <span nz-icon nzType="plus" nzTheme="outline"></span>
+                        创建角色
+                    </button>
+                    <button *appAuthority="'sys-role:delete'" nz-button nzType="primary" nzDanger nzSize="small"
+                            [disabled]="setOfCheckedId.size == 0"
+                            (click)="showDeleteConfirm()">
+                        <span nz-icon nzType="delete" nzTheme="outline"></span>
+                        删除角色
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+
+        <div nz-col nzXl="6" nzXXl="6">
+            <nz-form-item class="ant-form-item">
+                <nz-form-label [nzFor]="'roleCode'">角色编码</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [attr.id]="'roleCode'" [(ngModel)]="roleCode"
+                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzXl="6" nzXXl="6">
+            <nz-form-item class="ant-form-item">
+                <nz-form-label [nzFor]="'roleName'">角色名称</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [attr.id]="'roleName'" [(ngModel)]="roleName"
+                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzXl="4" nzXXl="6">
+            <nz-form-item class="ant-form-item">
+                <nz-form-control>
+                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()"
+                            *appAuthority="'sys-role:find-page'">
+                        <span nz-icon nzType="search" nzTheme="outline"></span>查询
+                    </button>
+                    <button nz-button nzSize="small" (click)="resetForm()" *appAuthority="'sys-role:find-page'">
+                        <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+
+<div class="search-result-list">
+    <nz-table
+        nzShowSizeChanger
+        [nzData]="listOfRole"
+        [nzFrontPagination]="false"
+        [nzLoading]="loading"
+        [nzTotal]="total"
+        [nzPageSize]="pageSize"
+        nzSize="small"
+        (nzQueryParams)="onQueryParamsChange($event)"
+    >
+        <thead>
+        <tr>
+            @for (col of cols; track col.field) {
+                @if (col.field == 'id') {
+                    <th [id]="col.field" [nzChecked]="checked" (nzCheckedChange)="onAllChecked($event)"
+                        [nzIndeterminate]="indeterminate"
+                    >
+                    </th>
+                } @else {
+                    @if (col.sortable == true) {
+                        <th [id]="col.field" [nzColumnKey]="col.field" [nzSortFn]="col.sortable">{{ col.header }}</th>
+                    } @else {
+                        <th [id]="col.field">{{ col.header }}</th>
+                    }
+                }
+            }
+        </tr>
+        </thead>
+        <tbody>
+            @for (data of listOfRole; track data.id) {
+                <tr>
+                    <td [nzChecked]="setOfCheckedId.has(data.id)"
+                        (nzCheckedChange)="onItemChecked(data.id, $event)"
+                    >
+                    </td>
+                    <td>{{ data.roleCode }}</td>
+                    <td>{{ data.roleName }}</td>
+                    <td>{{ data.createdBy }}</td>
+                    <td>{{ data.createdTime }}</td>
+                    <td>{{ data.lastUpdatedBy }}</td>
+                    <td>{{ data.lastUpdatedTime }}</td>
+                    <td>
+                        <button *appAuthority="'sys-role:assign-authorities'" nz-button nzSize="small" nzShape="circle"
+                                nz-tooltip nzTooltipTitle="分配权限" nzTooltipPlacement="top"
+                                (click)="showAssignAuthorityDialog(data.id)"
+                        >
+                            <span nz-icon nzType="safety" nzTheme="outline"></span>
+                        </button>
+
+                        <button *appAuthority="'sys-role:update'" nz-button [nzType]="'primary'" nzSize="small"
+                                nzShape="circle"
+                                nz-tooltip nzTooltipTitle="编辑" nzTooltipPlacement="top"
+                                (click)="showFormDialog(data.id)"
+                        >
+                            <span nz-icon nzType="edit" nzTheme="outline"></span>
+                        </button>
+
+                        <button *appAuthority="'sys-role:delete'" nz-button [nzType]="'primary'" nzSize="small"
+                                nzShape="circle" nzDanger
+                                nz-tooltip nzTooltipTitle="删除" nzTooltipPlacement="top"
+                                nz-popconfirm
+                                [nzPopconfirmTitle]="'你确定要删除角色「' + data.roleName + '」吗？'"
+                                (click)="roleIdToDelete = data.id"
+                                [nzBeforeConfirm]="beforeConfirm"
+                                nzPopconfirmPlacement="top"
+                                [nzCancelButtonProps]="{nzDisabled: cancelButtonDisabled}"
+                        >
+                            <span nz-icon nzType="delete" nzTheme="outline"></span>
+                        </button>
+                        <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle"
+                                nz-tooltip nzTooltipTitle="审计日志" nzTooltipPlacement="top"
+                                (click)="showAuditlog(data.id)"
+                        >
+                            <span nz-icon nzType="audit" nzTheme="outline"></span>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </nz-table>
+</div>
+
+<!-- 新增、编辑角色组件 -->
+@if (formDialogDisplay) {
+    <app-role-edit-form [(formDialogDisplay)]="formDialogDisplay" [formTitle]="formTitle"
+                        [roleId]="roleId"
+                        (triggerRoleListRefreshEmitter)="search()"
+    >
+    </app-role-edit-form>
+}
+
+
+<!-- 配置权限组件 -->
+@if (configAuthorityFormDialogDisplay && roleId) {
+    <app-role-config-authority [(configAuthorityFormDialogDisplay)]="configAuthorityFormDialogDisplay"
+                               [roleId]="roleId"
+                               (triggerRoleListRefreshEmitter)="search()"
+    >
+    </app-role-config-authority>
+}
+
+<!-- 审计日志 组件 -->
+@if (auditDialogDisplay && roleId) {
+    <app-audit-list [(auditDisplay)]="auditDialogDisplay"
+                    [localId]="roleId"
+                    [typeRemarkMap]="typeRemarkMap"
+    >
+
+    </app-audit-list>
+}

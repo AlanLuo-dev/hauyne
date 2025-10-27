@@ -1,0 +1,144 @@
+<nz-modal [(nzVisible)]="formDialogDisplay"
+          [nzKeyboard]="false"
+          [nzTitle]="(authorityId ? '编辑' : '创建') + '权限资源'"
+          [nzMask]="true"
+          [nzMaskClosable]="false"
+          [nzDraggable]="true"
+          (nzOnCancel)="closeDialog()"
+          (nzOnOk)="onConfirmClick()"
+          [nzOkLoading]="isOkLoading"
+          [nzCancelDisabled]="isCancelDisabled"
+          [nzClosable]="!isCancelDisabled"
+>
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="authorityForm" novalidate>
+
+            <!-- 父级菜单 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="add_parentId">父级菜单</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                    <input type="hidden" formControlName="parentId">
+                    <nz-tree-select
+                        [nzNodes]="authorityTreeNodes"
+                        nzShowSearch
+                        [nzShowIcon]="true"
+                        [nzShowLine]="true"
+                        nzPlaceHolder="Please select"
+                        [(ngModel)]="selectedParentId" [ngModelOptions]="{standalone: true}"
+                        (ngModelChange)="nodeSelected($event)"
+                    ></nz-tree-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 权限类型 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="authorityType">权限类型</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="authorityTypeErrTpl">
+                    <nz-select id="authorityType"
+                               [(ngModel)]="selectedAuthorityType" [ngModelOptions]="{standalone: true}"
+                               (ngModelChange)="onSelectChange($event)"
+                    >
+                        @for (option of authorityTypeOptions; track option) {
+                            <nz-option
+                                [nzValue]="option.value" [nzLabel]="option.label">
+                            </nz-option>
+                        }
+                    </nz-select>
+                    <ng-template #authorityTypeErrTpl>
+                        @if (authorityType.dirty && authorityType.errors?.['required']) {
+                            请填写权限类型
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 权限名称 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="authorityName">权限名称</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="nameErrTpl">
+                    <input id="authorityName" type="text" nz-input autocomplete="off" formControlName="authorityName"/>
+                </nz-form-control>
+                <ng-template #nameErrTpl>
+                    @if (authorityName.dirty && authorityName.errors?.['required']) {
+                        请填写权限名称
+                    }
+                    @if (authorityName.errors?.['msg']) {
+                        {{ authorityName.errors?.['msg'] }}
+                    }
+                </ng-template>
+            </nz-form-item>
+
+            <!-- 权限编码 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="authorityCode">权限编码</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="codeErrTpl">
+                    <input id="authorityCode" type="text" nz-input autocomplete="off" formControlName="authorityCode"/>
+                </nz-form-control>
+                <ng-template #codeErrTpl>
+                    @if (authorityCode.dirty && authorityCode.errors?.['required']) {
+                        请填写权限编码
+                    }
+                    @if (authorityCode.errors?.['msg']) {
+                        {{ authorityCode.errors?.['msg'] }}
+                    }
+                </ng-template>
+            </nz-form-item>
+
+            <!-- 请求路径 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="path">请求路径</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                    <input id="path" type="text" nz-input autocomplete="off" formControlName="path"/>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 图标 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="icon">图标</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                    <i nz-icon [nzType]="icon.value" nzTheme="outline"></i>
+                    <button nz-button nzType="primary" (click)="iconPicker();" nzSize="small">
+                        <span nz-icon nzType="search" nzTheme="outline"></span>
+                        选择图标
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 排序 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="sort">排序</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="sortErrTpl">
+                    <input id="sort" type="text" nz-input autocomplete="off" formControlName="sort" [min]="0"
+                           [max]="255"/>
+                </nz-form-control>
+                <ng-template #sortErrTpl>
+                    @if (sort.dirty && (sort.errors?.['min'] || sort.errors?.['max'])) {
+                        序号填写范围0~255
+                    }
+                </ng-template>
+            </nz-form-item>
+
+            <!-- 备注 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="remarkErrTpl">
+          <textarea id="remark" type="text" nz-input autocomplete="off" formControlName="remark">
+          </textarea>
+                </nz-form-control>
+                <ng-template #remarkErrTpl>
+                    @if (remark.dirty && remark.errors?.['maxlength']) {
+                        备注最多100个字符
+                    }
+                </ng-template>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
+
+@if (iconPickerDisplay) {
+    <app-icon-picker [(iconPickerDisplay)]="iconPickerDisplay"
+                     [selectedIcon]="icon.value"
+                     (selectedIconChange)="iconSelect($event)"
+    >
+    </app-icon-picker>
+}

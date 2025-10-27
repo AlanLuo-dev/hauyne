@@ -1,0 +1,21 @@
+#################################################################
+#-------------------  service-audit配置  -----------------------#
+#################################################################
+
+spring:
+  application:
+    name: service-audit
+  #读取配置中心的配置文件
+  cloud:
+    config:
+      discovery:
+        service-id: service-config
+        enabled: true
+      fail-fast: true
+      profile: dev
+      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, oauth2-client, actuator, zipkin
+
+  main:
+    allow-bean-definition-overriding: true
+
+

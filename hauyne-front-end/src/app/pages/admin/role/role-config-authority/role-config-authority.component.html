@@ -1,0 +1,72 @@
+<nz-drawer
+        [nzBodyStyle]="{ overflow: 'auto' }"
+        [nzMaskClosable]="false"
+        [nzWidth]="'40%'"
+        [(nzVisible)]="configAuthorityFormDialogDisplay"
+        [nzTitle]="'配置「' + roleName + '」角色的权限'"
+        [nzFooter]="footerTpl"
+        (nzOnClose)="handleCancel()"
+        [nzKeyboard]="false"
+        [nzClosable]="!isCancelDisabled"
+>
+    <ng-container *nzDrawerContent>
+        <nz-spin [nzSpinning]="isLoading" nzTip="加载中...">
+            @if (treeReady) {
+                <div nz-row>
+                    <div nz-col nzSpan="12">
+                        <nz-input-group [nzSuffix]="suffixIcon">
+                            <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" nzSize="small"/>
+                        </nz-input-group>
+                        <ng-template #suffixIcon>
+                            <nz-icon nzType="search"/>
+                        </ng-template>
+                    </div>
+                    <div nz-col nzSpan="12">
+                        <button type="button" style="margin-right: 8px;" nz-button nzSize="small" (click)="expandAll()">
+                            <span nz-icon nzType="plus-square" nzTheme="outline"></span>展开全部
+                        </button>
+                        <button type="button" nz-button nzSize="small" (click)="collapseAll()">
+                            <span nz-icon nzType="minus-square" nzTheme="outline"></span>收起全部
+                        </button>
+                    </div>
+                </div>
+                <nz-tree
+                    id="authorityKeys"
+                    #nzTreeComponent
+                    [nzData]="nodes"
+                    nzCheckable
+                    [(nzCheckedKeys)]="defaultCheckedKeys"
+                    (nzCheckboxChange)="updateOkDangerStatus()"
+                    nzShowIcon
+                    [nzSearchValue]="searchValue"
+                    (nzSearchValueChange)="nzEvent($event)"
+                >
+                </nz-tree>
+            }
+        </nz-spin>
+    </ng-container>
+
+    <!-- 页脚 -->
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button style="margin-right: 8px;" type="button" nz-button (click)="handleCancel()"
+                    [disabled]="isCancelDisabled"
+            >
+                取消
+            </button>
+
+            <button
+                    nz-button
+                    nzType="primary"
+                    [nzDanger]="isOkDanger"
+                    [nzLoading]="isOkLoading"
+                    (click)="submitAuthorityConfig()"
+                    nz-tooltip
+                    [nzTooltipTitle]="isOkDanger ? '未勾选权限，将清空该角色所有权限！' : ''"
+                    nzTooltipPlacement="right"
+            >
+                确定
+            </button>
+        </div>
+    </ng-template>
+</nz-drawer>

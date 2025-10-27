@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.LoginHistoryMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.admin.sys.entity.LoginHistory">
+        <id column="id" property="id" />
+        <result column="type" property="type" />
+        <result column="result" property="result" />
+        <result column="fail_reason" property="failReason" />
+        <result column="user_id" property="userId" />
+        <result column="ip_address" property="ipAddress" />
+        <result column="location" property="location" />
+        <result column="browser" property="browser" />
+        <result column="browser_version" property="browserVersion" />
+        <result column="os_name" property="osName" />
+        <result column="created_time" property="createdTime" />
+    </resultMap>
+
+
+    <select id="findPage" parameterType="com.luoyx.hauyne.admin.sys.query.LoginHistoryQuery"
+            resultType="com.luoyx.hauyne.admin.sys.response.LoginHistoryVO">
+        SELECT
+            sl.id AS id,
+            CASE sl.type
+                WHEN 1 THEN '登录'
+                WHEN 0 THEN '注销'
+            END AS type,
+            CASE sl.result
+                WHEN 1 THEN '登录成功'
+                WHEN 2 THEN '登录失败'
+                WHEN 3 THEN '注销成功'
+                WHEN 4 THEN '注销失败'
+            END AS result,
+            sl.fail_reason AS failReason,
+            u.username AS username,
+            sl.ip_address AS ipAddress,
+            sl.location as location,
+            sl.browser as browser,
+            sl.browser_version AS browserVersion,
+            sl.os_name AS osName,
+            sl.created_time AS createTime
+        FROM hyn_sys_login_history sl
+            LEFT JOIN hyn_sys_user u
+                on sl.user_id = u.id
+        <where>
+            <if test="type != null">
+                sl.type = #{type, jdbcType=TINYINT}
+            </if>
+            <if test="result != null">
+                and sl.result = #{result, jdbcType=TINYINT}
+            </if>
+            <if test="username != null and username != ''">
+                <bind name="username_pattern" value="'%' + username + '%'"/>
+                and u.username like #{username_pattern, jdbcType=VARCHAR}
+            </if>
+            <if test="browser != null and browser != ''">
+                and sl.browser = #{browser, jdbcType=VARCHAR}
+            </if>
+            <if test="osName != null and osName != ''">
+                and sl.os_name = #{osName, jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null and startTime != ''">
+                <![CDATA[
+                    and sl.created_time >= STR_TO_DATE(#{startTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+                ]]>
+            </if>
+            <if test="endTime != null and endTime != ''">
+                <![CDATA[
+                    and sl.created_time <= STR_TO_DATE(#{endTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+                ]]>
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                sl.id
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'ascend'">ASC</when>
+            <when test="sortOrder == 'descend'">DESC</when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

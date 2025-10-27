@@ -1,0 +1,52 @@
+<nz-modal [(nzVisible)]="formDialogDisplay"
+          [nzKeyboard]="false"
+          [nzTitle]="formTitle"
+          [nzMask]="true"
+          [nzMaskClosable]="false"
+          (nzOnCancel)="closeRoleEditForm()"
+          (nzOnOk)="onConfirmClick()"
+          [nzOkLoading]="isOkLoading"
+          [nzCancelDisabled]="isCancelDisabled"
+          [nzClosable]="!isCancelDisabled"
+>
+    <ng-container *nzModalContent>
+        <!--
+            由于Angular使用的验证属性与HTML5规范使用的验证属性相同，因此这里向表单元素中添加novalidate属性，
+            告诉浏览器不要使用原生验证功能（这些功能在不同的浏览器中的实现不一致，一般会带来麻烦）。
+            由于Angular提供验证功能，因而不必使用浏览器自行实现的这些功能
+         -->
+
+        <form nz-form [formGroup]="roleForm" novalidate>
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="roleCode">角色编码</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="roleCodeErrorTpl">
+                    <input id="roleCode" type="text" nz-input autocomplete="off" formControlName="roleCode" />
+                    <ng-template #roleCodeErrorTpl>
+                        @if (roleCode.dirty && roleCode.errors?.['required']) {
+                            请填写角色编码
+                        }
+                        @if (roleCode.errors?.['msg']) {
+                            {{roleCode.errors?.['msg']}}
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="roleName">角色名称</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中..." [nzErrorTip]="roleNameErrorTpl">
+                    <input id="roleName" type="text" nz-input autocomplete="off" formControlName="roleName">
+                    <ng-template #roleNameErrorTpl>
+                        @if (roleName.dirty && roleName.errors?.['required']) {
+                            请填写权限编码
+                        }
+                        @if (roleName.errors?.['msg']) {
+                            {{roleName.errors?.['msg']}}
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
+

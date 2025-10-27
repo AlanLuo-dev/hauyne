@@ -1,0 +1,185 @@
+<nz-drawer [(nzVisible)]="visibleSidebar" nzPlacement="right" [nzTitle]="'字典值管理【' + dictTypeName + '】'"
+           (nzOnClose)="hide()"
+           [nzMaskClosable]="false"
+           [nzWidth]="'65%'"
+           [nzKeyboard]="false"
+>
+    <ng-container *nzDrawerContent>
+
+        <!-- 工具栏 -->
+        <form nz-form class="dict-item-list-search-form">
+            <div nz-row>
+                <div nz-col nzXl="24" nzXXl="6">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-control>
+                            <button nz-button nzType="primary" (click)="showEditFormDialog()" nzSize="small"
+                                    *appAuthority="'sys-dict-item:add'"
+                            >
+                                <span nz-icon nzType="plus" nzTheme="outline"></span>
+                                创建字典值
+                            </button>
+                            <button nz-button nzType="primary" nzDanger nzSize="small"
+                                    [disabled]="setOfCheckedId.size == 0" (click)="batchDeleteConfirm()"
+                                    *appAuthority="'sys-dict-item:delete'"
+                            >
+                                <span nz-icon nzType="delete" nzTheme="outline"></span>
+                                批量删除
+                            </button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzXl="8" nzXXl="6">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-label [nzFor]="'dictItemCode'">字典值编码</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input [attr.id]="'dictItemCode'" [(ngModel)]="dictItemCode" [ngModelOptions]="{standalone: true}" nzSize="small"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzXl="8" nzXXl="6">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-label [nzFor]="'dictItemName'">字典值名称</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input [attr.id]="'dictItemName'" [(ngModel)]="dictItemName" [ngModelOptions]="{standalone: true}" nzSize="small"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzXl="6" nzXXl="3">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-label [nzFor]="'enabled'">是否已启用</nz-form-label>
+                        <nz-form-control>
+                            <nz-radio-group [attr.id]="'enabled'" [(ngModel)]="enabled" [ngModelOptions]="{standalone: true}"
+                                            nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
+                            >
+                                <label nz-radio-button nzValue="true">已启用</label>
+                                <label nz-radio-button nzValue="false">已禁用</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <div nz-col nzXl="5" nzXXl="3">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-control>
+                            <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()"
+                                    *appAuthority="'sys-dict-item:list'"
+                            >
+                                <span nz-icon nzType="search" nzTheme="outline"></span>查询
+                            </button>
+                            <button nz-button nzSize="small" (click)="clearFilters()"
+                                    *appAuthority="'sys-dict-item:list'"
+                            >
+                                <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+                            </button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+
+        <!-- 表数据 -->
+        <div class="search-result-list">
+            <nz-table (nzQueryParams)="onQueryParamsChange($event)"
+                      [nzData]="listOfDictItemForDictTypeId"
+                      [nzFrontPagination]="false"
+                      [nzLoading]="_loading"
+                      nzSize="small"
+            >
+                <thead>
+                <tr>
+                    @for (col of cols; track col.field) {
+                        @if (col.field == 'id') {
+                            <th [nzChecked]="checked"
+                                (nzCheckedChange)="onAllChecked($event)"
+                                [nzIndeterminate]="indeterminate"
+                            >
+                            </th>
+                        } @else {
+                            @if (col.sortable == true) {
+                                <th [nzColumnKey]="col.field" [nzSortFn]="col.sortable == true">{{ col.header }}</th>
+                            } @else {
+                                <th>{{ col.header }}</th>
+                            }
+                        }
+                    }
+                </tr>
+                </thead>
+
+                <tbody cdkDropList (cdkDropListDropped)="drop($event)">
+                    @for (data of listOfDictItemForDictTypeId; track data.id) {
+                        <tr
+                            cdkDragLockAxis="y" cdkDrag cdkDragBoundary="tbody"
+                        >
+                            <!-- 拖动按钮 -->
+                            <td>
+                                @if (this.listOfDictItemForDictTypeId.length === this.dictItemCountOfDictType) {
+                                    <div class="example-handle" cdkDragHandle
+                                         nz-tooltip [nzTooltipTitle]="'按住上下拖动以改变排序'" nzTooltipPlacement="top"
+                                    >
+                                        <svg width="24px" fill="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                        </svg>
+                                    </div>
+                                }
+                            </td>
+                            <!-- 复选框 -->
+                            <td [nzChecked]="setOfCheckedId.has(data.id)"
+                                (nzCheckedChange)="onItemChecked(data.id, $event)"
+                            >
+                            </td>
+                            <td>{{ data.dictItemCode }}</td>
+                            <td>{{ data.dictItemName }}</td>
+                            <td>{{ data.sort }}</td>
+                            <td>
+                                <nz-switch [(ngModel)]="data.enabled" nzSize="small"
+                                           nz-tooltip [nzTooltipTitle]="data.enabled ? '已启用' : '已禁用'"
+                                           nzTooltipPlacement="top"
+                                           [nzControl]="true" (click)="dictItemStatusChange(data)"
+                                           [nzLoading]="data.switchLoading"
+                                >
+                                </nz-switch>
+                            </td>
+                            <td>{{ data.remark }}</td>
+                            <td>{{ data.createdBy }}</td>
+                            <td>{{ data.createdTime }}</td>
+                            <td>{{ data.lastUpdatedBy }}</td>
+                            <td>{{ data.lastUpdatedTime }}</td>
+                            <td>
+                                <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle"
+                                        nz-tooltip nzTooltipTitle="编辑" nzTooltipPlacement="top"
+                                        (click)="showEditFormDialog(data.id)" *appAuthority="'sys-dict-item:update'"
+                                >
+                                    <span nz-icon nzType="edit" nzTheme="outline"></span>
+                                </button>
+                                <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle" nzDanger
+                                        nz-tooltip nzTooltipTitle="删除" nzTooltipPlacement="top"
+                                        nz-popconfirm
+                                        [nzPopconfirmTitle]="'你确定要删除字典值【' + data.dictItemName + '】吗？'"
+                                        (click)="dictItemIdToDelete = data.id"
+                                        [nzBeforeConfirm]="beforeConfirm"
+                                        nzPopconfirmPlacement="top" *appAuthority="'sys-dict-item:delete'"
+                                        [nzCancelButtonProps]="{nzDisabled: cancelButtonDisabled}"
+                                >
+                                    <span nz-icon nzType="delete" nzTheme="outline"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </nz-table>
+        </div>
+    </ng-container>
+</nz-drawer>
+
+<!-- 新增、编辑字典选项 弹窗  -->
+@if (formDialogDisplay) {
+    <app-dict-item-edit-form [(formDialogDisplay)]="formDialogDisplay"
+                             [dictItemId]="dictItemId"
+                             [dictTypeId]="dictTypeId"
+                             (triggerDictItemListRefreshEmitter)="search()">
+    </app-dict-item-edit-form>
+}

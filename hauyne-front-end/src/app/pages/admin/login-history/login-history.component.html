@@ -1,0 +1,80 @@
+<form nz-form class="login-history-list-search-form">
+    <div nz-row>
+        <div nz-col nzXl="7" nzXXl="5">
+            <nz-form-item class="ant-form-item">
+                <nz-form-label [nzFor]="'types'">类型</nz-form-label>
+                <nz-form-control>
+                    <nz-radio-group [attr.id]="'types'" [(ngModel)]="type" [ngModelOptions]="{standalone: true}"
+                                    nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
+                    >
+                        <label nz-radio-button nzValue="1">登录</label>
+                        <label nz-radio-button nzValue="0">注销</label>
+                    </nz-radio-group>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzXl="7" nzXXl="5">
+            <nz-form-item class="ant-form-item">
+                <nz-form-label [nzFor]="'username'">用户名</nz-form-label>
+                <nz-form-control>
+                    <input nz-input [attr.id]="'username'" [(ngModel)]="username" [ngModelOptions]="{standalone: true}"
+                           nzSize="small"/>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+        <div nz-col nzXl="4" nzXXl="3">
+            <nz-form-item class="ant-form-item">
+                <nz-form-control>
+                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
+                        <span nz-icon nzType="search" nzTheme="outline"></span>查询
+                    </button>
+                    <button nz-button nzSize="small" (click)="reset()">
+                        <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+                    </button>
+                </nz-form-control>
+            </nz-form-item>
+        </div>
+    </div>
+</form>
+
+<div class="search-result-list">
+    <nz-table
+        nzShowSizeChanger
+        [nzData]="listOfLoginHistory"
+        [nzFrontPagination]="false"
+        [nzLoading]="_loading"
+        [nzTotal]="totalRecords"
+        [nzPageSize]="pageSize"
+        nzSize="small"
+        (nzQueryParams)="onQueryParamsChange($event)"
+    >
+        <thead>
+        <tr>
+            @for (col of cols; track col.field) {
+                @if (col.sortable == true) {
+                    <th [nzColumnKey]="col.field" [nzSortFn]="col.sortable">{{ col.header }}</th>
+                } @else {
+                    <th>{{ col.header }}</th>
+                }
+            }
+        </tr>
+        </thead>
+        <tbody>
+            @for (data of listOfLoginHistory; track data.id) {
+                <tr>
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.type }}</td>
+                    <td>{{ data.result }}</td>
+                    <td>{{ data.failReason }}</td>
+                    <td>{{ data.username }}</td>
+                    <td>{{ data.ipAddress }}</td>
+                    <td>{{ data.location }}</td>
+                    <td>{{ data.browser }}</td>
+                    <td>{{ data.browserVersion }}</td>
+                    <td>{{ data.osName }}</td>
+                    <td>{{ data.createdTime }}</td>
+                </tr>
+            }
+        </tbody>
+    </nz-table>
+</div>

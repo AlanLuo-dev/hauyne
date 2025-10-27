@@ -1,0 +1,48 @@
+<nz-modal [(nzVisible)]="operationLogDialogDisplay"
+          [nzTitle]="titlePrefix + '的操作日志'"
+          [nzMask]="true"
+          [nzMaskClosable]="false"
+          (nzOnCancel)="closeDialog()"
+          [nzOkText]="null"
+          [nzCancelText]="null"
+          [nzWidth]="'60%'"
+>
+    <ng-container *nzModalContent>
+
+        <div class="search-result-list">
+            <nz-table
+                nzShowSizeChanger
+                [nzData]="listOfOperationLog"
+                [nzFrontPagination]="false"
+                [nzLoading]="_loading"
+                [nzTotal]="totalRecords"
+                [nzPageSize]="pageSize"
+                nzSize="small"
+                (nzQueryParams)="onQueryParamsChange($event)"
+            >
+                <thead>
+                <tr>
+                    @for (col of cols; track col.field) {
+                        <th style="font-weight: bold;">{{ col.header }}</th>
+                    }
+                </tr>
+                </thead>
+
+                <tbody>
+                    @for (data of listOfOperationLog; track data) {
+                        <tr>
+                            <td>{{ data.operator }}</td>
+                            <td>{{ data.operateTime }}</td>
+                            <td>{{ data.subType }}</td>
+                            <td>
+                                @for (action of data.actions; track action) {
+                                    {{ action }}<br>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </nz-table>
+        </div>
+    </ng-container>
+</nz-modal>

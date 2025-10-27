@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.RoleAuthorityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.admin.sys.entity.RoleAuthority">
+        <id column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="authority_id" property="authorityId" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 按权限资源id删除 角色-权限资源关联记录 -->
+    <delete id="deleteByAuthorityId">
+        delete from hyn_sys_role_authority where authority_id = #{authorityId}
+    </delete>
+
+    <delete id="deleteByRoleIds" parameterType="list">
+        delete from hyn_sys_role_authority
+        where role_id IN
+        <foreach collection="roleIds" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

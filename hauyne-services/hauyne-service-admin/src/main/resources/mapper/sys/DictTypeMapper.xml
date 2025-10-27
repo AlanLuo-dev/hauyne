@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.DictTypeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.admin.sys.entity.DictType"
+               extends="com.luoyx.hauyne.mybatisplus.mapper.GenericMapper.BaseResultMap">
+        <id column="id" property="id" />
+        <result column="dict_type_code" property="dictTypeCode" />
+        <result column="dict_type_name" property="dictTypeName" />
+        <result column="description" property="description" />
+        <result column="is_enabled" property="enabled" />
+    </resultMap>
+
+    <!-- 分页查询字典类型 -->
+    <select id="findPage" parameterType="com.luoyx.hauyne.admin.sys.query.DictTypeQuery"
+            resultType="com.luoyx.hauyne.admin.sys.response.DictTypePageResultVO">
+        SELECT
+            t.id AS id,
+            t.dict_type_code AS dictTypeCode,
+            t.dict_type_name AS dictTypeName,
+            t.description AS description,
+            t.is_enabled AS enabled,
+            c.real_name as createdBy,
+            t.created_time as createdTime,
+            u.real_name as lastUpdatedBy,
+            t.last_updated_time as lastUpdatedTime
+        FROM
+            hyn_sys_dict_type t
+            left join hyn_sys_user_snapshot c on t.created_by = c.id
+            left join hyn_sys_user_snapshot u on t.last_updated_by = u.id
+        <where>
+            <if test="dictTypeCode != null and dictTypeCode != ''">
+                <bind name="dict_type_code_pattern" value="'%' + dictTypeCode + '%'"/>
+                t.dict_type_code like #{dict_type_code_pattern}
+            </if>
+            <if test="dictTypeName != null and dictTypeName != ''">
+                <bind name="dict_type_name_pattern" value="'%' + dictTypeName + '%'"/>
+                and t.dict_type_name like #{dict_type_name_pattern}
+            </if>
+            <if test="enabled != null">
+                and t.is_enabled = #{enabled}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                t.id
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'ascend'">ASC</when>
+            <when test="sortOrder == 'descend'">DESC</when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <update id="updateDescription" parameterType="com.luoyx.hauyne.admin.sys.entity.DictType">
+        update hyn_sys_dict_type
+        set description = #{description}
+        where id = #{id}
+    </update>
+
+    <select id="findDeletedPage" parameterType="com.luoyx.hauyne.admin.sys.query.DictTypeQuery"
+            resultType="com.luoyx.hauyne.admin.sys.response.DeletedDictTypePageResultVO"
+    >
+        select
+            t.id as id,
+            t.dict_type_code as dictTypeCode,
+            t.dict_type_name as dictTypeName,
+            t.is_enabled as enabled,
+            t.description as description,
+            c.real_name as createdBy,
+            t.created_time as createdTime,
+            u.real_name as lastUpdatedBy,
+            t.last_updated_time as lastUpdatedTime,
+            d.real_name as deletedBy,
+            t.deleted_time as deletedTime
+        from _deleted_hyn_sys_dict_type t
+            left join hyn_sys_user_snapshot c on t.created_by = c.id
+            left join hyn_sys_user_snapshot u on t.last_updated_by = u.id
+            left join hyn_sys_user_snapshot d on t.deleted_by = d.id
+        <where>
+            <if test="dictTypeCode != null and dictTypeCode != ''">
+                <bind name="dict_type_code_pattern" value="'%' + dictTypeCode + '%'"/>
+                t.dict_type_code like #{dict_type_code_pattern}
+            </if>
+            <if test="dictTypeName != null and dictTypeName != ''">
+                <bind name="dict_type_name_pattern" value="'%' + dictTypeName + '%'"/>
+                and t.dict_type_name like #{dict_type_name_pattern}
+            </if>
+            <if test="enabled != null">
+                and t.is_enabled = #{enabled}
+            </if>
+        </where>
+    </select>
+</mapper>

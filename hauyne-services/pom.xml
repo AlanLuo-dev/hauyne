@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.luoyx.hauyne</groupId>
+        <artifactId>hauyne-cloud-parent</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
+    </parent>
+    <packaging>pom</packaging>
+    <artifactId>hauyne-services</artifactId>
+
+    <modules>
+        <module>hauyne-api-admin</module>
+        <module>hauyne-service-uaa</module>
+        <module>hauyne-cache</module>
+        <module>hauyne-commons</module>
+        <module>hauyne-service-config</module>
+        <module>hauyne-database-redis</module>
+        <module>hauyne-service-register</module>
+        <module>hauyne-framework-utils</module>
+        <module>hauyne-service-gateway</module>
+        <module>hauyne-message-system</module>
+        <module>hauyne-monitor-server</module>
+        <module>hauyne-service-admin</module>
+        <module>hauyne-service-dependency</module>
+        <module>hauyne-toolbox-server</module>
+        <module>hauyne-service-audit</module>
+        <module>hauyne-api-audit</module>
+        <module>hauyne-api-uaa</module>
+        <module>hauyne-sync-user-snapshot-support</module>
+    </modules>
+</project>

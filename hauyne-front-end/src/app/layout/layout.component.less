@@ -1,0 +1,72 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .sidebar-logo {
+        position: relative;
+        height: 64px;
+        padding-left: 24px;
+        overflow: hidden;
+        line-height: 64px;
+        transition: all .3s;
+        background: white;
+    }
+
+    .sidebar-logo img {
+        display: inline-block;
+        height: 34px;
+        width: 34px;
+        vertical-align: middle;
+    }
+
+    .sidebar-logo h1 {
+        display: inline-block;
+        margin: 0 0 0 20px;
+        font-weight: 600;
+        font-size: 14px;
+        font-family: Avenir,Helvetica Neue,Arial,Helvetica,sans-serif;
+        vertical-align: middle;
+    }
+
+    nz-header {
+        padding: 0;
+        width: 100%;
+        z-index: 2;
+
+        .app-header {
+            position: relative;
+            height: 64px;
+            padding: 0;
+            box-shadow: 0 1px 4px rgba(0,21,41,.08);
+            background: white;
+
+            .header-trigger {
+                height: 64px;
+                padding: 15px 18px;
+                font-size: 20px;
+                cursor: pointer;
+                transition: all .3s,padding 0s;
+            }
+        }
+    }
+
+    nz-content {
+        margin: 10px;
+        .inner-content {
+            padding: 10px 15px 15px;
+            height: 100%;
+        }
+    }
+}
+
+mat-drawer {
+    width: 230px;
+    background: #0f172a;
+}
+
+mat-drawer-container {
+    height: 100%;
+}
+
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.DictItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.admin.sys.entity.DictItem"
+               extends="com.luoyx.hauyne.mybatisplus.mapper.GenericMapper.BaseResultMap">
+        <result column="dict_type_id" property="dictTypeId"/>
+        <result column="dict_item_code" property="dictItemCode"/>
+        <result column="dict_item_name" property="dictItemName"/>
+        <result column="sort" property="sort"/>
+        <result column="is_enabled" property="enabled"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 按字典类型id查询字典选项【字典维护功能】 -->
+    <select id="selectDictItemByTypeId" parameterType="com.luoyx.hauyne.admin.sys.query.DictItemQuery"
+            resultType="com.luoyx.hauyne.admin.sys.response.DictItemResultVO">
+        select
+            t.id as id,
+            t.dict_item_code AS dictItemCode,
+            t.dict_item_name AS dictItemName,
+            t.sort as sort,
+            t.is_enabled AS enabled,
+            t.remark AS remark,
+            c.real_name as createdBy,
+            t.created_time as createdTime,
+            u.real_name as lastUpdatedBy,
+            t.last_updated_time as lastUpdatedTime
+        from hyn_sys_dict_item t
+            left join hyn_sys_user_snapshot c on t.created_by = c.id
+            left join hyn_sys_user_snapshot u on t.last_updated_by = u.id
+        <where>
+            t.dict_type_id = #{dictTypeId}
+            <if test="dictItemCode != null and dictItemCode != ''">
+                <bind name="dictItemCode_pattern" value="'%' + dictItemCode + '%'"/>
+                AND t.dict_item_code LIKE #{dictItemCode_pattern}
+            </if>
+            <if test="dictItemName != null and dictItemName != ''">
+                <bind name="dictItemName_pattern" value="'%' + dictItemName + '%'"/>
+                AND t.dict_item_name LIKE #{dictItemName_pattern}
+            </if>
+            <if test="enabled != null">
+                and t.is_enabled = #{enabled}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                t.id
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'ascend'">ASC</when>
+            <when test="sortOrder == 'descend'">DESC</when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="countByDictTypeId" parameterType="java.lang.Long" resultType="int">
+        select count(*) from hyn_sys_dict_item where dict_type_id = #{dictTypeId}
+    </select>
+
+    <!-- 统计字典类型的字典值 -->
+    <select id="countByDictTypeIds" parameterType="java.util.List" resultType="string">
+        SELECT
+            t.dict_type_name
+        FROM
+            hyn_sys_dict_type t
+            INNER JOIN hyn_sys_dict_item i ON t.id = i.dict_type_id
+        where t.id IN
+        <foreach collection="dictTypeIds" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!-- 按字典类型编码 查询字典选项，升序排序 -->
+    <select id="selectDropdownData" parameterType="java.lang.String" resultType="com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO">
+        SELECT
+            i.dict_item_code as value,
+            i.dict_item_name as label
+        FROM
+            hyn_sys_dict_item i
+            INNER JOIN hyn_sys_dict_type t ON i.dict_type_id = t.id
+        WHERE i.is_enabled = 1
+            AND t.is_enabled= 1
+            AND t.dict_type_code = #{dictTypeCode}
+        order by i.sort
+    </select>
+
+</mapper>

@@ -1,0 +1,5 @@
+package [(${servicePackage})]
+
+public interface [(${javaTableName})]Service {
+
+}

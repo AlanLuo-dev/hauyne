@@ -1,0 +1,30 @@
+#################################################################
+#-------------------  toolbox-server 配置   ---------------------#
+#################################################################
+
+spring:
+  application:
+    name: toolbox-server
+  #读取配置中心的配置文件
+  cloud:
+    config:
+      discovery:
+        service-id: service-config
+        enabled: true
+      fail-fast: true
+      profile: dev
+      name: eureka-client, service-common, redis, ${spring.application.name}
+
+  main:
+    allow-bean-definition-overriding: true
+
+
+  jpa:
+    generate-ddl: false
+    #    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    properties:
+      hibernate:
+        #格式化sql语句
+        format_sql: true
+

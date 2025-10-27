@@ -1,0 +1,22 @@
+#################################################################
+#-------------------  monitor-server 配置 -----------------------#
+#################################################################
+
+
+
+
+spring:
+  application:
+    name: monitor-server
+#  #读取配置中心的配置文件
+  cloud:
+    config:
+      discovery:
+        service-id: service-config
+        enabled: true
+      fail-fast: true
+      profile: dev
+      name: eureka-client, service-common, ${spring.application.name}
+
+  main:
+    allow-bean-definition-overriding: true

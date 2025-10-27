@@ -1,0 +1,27 @@
+#********************************************************************
+#**********                                             *************
+#**********              gateway 网关配置.               *************
+#**********                                             *************
+#********************************************************************
+
+spring:
+  application:
+    name: service-gateway
+
+  cloud:
+    config:
+      discovery:
+        service-id: service-config
+        enabled: true
+      fail-fast: true
+      profile: dev
+      name: eureka-client, ${spring.application.name}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

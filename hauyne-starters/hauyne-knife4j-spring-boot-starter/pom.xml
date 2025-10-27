@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.luoyx.hauyne</groupId>
+        <artifactId>hauyne-starters</artifactId>
+        <version>0.2.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hauyne-knife4j-spring-boot-starter</artifactId>
+    <name>hauyne-knife4j-spring-boot-starter【swagger接口文档配置】</name>
+
+    <dependencies>
+
+        <!--
+            knife4j-micro-spring-boot-starter 是针对微服务架构的，
+            原则上每个微服务只需要一个knife4j-micro-spring-boot-starter即可
+            但如果要单独访问某个微服务的接口文档，需要为该微服务配置一个knife4j-spring-boot-starter
+        -->
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>knife4j-micro-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+
+        <!--
+            knife4j-spring-boot-starter 是针对传统的Spring Boot项目的，
+            在微服务架构下，如果你想通过某个微服务的端口来单独访问其接口文档（不经过Spring Cloud Gateway）
+            ，那么你需要为每个微服务都配置一个knife4j-spring-boot-starter，
+            这样每个微服务都可以单独访问其接口文档。
+        -->
+<!--        <dependency>-->
+<!--            <groupId>com.github.xiaoymin</groupId>-->
+<!--            <artifactId>knife4j-spring-boot-starter</artifactId>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

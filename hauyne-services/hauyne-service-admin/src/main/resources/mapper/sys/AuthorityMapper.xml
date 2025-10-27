@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.AuthorityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.admin.sys.entity.Authority"
+               extends="com.luoyx.hauyne.mybatisplus.mapper.GenericMapper.BaseResultMap">
+        <result column="parent_id" property="parentId"/>
+        <result column="is_leaf" property="leaf"/>
+        <result column="level" property="level"/>
+        <result column="authority_type" property="authorityType"/>
+        <result column="authority_code" property="authorityCode"/>
+        <result column="authority_name" property="authorityName"/>
+        <result column="icon" property="icon"/>
+        <result column="path" property="path"/>
+        <result column="sort" property="sort"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <select id="findAuthoritiesByUserId" resultType="java.lang.String">
+        SELECT
+            distinct a.authority_code
+        FROM
+            hyn_sys_authority a
+            INNER JOIN hyn_sys_role_authority ra ON ra.authority_id = a.id
+            INNER JOIN hyn_sys_role r ON r.id = ra.role_id
+            INNER JOIN hyn_sys_user_role ur ON ur.role_id = r.id
+        WHERE
+            ur.user_id = #{userId}
+    </select>
+
+    <!-- 查询用户权限范围内的菜单、按sort字段升序 -->
+    <select id="selectSideMenuByUserId" resultType="com.luoyx.hauyne.admin.api.sys.dto.UserDTO$SideMenuDTO">
+        select
+            a.id as id,
+            a.parent_id as parentId,
+            a.level as level,
+            a.authority_name as label,
+            a.icon as icon,
+            a.path as routerLink
+        from hyn_sys_authority a
+            inner join hyn_sys_role_authority ra on ra.authority_id = a.id
+            inner join hyn_sys_role r on r.id = ra.role_id
+            inner join hyn_sys_user_role ur on ur.role_id = r.id
+        where
+            a.authority_type = 'menu'
+            and ur.user_id = #{userId}
+        order by a.sort asc
+    </select>
+
+
+    <select id="findList" parameterType="com.luoyx.hauyne.admin.sys.query.AuthorityQuery"
+            resultType="com.luoyx.hauyne.admin.sys.response.AuthorityVO">
+        SELECT
+            t.id AS id,
+            t.parent_id AS parentId,
+            t.is_leaf AS leaf,
+            t.LEVEL AS LEVEL,
+            t.authority_type AS authorityType,
+            t.authority_code AS authorityCode,
+            t.authority_name AS authorityName,
+            t.icon AS icon,
+            t.path AS path,
+            t.sort AS sort,
+            t.remark AS remark,
+            c.real_name AS createdBy,
+            t.created_time AS createdTime,
+            u.real_name AS lastUpdatedBy,
+            t.last_updated_time AS lastUpdatedTime
+        FROM
+            hyn_sys_authority t
+            LEFT JOIN hyn_sys_user_snapshot c ON t.created_by = c.id
+            LEFT JOIN hyn_sys_user_snapshot u ON t.last_updated_by = u.id
+        <where>
+            <if test="authorityType != null and authorityType != ''">
+                t.authority_type = #{authorityType}
+            </if>
+            <if test="authorityName != null and authorityName != ''">
+                <bind name="authorityNameLike" value="'%' + authorityName + '%'"/>
+                AND t.authority_name LIKE #{authorityNameLike}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                sort
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'ascend'">ASC</when>
+            <when test="sortOrder == 'descend'">DESC</when>
+            <otherwise>
+                ASC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 查询权限数据作为上级菜单树 -->
+    <select id="selectParentAuthorityFormData" resultType="com.luoyx.hauyne.admin.sys.response.AuthorityTreeSelectVO">
+        select
+            id as `key`,
+            parent_id as parentKey,
+            authority_name as title,
+            is_leaf as leaf,
+            icon
+        from hyn_sys_authority
+        order by sort
+    </select>
+
+    <select id="selectForCheckBoxTree" resultType="com.luoyx.hauyne.admin.sys.response.AuthorityCheckBoxTreeVO">
+        select
+            id AS `KEY`,
+            parent_id as parentKey,
+            authority_name as title,
+            is_leaf as leaf,
+            icon
+        from hyn_sys_authority
+        order by sort
+    </select>
+
+    <select id="selectChildAuthorityByParentId" parameterType="long" resultType="long">
+        select count(*) from hyn_sys_authority
+        where parent_id = #{parentId}
+    </select>
+
+    <select id="view" parameterType="long" resultType="com.luoyx.hauyne.admin.sys.response.AuthorityDetailVO">
+        select
+            id,
+            parent_id as parentId,
+            authority_type as authorityType,
+            authority_code as authorityCode,
+            authority_name as authorityName,
+            icon,
+            path,
+            sort,
+            remark
+        from hyn_sys_authority
+        where id = #{id}
+    </select>
+
+    <!-- 按父级权限资源id查询最大排序 -->
+    <select id="selectMaxSortByParentId" parameterType="Long" resultType="Integer">
+        select
+            max(sort)
+        from hyn_sys_authority
+        where parent_id = #{parentId}
+    </select>
+
+    <!-- 查询角色已有的权限名称 -->
+    <select id="selectAuthorityNamesByRoleId" parameterType="Long" resultType="String">
+        SELECT
+            a.authority_name
+        FROM hyn_sys_authority a
+            INNER JOIN hyn_sys_role_authority ra on ra.authority_id = a.id
+            INNER JOIN hyn_sys_role r on r.id = ra.role_id
+        where r.id = #{roleId}
+    </select>
+
+    <!-- 查询某个权限（authorityId）被哪些角色（role_name）所引用。-->
+    <select id="findRoleNamesByAuthorityId" parameterType="Long" resultType="String">
+        SELECT
+            r.role_name
+        FROM
+            hyn_sys_role r
+            INNER JOIN hyn_sys_role_authority ra ON ra.role_id = r.id
+        WHERE
+            ra.authority_id = #{authorityId}
+    </select>
+</mapper>

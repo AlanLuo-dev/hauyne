@@ -1,0 +1,278 @@
+[
+    {
+        "name": "Home",
+        "title": "首页",
+        "path": "home",
+        "order": 0,
+        "disabled": false,
+        "icon": "home",
+        "level": 1,
+        "selected": false
+    },
+    {
+        "name": "Org",
+        "title": "组织管理",
+        "order": 1,
+        "disabled": false,
+        "icon": "team",
+        "level": 1,
+        "selected": false,
+        "children": [
+            {
+                "name": "User",
+                "title": "用户管理",
+                "path": "user",
+                "order": 1,
+                "disabled": false,
+                "icon": "user",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Department",
+                "title": "部门管理",
+                "path": "department",
+                "order": 2,
+                "disabled": false,
+                "icon": "apartment",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Postion",
+                "title": "岗位管理",
+                "path": "position",
+                "order": 3,
+                "disabled": false,
+                "icon": "idcard",
+                "level": 2,
+                "selected": false
+            }
+        ]
+    },
+    {
+        "name": "Auth",
+        "title": "权限管理",
+        "order": 2,
+        "disabled": false,
+        "icon": "audit",
+        "level": 1,
+        "selected": false,
+        "children": [
+            {
+                "name": "Role",
+                "title": "角色管理",
+                "path": "role",
+                "order": 1,
+                "disabled": false,
+                "icon": "team",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "MenuAuth",
+                "title": "菜单授权",
+                "path": "menu-auth",
+                "order": 2,
+                "disabled": false,
+                "icon": "partition",
+                "level": 2,
+                "selected": false
+            }
+        ]
+    },
+    {
+        "name": "SysTool",
+        "title": "系统工具",
+        "order": 3,
+        "disabled": false,
+        "icon": "tool",
+        "level": 1,
+        "selected": false,
+        "children": [
+            {
+                "name": "Form",
+                "title": "表单构建",
+                "path": "form",
+                "order": 1,
+                "disabled": false,
+                "icon": "form",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Code",
+                "title": "代码生成",
+                "path": "code",
+                "order": 2,
+                "disabled": false,
+                "icon": "code",
+                "level": 2,
+                "selected": false
+            }
+        ]
+    },
+    {
+        "name": "Monitor",
+        "title": "系统监控",
+        "order": 4,
+        "disabled": false,
+        "icon": "fund-projection-screen",
+        "level": 1,
+        "selected": false,
+        "children": [
+            {
+                "name": "Online",
+                "title": "在线用户",
+                "path": "online",
+                "order": 1,
+                "disabled": false,
+                "icon": "robot",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Quartz",
+                "title": "定时调度",
+                "path": "quartz",
+                "order": 2,
+                "disabled": false,
+                "icon": "schedule",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Druid",
+                "title": "数据监控",
+                "path": "druid",
+                "order": 3,
+                "disabled": false,
+                "icon": "console-sql",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Server",
+                "title": "服务监控",
+                "path": "server",
+                "order": 4,
+                "disabled": false,
+                "icon": "cloud-server",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Cache",
+                "title": "缓存监控",
+                "path": "cache",
+                "order": 5,
+                "disabled": false,
+                "icon": "one-to-one",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "CacheList",
+                "title": "缓存列表",
+                "path": "cache-list",
+                "order": 6,
+                "disabled": false,
+                "icon": "database",
+                "level": 2,
+                "selected": false
+            }
+        ]
+    },
+    {
+        "name": "Log",
+        "title": "日志管理",
+        "order": 5,
+        "disabled": false,
+        "icon": "bars",
+        "level": 1,
+        "selected": false,
+        "children": [
+            {
+                "name": "LoginLog",
+                "title": "登录日志",
+                "path": "login-log",
+                "order": 1,
+                "disabled": false,
+                "icon": "login",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "OperLog",
+                "title": "操作日志",
+                "path": "operation-log",
+                "order": 2,
+                "disabled": false,
+                "icon": "folder-view",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "QuartzLog",
+                "title": "调度日志",
+                "path": "quartz-log",
+                "order": 3,
+                "disabled": false,
+                "icon": "book",
+                "level": 2,
+                "selected": false
+            }
+        ]
+    },
+    {
+        "name": "System",
+        "title": "系统管理",
+        "order": 6,
+        "disabled": false,
+        "icon": "setting",
+        "level": 1,
+        "selected": false,
+        "children": [
+            {
+                "name": "Menu",
+                "title": "菜单管理",
+                "path": "menu",
+                "order": 1,
+                "disabled": false,
+                "icon": "menu",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Dict",
+                "title": "字典管理",
+                "path": "dict",
+                "order": 2,
+                "disabled": false,
+                "icon": "book",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Param",
+                "title": "参数设置",
+                "path": "param",
+                "order": 3,
+                "disabled": false,
+                "icon": "function",
+                "level": 2,
+                "selected": false
+            },
+            {
+                "name": "Notice",
+                "title": "通知公告",
+                "path": "notice",
+                "order": 3,
+                "disabled": false,
+                "icon": "notification",
+                "level": 2,
+                "selected": true
+            }
+        ]
+    }
+]

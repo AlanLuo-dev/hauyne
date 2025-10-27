@@ -1,0 +1,52 @@
+{
+    "name": "hauyne-front-end",
+    "version": "0.0.0",
+    "scripts": {
+        "ng": "ng",
+        "start": "node --max-old-space-size=512 ./node_modules/@angular/cli/bin/ng serve",
+        "hmr": "node --max-old-space-size=512 ./node_modules/@angular/cli/bin/ng serve --hmr --open",
+        "build": "ng build",
+        "watch": "ng build --watch --configuration development",
+        "test": "ng test"
+    },
+    "private": true,
+    "dependencies": {
+        "@angular/animations": "^20.3.4",
+        "@angular/cdk": "^20.2.8",
+        "@angular/common": "^20.3.4",
+        "@angular/compiler": "^20.3.4",
+        "@angular/core": "^20.3.4",
+        "@angular/forms": "^20.3.4",
+        "@angular/material": "^20.2.8",
+        "@angular/platform-browser": "^20.3.4",
+        "@angular/platform-browser-dynamic": "^20.3.4",
+        "@angular/router": "^20.3.4",
+        "@ngrx/effects": "^20.0.1",
+        "@ngrx/entity": "^20.0.1",
+        "@ngrx/router-store": "^20.0.1",
+        "@ngrx/store": "^20.0.1",
+        "@ngrx/store-devtools": "^20.0.1",
+        "material-icons": "^1.13.14",
+        "ng-zorro-antd": "^20.3.1",
+        "rxjs": "~7.8.2",
+        "screenfull": "^6.0.2",
+        "tslib": "^2.3.0",
+        "zone.js": "~0.15.1"
+    },
+    "devDependencies": {
+        "@angular-devkit/core": "^20.3.5",
+        "@angular/build": "^20.3.5",
+        "@angular/cli": "^20.3.5",
+        "@angular/compiler-cli": "^20.3.4",
+        "@ngrx/schematics": "^20.0.1",
+        "@types/jasmine": "~5.1.9",
+        "jasmine-core": "~5.9.0",
+        "karma": "~6.4.4",
+        "karma-chrome-launcher": "~3.2.0",
+        "karma-coverage": "~2.2.0",
+        "karma-jasmine": "~5.1.0",
+        "karma-jasmine-html-reporter": "~2.1.0",
+        "less": "^4.4.1",
+        "typescript": "^5.9.2"
+    }
+}

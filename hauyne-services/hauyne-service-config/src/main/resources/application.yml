@@ -1,0 +1,44 @@
+# service-config 服务端配置
+
+#配置eureka 的注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+    # EurekaClient每隔多久从EurekaServer拉取一次服务列表，默认30秒，这里修改为2秒钟从注册中心拉取一次
+    registry-fetch-interval-seconds: 2
+  #租约期限以及续约期限的配置
+  instance:
+    prefer-ip-address: true
+
+    #租约到期，服务失效时间，默认值90秒，服务超过90秒没有发生心跳，EurekaServer会将服务从列表移除
+    #这里修改为6秒
+    lease-expiration-duration-in-seconds: 6
+    #租约续约间隔时间，默认30秒，这里修改为3秒钟
+    lease-renewal-interval-in-seconds: 3
+
+#这里是Ribbon缓存实例列表的刷新间隔，默认30秒钟，这里修改为每秒钟刷新一次实例信息
+ribbon:
+  ServerListRefreshInterval: 1000
+
+#服务端口
+server:
+  port: 8769
+
+spring:
+  application:
+    name: service-config #服务名称
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/AlanLuo-dev/hauyne-config-repo.git
+          search-paths: /{profile}
+      label: master
+
+encrypt:
+  key: mySecretKey123456
+
+

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.UserMapper">
+
+    <!-- 登录用户 ResultMap -->
+    <resultMap id="loginUserResultMap" type="com.luoyx.hauyne.admin.api.sys.dto.UserDTO">
+        <association property="userBaseInfo" resultMap="userBaseInfoResultMap"/>
+        <association property="userProfile" resultMap="userProfileResultMap"/>
+    </resultMap>
+
+    <!-- 用户基本信息 -->
+    <resultMap id="userBaseInfoResultMap" type="com.luoyx.hauyne.admin.api.sys.dto.UserDTO$UserBaseInfo">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="is_account_non_expired" property="accountNonExpired" />
+        <result column="is_account_non_locked" property="accountNonLocked" />
+        <result column="is_credentials_non_expired" property="credentialsNonExpired" />
+        <result column="is_enabled" property="enabled" />
+    </resultMap>
+
+    <!-- 用户档案 -->
+    <resultMap id="userProfileResultMap" type="com.luoyx.hauyne.admin.api.sys.dto.UserDTO$UserProfileDTO">
+        <result column="nickname" property="nickname" />
+        <result column="real_name" property="realName" />
+        <result column="gender" property="gender" />
+        <result column="avatar" property="avatar" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="position" property="position" />
+    </resultMap>
+
+    <select id="findByUserName" parameterType="java.lang.String" resultMap="loginUserResultMap">
+        SELECT
+            u.id,
+            u.username,
+            u.`password`,
+            u.is_account_non_expired,
+            u.is_account_non_locked,
+            u.is_credentials_non_expired,
+            u.is_enabled,
+            p.nickname,
+            p.real_name,
+            p.avatar,
+            p.phone,
+            p.email,
+            p.position
+        FROM hyn_sys_user u
+            INNER JOIN hyn_sys_user_profile p on u.id = p.id
+        WHERE username = #{username}
+    </select>
+
+    <select id="findPage" parameterType="com.luoyx.hauyne.admin.sys.query.UserPageQuery"
+            resultType="com.luoyx.hauyne.admin.sys.response.UserPageResultVO">
+        SELECT
+            u.id AS id,
+            u.username AS username,
+            t.roleName AS roleName,
+            u.is_account_non_expired AS accountNonExpiredValue,
+            u.is_account_non_locked AS accountNonLockedValue,
+            u.is_credentials_non_expired AS credentialsNonExpiredValue,
+            u.is_enabled AS enabledValue,
+            u.created_time AS createdTime,
+            u.last_updated_time AS lastUpdatedTime,
+            p.nickname AS nickname,
+            p.real_name AS realName,
+            p.gender AS genderValue,
+            p.avatar AS avatar,
+            p.phone AS phone,
+            p.email AS email,
+            p.position AS position,
+            p.remark AS remark
+        FROM
+            hyn_sys_user u
+            INNER JOIN hyn_sys_user_profile p ON u.id = p.id
+            INNER JOIN
+            (
+                SELECT
+                    u.id AS userId,
+                    GROUP_CONCAT( r.role_name ) AS roleName
+                FROM
+                    hyn_sys_user u
+                    INNER JOIN hyn_sys_user_profile p ON u.id = p.id
+                    INNER JOIN hyn_sys_user_role ur ON ur.user_id = u.id
+                    INNER JOIN hyn_sys_role r ON r.id = ur.role_id
+                <where>
+                    <if test="username != null and username != ''">
+                        <bind name="usernamePattern" value="'%' + username + '%'"/>
+                        AND u.username LIKE #{usernamePattern}
+                    </if>
+                    <if test="roleCode != null and roleCode != ''">
+                        AND r.role_code = #{roleCode}
+                    </if>
+                    <if test="nickname != null and nickname != ''">
+                        <bind name="nicknamePattern" value="'%' + nickname + '%'"/>
+                        AND p.nickname LIKE #{nicknamePattern}
+                    </if>
+                    <if test="realName != null and realName != ''">
+                        <bind name="realNamePattern" value="'%' + realName + '%'"/>
+                        AND p.real_name LIKE #{realNamePattern}
+                    </if>
+                    <if test="gender != null">
+                        AND p.gender = #{gender}
+                    </if>
+                    <if test="phone != null and phone != ''">
+                        <bind name="phonePattern" value="'%' + phone + '%'"/>
+                        AND p.phone LIKE #{phonePattern}
+                    </if>
+                    <if test="enabled != null">
+                        AND u.is_enabled = #{enabled}
+                    </if>
+                    <if test="startCreatedTime != null">
+                        <![CDATA[
+                            AND u.created_time >= #{startCreatedTime}
+                        ]]>
+                    </if>
+                    <if test="endCreatedTime != null">
+                        <![CDATA[
+                            AND u.created_time <= #{endCreatedTime}
+                        ]]>
+                    </if>
+                </where>
+                GROUP BY u.id
+            ) AS t ON t.userId = u.id
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                u.id
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'ascend'">ASC</when>
+            <when test="sortOrder == 'descend'">DESC</when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <resultMap id="userDetailResultMap" type="com.luoyx.hauyne.admin.sys.response.UserEditFormVO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="is_account_non_expired" property="accountNonExpired"/>
+        <result column="is_account_non_locked" property="accountNonLocked"/>
+        <result column="is_credentials_non_expired" property="credentialsNonExpired"/>
+        <result column="is_enabled" property="enabled"/>
+        <result column="password_change_time" property="passwordChangeTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="last_login_ip" property="lastLoginIp"/>
+        <result column="login_count" property="loginCount"/>
+        <result column="nickname" property="nickname"/>
+        <result column="realname" property="realname"/>
+        <result column="gender" property="gender"/>
+        <result column="avatar" property="avatar"/>
+        <result column="position" property="position"/>
+        <result column="department_id" property="departmentName"/>
+        <result column="remark" property="remark"/>
+        <result column="" property="createBy"/>
+        <result column="" property="createTime"/>
+        <result column="" property="updateBy"/>
+        <result column="" property="updateTime"/>
+    </resultMap>
+
+    <select id="detail" parameterType="long" resultMap="userDetailResultMap">
+        SELECT
+            u.id,
+            u.username,
+            u.is_account_non_expired,
+            u.is_account_non_locked,
+            u.is_credentials_non_expired,
+            u.is_enabled,
+            u.password_change_time,
+            u.last_login_time,
+            u.last_login_ip,
+            u.login_count,
+            u.created_by,
+            u.created_time,
+            u.last_updated_by,
+            u.last_updated_time,
+            p.nickname,
+            p.real_name,
+            p.gender,
+            p.avatar,
+            p.phone,
+            p.email,
+            p.position,
+            p.remark
+        FROM
+            hyn_sys_user u
+            inner join hyn_sys_user_profile p on u.id = p.id
+        where u.id = #{id}
+    </select>
+
+    <!-- 按关键词 查询自动完成数据 -->
+    <select id="findSuggestions" parameterType="string" resultType="com.luoyx.hauyne.admin.sys.response.UserAutoCompleteVO">
+        SELECT
+            su.id as id,
+            su.username as username,
+            sup.real_name as realName,
+            sup.nickname as nickname,
+            sup.phone as phone,
+            sup.email as email
+        FROM
+            hyn_sys_user su
+            INNER JOIN hyn_sys_user_profile sup ON su.id = sup.id
+        where
+            <bind name="pattern_keyword" value="'%' + keyword + '%'"/>
+            su.username LIKE #{pattern_keyword}
+            or sup.phone LIKE #{pattern_keyword}
+            or sup.email LIKE #{pattern_keyword}
+            or sup.real_name LIKE #{pattern_keyword}
+            or sup.nickname LIKE #{pattern_keyword}
+    </select>
+
+    <resultMap id="userEditFormResultMap" type="com.luoyx.hauyne.admin.sys.response.UserEditFormVO">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="is_enabled" property="enabled"/>
+        <association column="id" property="profile"
+                     javaType="com.luoyx.hauyne.admin.sys.response.UserEditFormVO$UserProfileDTO"
+                     select="com.luoyx.hauyne.admin.sys.mapper.UserProfileMapper.selectForUserEditForm"
+        />
+        <collection column="id" property="roleIds" ofType="Long"
+                    select="com.luoyx.hauyne.admin.sys.mapper.UserRoleMapper.selectRoleIdsByUserId"
+        />
+    </resultMap>
+
+    <!-- 按用户id获取用于表单回显的用户数据 -->
+    <select id="selectForUserEditForm" parameterType="Long" resultMap="userEditFormResultMap">
+        SELECT
+            id,
+            username,
+            is_enabled
+        FROM
+            hyn_sys_user
+        where id = #{id}
+    </select>
+</mapper>

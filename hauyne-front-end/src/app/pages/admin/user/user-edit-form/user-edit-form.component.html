@@ -1,0 +1,220 @@
+<nz-drawer
+    [nzBodyStyle]="{ overflow: 'auto' }"
+    [nzMaskClosable]="false"
+    [nzWidth]="'50%'"
+    [(nzVisible)]="userFormDialogDisplay"
+    [nzTitle]="formTitle"
+    [nzFooter]="footerTpl"
+    (nzOnClose)="handleCancel()"
+    [nzKeyboard]="false"
+    [nzClosable]="!isOkLoading"
+>
+    <ng-container *nzDrawerContent>
+        <form nz-form [formGroup]="userForm" novalidate autocomplete="off" class="ant-advanced-search-form">
+            <fieldset>
+                <legend>基本信息</legend>
+            </fieldset>
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="_username">用户名</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中..."
+                                         [nzErrorTip]="usernameErrorTpl">
+                            <input nz-input autocomplete="new-username" formControlName="username" id="_username"/>
+                            <ng-template #usernameErrorTpl>
+                                @if (username.dirty && username.errors?.['required']) {
+                                    请填写用户名
+                                }
+                                @if (username.errors?.['msg']) {
+                                    {{ username.errors?.['msg'] }}
+                                }
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 密码 -->
+                <div nz-col [nzSpan]="12">
+
+                    <!-- 只有创建用户的场景 才填写密码 -->
+                    @if (!userId) {
+                        <nz-form-item>
+                            <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">密码</nz-form-label>
+                            <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                                <nz-input-group [nzSuffix]="suffixTemplate">
+                                    <input id="password" [type]="passwordVisible ? 'text' : 'password'" nz-input
+                                           autocomplete="new-password" formControlName="password"
+                                    />
+                                </nz-input-group>
+                                <ng-template #suffixTemplate>
+                                    <nz-icon
+                                        class="ant-input-password-icon"
+                                        [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                                        (click)="passwordVisible = !passwordVisible"
+                                    />
+                                </ng-template>
+                            </nz-form-control>
+                        </nz-form-item>
+                    }
+                </div>
+
+                <!-- 角色 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="_role">角色</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <nz-select nzId="_role" formControlName="roleIds"  nzSize="small"
+                                       [nzMaxTagCount]="2" nzMode="multiple" [nzMaxTagPlaceholder]="tagPlaceHolder"
+                            >
+                                @for (role of this.roles; track role.roleId) {
+                                    <nz-option [id]="'role_' + role.roleId"
+                                               [nzLabel]="role.roleName" [nzValue]="role.roleId"
+                                    >
+                                    </nz-option>
+                                }
+                            </nz-select>
+                            <ng-template #tagPlaceHolder let-selectedList>
+                                {{ selectedList.length }} 个角色已选择
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 是否启用 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="enabled">是否启用</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <nz-switch nzId="enabled" formControlName="enabled" nzSize="small"
+                                       nz-tooltip [nzTooltipTitle]="enabled.getRawValue() ? '已启用' : '已禁用'"
+                                       nzTooltipPlacement="top"
+                                       [nzControl]="true" (click)="statusChange()"
+                            >
+                            </nz-switch>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+            <fieldset>
+                <legend>用户资料</legend>
+            </fieldset>
+
+            <!-- 嵌套字段 -->
+            <div nz-row [nzGutter]="24" formGroupName="profile">
+
+                <!-- 真实姓名 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="realName">真实姓名</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中..."
+                                         [nzErrorTip]="realNameErrorTpl"
+                        >
+                            <input nz-input autocomplete="off" formControlName="realName" id="realName"/>
+                            <ng-template #realNameErrorTpl>
+                                @if (realName.dirty && realName.errors?.['required']) {
+                                    请填写用户名
+                                }
+                                @if (realName.errors?.['msg']) {
+                                    {{ realName.errors?.['msg'] }}
+                                }
+                            </ng-template>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 昵称 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="_nickname">昵称</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="nickname" id="_nickname"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 头像 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="avatar">头像</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="avatar" id="avatar"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 性别 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="gender">性别</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="gender" id="gender"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 出生日期 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="birthday">出生日期</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="birthday" id="birthday"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 邮箱 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">邮箱</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="email" id="email"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 手机号 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phone">手机号</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="phone" id="phone"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 岗位 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="position">岗位</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="position" id="position"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+                <!-- 备注 -->
+                <div nz-col [nzSpan]="12">
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>
+                        <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
+                            <input nz-input autocomplete="off" formControlName="remark" id="remark"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+            </div>
+        </form>
+    </ng-container>
+
+    <!-- 页脚 -->
+    <ng-template #footerTpl>
+        <div style="float: right">
+            <button style="margin-right: 8px;" type="button" nz-button (click)="handleCancel()" [disabled]="isOkLoading">
+                取消
+            </button>
+
+            <button nz-button nzType="primary" [nzLoading]="isOkLoading" (click)="onConfirmClick()">
+                确定
+            </button>
+        </div>
+    </ng-template>
+</nz-drawer>

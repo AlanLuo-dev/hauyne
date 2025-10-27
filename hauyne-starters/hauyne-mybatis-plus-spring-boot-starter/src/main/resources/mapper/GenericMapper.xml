@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.mybatisplus.mapper.GenericMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.mybatisplus.entity.BaseEntity">
+        <id column="id" property="id"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="last_updated_by" property="lastUpdatedBy"/>
+        <result column="last_updated_time" property="lastUpdatedTime"/>
+    </resultMap>
+
+    <!-- 审计字段 -->
+    <sql id="AuditFields">
+        created_by,
+        created_time,
+        last_updated_by,
+        last_updated_time
+    </sql>
+
+    <!-- 审计字段(带别名) -->
+    <sql id="AuditFieldsWithAlias">
+        created_by AS createdBy,
+        created_time AS createdTime,
+        last_updated_by AS lastUpdatedBy,
+        last_updated_time AS lastUpdatedTime
+    </sql>
+
+
+</mapper>

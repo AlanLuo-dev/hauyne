@@ -1,0 +1,43 @@
+.audit-meta {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 14px;
+    color: #1f1f1f;
+}
+
+.audit-field {
+    margin-bottom: 6px;
+    padding-left: 16px;
+    font-size: 13px;
+    color: #555;
+
+    .old {
+        color: #d4380d; // 红色
+    }
+
+    .new {
+        color: #2f54eb; // 绿色
+        font-weight: 500;
+    }
+}
+
+.type {
+    &-create {
+        color: #52c41a;
+    }
+    &-modify {
+        color: #1890ff;
+    }
+    &-delete {
+        color: #cf1322;
+    }
+}
+
+.version-title {
+    margin-bottom: 4px;
+    font-size: 15px;
+    color: #5b8c00;
+}

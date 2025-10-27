@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/><!-- 读取 yml文件中的微服务名称 -->
+    <springProperty scope="context" name="LOG_DIR" source="logging.path" defaultValue="./logs/hauyne"/>
+
+    <!--<springProfile name="dev">
+
+    </springProfile>-->
+
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!-- 控制台日志 START -->
+    <appender name="ROOT_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>-->
+        <encoder>
+            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+            <!-- 设置字符集 -->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <!-- 控制台日志 END -->
+
+    <appender name="LAY_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_DIR}/${APP_NAME}/${APP_NAME}.log</file>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}/${APP_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-20(%d{yyy-MM-dd HH:mm:ss.SSS} [%X{requestId}]) %-5level -
+                %logger{80} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- 错误日志Appender START -->
+    <appender name="ERROR_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/${APP_NAME}/${APP_NAME}-error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 日志最大的历史 60天 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>60</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-20(%d{yyy-MM-dd HH:mm:ss.SSS} [%X{requestId}]) %-5level -
+                %logger{80} - %msg%n
+            </pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter"><!-- 只打印错误日志 -->
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+    <!-- 错误日志Appender END -->
+
+    <!-- P6Spy 日志 logger -->
+    <logger name="p6spy" level="INFO" additivity="false">
+        <appender-ref ref="LAY_APPENDER" />
+        <!-- 也可以添加到控制台 -->
+        <!-- <appender-ref ref="STDOUT"/> -->
+        <appender-ref ref="ROOT_STDOUT"/>
+    </logger>
+
+    <logger name="com.luoyx.hauyne" level="DEBUG">
+        <appender-ref ref="ROOT_STDOUT"/>
+        <appender-ref ref="LAY_APPENDER"/>
+        <appender-ref ref="ERROR_APPENDER"/>
+    </logger>
+
+    <!-- 打印sql -->
+    <logger name="jdbc.sqltiming" level="DEBUG" />
+
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="ROOT_STDOUT"/>
+        <appender-ref ref="LAY_APPENDER"/>
+        <appender-ref ref="ERROR_APPENDER"/>
+    </logger>
+
+
+<!--    <root level="debug">-->
+<!--        <appender-ref ref="ROOT_STDOUT"/>-->
+<!--    </root>-->
+</configuration>

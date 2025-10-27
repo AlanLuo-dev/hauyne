@@ -1,0 +1,133 @@
+<nz-drawer [(nzVisible)]="visibleTrash" nzPlacement="left"
+           [nzKeyboard]="false"
+           nzTitle="回收站 - 字典类型"
+           (nzOnClose)="hide()"
+           [nzMaskClosable]="false"
+           [nzWidth]="'65%'"
+>
+    <ng-container *nzDrawerContent>
+
+        <form nz-form class="ant-advanced-search-form">
+            <div nz-row>
+                <div nz-col nzXl="7" nzXXl="5">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-label [nzFor]="'dictTypeCode'">字典类型编码</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input [attr.id]="'dictTypeCode'" [(ngModel)]="_dictTypeCode"
+                                   [ngModelOptions]="{standalone: true}" nzSize="small"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzXl="7" nzXXl="5">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-label [nzFor]="'dictTypeName'">字典类型名称</nz-form-label>
+                        <nz-form-control>
+                            <input nz-input [attr.id]="'dictTypeName'" [(ngModel)]="_dictTypeName"
+                                   [ngModelOptions]="{standalone: true}" nzSize="small"/>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzXl="6" nzXXl="4">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-label [nzFor]="'dictTypeName'">是否已启用</nz-form-label>
+                        <nz-form-control>
+                            <nz-radio-group [(ngModel)]="selectedEnabled" [ngModelOptions]="{standalone: true}"
+                                            nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
+                            >
+                                <label nz-radio-button nzValue="true">已启用</label>
+                                <label nz-radio-button nzValue="false">已禁用</label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzXl="4" nzXXl="3">
+                    <nz-form-item class="ant-form-item">
+                        <nz-form-control>
+                            <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
+                                <span nz-icon nzType="search" nzTheme="outline"></span>查询
+                            </button>
+                            <button nz-button nzSize="small" (click)="reset()">
+                                <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+                            </button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </div>
+
+            </div>
+        </form>
+
+
+        <div class="search-result-list">
+            <nz-table
+                nzShowSizeChanger
+                [nzData]="deletedDictTypes"
+                [nzFrontPagination]="false"
+                [nzLoading]="_loading"
+                [nzTotal]="totalRecords"
+                [nzPageSize]="pageSize"
+                nzSize="small"
+                (nzQueryParams)="onQueryParamsChange($event)"
+            >
+                <thead>
+                <tr>
+                    @for (col of cols; track col.field) {
+                        @if (col.field == 'id') {
+                            <th [nzChecked]="checked"
+                                (nzCheckedChange)="onAllChecked($event)"
+                                [nzIndeterminate]="indeterminate"
+                            >
+                            </th>
+                        } @else {
+                            @if (col.sortable == true) {
+                                <th [nzColumnKey]="col.field" [nzSortFn]="col.sortable">{{ col.header }}</th>
+                            } @else {
+                                <th>{{ col.header }}</th>
+                            }
+                        }
+                    }
+                </tr>
+                </thead>
+                <tbody>
+                    @for (data of deletedDictTypes; track data.id) {
+                        <tr [ngClass]="{ 'deleted-row': true }">
+                            <td [nzChecked]="setOfCheckedId.has(data.id)"
+                                (nzCheckedChange)="onItemChecked(data.id, $event)"
+                            >
+                            </td>
+                            <td>{{ data.dictTypeCode }}</td>
+                            <td>{{ data.dictTypeName }}</td>
+                            <td>
+                                <nz-switch [(ngModel)]="data.enabled" nzSize="small"
+                                           nz-tooltip [nzTooltipTitle]="data.enabled ? '已启用' : '已禁用'"
+                                           nzTooltipPlacement="top"
+                                           [nzControl]="true" [nzDisabled]="true" [nzLoading]="data.switchLoading"
+                                >
+                                </nz-switch>
+                            </td>
+                            <td>{{ data.description }}</td>
+                            <td>{{ data.createdBy }}</td>
+                            <td>{{ data.createdTime }}</td>
+                            <td>{{ data.lastUpdatedBy }}</td>
+                            <td>{{ data.lastUpdatedTime }}</td>
+                            <td>{{ data.deletedBy }}</td>
+                            <td>{{ data.deletedTime }}</td>
+                            <td>
+                                <button nz-button nzSize="small" nzShape="circle"
+                                        nz-tooltip nzTooltipTitle="还原" nzTooltipPlacement="top"
+                                >
+                                    <span nz-icon nzType="rollback" nzTheme="outline"></span>
+                                </button>
+
+                                <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle"
+                                        nz-tooltip nzTooltipTitle="操作日志" nzTooltipPlacement="top"
+                                >
+                                    <span nz-icon nzType="eye" nzTheme="outline"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </nz-table>
+        </div>
+    </ng-container>
+</nz-drawer>

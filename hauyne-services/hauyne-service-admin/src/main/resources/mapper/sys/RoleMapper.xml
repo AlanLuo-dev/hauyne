@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.RoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.admin.sys.entity.Role"
+               extends="com.luoyx.hauyne.mybatisplus.mapper.GenericMapper.BaseResultMap">
+        <result column="role_code" property="roleCode" />
+        <result column="role_name" property="roleName" />
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select id,role_code, role_name, created_by, created_time, last_updated_by, last_updated_time from hyn_sys_role
+    </select>
+
+    <select id="findPage" parameterType="com.luoyx.hauyne.admin.sys.query.RoleQuery"
+            resultType="com.luoyx.hauyne.admin.sys.response.RolePageResultVO">
+        SELECT
+            t.id as id,
+            t.role_code as roleCode,
+            t.role_name as roleName,
+            c.real_name as createdBy,
+            t.created_time as createdTime,
+            u.real_name as lastUpdatedBy,
+            t.last_updated_time as lastUpdatedTime
+        FROM
+            hyn_sys_role t
+            left join hyn_sys_user_snapshot c on t.created_by = c.id
+            left join hyn_sys_user_snapshot u on t.last_updated_by = u.id
+        <where>
+            <if test="roleCode != null and roleCode != ''">
+                <bind name="roleCodePattern" value="'%' + roleCode + '%' "/>
+                t.role_code like #{roleCodePattern}
+            </if>
+            <if test="roleName != null and roleName != ''">
+                <bind name="roleNamePattern" value="'%' + roleName + '%' "/>
+                AND t.role_name like #{roleNamePattern}
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="sortField != null and sortField != ''">
+                ${sortField}
+            </when>
+            <otherwise>
+                t.id
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="sortOrder == 'ascend'">ASC</when>
+            <when test="sortOrder == 'descend'">DESC</when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 查询角色已有的权限（只查询叶子节点，前端Ng-Zorro的复选框树会根据子节点的选中情况决定的父节点是否半选中） -->
+    <select id="selectLeafNodeAuthorityIdsByRoleId" parameterType="long" resultType="string">
+        SELECT
+            sa.id
+        FROM
+            hyn_sys_authority sa
+            INNER JOIN hyn_sys_role_authority sra ON sa.id = sra.authority_id
+            INNER JOIN hyn_sys_role sr ON sra.role_id = sr.id
+        WHERE
+            sr.id = #{roleId} and sa.is_leaf = 1
+    </select>
+
+    <select id="selectDropdown" resultType="com.luoyx.hauyne.admin.sys.response.RoleDropdownVO">
+        select
+            id as roleId,
+            role_code as roleCode,
+            role_name as roleName
+        from hyn_sys_role
+    </select>
+</mapper>

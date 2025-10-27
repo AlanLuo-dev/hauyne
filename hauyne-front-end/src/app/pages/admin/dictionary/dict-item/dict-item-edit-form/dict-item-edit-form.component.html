@@ -1,0 +1,97 @@
+<nz-modal [(nzVisible)]="formDialogDisplay"
+          [nzKeyboard]="false"
+          [nzTitle]="(dictItemId ? '编辑' : '创建') + '字典值'"
+          [nzMask]="true"
+          [nzMaskClosable]="false"
+          (nzOnCancel)="closeDialog()"
+          (nzOnOk)="onConfirmClick()"
+          [nzOkLoading]="isOkLoading"
+          [nzCancelDisabled]="isCancelDisabled"
+          [nzClosable]="!isCancelDisabled"
+>
+    <ng-container *nzModalContent>
+        <form nz-form [formGroup]="dictItemForm" novalidate>
+
+            <!-- 字典值编码 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="dictItemCode">字典值编码</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="dictItemCodeErrorTpl">
+                    <input id="dictItemCode" type="text" nz-input autocomplete="off" formControlName="dictItemCode" />
+                    <ng-template #dictItemCodeErrorTpl>
+                        @if (dictItemCodeFormControl.dirty && dictItemCodeFormControl.errors?.['required']) {
+                            请填写字典选项编码
+                        }
+                        @if (dictItemCodeFormControl.dirty && dictItemCodeFormControl.errors?.['maxlength']){
+                            字典选项编码不能超过{{dictItemCodeFormControl.errors?.['maxlength'].requiredLength}}个字
+                        }
+                        @if (dictItemCodeFormControl.errors?.['msg']) {
+                            {{dictItemCodeFormControl.errors?.['msg']}}
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 字典值名称 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="dictItemName">字典值名称</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="dictItemNameErrorTpl">
+                    <input id="dictItemName" type="text" nz-input autocomplete="off" formControlName="dictItemName" />
+                    <ng-template #dictItemNameErrorTpl>
+                        @if (dictItemNameFormControl.dirty && dictItemNameFormControl.errors?.['required']) {
+                            请填写字典选项名称
+                        }
+                        @if (dictItemNameFormControl.dirty && dictItemNameFormControl.errors?.['maxlength']){
+                            字典选项名称不能超过{{dictItemNameFormControl.errors?.['maxlength'].requiredLength}}个字
+                        }
+                        @if (dictItemNameFormControl.errors?.['msg']) {
+                            {{dictItemNameFormControl.errors?.['msg']}}
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 序号 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="sortInput">序号</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="sortErrTpl">
+                    <input id="sortInput" type="text" nz-input autocomplete="off" formControlName="sort" />
+                    <ng-template #sortErrTpl>
+                        @if (sortFormControl.dirty && sortFormControl.errors?.['required']) {
+                            请填写排序
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- 启用状态 -->
+            @if (this.id) {
+                <nz-form-item>
+                    <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="enabled">启用状态</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating...">
+                        <nz-switch id="enabled" formControlName="enabled" nzSize="small"
+                                   nz-tooltip [nzTooltipTitle]="enabledFormControl.getRawValue() ? '已启用' : '已禁用'"
+                                   nzTooltipPlacement="top"
+                                   [nzControl]="true"
+                                   (click)="this.enabledFormControl.setValue(!this.enabledFormControl.value)"
+                        >
+                        </nz-switch>
+                    </nz-form-control>
+                </nz-form-item>
+            }
+
+            <!-- 备注 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中..." [nzErrorTip]="remarkErrTpl">
+                    <textarea id="remark" nz-input [rows]="3" [cols]="20" formControlName="remark">
+                    </textarea>
+                    <ng-template #remarkErrTpl>
+                        @if (remarkFormControl.dirty && remarkFormControl.errors?.['maxlength']) {
+                            备注不能超过{{remarkFormControl.errors?.['maxlength'].requiredLength}}个字
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>

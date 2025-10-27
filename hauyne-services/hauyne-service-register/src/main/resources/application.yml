@@ -1,0 +1,35 @@
+#********************************************************************
+#**********                                             *************
+#**********            Eureka Server配置                 *************
+#**********                                             *************
+#********************************************************************
+
+
+spring:
+  application:
+    name: Register
+
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+
+    #防止自己注册自己
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone:
+        http://${eureka.instance.hostname}:${server.port}/eureka/
+
+  # Eureka Server配置
+  server:
+    #Eureka Server会定时(间隔值是eureka.server.eviction-interval-timer-in-ms，默认60s)进行检查,如果发现实例在在一定时间
+    #(此值由客户端设置的eureka.instance.lease-expiration-duration-in-seconds定义，默认值为90s)内没有收到心跳，则会注销此实例。
+    #我们这里配置每秒钟去检测一次，驱除失效的实例
+    eviction-interval-timer-in-ms: 1000
+
+    #关闭一级缓存，让客户端直接从二级缓存去读取，省去各缓存之间的同步的时间
+    use-read-only-response-cache: false

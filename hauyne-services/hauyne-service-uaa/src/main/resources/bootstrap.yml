@@ -1,0 +1,47 @@
+#################################################################
+#-------------------  auth-server 配置  -------------------------#
+#################################################################
+
+spring:
+  application:
+    name: service-uaa
+  cloud:
+    config:
+      discovery:
+        service-id: service-config
+        enabled: true
+      fail-fast: true
+      profile: dev
+      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, actuator, zipkin
+  main:
+    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8762
+
+logging:
+  level:
+    org.springframework.security: trace
+# CloudAMQP
+#  rabbitmq:
+#    host: gerbil-01.rmq.cloudamqp.com
+#    port: 5671
+#    username: wxtjrgtr
+#    password: 238Sv90BpvsZ_Te6KhgaelT-rNHdrJZS
+#    virtual-host: ${rabbitmq.vhost:wxtjrgtr}
+#    # wxtjrgtr
+#    ssl:
+#      enabled: true
+
+# 本地
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
+#    virtual-host: ${rabbitmq.vhost:/}
+#    # wxtjrgtr
+#    ssl:
+#      enabled: false

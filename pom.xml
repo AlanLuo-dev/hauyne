@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.3</version>
+    </parent>
+
+    <groupId>com.luoyx.hauyne</groupId>
+    <artifactId>hauyne-cloud-parent</artifactId>
+    <version>0.2.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <!-- name标签，项目的名称，Maven产生的文档用 -->
+    <name>hauyne-cloud-parent【hauyne项目所有模块的父工程】</name>
+
+    <modules>
+        <module>hauyne-starters</module>
+        <module>hauyne-services</module>
+    </modules>
+
+    <properties>
+        <!-- JDK 17 -->
+        <java.version>17</java.version>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Spring Boot版本 -->
+        <spring-boot.version>3.3.3</spring-boot.version>
+
+        <!-- Spring Cloud版本 -->
+        <spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
+
+        <!-- lombok版本、lombok-mapstruct中间件版本 -->
+        <lombok.version>1.18.40</lombok.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+
+        <!-- MapStruct版本 -->
+        <mapstruct.version>1.6.3</mapstruct.version>
+
+        <!-- PageHelper版本 -->
+        <pagehelper-spring-boot-starter.version>2.1.1</pagehelper-spring-boot-starter.version>
+
+        <commons-lang3.version>3.18.0</commons-lang3.version>
+        <commons-collections4.version>4.5.0</commons-collections4.version>
+        <commons-codec.version>1.19.0</commons-codec.version>
+        <commons-io.version>2.20.0</commons-io.version>
+
+        <!-- Mybatis-Plus版本 -->
+        <mybatis-plus-spring-boot3-starter.version>3.5.14</mybatis-plus-spring-boot3-starter.version>
+        <mybatis-plus-generator.version>3.5.14</mybatis-plus-generator.version>
+
+        <velocity-engine-core.version>2.0</velocity-engine-core.version>
+        <gson.version>2.13.2</gson.version> <!-- 旧版本是2.8.9 -->
+        <knife4j-openapi3-jakarta-spring-boot-starter.version>4.5.0</knife4j-openapi3-jakarta-spring-boot-starter.version>
+
+        <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
+        <springdoc-openapi-starter-webmvc-api.version>2.3.0</springdoc-openapi-starter-webmvc-api.version>
+        <swagger-annotations.version>2.2.19</swagger-annotations.version>
+
+        <!-- mysql驱动包 -->
+        <mysql-connector-j.version>8.4.0</mysql-connector-j.version>
+
+        <flowable.spring-boot-starter.version>6.5.0</flowable.spring-boot-starter.version>
+        <patchca.version>0.0.1</patchca.version>
+
+        <guava.version>33.4.8-jre</guava.version>
+
+        <UserAgentUtils.version>1.21</UserAgentUtils.version>
+        <ip2region.version>1.7.2</ip2region.version>
+
+        <logstash-logback-encoder.version>6.6</logstash-logback-encoder.version>
+        <spring-boot-admin.version>3.5.2</spring-boot-admin.version>
+
+        <!-- 工作流框架 -->
+        <flowable.version>6.7.2</flowable.version>
+
+        <querydsl.version>5.1.0</querydsl.version>
+
+        <!-- maven官方插件 -->
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+        <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+        <maven-javadoc-plugin.version>3.11.3</maven-javadoc-plugin.version>
+
+        <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
+
+        <javers-spring-boot-starter-sql.version>7.9.0</javers-spring-boot-starter-sql.version>
+
+        <fastexcel.version>1.3.0</fastexcel.version>
+    </properties>
+
+
+    <dependencies>
+        <!-- 所有子模块默认就依赖lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+
+        <!-- spring-cloud （import scope依赖）
+            1、单一职责原则，根据依赖的分类，细化每一个单一职责的pom文件
+            2、解决单继承问题，通过import pom文件达到依赖的目的（典型的非继承模式），从而不用从父类中引用依赖
+            3、父模块的pom就会非常干净，容易维护
+        -->
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!-- mybatis-plus START -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+                <version>${mybatis-plus-spring-boot3-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+            <!-- mybatis-plus END -->
+
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity-engine-core.version}</version>
+            </dependency>
+
+            <!-- knife4j-openapi3 START -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j-openapi3-jakarta-spring-boot-starter.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.github.xiaoymin/knife4j-gateway-spring-boot-starter -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
+                <version>${knife4j-openapi3-jakarta-spring-boot-starter.version}</version>
+            </dependency>
+            <!-- knife4j-openapi3  END -->
+
+            <!-- openapi START -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+                <version>${springdoc-openapi-starter-webmvc-api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotations.version}</version>
+            </dependency>
+            <!-- openapi END -->
+
+            <!-- mysql驱动包 -->
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql-connector-j.version}</version>
+            </dependency>
+
+            <!-- Apache Commons Lang 3的Java类库 https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${commons-collections4.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.flowable/flowable-spring-boot-starter -->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+
+
+            <!-- patchca 用于图形验证码 -->
+            <dependency>
+                <groupId>com.github.bingoohuang</groupId>
+                <artifactId>patchca</artifactId>
+                <version>${patchca.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <artifactId>guava</artifactId>
+                <groupId>com.google.guava</groupId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <!-- mapstruct Java实体映射工具 Start-->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <!-- mapstruct Java实体映射工具 End-->
+
+            <!-- 浏览器 userAgent解析工具 -->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${UserAgentUtils.version}</version>
+            </dependency>
+
+            <!-- 离线IP地址定位库【通过ip确定地理位置】 -->
+            <dependency>
+                <groupId>org.lionsoul</groupId>
+                <artifactId>ip2region</artifactId>
+                <version>${ip2region.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons-io.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>net.logstash.logback</groupId>
+                <artifactId>logstash-logback-encoder</artifactId>
+                <version>${logstash-logback-encoder.version}</version>
+            </dependency>
+
+            <!-- 微服务监控 -->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${spring-boot-admin.version}</version>
+            </dependency>
+
+            <!-- 关于 RestFUL  Patch方法的讲义 -->
+            <!--https://williamdurand.fr/2014/02/14/please-dont-patch-like-that/-->
+            <!-- https://mvnrepository.com/artifact/com.github.java-json-tools/json-patch -->
+            <dependency>
+                <groupId>com.github.java-json-tools</groupId>
+                <artifactId>json-patch</artifactId>
+                <version>1.13</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-apt</artifactId>
+                <version>${querydsl.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.querydsl</groupId>
+                <artifactId>querydsl-jpa</artifactId>
+                <version>${querydsl.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.redisson/redisson-spring-boot-starter -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>3.35.0</version>
+            </dependency>
+
+            <!-- Javers START -->
+            <dependency>
+                <groupId>org.javers</groupId>
+                <artifactId>javers-spring-boot-starter-sql</artifactId>
+                <version>${javers-spring-boot-starter-sql.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.code.gson</groupId>
+                        <artifactId>gson</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.javers</groupId>
+                <artifactId>javers-spring</artifactId>
+                <version>${javers-spring-boot-starter-sql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.javers</groupId>
+                <artifactId>javers-core</artifactId>
+                <version>${javers-spring-boot-starter-sql.version}</version>
+            </dependency>
+            <!-- Javers END -->
+
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/cn.idev.excel/fastexcel -->
+            <dependency>
+                <groupId>cn.idev.excel</groupId>
+                <artifactId>fastexcel</artifactId>
+                <version>${fastexcel.version}</version>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
+
+    <!-- 打包配置 -->
+    <build>
+        <!-- 打包后的jar包文件名: 项目名-版本号 -->
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${maven-resources-plugin.version}</version>
+                <configuration>
+                    <nonFilteredFileExtensions>
+
+                        <!-- 防止Maven编译破坏密钥文件导致乱码 -->
+                        <nonFilteredFileExtension>cert</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>jks</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>key</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>pub</nonFilteredFileExtension>
+
+                        <!-- 指定字体文件扩展名，防止Maven编译破坏字体文件 -->
+                        <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>woff2</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>otf</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <release>17</release>
+                    <encoding>UTF-8</encoding>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+
+                    <!-- 必须：lombok的执行顺序一定要在mapstruct之前? (我不确定是否和顺序有关) 否则Maven编译、打包失败 -->
+                    <!-- 参考的是MapStruct官方配置。 https://mapstruct.org/documentation/stable/reference/html/#lombok -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>${lombok-mapstruct-binding.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>${maven-release-plugin.version}</version>
+                <configuration>
+                    <tagBase>https://gitee.com/hauyne/hauyne-cloud-parent/tags</tagBase>
+                </configuration>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>com.mysema.maven</groupId>
+                    <artifactId>apt-maven-plugin</artifactId>
+                    <version>${apt-maven-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

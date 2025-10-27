@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.admin.sys.mapper.UserProfileMapper">
+
+    <!--
+        按用户id集合查询用户的真实姓名
+        或查询所有用户的id、真实姓名
+    -->
+    <select id="findFullNamesByUserIds" resultType="com.luoyx.hauyne.admin.api.sys.dto.UserFullNameDTO">
+        select
+            user_id as userId,
+            full_name as fullName
+        from hyn_sys_user_profile
+        <where>
+            <if test="userIds != null and userIds.size() > 0">
+                user_id IN
+                <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+                    #{userId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectForUserEditForm" parameterType="Long" resultType="com.luoyx.hauyne.admin.sys.response.UserEditFormVO$UserProfileDTO">
+        SELECT
+            real_name,
+            nickname,
+            gender,
+            birthday,
+            avatar,
+            phone,
+            email,
+            position,
+            remark
+        FROM
+            hyn_sys_user_profile
+        where id = #{id}
+    </select>
+
+    <select id="findUserSnapshots" resultType="com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage">
+        select
+            id,
+            real_name as realName,
+            nickname,
+            avatar,
+            last_updated_time as lastUpdatedTime
+        from hyn_sys_user_profile
+    </select>
+</mapper>
