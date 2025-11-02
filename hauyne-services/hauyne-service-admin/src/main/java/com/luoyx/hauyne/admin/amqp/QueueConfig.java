@@ -10,25 +10,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QueueConfig {
 
-
-    @Bean
-    public DirectExchange triggerUserSnapshotSyncDirectExchange() {
-        return new DirectExchange("trigger.user.snapshot.sync.exchange");
-    }
-
-    @Bean
-    public Queue triggerUserSnapshotSyncQueue() {
-        return new Queue("trigger.user.snapshot.sync.queue", true);
-    }
-
-    @Bean
-    public Binding triggerUserSnapshotSyncBinding() {
-        return BindingBuilder
-                .bind(triggerUserSnapshotSyncQueue())
-                 .to(triggerUserSnapshotSyncDirectExchange())
-                .with("trigger.user.snapshot.sync.routing");
-    }
-
     /*~ START 登录历史 MQ配置 ***************************/
 
     @Bean

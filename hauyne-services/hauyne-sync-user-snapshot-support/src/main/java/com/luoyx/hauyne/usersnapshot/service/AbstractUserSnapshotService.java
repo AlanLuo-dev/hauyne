@@ -62,8 +62,7 @@ public abstract class AbstractUserSnapshotService<M extends BaseMapper<T>, T ext
                 if (msgLastUpdatedTime.isAfter(snapshotLastUpdatedTime)) {
                     converter.updateEntityFromMsg(msg, snapshot);
                     baseMapper.updateById(snapshot);
-                } else {
-                    log.info("丢弃过期的用户快照消息 for 用户id={} 消息中的更新时间={} 数据库中快照的更新时间={}", userId, msgLastUpdatedTime, snapshotLastUpdatedTime);
+                    log.info("更新用户快照 for 用户id={} 消息中的更新时间={} 数据库中快照的更新时间={}", userId, msgLastUpdatedTime, snapshotLastUpdatedTime);
                 }
             } else {
                 T snapshot = converter.toEntity(msg, entitySupplier());
