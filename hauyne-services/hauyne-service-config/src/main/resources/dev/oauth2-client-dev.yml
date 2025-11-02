@@ -1,0 +1,16 @@
+# OAuth2 客户端配置
+
+security:
+  oauth2:
+    client:
+      client-id: ${spring.application.name}
+      client-secret: 123456
+
+      #获取Token的接口
+      access-token-uri: http://localhost:8762/oauth/token
+      grant-type: client_credentials
+      scope: all
+      # 我们可以为每一个Resource Server（一个微服务实例）设置一个resourceid。再给client授权的时候，可以设置这个client可以访问哪一些微服务实例，如果没设置，就是对所有的resource都有访问权限。
+      #resource-ids:
+
+

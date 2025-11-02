@@ -1,0 +1,8 @@
+eureka:
+  instance:
+    health-check-url-path: /actuator/health
+    metadata-map:
+      startup: ${random.int}  #needed to trigger info and endpoint update after restart
+
+server:
+  port: 8766

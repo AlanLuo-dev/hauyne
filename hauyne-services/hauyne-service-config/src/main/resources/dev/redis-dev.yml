@@ -1,0 +1,16 @@
+spring:
+  data:
+    redis:
+      database: 0
+      host: localhost
+      ssl:
+        enabled: false
+      port: 6379
+      password: 123456
+      timeout: 30000ms
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: 5000ms

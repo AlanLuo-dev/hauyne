@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver # com.mysql.cj.jdbc.Driver
+    url: jdbc:p6spy:mysql://localhost:3306/hauyne_audit_dev?useSSL=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&allowMultiQueries=true
+    username: root
+    password: 123456
+
+    hikari:
+      maximum-pool-size: 10                   # 最大连接池大小 (默认值: 10)
+      minimum-idle: 5                         # 空闲连接的最小数量 (连接池中的最小连接数)
+      idle-timeout: 600000                    # 空闲连接存活的最大时间，单位是毫秒 (超时未使用的连接将被关闭，默认值: 600000, 即10分钟)
+      max-lifetime: 1800000                   # 连接池中连接的最长生命周期，单位是毫秒 (默认值: 1800000, 即30分钟)
+      connection-timeout: 30000               # 获取连接的最大等待时间，单位是毫秒 (超过时间将抛出异常, 默认值: 30000, 即30秒)
+      initialization-fail-timeout: 1          # 是否在获取连接时检测连接是否有效，默认为 true
+      auto-commit: true                       # 连接是否自动提交
+      leak-detection-threshold: 2000          # 慢 SQL 阈值 (仅日志警告), 单位是毫秒
+
+server:
+  port: 8764
+
+# P6Spy 配置
+decorator:
+  datasource:
+    p6spy:
+      logging: SLF4J
+      log-format: executionTime:%(executionTime) | sql:%(sqlSingleLine)

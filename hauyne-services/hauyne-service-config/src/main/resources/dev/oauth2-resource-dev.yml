@@ -1,0 +1,37 @@
+# OAuth2 资源服务器配置
+
+#security:
+#  oauth2:
+#    resource:
+#
+#      # 我们可以为每一个Resource Server（一个微服务实例）设置一个resourceid。再给client授权的时候，可以设置这个client可以访问哪一些微服务实例，如果没设置，就是对所有的resource都有访问权限。
+#      id: ${spring.application.name}
+#      #      jwt:
+#      #        key-value: -----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxjE1sF7dboYkz6F9YrCqAHJmqrOt5KzxrY8EemriE8GLdEJktl6UcJHvYccinREgrNUh3NcwO5QuEA8OLthsftwhG+kHcgCOf2gCoNHRb7tDKfGe2wEVoGelQKFasbF6uU6PkVXDWo8PacR0+s9ncV2Nx+fIVEt8HgXhAZNAp6bNwGNUUtKXjS411Jt15KTKmhrK4YV6RuippP9SGqJbBubqmuwSjvtIfNpADLPiBg+O0UO44FRN6fwFP/zVgH8xeGLSbeFZjsSTGa5+JaZs5muKxAZ2bFGRE6QHQJj5HMUr1ZqII1MGAjOLWKpg0diOCooHUxkKC4qldYqEld8CWwIDAQAB-----END PUBLIC KEY-----
+#      user-info-uri: http://localhost:8762/currentLoginedUser
+#      # token-info-uri: http://localhost:8762/oauth/check_token
+#
+#      # 这段配置表示是否优先使用 token info 来验证访问令牌的有效性。
+#      # 默认情况下，它是设置为 true 的，意味着优先使用 token info 来验证访问令牌。
+#      #           如果设置为 false，则会优先使用 user info 来获取用户信息。
+#      # 通常情况下，当访问受保护资源时，客户端需要提供访问令牌来获取授权。而验证令牌的有效性可以通过 token info 端点来完成。
+#      # 但是，有些场景下可能需要获取更多的用户信息，
+#      # 例如用户名、权限等。在这种情况下，可以将 preferTokenInfo 设置为 false，让框架优先使用 user info 来获取用户信息。
+#      # 这个配置提供了一种灵活的方式，让开发人员根据实际需求来决定优先使用哪种方式来处理令牌验证和用户信息获取。
+#      prefer-token-info: false
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:public.cert
+
+#spring:
+#  security:
+#    oauth2:
+#      resourceserver:
+#        opaquetoken:
+#          introspection-uri: http://localhost:8762/currentLoginedUser
+#          client-id:
+#          client-secret:

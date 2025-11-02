@@ -1,0 +1,13 @@
+# actuator配置
+
+management:
+  endpoint:
+    health:
+      enabled: true
+
+      # 开启always；spring-boot-admin 监控会显示监控详情【比如db、redis、mq的连接状态等等】
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,0 +1,77 @@
+server:
+  port: 8700
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 微服务名称转为小写（默认注册到 Eureka时会变大写），以方便下面 routes的配置
+          lowerCaseServiceId: true
+          enabled: true
+
+      # 配置路由节点: uri -> 目标服务地址; predicates -> 断言; 【filters -> 过滤器: (StripPrefix -> 要去除的 url前缀层级 比如predicates的Path=/api/admin/**, 转发到 service-admin的请求为 /**)】;
+      routes:
+
+        # 认证服务
+        - id: service-uaa
+          uri: lb://service-uaa
+          predicates:
+            - Path=/api/uaa/**
+          filters:
+            - StripPrefix=2
+
+        # 管理服务
+        - id: service-admin
+          uri: lb://service-admin
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            - StripPrefix=2
+
+        # 审计服务
+        - id: service-audit
+          uri: lb://service-audit
+          predicates:
+            - Path=/api/audit/**
+          filters:
+            - StripPrefix=2
+
+        # 工具箱服务
+        - id: toolbox-server
+          uri: lb://toolbox-server
+          predicates:
+            - Path=/api/toolbox/**
+          filters:
+            - StripPrefix=2
+
+knife4j:
+  # 聚合swagger文档
+  gateway:
+    enabled: true
+    # 排序规则(tag/operation排序自4.2.0版本新增)
+    # 取值：alpha-默认排序规则，官方swagger-ui默认实现,order-Knife4j提供的增强排序规则，开发者可扩展x-order，根据数值来自定义排序
+    tags-sorter: order
+    operations-sorter: order
+    # 指定手动配置的模式(默认为该模式)
+    strategy: manual
+    routes:
+      - name: 认证授权服务
+        url: /service-uaa/v3/api-docs?group=default        # 真实子服务访问url地址-提供OpenAPI的文档
+        service-name: service-uaa
+        # 路由前缀
+        # 兼容OpenAPI3规范在聚合时丢失contextPath属性的异常情况，由开发者自己配置contextPath,Knife4j的前端Ui做兼容处理,与url属性独立不冲突，仅OpenAPI3规范聚合需要，OpenAPI2规范不需要设置此属性,默认为(apiPathPrefix)
+        context-path: /api/uaa
+        order: 1
+
+      - name: 系统管理服务
+        url: /service-admin/v3/api-docs?group=default
+        service-name: service-admin
+        context-path: /api/admin
+        order: 2
+
+      - name: 审计日志服务
+        url: /service-audit/v3/api-docs?group=default
+        service-name: service-audit
+        context-path: /api/audit
+        order: 3

@@ -30,15 +30,11 @@ spring:
   application:
     name: service-config #服务名称
 
+  profiles:
+    active: native #设置为本地启动的方式，而不是通过git
   cloud:
     config:
       server:
-        git:
-          uri: https://gitee.com/AlanLuo-dev/hauyne-config-repo.git
-          search-paths: /{profile}
-      label: master
-
-encrypt:
-  key: mySecretKey123456
-
-
+        native:
+          #搜索位置(可用的通配符有3个，分别是: {application} 映射客户端spring.application.name, {profile} 映射客户端spring.profiles.active[多个以逗号分隔], {label}这是服务器端功能，标记了一组“版本化”的配置文件。 )
+          search-locations: classpath:/{profile}

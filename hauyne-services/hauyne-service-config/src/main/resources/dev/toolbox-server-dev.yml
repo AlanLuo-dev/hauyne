@@ -1,0 +1,6 @@
+# toolbox-server 配置
+
+server:
+  port: 8764
+
+

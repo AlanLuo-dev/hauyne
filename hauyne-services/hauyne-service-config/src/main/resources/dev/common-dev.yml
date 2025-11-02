@@ -1,0 +1,59 @@
+# 公共配置
+
+## Mybatis-Plus框架配置
+mybatis-plus:
+  global-config:
+    #启动时，日志是否打印 mybatis-plus图标
+    banner: true
+
+  #以通配符扫描Mapper.xml文件，Maven多模块需以通配符扫描时 classpath* 的 * 号一定要写，否则不起作用
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+# Feign配置
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 60000
+        read-timeout: 60000
+        loggerLevel: FULL
+#  hystrix:
+#    enabled: true # 所有服务的OpenFeign调用，默认开启hystrix降级熔断
+
+# 线程池隔离策略
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        timeout:
+#          enabled: true
+#        isolation:
+#          thread:
+#            # 设置合理的 Hystrix 超时时间（设置为100秒），需要处理设置为100毫秒时，auth-server端出现的Hystrix超时问题的异常转换问题（MyOAuth2ExceptionJackson2Serializer）
+#            timeoutInMilliseconds: 100000
+
+# 信号量隔离策略
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          strategy: SEMAPHORE
+#          thread:
+#            # 设置合理的 Hystrix 超时时间（设置为100秒），需要处理设置为100毫秒时，auth-server端出现的Hystrix超时问题的异常转换问题（MyOAuth2ExceptionJackson2Serializer）
+#            timeoutInMilliseconds: 100000
+#        timeout:
+#          enabled: true
+
+
+
+
+# （开始）配合404请求路径不存在的场景的统一异常处理
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  # 从Spring Boot 2.4 开始调整为：spring.web.resources.add-mappings
+  web:
+    resources:
+      add-mappings: false
+# （结束）配合404请求路径不存在的场景的统一异常处理

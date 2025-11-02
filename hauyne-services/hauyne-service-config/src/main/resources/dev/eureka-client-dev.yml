@@ -1,0 +1,22 @@
+#eureka 注册地址配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+
+    # EurekaClient每隔多久从EurekaServer拉取一次服务列表，默认30秒，这里修改为2秒钟从注册中心拉取一次
+    registry-fetch-interval-seconds: 2
+  #租约期限以及续约期限的配置
+  instance:
+    prefer-ip-address: true
+
+    #租约到期，服务失效时间，默认值90秒，服务超过90秒没有发生心跳，EurekaServer会将服务从列表移除
+    #这里修改为10秒
+    lease-expiration-duration-in-seconds: 10
+    #租约续约间隔时间，默认30秒，这里修改为5秒钟
+    lease-renewal-interval-in-seconds: 5
+
+#这里是Ribbon缓存实例列表的刷新间隔，默认30秒钟，这里修改为每秒钟刷新一次实例信息
+ribbon:
+  ServerListRefreshInterval: 5000
