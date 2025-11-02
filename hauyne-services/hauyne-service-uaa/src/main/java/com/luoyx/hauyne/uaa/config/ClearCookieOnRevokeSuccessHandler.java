@@ -3,8 +3,8 @@ package com.luoyx.hauyne.uaa.config;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 public class ClearCookieOnRevokeSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -15,19 +15,20 @@ public class ClearCookieOnRevokeSuccessHandler implements AuthenticationSuccessH
     }
 
     @Override
-    public void onAuthenticationSuccess(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            Authentication authentication) {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) {
 
-        for (String cookieName : cookieNames) {
-            Cookie cookie = new Cookie(cookieName, "");
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            cookie.setSecure(true); // 如果应用跑在 https 下，建议启用
-            cookie.setMaxAge(0);    // 删除 Cookie
-            response.addCookie(cookie);
-        }
+        Cookie accessTokenCookie = new Cookie(cookieNames[0], "");
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setMaxAge(0);    // 删除 Cookie
+        response.addCookie(accessTokenCookie);
+
+        Cookie refreshTokenCookie = new Cookie(cookieNames[1], "");
+        refreshTokenCookie.setPath("/api/uaa/oauth2/token");
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setMaxAge(0);    // 删除 Cookie
+        response.addCookie(refreshTokenCookie);
 
         response.setStatus(HttpServletResponse.SC_OK);
     }
