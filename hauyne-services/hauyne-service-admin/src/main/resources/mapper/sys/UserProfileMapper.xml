@@ -37,13 +37,4 @@
         where id = #{id}
     </select>
 
-    <select id="findUserSnapshots" resultType="com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage">
-        select
-            id,
-            real_name as realName,
-            nickname,
-            avatar,
-            last_updated_time as lastUpdatedTime
-        from hyn_sys_user_profile
-    </select>
 </mapper>

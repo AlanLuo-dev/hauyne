@@ -7,7 +7,7 @@ import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.response.UserEditFormVO;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
-import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
+//import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -62,10 +62,4 @@ public interface UserProfileMapper extends GenericMapper<UserProfile> {
      */
     UserEditFormVO.UserProfileDTO selectForUserEditForm(Long id);
 
-    /**
-     * 查询所有用户快照消息
-     *
-     * @return 用户快照消息列表
-     */
-    List<UserSnapshotMessage> findUserSnapshots();
 }

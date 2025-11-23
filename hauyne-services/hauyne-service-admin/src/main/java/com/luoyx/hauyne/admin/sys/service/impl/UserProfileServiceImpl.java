@@ -7,7 +7,6 @@ import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.service.UserProfileService;
 import com.luoyx.hauyne.mybatisplus.service.impl.BaseServiceImpl;
-import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,13 +55,4 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfileMapper, U
         return baseMapper.countByEmail(query) == 0;
     }
 
-    /**
-     * 查询所有用户快照消息
-     *
-     * @return 用户快照消息列表
-     */
-    @Override
-    public List<UserSnapshotMessage> findUserSnapshots() {
-        return baseMapper.findUserSnapshots();
-    }
 }

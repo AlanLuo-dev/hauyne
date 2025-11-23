@@ -7,8 +7,8 @@ import com.luoyx.hauyne.audit.query.AuditQuery;
 import com.luoyx.hauyne.audit.response.AuditChangeVO;
 import com.luoyx.hauyne.audit.response.FieldChangeVO;
 import com.luoyx.hauyne.audit.service.AuditService;
+import com.luoyx.hauyne.audit.service.UserSnapshotService;
 import com.luoyx.hauyne.audit.support.AuditFieldNameRegistry;
-import com.luoyx.hauyne.usersnapshot.service.UserSnapshotService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 public class AuditServiceImpl implements AuditService {
 
     private final Javers javers;
-    private final UserSnapshotService<UserSnapshot> userSnapshotService;
+    private final UserSnapshotService userSnapshotService;
 
     /**
      * 审计（新增、修改）

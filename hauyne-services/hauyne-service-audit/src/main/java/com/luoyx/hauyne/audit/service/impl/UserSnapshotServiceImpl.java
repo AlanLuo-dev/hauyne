@@ -1,14 +1,12 @@
 package com.luoyx.hauyne.audit.service.impl;
 
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.luoyx.hauyne.audit.entity.UserSnapshot;
 import com.luoyx.hauyne.audit.mapper.UserSnapshotMapper;
-import com.luoyx.hauyne.usersnapshot.converter.UserSnapshotConverter;
-import com.luoyx.hauyne.usersnapshot.service.AbstractUserSnapshotService;
+import com.luoyx.hauyne.audit.service.UserSnapshotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.function.Supplier;
 
 /**
  * <p>
@@ -20,14 +18,6 @@ import java.util.function.Supplier;
  */
 @Slf4j
 @Service
-public class UserSnapshotServiceImpl extends AbstractUserSnapshotService<UserSnapshotMapper, UserSnapshot> {
+public class UserSnapshotServiceImpl extends ServiceImpl<UserSnapshotMapper, UserSnapshot> implements UserSnapshotService {
 
-    public UserSnapshotServiceImpl(UserSnapshotConverter converter) {
-        super(converter);
-    }
-
-    @Override
-    protected Supplier<UserSnapshot> entitySupplier() {
-        return UserSnapshot::new;
-    }
 }

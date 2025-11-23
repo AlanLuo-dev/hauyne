@@ -19,3 +19,6 @@ spring:
     allow-bean-definition-overriding: true
 
 
+hauyne:
+  user-snapshot:
+    table-name: hyn_audit_user_snapshot

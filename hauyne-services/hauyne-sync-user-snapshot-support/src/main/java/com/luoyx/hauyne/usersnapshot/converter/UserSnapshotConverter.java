@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.usersnapshot.converter;
 
-import com.luoyx.hauyne.usersnapshot.entity.BaseUserSnapshot;
+import com.luoyx.hauyne.usersnapshot.entity.SyncUserSnapshot;
 import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
 
 import java.util.function.Supplier;
@@ -17,7 +17,7 @@ public class UserSnapshotConverter {
      * @param entity 实体对象
      * @param <U>    实体类型
      */
-    public <U extends BaseUserSnapshot<U>> void updateEntityFromMsg(UserSnapshotMessage msg, U entity) {
+    public void updateEntityFromMsg(UserSnapshotMessage.UserSnapshot msg, SyncUserSnapshot entity) {
         entity.setId(msg.getId());
         entity.setRealName(msg.getRealName());
         entity.setNickname(msg.getNickname());
@@ -33,8 +33,8 @@ public class UserSnapshotConverter {
      * @param <U>      实体类型
      * @return 转换后的实体对象
      */
-    public <U extends BaseUserSnapshot<U>> U toEntity(UserSnapshotMessage msg, Supplier<U> supplier) {
-        U u = supplier.get();
+    public SyncUserSnapshot toEntity(UserSnapshotMessage.UserSnapshot msg, Supplier<SyncUserSnapshot> supplier) {
+        SyncUserSnapshot u = supplier.get();
         updateEntityFromMsg(msg, u);
         return u;
     }

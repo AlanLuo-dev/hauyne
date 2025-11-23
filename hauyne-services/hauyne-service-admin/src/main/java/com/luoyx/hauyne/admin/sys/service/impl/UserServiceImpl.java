@@ -6,9 +6,17 @@ import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.api.sys.query.LoginLookupQuery;
 import com.luoyx.hauyne.admin.sys.converter.UserConverter;
 import com.luoyx.hauyne.admin.sys.converter.UserProfileConverter;
+import com.luoyx.hauyne.admin.sys.converter.UserSnapshotConverter;
 import com.luoyx.hauyne.admin.sys.entity.User;
 import com.luoyx.hauyne.admin.sys.entity.UserProfile;
-import com.luoyx.hauyne.admin.sys.enums.*;
+import com.luoyx.hauyne.admin.sys.entity.UserSnapshot;
+import com.luoyx.hauyne.admin.sys.enums.AccountNonExpiredEnum;
+import com.luoyx.hauyne.admin.sys.enums.AccountNonLockedEnum;
+import com.luoyx.hauyne.admin.sys.enums.CredentialsNonExpiredEnum;
+import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
+import com.luoyx.hauyne.admin.sys.enums.PrivateKeyRedisKeyEnum;
+import com.luoyx.hauyne.admin.sys.event.UserSnapshotEvent;
 import com.luoyx.hauyne.admin.sys.mapper.UserMapper;
 import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
@@ -22,20 +30,24 @@ import com.luoyx.hauyne.admin.sys.response.CreatedUserVO;
 import com.luoyx.hauyne.admin.sys.response.UserAutoCompleteVO;
 import com.luoyx.hauyne.admin.sys.response.UserEditFormVO;
 import com.luoyx.hauyne.admin.sys.response.UserPageResultVO;
-import com.luoyx.hauyne.admin.sys.service.*;
+import com.luoyx.hauyne.admin.sys.service.AuthorityService;
+import com.luoyx.hauyne.admin.sys.service.RoleService;
+import com.luoyx.hauyne.admin.sys.service.UserProfileService;
+import com.luoyx.hauyne.admin.sys.service.UserRoleService;
+import com.luoyx.hauyne.admin.sys.service.UserService;
+import com.luoyx.hauyne.admin.sys.service.UserSnapshotService;
 import com.luoyx.hauyne.framework.utils.SignUtils;
 import com.luoyx.hauyne.framework.utils.rsa.RSAUtil;
 import com.luoyx.hauyne.mybatisplus.dto.PageResult;
 import com.luoyx.hauyne.mybatisplus.service.impl.BaseServiceImpl;
 import com.luoyx.hauyne.security.util.SecurityUtils;
-import com.luoyx.hauyne.usersnapshot.converter.UserSnapshotConverter;
-import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
-import com.luoyx.hauyne.usersnapshot.service.UserSnapshotService;
+import com.luoyx.hauyne.usersnapshot.enums.EventType;
 import com.luoyx.hauyne.web.exception.ResourceNotFoundException;
 import com.luoyx.hauyne.web.exception.ValidateException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.AccessDeniedException;
@@ -43,7 +55,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -62,6 +73,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     private final PasswordEncoder bcryptPasswordEncoder;
     private final UserConverter userConverter;
     private final UserProfileConverter userProfileConverter;
+    private final UserSnapshotConverter userSnapshotConverter;
     private final UserProfileService userProfileService;
     private final UserSnapshotService userSnapshotService;
     private final RoleService roleService;
@@ -69,7 +81,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     private final AuthorityService authorityService;
     private final AsyncTaskExecutor taskExecutor;
     private final UserSnapshotProducer userSnapshotProducer;
-    private final UserSnapshotConverter userSnapshotConverter;
+    //    private final UserSnapshotConverter userSnapshotConverter;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Value(value = "${login.lookup.secret}")
     private String loginLookupSecret;
@@ -188,6 +201,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     /**
      * 新增用户
+     * <p>
+     * 控制在一个事务中，避免数据不一致
      *
      * @param userCreateDTO 表单参数
      * @return 新增的用户
@@ -198,6 +213,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         checkFormData(userCreateDTO);
 
         User user = userConverter.toUser(userCreateDTO);
+        user.setPassword(bcryptPasswordEncoder.encode(userCreateDTO.getPassword()));
         user.setAccountNonExpired(AccountNonExpiredEnum.NORMAL.getValue());
         user.setAccountNonLocked(AccountNonLockedEnum.NORMAL.getValue());
         user.setCredentialsNonExpired(CredentialsNonExpiredEnum.NORMAL.getValue());
@@ -217,12 +233,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         userProfile.setId(userId);
         userProfileService.save(userProfile);
 
-        // 发送新创建用户的快照消息
-        UserSnapshotMessage userSnapshotMessage = userProfileConverter.toUserSnapshotMessage(userProfile);
-        userSnapshotProducer.send(Collections.singletonList(userSnapshotMessage));
+        // 新增用户快照
+        UserSnapshot userSnapshot = userSnapshotConverter.toUserSnapshot(userProfile);
+        userSnapshotService.save(userSnapshot);
+
+        applicationEventPublisher.publishEvent(new UserSnapshotEvent(Collections.singletonList(userSnapshot), EventType.CREATE));
 
         return userConverter.toCreatedUserVO(user, userProfile);
-
     }
 
     /**
@@ -283,15 +300,28 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             }
         }
 
-        // 删除前，发送删除用户的快照消息
-        List<UserProfile> userProfiles = userProfileService.listByIds(userIds);
-        final LocalDateTime now = LocalDateTime.now();
-        List<UserSnapshotMessage> userSnapshotMessageList = userProfileConverter.toMessageList(userProfiles, now);
-        userSnapshotProducer.send(userSnapshotMessageList);
+        // 删除之前，更新用户快照
+        List<UserSnapshot> userSnapshotList = userProfileService.listByIds(userIds).stream()
+                .map(item -> {
+                    UserSnapshot userSnapshot = new UserSnapshot();
+                    userSnapshot.setId(item.getId());
+                    userSnapshot.setRealName(item.getRealName() + "（已删除）");
+                    userSnapshot.setNickname(item.getNickname() + "（已删除）");
+                    userSnapshot.setAvatar(item.getAvatar());
+                    userSnapshot.setLastUpdatedTime(item.getLastUpdatedTime());
+
+                    return userSnapshot;
+                })
+                .toList();
+        userSnapshotService.updateBatchById(userSnapshotList);
 
         // 删除用户
         baseMapper.deleteByIds(userIds);
+        userProfileService.removeByIds(userIds);
         userRoleService.deleteUserRoleByUserIds(userIds);
+
+        // 发送已更新用户的快照消息
+        applicationEventPublisher.publishEvent(new UserSnapshotEvent(userSnapshotList, EventType.DELETE));
     }
 
     /**
@@ -332,9 +362,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         }
         userRoleService.updateUserRoleByUserId(userId, roleIdSet);
 
+        // 更新用户快照
+        UserSnapshot userSnapshot = userSnapshotConverter.toUserSnapshot(userProfile);
+        userSnapshotService.updateById(userSnapshot);
+
         // 发送已更新用户的快照消息
-        UserSnapshotMessage userSnapshotMessage = userProfileConverter.toUserSnapshotMessage(userProfile);
-        userSnapshotProducer.send(Collections.singletonList(userSnapshotMessage));
+        applicationEventPublisher.publishEvent(new UserSnapshotEvent(Collections.singletonList(userSnapshot), EventType.UPDATE));
     }
 
     /**

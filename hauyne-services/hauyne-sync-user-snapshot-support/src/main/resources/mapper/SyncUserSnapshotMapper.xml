@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luoyx.hauyne.usersnapshot.mapper.SyncUserSnapshotMapper">
+
+    <!-- 插入快照 -->
+    <insert id="insert" parameterType="com.luoyx.hauyne.usersnapshot.entity.SyncUserSnapshot">
+        INSERT INTO ${tableName}
+        (
+            id,
+            real_name,
+            nickname,
+            avatar,
+            last_updated_time
+        )
+        VALUES
+        (
+            #{syncUserSnapshot.id},
+            #{syncUserSnapshot.realName},
+            #{syncUserSnapshot.nickname},
+            #{syncUserSnapshot.avatar},
+            #{syncUserSnapshot.lastUpdatedTime}
+        );
+    </insert>
+
+    <!-- 更新快照 -->
+    <update id="update" parameterType="com.luoyx.hauyne.usersnapshot.entity.SyncUserSnapshot">
+        UPDATE ${tableName}
+        SET
+            real_name = #{syncUserSnapshot.realName},
+            nickname = #{syncUserSnapshot.nickname},
+            avatar = #{syncUserSnapshot.avatar},
+            last_updated_time = #{syncUserSnapshot.lastUpdatedTime}
+        WHERE
+            id = #{syncUserSnapshot.id};
+    </update>
+
+    <select id="selectByIds" resultType="com.luoyx.hauyne.usersnapshot.entity.SyncUserSnapshot">
+        SELECT
+            id,
+            real_name,
+            nickname,
+            avatar,
+            last_updated_time
+        FROM
+            ${tableName}
+        WHERE
+            id IN
+        <foreach collection="userIds" item="userId" open="(" close=")" separator=",">
+            #{userId}
+        </foreach>
+    </select>
+</mapper>

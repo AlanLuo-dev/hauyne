@@ -1,8 +1,10 @@
 package com.luoyx.hauyne.usersnapshot.msg;
 
+import com.luoyx.hauyne.usersnapshot.enums.EventType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 用户快照MQ消息
@@ -13,28 +15,35 @@ import java.time.LocalDateTime;
 @Data
 public class UserSnapshotMessage {
 
-    /**
-     * 用户id（即主键）
-     */
-    private Long id;
+    private EventType eventType;
 
-    /**
-     * 真实姓名
-     */
-    private String realName;
+    private List<UserSnapshot> userSnapshotList;
 
-    /**
-     * 昵称
-     */
-    private String nickname;
+    @Data
+    public static class UserSnapshot {
+        /**
+         * 用户id（即主键）
+         */
+        private Long id;
 
-    /**
-     * 头像URL
-     */
-    private String avatar;
+        /**
+         * 真实姓名
+         */
+        private String realName;
 
-    /**
-     * 最后修改时间
-     */
-    private LocalDateTime lastUpdatedTime;
+        /**
+         * 昵称
+         */
+        private String nickname;
+
+        /**
+         * 头像URL
+         */
+        private String avatar;
+
+        /**
+         * 最后修改时间
+         */
+        private LocalDateTime lastUpdatedTime;
+    }
 }

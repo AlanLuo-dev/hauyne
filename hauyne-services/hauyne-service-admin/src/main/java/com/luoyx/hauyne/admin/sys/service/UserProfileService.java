@@ -5,7 +5,7 @@ import com.luoyx.hauyne.admin.sys.entity.UserProfile;
 import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.mybatisplus.service.BaseService;
-import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
+//import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
 
 import java.util.List;
 import java.util.Set;
@@ -39,10 +39,4 @@ public interface UserProfileService extends BaseService<UserProfile> {
      */
     boolean checkEmailUnique(EmailUniqueCheckQuery query);
 
-    /**
-     * 查询所有用户快照消息
-     *
-     * @return 用户快照消息列表
-     */
-    List<UserSnapshotMessage> findUserSnapshots();
 }

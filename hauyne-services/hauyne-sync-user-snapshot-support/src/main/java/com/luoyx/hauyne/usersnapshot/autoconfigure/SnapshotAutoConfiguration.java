@@ -3,6 +3,9 @@ package com.luoyx.hauyne.usersnapshot.autoconfigure;
 import com.luoyx.hauyne.usersnapshot.amqp.QueueConfig;
 import com.luoyx.hauyne.usersnapshot.amqp.UserSnapshotAmqpConsumer;
 import com.luoyx.hauyne.usersnapshot.converter.UserSnapshotConverter;
+import com.luoyx.hauyne.usersnapshot.mapper.UserSnapshotProperties;
+import com.luoyx.hauyne.usersnapshot.service.impl.SyncUserSnapshotServiceImpl;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -13,7 +16,8 @@ import org.springframework.context.annotation.Import;
  * @author Alan.Luo
  */
 @Configuration
-@Import({UserSnapshotAmqpConsumer.class, UserSnapshotConverter.class, QueueConfig.class})
+@EnableConfigurationProperties(UserSnapshotProperties.class)
+@Import({UserSnapshotAmqpConsumer.class, SyncUserSnapshotServiceImpl.class, UserSnapshotConverter.class, QueueConfig.class})
 public class SnapshotAutoConfiguration {
 }
 
