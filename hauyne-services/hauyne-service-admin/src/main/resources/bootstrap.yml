@@ -56,7 +56,3 @@ knife4j:
     secret: S6CsnS8AnPVyb8vvChcdXm4R3p6A6KlAISxBg3IIEgk=
     server: http://localhost:10086
     namespace: spring3
-
-hauyne:
-  user-snapshot:
-    table-name: hyn_sys_user_snapshot

@@ -10,6 +10,7 @@ import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 
 /**
  * RabbitMQ 消费者
@@ -18,6 +19,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
  */
 @Slf4j
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "hauyne.user-snapshot.table-name")
 public class UserSnapshotAmqpConsumer {
 
     private final SyncUserSnapshotService syncUserSnapshotService;
