@@ -293,6 +293,11 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     @Override
     @Transactional
     public void deleteByIds(List<Long> userIds) {
+        final Long currentSysUserId = SecurityUtils.getCurrentSysUserId();
+        if (userIds.contains(currentSysUserId)) {
+            throw new ValidateException("你不能删除自己");
+        }
+
         List<User> users = baseMapper.selectByIds(userIds);
         for (User user : users) {
             if ("admin".equals(user.getUsername())) {

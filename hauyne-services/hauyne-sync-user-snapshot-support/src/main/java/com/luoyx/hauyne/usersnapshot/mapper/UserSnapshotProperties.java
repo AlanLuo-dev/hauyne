@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 逻辑删除的配置属性
+ * 用户快照的配置属性
  *
  * @author luo_yingxiong@163.com
  * @since 0.2.0
