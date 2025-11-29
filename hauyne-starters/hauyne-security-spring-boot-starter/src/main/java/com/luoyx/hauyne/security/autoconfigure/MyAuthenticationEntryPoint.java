@@ -36,8 +36,8 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
                 LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
                 loginUrlAuthenticationEntryPoint.commence(request, response, authException);
             } else {
-                //如果是api请求类型，则返回json
-                unAuthResponse(response, "需要带上令牌进行访问");
+                // 未认证
+                unAuthResponse(response);
             }
         } else if (authException instanceof InvalidBearerTokenException) {
             exceptionResponse(response, "令牌无效或已过期");
@@ -80,7 +80,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     }
 
-    public static void unAuthResponse(HttpServletResponse response, String message) throws AccessDeniedException, AuthenticationException, IOException {
+    public static void unAuthResponse(HttpServletResponse response) throws AccessDeniedException, AuthenticationException, IOException {
 
         APIError<?> responseResult = APIError.unAuth("未登录");
         Gson gson = new Gson();
