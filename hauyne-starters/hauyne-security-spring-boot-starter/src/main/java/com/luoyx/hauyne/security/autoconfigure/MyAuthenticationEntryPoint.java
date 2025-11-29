@@ -1,12 +1,10 @@
-package com.luoyx.hauyne.uaa.config;
+package com.luoyx.hauyne.security.autoconfigure;
 
 import com.luoyx.hauyne.api.APIError;
-import com.luoyx.hauyne.uaa.authentication.OAuth2Constant;
 import com.nimbusds.jose.shaded.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.codec.Charsets;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -35,11 +33,11 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
             String accept = request.getHeader("accept");
             if (accept.contains(MediaType.TEXT_HTML_VALUE)) {
                 //如果是html请求类型，则返回登录页
-                LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint(OAuth2Constant.LOGIN_URL);
+                LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint = new LoginUrlAuthenticationEntryPoint("/login");
                 loginUrlAuthenticationEntryPoint.commence(request, response, authException);
             } else {
                 //如果是api请求类型，则返回json
-                exceptionResponse(response, "需要带上令牌进行访问");
+                unAuthResponse(response, "需要带上令牌进行访问");
             }
         } else if (authException instanceof InvalidBearerTokenException) {
             exceptionResponse(response, "令牌无效或已过期");
@@ -76,6 +74,18 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         Gson gson = new Gson();
         String jsonResult = gson.toJson(responseResult);
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.getWriter().print(jsonResult);
+
+    }
+
+    public static void unAuthResponse(HttpServletResponse response, String message) throws AccessDeniedException, AuthenticationException, IOException {
+
+        APIError<?> responseResult = APIError.unAuth("未登录");
+        Gson gson = new Gson();
+        String jsonResult = gson.toJson(responseResult);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.getWriter().print(jsonResult);

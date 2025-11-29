@@ -77,6 +77,10 @@
         </dependency>
 
 
-
+        <dependency>
+            <groupId>com.luoyx.hauyne</groupId>
+            <artifactId>hauyne-api</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

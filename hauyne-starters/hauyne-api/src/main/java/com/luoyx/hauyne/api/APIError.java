@@ -230,4 +230,15 @@ public class APIError<T> {
     public static <U> APIError<U> requestMethodNotSupported() {
         return new APIError<>(ErrorCodeEnum.REQUEST_METHOD_NOT_SUPPORTED);
     }
+
+    /**
+     * 未认证（未登录）
+     *
+     * @param errorTips 错误提示
+     * @param <U>       返回数据的类型
+     * @return APIError<U>
+     */
+    public static <U> APIError<U> unAuth(String errorTips) {
+        return new APIError<>(ErrorCodeEnum.USER_IDENTITY_VERIFICATION_FAILED, errorTips);
+    }
 }
