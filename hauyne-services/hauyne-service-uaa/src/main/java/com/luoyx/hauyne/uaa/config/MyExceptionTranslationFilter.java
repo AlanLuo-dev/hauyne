@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.uaa.config;
 
-import com.luoyx.hauyne.uaa.config.MyAuthenticationEntryPoint;
+import com.luoyx.hauyne.security.autoconfigure.MyAuthenticationEntryPoint;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

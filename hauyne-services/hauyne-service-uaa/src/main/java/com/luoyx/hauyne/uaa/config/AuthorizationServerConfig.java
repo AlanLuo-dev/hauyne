@@ -6,6 +6,7 @@ import com.github.bingoohuang.patchca.background.MyCustomBackgroundFactory;
 import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
 import com.github.bingoohuang.patchca.filter.predefined.DoubleRippleFilterFactory;
 import com.github.bingoohuang.patchca.word.RandomWordFactory;
+import com.luoyx.hauyne.security.autoconfigure.MyAuthenticationEntryPoint;
 import com.luoyx.hauyne.security.pojo.CurrentSysUser;
 import com.luoyx.hauyne.security.pojo.CurrentSysUserMixin;
 import com.luoyx.hauyne.uaa.authentication.captcha.CaptchaGrantAuthenticationConverter;
