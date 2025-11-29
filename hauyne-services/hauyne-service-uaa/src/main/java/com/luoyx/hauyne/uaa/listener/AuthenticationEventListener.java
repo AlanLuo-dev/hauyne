@@ -70,7 +70,7 @@ public class AuthenticationEventListener {
         } else if (event instanceof AbstractAuthenticationFailureEvent) {
             AbstractAuthenticationFailureEvent failEvent = (AbstractAuthenticationFailureEvent) event;
             log.warn("登录失败 -> {}", failEvent.getException());
-            LinkedHashMap<String, String> linkedHashMap = (LinkedHashMap<String, String>) ((CaptchaGrantAuthenticationToken) failEvent.getSource()).getDetails();
+//            LinkedHashMap<String, String> linkedHashMap = (LinkedHashMap<String, String>) ((CaptchaGrantAuthenticationToken) failEvent.getSource()).getDetails();
 //            saveLoginHistory(LoginHistoryTypeEnum.LOGIN, LoginHistoryResultEnum.LOGIN_FAIL, failEvent.getException().getMessage(), linkedHashMap.get("username"));
         } else {
             log.warn("其他事件 -> {}", event.getClass().getName());

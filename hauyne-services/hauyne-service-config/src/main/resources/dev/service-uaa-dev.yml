@@ -3,12 +3,6 @@
 server:
   port: 8762
 
-# 是否检查用户输入的验证码【true=是，false=否；缺省值为true】
-# 设置这个开关，主要是为了在开发环境下跳过验证码的检查，提高测试效率。测试环境视情况而定。生产环境不要配置该项
-enable:
-  captcha:
-    check: false
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
