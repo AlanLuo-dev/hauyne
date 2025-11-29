@@ -32,12 +32,14 @@
     <!-- 查询用户权限范围内的菜单、按sort字段升序 -->
     <select id="selectSideMenuByUserId" resultType="com.luoyx.hauyne.admin.api.sys.dto.UserDTO$SideMenuDTO">
         select
+            DISTINCT
             a.id as id,
             a.parent_id as parentId,
             a.level as level,
             a.authority_name as label,
             a.icon as icon,
-            a.path as routerLink
+            a.path as routerLink,
+            a.sort
         from hyn_sys_authority a
             inner join hyn_sys_role_authority ra on ra.authority_id = a.id
             inner join hyn_sys_role r on r.id = ra.role_id
