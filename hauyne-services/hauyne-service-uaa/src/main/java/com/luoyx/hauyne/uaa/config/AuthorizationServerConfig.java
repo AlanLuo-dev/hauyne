@@ -58,8 +58,8 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenClaimsSet;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 
 import java.awt.*;
 import java.security.Principal;
@@ -88,9 +88,6 @@ public class AuthorizationServerConfig {
 
     private static final String CUSTOM_CONSENT_PAGE_URI = "/oauth2/consent";
 
-
-    private final AuthenticationEntryPoint authenticationEntryPoint;
-
     @Bean
     @Order(1)
 //    @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -113,6 +110,7 @@ public class AuthorizationServerConfig {
                                 )
                         )
                         .accessTokenResponseHandler(tokenResponseHandler)
+                        .errorResponseHandler(new CustomAuthExceptionHandler())
                 )
 
                 //设置自定义密码模式
@@ -144,8 +142,9 @@ public class AuthorizationServerConfig {
         log.info("设置异常处理");
         http
                 // 设置异常处理
+                .addFilterBefore(new MyExceptionTranslationFilter(), ExceptionTranslationFilter.class)
                 .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .authenticationEntryPoint(new MyAuthenticationEntryPoint())
                 );
 
         // 开启cors, 放行前端地址

@@ -6,22 +6,30 @@ import com.luoyx.hauyne.uaa.dto.CachedCaptchaDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.authentication.*;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.*;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClaimAccessor;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.OAuth2ErrorCodes;
+import org.springframework.security.oauth2.core.OAuth2RefreshToken;
+import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.core.endpoint.OAuth2ParameterNames;
-import org.springframework.security.oauth2.core.oidc.OidcIdToken;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.core.oidc.endpoint.OidcParameterNames;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
@@ -38,7 +46,6 @@ import org.springframework.util.CollectionUtils;
 import java.net.URLDecoder;
 import java.security.Principal;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -69,13 +76,6 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
 
     protected MessageSourceAccessor messages = SpringSecurityMessageSource.getAccessor();
 
-    /**
-     * 是否检查用户输入的验证码【true=是，false=否；缺省值为true】
-     * 设置这个开关，主要是为了在开发环境下跳过验证码的检查，提高测试效率。测试环境视情况而定。生产环境不要配置该项
-     */
-    @Value("${enable.captcha.check:true}")
-    private boolean enableCaptchaCheck;
-
     public CaptchaGrantAuthenticationProvider(OAuth2AuthorizationService auth2AuthorizationService,
                                               OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator) {
         Assert.notNull(auth2AuthorizationService, "authorizationService cannot be null");
@@ -97,8 +97,6 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
         String username = (String) additionalParameters.get(OAuth2ParameterNames.USERNAME);
         String password = (String) additionalParameters.get(OAuth2ParameterNames.PASSWORD);
 
-        log.info("enableCaptchaCheck => {}", enableCaptchaCheck);
-
         String requestImgCode = (String) additionalParameters.get("captcha");
         String captchaKey = (String) additionalParameters.get("captchaKey");
 
@@ -117,7 +115,7 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
 
             // 删除验证码
             redisTemplate.delete(REDIS_KEY_IMAGE_CODE + captchaKey);
-            if (enableCaptchaCheck && !cachedCaptchaDTO.getActualImgCode().equalsIgnoreCase(requestImgCode)) {
+            if (!cachedCaptchaDTO.getActualImgCode().equalsIgnoreCase(requestImgCode)) {
                 log.warn("验证码不正确");
                 throw new BadCredentialsException("验证码不正确");
             }
@@ -145,9 +143,7 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             log.warn("密码错误");
-            throw new BadCredentialsException(messages.getMessage(
-                    "AbstractUserDetailsAuthenticationProvider.badCredentials",
-                    "密码错误"));
+            throw new BadCredentialsException("密码错误");
         }
 
         //请求参数权限范围

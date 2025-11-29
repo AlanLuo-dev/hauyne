@@ -15,6 +15,10 @@ public class OAuth2Constant {
      */
     public static final String GRANT_TYPE_PASSWORD = "authorization_password";
 
+    /**
+     * 登录地址
+     */
+    public static final String LOGIN_URL = "/login";
 
     private OAuth2Constant() {
     }
