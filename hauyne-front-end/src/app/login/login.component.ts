@@ -150,6 +150,7 @@ export class LoginComponent implements OnInit {
                 this.store.dispatch(getTokenSuccess({redirect: true}));
             },
             error: (err) => {
+                this.refreshImgCode();
                 this.messageService.create('error', err.error.errorTips);
                 this.store.dispatch(authFailure());
             },
