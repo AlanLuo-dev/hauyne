@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 @ToString
 public class UserPageQuery extends PageQuery {
 
+    @Schema(hidden = true)
+    private Long currentUserId;
+
     /**
      * 用户名
      */

@@ -69,7 +69,11 @@
             p.phone AS phone,
             p.email AS email,
             p.position AS position,
-            p.remark AS remark
+            p.remark AS remark,
+            CASE
+                WHEN u.id = #{currentUserId} THEN true
+                ELSE false
+            END AS self
         FROM
             hyn_sys_user u
             INNER JOIN hyn_sys_user_profile p ON u.id = p.id

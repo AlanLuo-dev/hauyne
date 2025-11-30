@@ -58,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -89,6 +90,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
     @Override
     public PageResult<UserPageResultVO> findPage(UserPageQuery query) {
+        if (Objects.nonNull(query.getCurrentUserId())) {
+            throw new ValidateException("currentUserId 不能从前端传递");
+        }
+        query.setCurrentUserId(SecurityUtils.getCurrentSysUserId());
         PageResult<UserPageResultVO> pageResult = super.findPage(query);
         List<UserPageResultVO> rows = pageResult.getRows();
         for (UserPageResultVO item : rows) {

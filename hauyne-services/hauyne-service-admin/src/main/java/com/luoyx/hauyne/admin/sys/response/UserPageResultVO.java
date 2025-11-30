@@ -155,4 +155,9 @@ public class UserPageResultVO {
     @Schema(description = "最后修改时间")
     private LocalDateTime lastUpdatedTime;
 
+    /**
+     * 是否是自己
+     */
+    @Schema(description = "是否是自己（true=是，false=否）")
+    private Boolean self;
 }
