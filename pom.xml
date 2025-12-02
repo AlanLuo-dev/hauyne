@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.3</version>
+        <version>3.5.8</version>
     </parent>
 
     <groupId>com.luoyx.hauyne</groupId>
@@ -29,10 +29,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Spring Boot版本 -->
-        <spring-boot.version>3.3.3</spring-boot.version>
+        <spring-boot.version>3.5.8</spring-boot.version>
 
         <!-- Spring Cloud版本 -->
-        <spring-cloud-dependencies.version>2023.0.3</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
 
         <!-- lombok版本、lombok-mapstruct中间件版本 -->
         <lombok.version>1.18.40</lombok.version>
@@ -47,7 +47,7 @@
         <commons-lang3.version>3.18.0</commons-lang3.version>
         <commons-collections4.version>4.5.0</commons-collections4.version>
         <commons-codec.version>1.19.0</commons-codec.version>
-        <commons-io.version>2.20.0</commons-io.version>
+        <commons-io.version>2.21.0</commons-io.version>
 
         <!-- Mybatis-Plus版本 -->
         <mybatis-plus-spring-boot3-starter.version>3.5.14</mybatis-plus-spring-boot3-starter.version>
