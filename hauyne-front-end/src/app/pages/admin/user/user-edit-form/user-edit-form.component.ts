@@ -70,7 +70,7 @@ export class UserEditFormComponent implements OnInit {
         this.userForm = this.formBuilder.group({
             username: ['', {validators: [Validators.required], updateOn: 'blur'}],
             password: ['', {validators: [Validators.required], updateOn: 'blur'}],
-            roleIds: [[], {validators: [Validators.required], updateOn: 'blur'}],
+            roleIds: [[], {validators: [Validators.required]}],
             enabled: [true],
 
             profile: this.formBuilder.group({
@@ -84,7 +84,7 @@ export class UserEditFormComponent implements OnInit {
                 position: [null, {updateOn: 'blur'}],
                 remark: [null, {updateOn: 'blur'}]
             })
-        }, {updateOn: 'submit'});
+        });
 
         this.roleService.selectDropdown().subscribe(
             (value) => {
