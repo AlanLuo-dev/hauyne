@@ -18,6 +18,6 @@ public class UserSnapshotProducer {
 
     public void send(UserSnapshotMessage userSnapshotMessage) {
         log.debug("生产消息【{}】", userSnapshotMessage);
-        this.rabbitTemplate.convertAndSend(USER_SNAPSHOT_FANOUT_EXCHANGE, "",userSnapshotMessage);
+        this.rabbitTemplate.convertAndSend(USER_SNAPSHOT_FANOUT_EXCHANGE, "", userSnapshotMessage);
     }
 }
