@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : aiven
+ Source Server         : 本地MySQL
  Source Server Type    : MySQL
- Source Server Version : 80035
- Source Host           : hauyne-dev-luoyingxiong123-9aa4.c.aivencloud.com:16704
+ Source Server Version : 80033
+ Source Host           : localhost:3306
  Source Schema         : hauyne_admin_dev
 
  Target Server Type    : MySQL
- Target Server Version : 80035
+ Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 02/11/2025 10:50:16
+ Date: 02/12/2025 21:49:23
 */
 
 SET NAMES utf8mb4;
@@ -34,7 +34,7 @@ CREATE TABLE `_deleted_hyn_sys_dict_item`  (
   `last_updated_by` bigint NOT NULL COMMENT '修改人id（无符号）',
   `last_updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of _deleted_hyn_sys_dict_item
@@ -59,7 +59,7 @@ CREATE TABLE `_deleted_hyn_sys_dict_type`  (
   `deleted_by` bigint NULL DEFAULT NULL COMMENT '删除者的用户id',
   `deleted_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of _deleted_hyn_sys_dict_type
@@ -93,7 +93,7 @@ CREATE TABLE `_deleted_hyn_sys_login_history`  (
   `deleted_by` bigint NULL DEFAULT NULL COMMENT '删除者的用户id',
   `deleted_time` datetime NULL DEFAULT NULL COMMENT '删除时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of _deleted_hyn_sys_login_history
@@ -127,29 +127,6 @@ INSERT INTO `_deleted_hyn_sys_login_history` VALUES (36, 0, 3, '注销成功', 1
 INSERT INTO `_deleted_hyn_sys_login_history` VALUES (323, 1, 1, '登录成功', 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '123.0.0.0', 'Windows 10', '2024-04-06 14:48:42', NULL, NULL);
 
 -- ----------------------------
--- Table structure for clientdetails
--- ----------------------------
-DROP TABLE IF EXISTS `clientdetails`;
-CREATE TABLE `clientdetails`  (
-  `appId` varchar(128) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
-  `resourceIds` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `appSecret` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `scope` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `grantTypes` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `redirectUrl` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `authorities` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `access_token_validity` int NULL DEFAULT NULL,
-  `refresh_token_validity` int NULL DEFAULT NULL,
-  `additionalInformation` varchar(4096) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  `autoApproveScopes` varchar(256) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`appId`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of clientdetails
--- ----------------------------
-
--- ----------------------------
 -- Table structure for hyn_codegen_code
 -- ----------------------------
 DROP TABLE IF EXISTS `hyn_codegen_code`;
@@ -171,7 +148,7 @@ CREATE TABLE `hyn_codegen_code`  (
   `last_updated_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_datasource_id`(`gen_datasource_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_codegen_code
@@ -193,7 +170,7 @@ CREATE TABLE `hyn_codegen_data_source`  (
   `last_updated_by` bigint NOT NULL COMMENT '修改人',
   `last_updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_codegen_data_source
@@ -217,7 +194,7 @@ CREATE TABLE `hyn_codegen_template`  (
   `last_updated_by` bigint NOT NULL COMMENT '修改人',
   `last_updated_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_codegen_template
@@ -240,7 +217,7 @@ CREATE TABLE `hyn_codegen_template_param`  (
   `last_updated_by` bigint NOT NULL COMMENT '修改人',
   `last_updated_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_codegen_template_param
@@ -268,7 +245,7 @@ CREATE TABLE `hyn_sys_authority`  (
   `last_updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_authority_name`(`authority_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 85 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_authority
@@ -322,7 +299,7 @@ CREATE TABLE `hyn_sys_dept`  (
   `last_updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dept_name`(`dept_name` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_dept
@@ -347,7 +324,7 @@ CREATE TABLE `hyn_sys_dict_item`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dict_type_id_dict_item_code`(`dict_type_id` ASC, `dict_item_code` ASC) USING BTREE,
   UNIQUE INDEX `uk_dict_type_id_dict_item_name`(`dict_type_id` ASC, `dict_item_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典值' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_dict_item
@@ -374,7 +351,7 @@ CREATE TABLE `hyn_sys_dict_type`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dict_type_code`(`dict_type_code` ASC) USING BTREE,
   UNIQUE INDEX `uk_dict_type_name`(`dict_type_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 41 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典类型' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_dict_type
@@ -383,6 +360,7 @@ INSERT INTO `hyn_sys_dict_type` VALUES (3, 'sex', '性别', 1, '你', 1, '2022-0
 INSERT INTO `hyn_sys_dict_type` VALUES (15, 'authority_type', '权限类型', 1, '我操', 1, '2023-03-07 22:25:54', 1, '2024-09-13 17:12:44');
 INSERT INTO `hyn_sys_dict_type` VALUES (25, 'volume_unit', '体积单位', 1, '哈哈', 1, '2024-08-31 15:48:12', 1, '2025-09-13 15:03:21');
 INSERT INTO `hyn_sys_dict_type` VALUES (40, 'ers', 'drtd', 1, '', 1, '2025-07-05 14:06:00', 1, '2025-09-20 07:38:52');
+INSERT INTO `hyn_sys_dict_type` VALUES (41, 'week', '星期', 1, '', 27, '2025-11-23 11:33:48', 27, '2025-11-23 11:33:48');
 
 -- ----------------------------
 -- Table structure for hyn_sys_login_history
@@ -401,7 +379,7 @@ CREATE TABLE `hyn_sys_login_history`  (
   `os_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端操作系统名称',
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 633 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 634 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_login_history
@@ -1004,31 +982,6 @@ INSERT INTO `hyn_sys_login_history` VALUES (632, 0, 3, '注销成功', 1, '127.0
 INSERT INTO `hyn_sys_login_history` VALUES (633, 0, 3, '注销成功', 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '139.0.0.0', 'Linux', '2025-08-30 09:54:18');
 
 -- ----------------------------
--- Table structure for hyn_sys_member
--- ----------------------------
-DROP TABLE IF EXISTS `hyn_sys_member`;
-CREATE TABLE `hyn_sys_member`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
-  `is_enabled` tinyint NOT NULL COMMENT '是否已启用（1=是，0=否）',
-  `gender` tinyint NOT NULL COMMENT '性别（0=女，1=男，-1=未知）',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of hyn_sys_member
--- ----------------------------
-INSERT INTO `hyn_sys_member` VALUES (13, 1, 0);
-INSERT INTO `hyn_sys_member` VALUES (20, 0, -1);
-INSERT INTO `hyn_sys_member` VALUES (21, 1, 0);
-INSERT INTO `hyn_sys_member` VALUES (22, 1, 1);
-INSERT INTO `hyn_sys_member` VALUES (23, 1, 1);
-INSERT INTO `hyn_sys_member` VALUES (24, 1, 1);
-INSERT INTO `hyn_sys_member` VALUES (25, 1, 1);
-INSERT INTO `hyn_sys_member` VALUES (26, 1, 1);
-INSERT INTO `hyn_sys_member` VALUES (27, 1, 1);
-INSERT INTO `hyn_sys_member` VALUES (28, 1, 1);
-
--- ----------------------------
 -- Table structure for hyn_sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `hyn_sys_role`;
@@ -1043,7 +996,7 @@ CREATE TABLE `hyn_sys_role`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_role_code`(`role_code` ASC) USING BTREE,
   UNIQUE INDEX `uk_role_name`(`role_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 66 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 67 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_role
@@ -1053,7 +1006,8 @@ INSERT INTO `hyn_sys_role` VALUES (21, 'developer', '开发人员', 1, '2024-08-
 INSERT INTO `hyn_sys_role` VALUES (59, 'tom', '布里', 1, '2025-06-24 16:02:48', 1, '2025-07-03 18:29:49');
 INSERT INTO `hyn_sys_role` VALUES (62, 'joji', '王菲', 1, '2025-07-05 13:53:59', 1, '2025-10-15 22:03:26');
 INSERT INTO `hyn_sys_role` VALUES (64, 'test_role', '测试角色', 1, '2025-08-26 21:34:32', 1, '2025-08-28 16:21:18');
-INSERT INTO `hyn_sys_role` VALUES (65, 'mkmo', '埃及', 1, '2025-09-27 07:44:43', 1, '2025-09-27 07:45:25');
+INSERT INTO `hyn_sys_role` VALUES (65, '000', ',mmnm', 1, '2025-09-27 07:44:43', 1, '2025-11-13 21:40:55');
+INSERT INTO `hyn_sys_role` VALUES (66, '4444', 'fgdsfgd', 1, '2025-11-13 21:39:34', 1, '2025-11-13 21:39:56');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role_authority
@@ -1067,7 +1021,7 @@ CREATE TABLE `hyn_sys_role_authority`  (
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_role_id_authority_id`(`role_id` ASC, `authority_id` ASC) USING BTREE COMMENT '唯一索引（角色id & 权限id）'
-) ENGINE = InnoDB AUTO_INCREMENT = 1374 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1374 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色 - 权限 中间表（多对多）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_role_authority
@@ -1187,13 +1141,15 @@ CREATE TABLE `hyn_sys_user`  (
   UNIQUE INDEX `uk_username`(`username` ASC) USING BTREE,
   INDEX `idx_login_count`(`login_count` ASC) USING BTREE,
   INDEX `idx_last_login_time`(`last_login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表（主表）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_user
 -- ----------------------------
 INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, '2022-06-21 23:38:34', NULL, NULL, 0, 1, '2022-06-11 10:37:27', 1, '2025-10-15 21:39:24');
 INSERT INTO `hyn_sys_user` VALUES (24, 'jack', '1', 1, 1, 1, 1, '2025-09-24 14:13:21', NULL, NULL, 0, 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
+INSERT INTO `hyn_sys_user` VALUES (25, 'zhangsan', '123456', 1, 1, 1, 1, '2025-11-16 11:05:08', NULL, NULL, 0, 1, '2025-11-16 11:05:09', 1, '2025-11-16 11:07:10');
+INSERT INTO `hyn_sys_user` VALUES (29, 'wenlan', '$2a$10$CCu0MnnwfLmi4hod9b6GVO4pngrc6uaplzujPUosibBRCLg2eWXWG', 1, 1, 1, 1, '2025-11-24 21:47:45', NULL, NULL, 0, 1, '2025-11-24 21:47:45', 1, '2025-12-02 21:27:35');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_profile
@@ -1218,7 +1174,7 @@ CREATE TABLE `hyn_sys_user_profile`  (
   UNIQUE INDEX `uk_nickname`(`nickname` ASC) USING BTREE COMMENT '唯一索引（昵称）',
   UNIQUE INDEX `uk_phone`(`phone` ASC) USING BTREE COMMENT '唯一索引（手机）',
   UNIQUE INDEX `uk_email`(`email` ASC) USING BTREE COMMENT '唯一索引（电子邮箱）'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户资料表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户资料表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_user_profile
@@ -1241,6 +1197,8 @@ INSERT INTO `hyn_sys_user_profile` VALUES (21, '如果这都不算爱', '测试1
 INSERT INTO `hyn_sys_user_profile` VALUES (22, '章若楠', '萨菲的', NULL, NULL, '', NULL, NULL, '', '', 1, '2025-09-21 22:31:48', 1, '2025-09-21 22:35:25');
 INSERT INTO `hyn_sys_user_profile` VALUES (23, '我屮艸芔茻', NULL, NULL, NULL, '', NULL, NULL, '', '', 1, '2025-09-23 22:51:35', 1, '2025-09-24 10:56:34');
 INSERT INTO `hyn_sys_user_profile` VALUES (24, '才狼', NULL, NULL, NULL, '', NULL, NULL, '', '', 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
+INSERT INTO `hyn_sys_user_profile` VALUES (25, '张三', '会飞的猪11', NULL, NULL, '', NULL, NULL, '', '', 1, '2025-11-16 11:05:09', 1, '2025-11-16 11:07:10');
+INSERT INTO `hyn_sys_user_profile` VALUES (29, '温岚1', '_wenlan_', NULL, NULL, '', NULL, NULL, '', '', 1, '2025-11-24 21:47:45', 1, '2025-12-02 21:27:35');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_role
@@ -1254,7 +1212,7 @@ CREATE TABLE `hyn_sys_user_role`  (
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_user_id_role_id`(`user_id` ASC, `role_id` ASC) USING BTREE COMMENT '唯一索引（用户id & 角色id）'
-) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户 - 角色 中间表（多对多）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_user_role
@@ -1262,6 +1220,9 @@ CREATE TABLE `hyn_sys_user_role`  (
 INSERT INTO `hyn_sys_user_role` VALUES (6, 8, 21, 1, '2025-08-22 13:11:05');
 INSERT INTO `hyn_sys_user_role` VALUES (48, 24, 21, 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user_role` VALUES (49, 1, 1, 1, '2025-10-15 21:39:24');
+INSERT INTO `hyn_sys_user_role` VALUES (52, 25, 21, 1, '2025-11-16 11:07:10');
+INSERT INTO `hyn_sys_user_role` VALUES (94, 29, 1, 1, '2025-12-02 21:27:35');
+INSERT INTO `hyn_sys_user_role` VALUES (95, 29, 59, 1, '2025-12-02 21:27:35');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_snapshot
@@ -1274,7 +1235,7 @@ CREATE TABLE `hyn_sys_user_snapshot`  (
   `avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像URL',
   `last_updated_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后修改时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息-快照表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息-快照表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_user_snapshot
@@ -1297,41 +1258,10 @@ INSERT INTO `hyn_sys_user_snapshot` VALUES (21, 'null（已删除）', 'null（�
 INSERT INTO `hyn_sys_user_snapshot` VALUES (22, '章若楠（已删除）', '萨菲的（已删除）', '', '2025-09-21 22:36:34');
 INSERT INTO `hyn_sys_user_snapshot` VALUES (23, '我屮艸芔茻（已删除）', 'null（已删除）', '', '2025-09-24 10:58:01');
 INSERT INTO `hyn_sys_user_snapshot` VALUES (24, '才狼', NULL, NULL, '2025-09-24 22:13:11');
-
--- ----------------------------
--- Table structure for sys_user
--- ----------------------------
-DROP TABLE IF EXISTS `sys_user`;
-CREATE TABLE `sys_user`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '用户名',
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '密码',
-  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '姓名',
-  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
-  `status` tinyint NULL DEFAULT NULL COMMENT '状态（1：正常 0：停用）',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `idx_username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of sys_user
--- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'user', '$2a$10$8fyY0WbNAr980e6nLcPL5ugmpkLLH3serye5SJ3UcDForTW5b0Sx.', '测试用户', 'Spring Security 测试用户', 1);
-
--- ----------------------------
--- Table structure for user
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `login_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '登录名',
-  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '密码',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_login_name`(`login_name` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of user
--- ----------------------------
+INSERT INTO `hyn_sys_user_snapshot` VALUES (25, '张三', '会飞的猪11', '', '2025-11-16 11:07:10');
+INSERT INTO `hyn_sys_user_snapshot` VALUES (26, '白纬889（已删除）', 'zcvxzc（已删除）', 'adfasd', '2025-11-23 11:30:28');
+INSERT INTO `hyn_sys_user_snapshot` VALUES (27, '罗坡鑫1111（已删除）', '天吟（已删除）', '', '2025-11-23 11:34:05');
+INSERT INTO `hyn_sys_user_snapshot` VALUES (28, '张靓颖2（已删除）', 'null（已删除）', '', '2025-11-23 20:11:39');
+INSERT INTO `hyn_sys_user_snapshot` VALUES (29, '温岚1', '_wenlan_', '', '2025-12-02 21:27:35');
 
 SET FOREIGN_KEY_CHECKS = 1;

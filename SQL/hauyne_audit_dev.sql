@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : aiven
+ Source Server         : 本地MySQL
  Source Server Type    : MySQL
- Source Server Version : 80035
- Source Host           : hauyne-dev-luoyingxiong123-9aa4.c.aivencloud.com:16704
+ Source Server Version : 80033
+ Source Host           : localhost:3306
  Source Schema         : hauyne_audit_dev
 
  Target Server Type    : MySQL
- Target Server Version : 80035
+ Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 02/11/2025 10:53:22
+ Date: 02/12/2025 21:49:39
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `hyn_audit_user_snapshot`  (
   `avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像URL',
   `last_updated_time` datetime NOT NULL COMMENT '最后修改时间（使用hyn_sys_user_profile 表的 last_updated_time）',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息-快照表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户信息-快照表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_audit_user_snapshot
@@ -51,6 +51,11 @@ INSERT INTO `hyn_audit_user_snapshot` VALUES (21, 'null（已删除）', 'null�
 INSERT INTO `hyn_audit_user_snapshot` VALUES (22, '章若楠（已删除）', '萨菲的（已删除）', '', '2025-09-21 22:36:34');
 INSERT INTO `hyn_audit_user_snapshot` VALUES (23, '我屮艸芔茻（已删除）', 'null（已删除）', '', '2025-09-24 10:58:01');
 INSERT INTO `hyn_audit_user_snapshot` VALUES (24, '才狼', NULL, NULL, '2025-09-24 22:13:11');
+INSERT INTO `hyn_audit_user_snapshot` VALUES (25, '张三', '会飞的猪11', '', '2025-11-16 11:07:10');
+INSERT INTO `hyn_audit_user_snapshot` VALUES (26, '白纬889（已删除）', 'zcvxzc（已删除）', 'adfasd', '2025-11-23 11:30:28');
+INSERT INTO `hyn_audit_user_snapshot` VALUES (27, '罗坡鑫1111（已删除）', '天吟（已删除）', '', '2025-11-23 11:34:05');
+INSERT INTO `hyn_audit_user_snapshot` VALUES (28, '张靓颖2（已删除）', 'null（已删除）', '', '2025-11-23 20:11:39');
+INSERT INTO `hyn_audit_user_snapshot` VALUES (29, '温岚1', '_wenlan_', '', '2025-12-02 21:27:35');
 
 -- ----------------------------
 -- Table structure for jv_commit
@@ -64,7 +69,7 @@ CREATE TABLE `jv_commit`  (
   `commit_id` decimal(22, 2) NULL DEFAULT NULL,
   PRIMARY KEY (`commit_pk`) USING BTREE,
   INDEX `jv_commit_commit_id_idx`(`commit_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of jv_commit
@@ -73,6 +78,10 @@ INSERT INTO `jv_commit` VALUES (1, '1', '2025-10-15 21:50:52.480', '2025-10-15T1
 INSERT INTO `jv_commit` VALUES (2, '1', '2025-10-15 21:51:54.551', '2025-10-15T13:51:54.551907333Z', 2.00);
 INSERT INTO `jv_commit` VALUES (3, '1', '2025-10-15 22:03:33.377', '2025-10-15T14:03:33.377571073Z', 3.00);
 INSERT INTO `jv_commit` VALUES (4, '1', '2025-10-27 22:41:07.370', '2025-10-27T14:41:07.370565612Z', 4.00);
+INSERT INTO `jv_commit` VALUES (5, '1', '2025-11-13 21:39:07.091', '2025-11-13T13:39:07.091688700Z', 5.00);
+INSERT INTO `jv_commit` VALUES (6, '1', '2025-11-13 21:39:34.583', '2025-11-13T13:39:34.583441400Z', 6.00);
+INSERT INTO `jv_commit` VALUES (7, '1', '2025-11-13 21:39:56.477', '2025-11-13T13:39:56.477606900Z', 7.00);
+INSERT INTO `jv_commit` VALUES (8, '1', '2025-11-13 21:40:54.958', '2025-11-13T13:40:54.958756800Z', 8.00);
 
 -- ----------------------------
 -- Table structure for jv_commit_property
@@ -86,7 +95,7 @@ CREATE TABLE `jv_commit_property`  (
   INDEX `jv_commit_property_commit_fk_idx`(`commit_fk` ASC) USING BTREE,
   INDEX `jv_commit_property_property_name_property_value_idx`(`property_name` ASC, `property_value`(191) ASC) USING BTREE,
   CONSTRAINT `jv_commit_property_commit_fk` FOREIGN KEY (`commit_fk`) REFERENCES `jv_commit` (`commit_pk`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of jv_commit_property
@@ -106,7 +115,7 @@ CREATE TABLE `jv_global_id`  (
   INDEX `jv_global_id_local_id_idx`(`local_id` ASC) USING BTREE,
   INDEX `jv_global_id_owner_id_fk_idx`(`owner_id_fk` ASC) USING BTREE,
   CONSTRAINT `jv_global_id_owner_id_fk` FOREIGN KEY (`owner_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of jv_global_id
@@ -114,6 +123,8 @@ CREATE TABLE `jv_global_id`  (
 INSERT INTO `jv_global_id` VALUES (1, '62', NULL, 'hyn_sys_role', NULL);
 INSERT INTO `jv_global_id` VALUES (2, '62', NULL, 'hyn_sys_role_authority', NULL);
 INSERT INTO `jv_global_id` VALUES (3, '65', NULL, 'hyn_sys_role_authority', NULL);
+INSERT INTO `jv_global_id` VALUES (4, '65', NULL, 'hyn_sys_role', NULL);
+INSERT INTO `jv_global_id` VALUES (5, '66', NULL, 'hyn_sys_role', NULL);
 
 -- ----------------------------
 -- Table structure for jv_snapshot
@@ -133,7 +144,7 @@ CREATE TABLE `jv_snapshot`  (
   INDEX `jv_snapshot_commit_fk_idx`(`commit_fk` ASC) USING BTREE,
   CONSTRAINT `jv_snapshot_commit_fk` FOREIGN KEY (`commit_fk`) REFERENCES `jv_commit` (`commit_pk`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `jv_snapshot_global_id_fk` FOREIGN KEY (`global_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of jv_snapshot
@@ -142,5 +153,9 @@ INSERT INTO `jv_snapshot` VALUES (1, 'INITIAL', 1, '{\n  \"roleCode\": \"wangfei
 INSERT INTO `jv_snapshot` VALUES (2, 'INITIAL', 1, '{\n  \"authorityNames\": [\n    \"系统管理\",\n    \"权限管理\",\n    \"查询权限列表\",\n    \"新增权限资源\",\n    \"修改权限资源\",\n    \"删除权限资源\"\n  ],\n  \"roleId\": 62\n}', '[\n  \"authorityNames\",\n  \"roleId\"\n]', 'hyn_sys_role_authority', 2, 2);
 INSERT INTO `jv_snapshot` VALUES (3, 'UPDATE', 2, '{\n  \"roleCode\": \"joji\",\n  \"roleName\": \"王菲\",\n  \"id\": 62\n}', '[\n  \"roleCode\"\n]', 'hyn_sys_role', 1, 3);
 INSERT INTO `jv_snapshot` VALUES (4, 'INITIAL', 1, '{\n  \"authorityNames\": [\n    \"系统管理\",\n    \"字典管理\",\n    \"角色管理\",\n    \"新增角色\",\n    \"修改角色\",\n    \"分页查询角色\",\n    \"删除角色\",\n    \"分配权限\",\n    \"字典值管理\",\n    \"查询字典值\",\n    \"新增字典值\",\n    \"修改字典值\",\n    \"删除字典值\",\n    \"启用/禁用字典值\",\n    \"调整字典值排序\"\n  ],\n  \"roleId\": 65\n}', '[\n  \"authorityNames\",\n  \"roleId\"\n]', 'hyn_sys_role_authority', 3, 4);
+INSERT INTO `jv_snapshot` VALUES (5, 'INITIAL', 1, '{\n  \"roleCode\": \"blabla\",\n  \"roleName\": \"啊哈哈哈\",\n  \"id\": 65\n}', '[\n  \"roleCode\",\n  \"roleName\",\n  \"id\"\n]', 'hyn_sys_role', 4, 5);
+INSERT INTO `jv_snapshot` VALUES (6, 'INITIAL', 1, '{\n  \"roleCode\": \"zzzz\",\n  \"roleName\": \"r发过的\",\n  \"id\": 66\n}', '[\n  \"roleCode\",\n  \"roleName\",\n  \"id\"\n]', 'hyn_sys_role', 5, 6);
+INSERT INTO `jv_snapshot` VALUES (7, 'UPDATE', 2, '{\n  \"roleCode\": \"4444\",\n  \"roleName\": \"fgdsfgd\",\n  \"id\": 66\n}', '[\n  \"roleCode\",\n  \"roleName\"\n]', 'hyn_sys_role', 5, 7);
+INSERT INTO `jv_snapshot` VALUES (8, 'UPDATE', 2, '{\n  \"roleCode\": \"000\",\n  \"roleName\": \",mmnm\",\n  \"id\": 65\n}', '[\n  \"roleCode\",\n  \"roleName\"\n]', 'hyn_sys_role', 4, 8);
 
 SET FOREIGN_KEY_CHECKS = 1;
