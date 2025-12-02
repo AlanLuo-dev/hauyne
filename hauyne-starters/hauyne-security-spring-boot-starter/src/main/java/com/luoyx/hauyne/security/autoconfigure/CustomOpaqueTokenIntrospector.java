@@ -36,6 +36,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 自定义令牌自省器 用于从OAuth2授权服务器校验令牌的有效性
+ *
+ * @author Alan.Luo
+ */
 public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
     private static final ParameterizedTypeReference<Map<String, Object>> STRING_OBJECT_MAP = new ParameterizedTypeReference<Map<String, Object>>() {
@@ -51,9 +56,10 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
     /**
      * Creates a {@code OpaqueTokenAuthenticationProvider} with the provided parameters
+     *
      * @param introspectionUri The introspection endpoint uri
-     * @param clientId The client id authorized to introspect
-     * @param clientSecret The client's secret
+     * @param clientId         The client id authorized to introspect
+     * @param clientSecret     The client's secret
      */
     public CustomOpaqueTokenIntrospector(String introspectionUri, String clientId, String clientSecret) {
         Assert.notNull(introspectionUri, "introspectionUri cannot be null");
@@ -69,8 +75,9 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
      * Creates a {@code OpaqueTokenAuthenticationProvider} with the provided parameters
      * The given {@link RestOperations} should perform its own client authentication
      * against the introspection endpoint.
+     *
      * @param introspectionUri The introspection endpoint uri
-     * @param restOperations The client for performing the introspection request
+     * @param restOperations   The client for performing the introspection request
      */
     public CustomOpaqueTokenIntrospector(String introspectionUri, RestOperations restOperations) {
         Assert.notNull(introspectionUri, "introspectionUri cannot be null");
@@ -101,6 +108,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
 
     @Override
     public OAuth2AuthenticatedPrincipal introspect(String token) {
+        logger.info("···· 开始进行令牌校验 ····");
         RequestEntity<?> requestEntity = this.requestEntityConverter.convert(token);
         if (requestEntity == null) {
             throw new OAuth2IntrospectionException("requestEntityConverter returned a null entity");
@@ -114,8 +122,9 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     /**
      * Sets the {@link Converter} used for converting the OAuth 2.0 access token to a
      * {@link RequestEntity} representation of the OAuth 2.0 token introspection request.
+     *
      * @param requestEntityConverter the {@link Converter} used for converting to a
-     * {@link RequestEntity} representation of the token introspection request
+     *                               {@link RequestEntity} representation of the token introspection request
      */
     public void setRequestEntityConverter(Converter<String, RequestEntity<?>> requestEntityConverter) {
         Assert.notNull(requestEntityConverter, "requestEntityConverter cannot be null");
@@ -125,8 +134,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
     private ResponseEntity<Map<String, Object>> makeRequest(RequestEntity<?> requestEntity) {
         try {
             return this.restOperations.exchange(requestEntity, STRING_OBJECT_MAP);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new OAuth2IntrospectionException(ex.getMessage(), ex);
         }
     }
@@ -208,6 +216,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
      * Use if you need a custom mapping of OAuth 2.0 token claims to the authenticated
      * principal.
      * </p>
+     *
      * @param authenticationConverter the converter
      * @since 6.3
      */
@@ -223,6 +232,7 @@ public class CustomOpaqueTokenIntrospector implements OpaqueTokenIntrospector {
      * {@link OAuth2TokenIntrospectionClaimAccessor} into an
      * {@link OAuth2AuthenticatedPrincipal} by extracting claims, mapping scopes to
      * authorities, and creating a principal.
+     *
      * @return {@link Converter Converter&lt;OAuth2TokenIntrospectionClaimAccessor,
      * OAuth2AuthenticatedPrincipal&gt;}
      * @since 6.3

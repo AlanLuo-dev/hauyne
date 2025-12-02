@@ -2,6 +2,7 @@ package com.luoyx.hauyne.security.autoconfigure;
 
 import com.luoyx.hauyne.security.filter.UserContextFilter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -80,10 +81,18 @@ public class SecurityAutoConfiguration {
                 .build();
     }
 
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
+    private String clientSecret;
+
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
+    private String introspectionUri;
+
     @Bean
     public OpaqueTokenIntrospector opaqueTokenIntrospector(){
-        return new CustomOpaqueTokenIntrospector("http://localhost:8762/oauth2/introspect",
-                "service-admin", "123456");
+        return new CustomOpaqueTokenIntrospector(introspectionUri, clientId, clientSecret);
     }
 
     /**

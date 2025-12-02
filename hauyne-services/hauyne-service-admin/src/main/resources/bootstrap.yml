@@ -13,7 +13,7 @@ spring:
         enabled: true
       fail-fast: true
       profile: dev
-      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, oauth2-client, oauth2-resource, actuator, zipkin
+      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, oauth2-resource, actuator, zipkin
 
   main:
     allow-bean-definition-overriding: true
@@ -56,3 +56,4 @@ knife4j:
     secret: S6CsnS8AnPVyb8vvChcdXm4R3p6A6KlAISxBg3IIEgk=
     server: http://localhost:10086
     namespace: spring3
+

@@ -1,5 +1,5 @@
 #################################################################
-#-------------------  auth-server 配置  -------------------------#
+#-------------------  service-uaa 配置  -------------------------#
 #################################################################
 
 spring:
@@ -12,14 +12,9 @@ spring:
         enabled: true
       fail-fast: true
       profile: dev
-      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, actuator, zipkin
+      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, oauth2-resource, actuator, zipkin
   main:
     allow-bean-definition-overriding: true
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8762
 
 logging:
   level:

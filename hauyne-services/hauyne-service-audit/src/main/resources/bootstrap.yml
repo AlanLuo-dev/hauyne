@@ -13,7 +13,7 @@ spring:
         enabled: true
       fail-fast: true
       profile: dev
-      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, oauth2-client, actuator, zipkin
+      name: common, eureka-client, redis, rabbitmq, ${spring.application.name}, oauth2-resource, actuator, zipkin
 
   main:
     allow-bean-definition-overriding: true
