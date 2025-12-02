@@ -5,7 +5,6 @@ import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.api.sys.query.LoginLookupQuery;
 import com.luoyx.hauyne.admin.sys.entity.User;
 import com.luoyx.hauyne.admin.sys.query.UserPageQuery;
-import com.luoyx.hauyne.admin.sys.query.UsernameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.request.ModifyPasswordDTO;
 import com.luoyx.hauyne.admin.sys.request.ResetPasswordDTO;
 import com.luoyx.hauyne.admin.sys.request.UserCreateDTO;
@@ -60,10 +59,11 @@ public interface UserService extends BaseService<User> {
     /**
      * 用户名唯一性校验
      *
-     * @param query 用户名唯一性校验查询条件
-     * @return true 表示用户名可用，false 表示用户名已存在
+     * @param excludeUserId 要排除的用户Id（编辑用户的场景）
+     * @param username      用户名
+     * @return 用户名已存在则返回false，否则返回true
      */
-    boolean checkUserNameUnique(UsernameUniqueCheckQuery query);
+    boolean isUserNameUnique(Long excludeUserId, String username);
 
     /**
      * 批量删除用户

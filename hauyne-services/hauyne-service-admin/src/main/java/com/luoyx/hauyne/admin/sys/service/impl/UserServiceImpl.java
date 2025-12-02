@@ -21,7 +21,6 @@ import com.luoyx.hauyne.admin.sys.mapper.UserMapper;
 import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.UserPageQuery;
-import com.luoyx.hauyne.admin.sys.query.UsernameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.request.ModifyPasswordDTO;
 import com.luoyx.hauyne.admin.sys.request.ResetPasswordDTO;
 import com.luoyx.hauyne.admin.sys.request.UserCreateDTO;
@@ -256,23 +255,23 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 校验用户名是否存在
         final String username = userCreateDTO.getUsername();
-        boolean result = checkUserNameUnique(new UsernameUniqueCheckQuery(username));
-        if (!result) {
-            throw new ValidateException("用户名（" + username + "）已存在");
+        final boolean isUserNameUnique = isUserNameUnique(null, username);
+        if (!isUserNameUnique) {
+            throw new ValidateException("用户名 " + username + " 已存在");
         }
 
         // 校验手机号是否存在
         final String phone = userCreateDTO.getProfile().getPhone();
-        result = userProfileService.checkPhoneUnique(new PhoneUniqueCheckQuery(phone));
+        boolean result = userProfileService.checkPhoneUnique(new PhoneUniqueCheckQuery(phone));
         if (!result) {
-            throw new ValidateException("手机号（" + phone + "）已存在");
+            throw new ValidateException("手机号 " + phone + " 已存在");
         }
 
         // 校验邮箱是否存在
         final String email = userCreateDTO.getProfile().getEmail();
         result = userProfileService.checkEmailUnique(new EmailUniqueCheckQuery(email));
         if (!result) {
-            throw new ValidateException("邮箱（" + email + "）已存在");
+            throw new ValidateException("邮箱 " + email + " 已存在");
         }
 
         // 校验角色是否存在
@@ -282,12 +281,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     /**
      * 用户名唯一性校验
      *
-     * @param query 用户名唯一性校验查询条件
-     * @return true 表示用户名可用，false 表示用户名已存在
+     * @param excludeUserId 要排除的用户Id（编辑用户的场景）
+     * @param username      用户名
+     * @return 用户名已存在则返回false，否则返回true
      */
     @Override
-    public boolean checkUserNameUnique(UsernameUniqueCheckQuery query) {
-        return baseMapper.countByUserName(query) == 0;
+    public boolean isUserNameUnique(Long excludeUserId, String username) {
+        return baseMapper.selectOneByUserName(excludeUserId, username) == null;
     }
 
     /**
@@ -357,6 +357,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update(UserUpdateDTO userUpdateDTO) {
+        checkFormData(userUpdateDTO);
         final Long userId = userUpdateDTO.getId();
         User user = userConverter.toUser(userUpdateDTO);
         UserProfile userProfile = userProfileConverter.toUserProfile(userUpdateDTO.getProfile());
@@ -378,6 +379,34 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 发送已更新用户的快照消息
         applicationEventPublisher.publishEvent(new UserSnapshotEvent(Collections.singletonList(userSnapshot), EventType.UPDATE));
+    }
+
+    private void checkFormData(UserUpdateDTO userUpdateDTO) {
+
+        // 校验用户名是否存在
+        final Long excludeUserId = userUpdateDTO.getId();
+        final String username = userUpdateDTO.getUsername();
+        final boolean isUserNameUnique = isUserNameUnique(excludeUserId, username);
+        if (!isUserNameUnique) {
+            throw new ValidateException("用户名 " + username + " 已存在");
+        }
+
+        // 校验手机号是否存在
+        final String phone = userUpdateDTO.getProfile().getPhone();
+        boolean result = userProfileService.checkPhoneUnique(new PhoneUniqueCheckQuery(excludeUserId, phone));
+        if (!result) {
+            throw new ValidateException("手机号 " + phone + " 已存在");
+        }
+
+        // 校验邮箱是否存在
+        final String email = userUpdateDTO.getProfile().getEmail();
+        result = userProfileService.checkEmailUnique(new EmailUniqueCheckQuery(excludeUserId, email));
+        if (!result) {
+            throw new ValidateException("邮箱 " + email + " 已存在");
+        }
+
+        // 校验角色是否存在
+        roleService.checkRolesExist(new HashSet<>(userUpdateDTO.getRoleIds()));
     }
 
     /**

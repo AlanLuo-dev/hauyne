@@ -3,7 +3,6 @@ package com.luoyx.hauyne.admin.sys.mapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.sys.entity.User;
-import com.luoyx.hauyne.admin.sys.query.UsernameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.response.UserAutoCompleteVO;
 import com.luoyx.hauyne.admin.sys.response.UserEditFormVO;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
@@ -48,14 +47,15 @@ public interface UserMapper extends GenericMapper<User> {
     /**
      * 用户名唯一性校验
      *
-     * @param query 用户名唯一性校验查询条件
-     * @return 返回大于0 则表示用户名已存在，返回0 则表示用户名可用
+     * @param excludeUserId 要排除的用户Id（编辑用户的场景）
+     * @param username      用户名
+     * @return 用户名已存在则返回用户实体，否则返回null
      */
-    default Long countByUserName(UsernameUniqueCheckQuery query) {
-        return this.selectCount(
+    default User selectOneByUserName(Long excludeUserId, String username) {
+        return this.selectOne(
                 Wrappers.<User>lambdaQuery()
-                        .eq(User::getUsername, query.getUsername())
-                        .ne(query.getExcludeUserId() != null, User::getId, query.getExcludeUserId())
+                        .eq(User::getUsername, username)
+                        .ne(excludeUserId != null, User::getId, excludeUserId)
         );
     }
 

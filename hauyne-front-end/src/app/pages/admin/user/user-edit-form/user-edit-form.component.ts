@@ -102,13 +102,10 @@ export class UserEditFormComponent implements OnInit {
 
                 // 移除 password 控件
                 this.userForm.removeControl('password');
-
-                // this.roleCode.addAsyncValidators(this.roleService.roleCodeAsyncValidator(this.roleId));
-                // this.roleName.addAsyncValidators(this.roleService.roleNameAsyncValidator(this.roleId));
+                this.username.addAsyncValidators(this.userService.usernameAsyncValidator(this.userId));
             });
         } else {
-            // this.roleCode.addAsyncValidators(this.roleService.roleCodeAsyncValidator());
-            // this.roleName.addAsyncValidators(this.roleService.roleNameAsyncValidator());
+            this.username.addAsyncValidators(this.userService.usernameAsyncValidator());
         }
 
         this.formSubmitSubject$ = new Subject();

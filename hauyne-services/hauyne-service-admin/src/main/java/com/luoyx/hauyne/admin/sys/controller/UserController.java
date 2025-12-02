@@ -15,11 +15,14 @@ import com.luoyx.hauyne.admin.sys.response.UserAutoCompleteVO;
 import com.luoyx.hauyne.admin.sys.response.UserEditFormVO;
 import com.luoyx.hauyne.admin.sys.response.UserPageResultVO;
 import com.luoyx.hauyne.admin.sys.service.UserService;
+import com.luoyx.hauyne.api.Availability;
 import com.luoyx.hauyne.mybatisplus.dto.PageResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -108,6 +111,18 @@ public class UserController implements UserAPI {
     @PutMapping
     public void update(@Validated @RequestBody UserUpdateDTO userUpdateDTO) {
         userService.update(userUpdateDTO);
+    }
+
+    @Operation(summary = "检查输入的【用户名】是否已被占用")
+    @GetMapping(value = "/check-username-unique")
+    public Availability checkUsernameUnique(@Schema(description = "要排除的用户id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+                                            @RequestParam(value = "excludeUserId", required = false)
+                                            Long excludeUserId,
+                                            @Schema(description = "用户名", requiredMode = Schema.RequiredMode.REQUIRED)
+                                            @NotBlank(message = "用户名不能为空")
+                                            @RequestParam(value = "username")
+                                            String username) {
+        return new Availability(userService.isUserNameUnique(excludeUserId, username));
     }
 
     /**
