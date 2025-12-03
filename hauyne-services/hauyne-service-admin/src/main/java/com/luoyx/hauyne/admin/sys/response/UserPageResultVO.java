@@ -1,6 +1,7 @@
 package com.luoyx.hauyne.admin.sys.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luoyx.hauyne.admin.sys.enums.AccountNonExpiredEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,16 +53,10 @@ public class UserPageResultVO {
     private String email;
 
     /**
-     * 帐户是否未过期 原始值
-     */
-    @JsonIgnore
-    private Boolean accountNonExpiredValue;
-
-    /**
      * 帐户过期状态
      */
     @Schema(description = "帐户过期状态")
-    private String accountNonExpired;
+    private AccountNonExpiredEnum accountNonExpired;
 
     /**
      * 帐户是否未锁定

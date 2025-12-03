@@ -56,7 +56,7 @@
             u.id AS id,
             u.username AS username,
             t.roleName AS roleName,
-            u.is_account_non_expired AS accountNonExpiredValue,
+            u.is_account_non_expired AS accountNonExpired,
             u.is_account_non_locked AS accountNonLockedValue,
             u.is_credentials_non_expired AS credentialsNonExpiredValue,
             u.is_enabled AS enabledValue,

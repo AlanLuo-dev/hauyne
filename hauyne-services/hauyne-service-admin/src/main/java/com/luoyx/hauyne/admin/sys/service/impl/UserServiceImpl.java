@@ -96,7 +96,6 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         PageResult<UserPageResultVO> pageResult = super.findPage(query);
         List<UserPageResultVO> rows = pageResult.getRows();
         for (UserPageResultVO item : rows) {
-            item.setAccountNonExpired(AccountNonExpiredEnum.MAP.get(item.getAccountNonExpiredValue()));
             item.setAccountNonLocked(AccountNonLockedEnum.MAP.get(item.getAccountNonLockedValue()));
             item.setCredentialsNonExpired(CredentialsNonExpiredEnum.MAP.get(item.getCredentialsNonExpiredValue()));
             item.setEnabled(EnabledEnum.MAP.get(item.getEnabledValue()));

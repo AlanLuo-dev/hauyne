@@ -3,6 +3,7 @@ package com.luoyx.hauyne.web.autoconfigure;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
@@ -37,6 +38,18 @@ public class GlobalJacksonAutoConfiguration {
 
 
         objectMapper.registerModule(javaTimeModule);
+
+        // 创建自定义模块，注册枚举序列化器
+        SimpleModule enumModule = new SimpleModule();
+        // 注册 String 类型 code 的枚举序列化器
+        enumModule.addSerializer(new EnumToObjectSerializer<String>());
+        // 注册 Integer 类型 code 的枚举序列化器（如需支持其他类型，新增此行）
+        enumModule.addSerializer(new EnumToObjectSerializer<Integer>());
+        enumModule.addSerializer(new EnumToObjectSerializer<Boolean>());
+
+        // 注册模块到 ObjectMapper（优先级最高）
+        objectMapper.registerModule(enumModule);
+
 
         // 反序列化 忽略Java类中 不存在的字段
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

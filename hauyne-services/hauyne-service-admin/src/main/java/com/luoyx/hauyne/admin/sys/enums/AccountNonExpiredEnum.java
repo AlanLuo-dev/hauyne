@@ -1,7 +1,8 @@
 package com.luoyx.hauyne.admin.sys.enums;
 
 
-import lombok.Getter;
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.luoyx.hauyne.web.autoconfigure.BaseEnum;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
@@ -13,9 +14,8 @@ import java.util.Map;
  *
  * @author LuoYingxiong
  */
-@Getter
 @RequiredArgsConstructor
-public enum AccountNonExpiredEnum {
+public enum AccountNonExpiredEnum implements BaseEnum<Boolean> {
 
     NORMAL(true, "正常"),
     EXPIRED(false, "已过期");
@@ -23,12 +23,13 @@ public enum AccountNonExpiredEnum {
     /**
      * 原始值
      */
+    @EnumValue
     private final Boolean value;
 
     /**
      * 文本
      */
-    private final String text;
+    private final String label;
 
     /**
      * 帐户是否未过期 键值对
@@ -41,8 +42,18 @@ public enum AccountNonExpiredEnum {
     static {
         Map<Boolean, String> statusMap = new HashMap<>();
         for (AccountNonExpiredEnum item : AccountNonExpiredEnum.values()) {
-            statusMap.put(item.getValue(), item.getText());
+            statusMap.put(item.getValue(), item.getLabel());
         }
         MAP = Collections.unmodifiableMap(statusMap);
+    }
+
+    @Override
+    public Boolean getValue() {
+        return value;
+    }
+
+    @Override
+    public String getLabel() {
+        return label;
     }
 }
