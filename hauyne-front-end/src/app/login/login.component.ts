@@ -4,7 +4,6 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzCheckboxComponent} from "ng-zorro-antd/checkbox";
 import {NzImageModule} from "ng-zorro-antd/image";
 import {AuthService} from "./auth.service";
 import {HttpParams} from "@angular/common/http";
@@ -35,7 +34,6 @@ import {AsyncPipe} from "@angular/common";
         NzIconDirective,
         NzInputDirective,
         NzButtonComponent,
-        NzCheckboxComponent,
         NzImageModule,
         NzSpinComponent,
         AsyncPipe

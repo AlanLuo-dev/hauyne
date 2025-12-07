@@ -4,7 +4,7 @@
     "scripts": {
         "ng": "ng",
         "start": "node --max-old-space-size=512 ./node_modules/@angular/cli/bin/ng serve",
-        "hmr": "node --max-old-space-size=512 ./node_modules/@angular/cli/bin/ng serve --hmr --open",
+        "hmr": "node --max-old-space-size=512 ./node_modules/@angular/cli/bin/ng serve --hmr --open --ssl",
         "build": "ng build",
         "watch": "ng build --watch --configuration development",
         "test": "ng test"
