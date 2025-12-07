@@ -1,6 +1,8 @@
 package com.luoyx.hauyne.security.autoconfigure;
 
 import com.luoyx.hauyne.security.filter.UserContextFilter;
+import feign.RequestInterceptor;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +12,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Slf4j
 @Configuration
@@ -54,6 +58,24 @@ public class SecurityAutoConfiguration {
     @Bean
     public UserContextFilterConfigurer userContextFilterConfigurer() {
         return new UserContextFilterConfigurer(userContextFilter());
+    }
+
+    @Bean
+    public RequestInterceptor cookieRelayInterceptor() {
+        log.info("开始设置Feign转发 登录凭据");
+        return requestTemplate -> {
+            ServletRequestAttributes attrs =
+                    (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+
+            if (attrs != null) {
+                HttpServletRequest request = attrs.getRequest();
+                String cookieHeader = request.getHeader("Cookie");
+
+                if (cookieHeader != null) {
+                    requestTemplate.header("Cookie", cookieHeader);
+                }
+            }
+        };
     }
 
     @Bean

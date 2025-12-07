@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -70,6 +71,12 @@ public class RoleController {
     private final UserFeignClient userFeignClient;
     private final UAAFeignClient uaaFeignClient;
     private final AuditFeignClient traceLogFeignClient;
+
+    @Operation(summary = "测试调用Audit服务")
+    @GetMapping(value = "/testCallAudit")
+    public Map<String, String> testCallAudit(){
+        return traceLogFeignClient.testCallAudit();
+    }
 
     @Operation(summary = "测试枚举接收参数")
     @GetMapping(value = "/testEnum")

@@ -3,6 +3,7 @@ package com.luoyx.hauyne.openfeign.autoconfigure;
 import com.luoyx.hauyne.feign.PlatformFeignErrorDecoder;
 import com.luoyx.hauyne.openfeign.interceptor.FeignCallTraceInterceptor;
 import feign.Feign;
+import feign.Logger;
 import feign.RequestInterceptor;
 import feign.codec.ErrorDecoder;
 import org.springframework.boot.SpringBootConfiguration;
@@ -31,4 +32,10 @@ public class FeignAutoConfiguration {
     public RequestInterceptor feignCallTraceInterceptor() {
         return new FeignCallTraceInterceptor();
     }
+
+    @Bean
+    Logger.Level feignLoggerLevel() {
+        return Logger.Level.FULL;
+    }
+
 }

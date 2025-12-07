@@ -40,13 +40,12 @@ public class AuditController implements AuditAPI {
     public Map<String, String> testCallAudit() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-        System.out.println("请求头Authorization: " + request.getHeader("Authorization"));
 
         Map<String, String> stringStringMap = new HashMap<>();
         stringStringMap.put("audit", "这是来自Audit的数据");
 
-//        return stringStringMap;
-        throw new ValidateException("Audit 端发生异常");
+        return stringStringMap;
+//        throw new ValidateException("Audit 端发生异常");
     }
 
     /**

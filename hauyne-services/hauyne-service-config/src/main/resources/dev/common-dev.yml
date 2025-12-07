@@ -20,6 +20,11 @@ feign:
 #  hystrix:
 #    enabled: true # 所有服务的OpenFeign调用，默认开启hystrix降级熔断
 
+logging:
+  level:
+    com.luoyx.hauyne.admin.sys.feignclient: debug  # 你的 Feign 接口所在包
+    feign: debug
+
 # 线程池隔离策略
 #hystrix:
 #  command:
