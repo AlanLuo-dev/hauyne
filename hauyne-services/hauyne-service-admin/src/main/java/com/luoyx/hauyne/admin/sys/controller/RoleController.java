@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.sys.controller;
 
 import com.luoyx.hauyne.admin.sys.converter.RoleConverter;
 import com.luoyx.hauyne.admin.sys.entity.Role;
+import com.luoyx.hauyne.admin.sys.enums.TestCodeEnum;
 import com.luoyx.hauyne.admin.sys.feignclient.AuditFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UAAFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UserFeignClient;
@@ -39,6 +40,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -68,6 +70,12 @@ public class RoleController {
     private final UserFeignClient userFeignClient;
     private final UAAFeignClient uaaFeignClient;
     private final AuditFeignClient traceLogFeignClient;
+
+    @Operation(summary = "测试枚举接收参数")
+    @GetMapping(value = "/testEnum")
+    public TestCodeEnum test(@RequestParam TestCodeEnum testCodeEnum){
+        return testCodeEnum;
+    }
 
     /**
      * 分页查询角色

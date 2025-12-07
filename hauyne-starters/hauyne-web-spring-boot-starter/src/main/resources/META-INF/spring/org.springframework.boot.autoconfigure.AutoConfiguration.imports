@@ -2,3 +2,4 @@ com.luoyx.hauyne.web.handler.GlobalExceptionHandler
 com.luoyx.hauyne.web.autoconfigure.RequestDateTimeFilterAutoConfiguration
 com.luoyx.hauyne.web.autoconfigure.GlobalDateTimeFormatAuthConfiguration
 com.luoyx.hauyne.web.autoconfigure.GlobalJacksonAutoConfiguration
+com.luoyx.hauyne.web.yiyiyiyi.CodeEnumWebMvcConfigurer
