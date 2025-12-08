@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.sys.controller;
 
 import com.luoyx.hauyne.admin.sys.converter.RoleConverter;
 import com.luoyx.hauyne.admin.sys.entity.Role;
+import com.luoyx.hauyne.admin.sys.enums.TestBoolEnum;
 import com.luoyx.hauyne.admin.sys.enums.TestCodeEnum;
 import com.luoyx.hauyne.admin.sys.feignclient.AuditFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UAAFeignClient;
@@ -83,6 +84,13 @@ public class RoleController {
     public TestCodeEnum test(@RequestParam TestCodeEnum testCodeEnum){
         return testCodeEnum;
     }
+
+    @Operation(summary = "测试boolean枚举接收参数")
+    @GetMapping(value = "/testBoolEnum")
+    public TestBoolEnum test2(@RequestParam TestBoolEnum testBoolEnum){
+        return testBoolEnum;
+    }
+
 
     /**
      * 分页查询角色

@@ -5,6 +5,11 @@ import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.lang.NonNull;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 枚举转换器工厂：将Serializable类型的枚举值转换为BaseEnum枚举对象
@@ -27,15 +32,25 @@ public class BaseEnumConverterFactory<R extends Enum<R> & BaseEnum<? extends Ser
 
         // 目标枚举类型
         private final Class<U> enumType;
+        private final Map<Serializable, U> codeEnumValues;
 
         public BaseEnumConverter(Class<U> enumType) {
             this.enumType = enumType;
+            this.codeEnumValues = Arrays.stream(enumType.getEnumConstants())
+                    .collect(
+                            Collectors.toMap(
+                                    codeEnum -> Objects.toString(codeEnum.getValue()),
+                                    Function.identity(),
+                                    (ignored, v2) -> v2
+                            )
+                    );
         }
 
         @Override
         public U convert(@NonNull String source) {
             // 调用BaseEnum的静态方法匹配枚举
-            return BaseEnum.getByValue(source, enumType);  // 根据编码获取枚举实例
+//            return BaseEnum.getByValue(source, enumType);  // 根据编码获取枚举实例
+            return this.codeEnumValues.get(source);
         }
     }
 }

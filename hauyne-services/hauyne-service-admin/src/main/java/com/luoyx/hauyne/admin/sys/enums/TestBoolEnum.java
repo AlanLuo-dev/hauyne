@@ -6,12 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TestCodeEnum implements BaseEnum<Integer, TestCodeEnum> {
+public enum TestBoolEnum implements BaseEnum<Boolean, TestBoolEnum> {
+    ZHENG(true, "是"),
+    JIA(false, "否");
 
-    SUCCESS(1, "成功"),
-    FAIL(2, "失败");
-
-    private final Integer value;
+    private final Boolean value;
     private final String label;
-
 }

@@ -7,7 +7,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.luoyx.hauyne.web.yiyiyiyi.EnumToObjectSerializer;
+import com.luoyx.hauyne.web.me.BaseEnum;
+import com.luoyx.hauyne.web.me.EnumToObjectSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,10 +45,8 @@ public class GlobalJacksonAutoConfiguration {
         // 创建自定义模块，注册枚举序列化器
         SimpleModule enumModule = new SimpleModule();
         // 注册 String 类型 code 的枚举序列化器
-        enumModule.addSerializer(new EnumToObjectSerializer<String>());
+        enumModule.addSerializer(new EnumToObjectSerializer<>());
         // 注册 Integer 类型 code 的枚举序列化器（如需支持其他类型，新增此行）
-        enumModule.addSerializer(new EnumToObjectSerializer<Integer>());
-        enumModule.addSerializer(new EnumToObjectSerializer<Boolean>());
 
         // 注册模块到 ObjectMapper（优先级最高）
         objectMapper.registerModule(enumModule);
