@@ -1,5 +1,6 @@
-package com.luoyx.hauyne.web.yiyiyiyi;
+package com.luoyx.hauyne.web.yiyiyiyi.swagger;
 
+import com.luoyx.hauyne.web.yiyiyiyi.CodeEnum;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,11 +15,11 @@ public interface CodeEnumResolver {
     default void fillCodeEnumSchema(Schema schema, Class<?> rawClass) {
         List<CodeEnum<Serializable>> enumConstants = List.of((CodeEnum<Serializable>[]) rawClass.getEnumConstants());
         String description = enumConstants.stream()
-                .map(codeEnum -> codeEnum.getCode() + ":" + codeEnum.getMsg())
+                .map(codeEnum -> codeEnum.getValue() + ":" + codeEnum.getLabel())
                 .collect(Collectors.joining(",", "[", "]"));
 
-        schema.setEnum(enumConstants.stream().map(CodeEnum::getCode).map(Object::toString).toList());
-        schema.setExample(enumConstants.stream().map(CodeEnum::getCode).map(Object::toString).findFirst().orElse(null));
+        schema.setEnum(enumConstants.stream().map(CodeEnum::getValue).map(Object::toString).toList());
+        schema.setExample(enumConstants.stream().map(CodeEnum::getValue).map(Object::toString).findFirst().orElse(null));
         schema.setDescription(Optional.ofNullable(schema.getDescription()).orElse(StringUtils.EMPTY) + description);
     }
 

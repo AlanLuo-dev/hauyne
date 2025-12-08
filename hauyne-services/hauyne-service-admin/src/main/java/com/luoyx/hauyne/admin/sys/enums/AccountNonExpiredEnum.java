@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.sys.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.luoyx.hauyne.web.yiyiyiyi.CodeEnum;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collections;
@@ -14,6 +15,7 @@ import java.util.Map;
  *
  * @author LuoYingxiong
  */
+@Getter
 @RequiredArgsConstructor
 public enum AccountNonExpiredEnum implements CodeEnum<Boolean> {
 
@@ -42,18 +44,9 @@ public enum AccountNonExpiredEnum implements CodeEnum<Boolean> {
     static {
         Map<Boolean, String> statusMap = new HashMap<>();
         for (AccountNonExpiredEnum item : AccountNonExpiredEnum.values()) {
-            statusMap.put(item.getValue(), item.getMsg());
+            statusMap.put(item.getValue(), item.getLabel());
         }
         MAP = Collections.unmodifiableMap(statusMap);
     }
 
-    @Override
-    public Boolean getCode() {
-        return value;
-    }
-
-    @Override
-    public String getMsg() {
-        return label;
-    }
 }

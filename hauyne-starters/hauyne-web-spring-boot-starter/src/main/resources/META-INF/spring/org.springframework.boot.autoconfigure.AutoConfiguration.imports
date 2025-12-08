@@ -3,3 +3,4 @@ com.luoyx.hauyne.web.autoconfigure.RequestDateTimeFilterAutoConfiguration
 com.luoyx.hauyne.web.autoconfigure.GlobalDateTimeFormatAuthConfiguration
 com.luoyx.hauyne.web.autoconfigure.GlobalJacksonAutoConfiguration
 com.luoyx.hauyne.web.yiyiyiyi.CodeEnumWebMvcConfigurer
+#com.luoyx.hauyne.web.me.MvcConfiguration

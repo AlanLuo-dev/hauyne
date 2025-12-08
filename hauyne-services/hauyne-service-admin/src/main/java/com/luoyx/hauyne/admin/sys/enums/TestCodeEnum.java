@@ -11,7 +11,7 @@ public enum TestCodeEnum implements CodeEnum<Integer> {
     SUCCESS(1, "成功"),
     FAIL(2, "失败");
 
-    private final Integer code;
-    private final String msg;
+    private final Integer value;
+    private final String label;
 
 }

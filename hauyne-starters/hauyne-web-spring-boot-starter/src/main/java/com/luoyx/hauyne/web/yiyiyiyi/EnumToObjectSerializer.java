@@ -19,7 +19,7 @@ public class EnumToObjectSerializer<T extends Serializable> extends JsonSerializ
         // 写入 code 字段（值为枚举的 getCode() 结果）
         gen.writeObjectField("value", enumValue.getValue());
         // 写入 desc 字段（值为枚举的 getDesc() 结果）
-        gen.writeStringField("label", enumValue.getMsg());
+        gen.writeStringField("label", enumValue.getLabel());
         // 结束序列化对象（生成 } ）
         gen.writeEndObject();
     }

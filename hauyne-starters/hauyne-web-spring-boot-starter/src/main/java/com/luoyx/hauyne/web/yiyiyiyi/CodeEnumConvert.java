@@ -18,7 +18,7 @@ public class CodeEnumConvert <T extends CodeEnum<? extends Serializable>> implem
         this.codeEnumValues = Arrays.stream(codeEnumClass.getEnumConstants())
                 .collect(
                         Collectors.toMap(
-                                codeEnum -> Objects.toString(codeEnum.getCode()),
+                                codeEnum -> Objects.toString(codeEnum.getValue()),
                                 Function.identity(),
                                 (ignored, v2) -> v2
                         )

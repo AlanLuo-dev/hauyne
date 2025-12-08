@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.yiyiyiyi;
+package com.luoyx.hauyne.web.yiyiyiyi.swagger;
 
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverter;

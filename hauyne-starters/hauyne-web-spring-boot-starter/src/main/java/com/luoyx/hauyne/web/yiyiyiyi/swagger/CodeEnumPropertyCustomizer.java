@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.yiyiyiyi;
+package com.luoyx.hauyne.web.yiyiyiyi.swagger;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;

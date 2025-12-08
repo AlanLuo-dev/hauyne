@@ -41,7 +41,8 @@ public class ResourceServerConfigurer {
                         "/sys/authorities/findAuthoritiesByUserId",
                         "/sys/authorities/buildMenuTree",
                         "/userInfo/**",
-                        LOGIN_LOOKUP
+                        LOGIN_LOOKUP,
+                        "/sys/roles/testEnum"
                 )
                 .requestMatchers(HttpMethod.POST, "/sys/login-histories");
     }
