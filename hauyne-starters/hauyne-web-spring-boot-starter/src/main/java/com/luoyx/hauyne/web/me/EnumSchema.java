@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <K>
  * @param <T>
  */
-public interface BaseEnum<K extends Serializable, T extends Enum<T> & BaseEnum<K, T>> {
+public interface EnumSchema<K extends Serializable, T extends Enum<T> & EnumSchema<K, T>> {
 
     /**
      * 枚举编码
@@ -42,7 +42,7 @@ public interface BaseEnum<K extends Serializable, T extends Enum<T> & BaseEnum<K
 
         // 双重检查锁：避免并发重复生成
         if (!ENUM_MAP_CACHE.containsKey(enumClass)) {
-            synchronized (BaseEnum.class) {
+            synchronized (EnumSchema.class) {
                 if (!ENUM_MAP_CACHE.containsKey(enumClass)) {
                     Map<K, String> tempMap = new HashMap<>();
                     for (T enumConstant : enumClass.getEnumConstants()) {
@@ -57,7 +57,7 @@ public interface BaseEnum<K extends Serializable, T extends Enum<T> & BaseEnum<K
     }
 
     @SuppressWarnings("unchecked")
-    static <K extends Serializable, T extends Enum<T> & BaseEnum<K, T>> Map<K, String> getMap(Class<T> enumClass) {
+    static <K extends Serializable, T extends Enum<T> & EnumSchema<K, T>> Map<K, String> getMap(Class<T> enumClass) {
         if (enumClass.getEnumConstants() == null || enumClass.getEnumConstants().length == 0) {
             return Collections.emptyMap();
         }
@@ -68,7 +68,7 @@ public interface BaseEnum<K extends Serializable, T extends Enum<T> & BaseEnum<K
 
 
     // 通用：根据枚举类型构建 Map<value, label>
-    static <K extends Serializable, T extends Enum<T> & BaseEnum<K, T>> Map<K, String> map(Class<T> enumClass) {
+    static <K extends Serializable, T extends Enum<T> & EnumSchema<K, T>> Map<K, String> map(Class<T> enumClass) {
         Map<K, String> statusMap = new HashMap<>();
         for (T item : enumClass.getEnumConstants()) {
             statusMap.put(item.getValue(), item.getLabel());

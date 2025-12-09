@@ -9,8 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MvcConfiguration implements WebMvcConfigurer {
 
     @Bean
-    public BaseEnumConverterFactory<?> booleanToBaseEnumConverterFactory() { // 枚举转换器工厂
-        return new BaseEnumConverterFactory<>();  // 枚举转换器工厂: 将Serializable类型的枚举值转换为BaseEnum枚举对象
+    public EnumSchemaConverterFactory<?> booleanToBaseEnumConverterFactory() { // 枚举转换器工厂
+        return new EnumSchemaConverterFactory<>();  // 枚举转换器工厂: 将Serializable类型的枚举值转换为BaseEnum枚举对象
     }
 
     @Override

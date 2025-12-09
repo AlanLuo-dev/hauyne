@@ -1,12 +1,12 @@
 package com.luoyx.hauyne.admin.sys.enums;
 
-import com.luoyx.hauyne.web.me.BaseEnum;
+import com.luoyx.hauyne.web.me.EnumSchema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TestCodeEnum implements BaseEnum<Integer, TestCodeEnum> {
+public enum TestCodeEnum implements EnumSchema<Integer, TestCodeEnum> {
 
     SUCCESS(1, "成功"),
     FAIL(2, "失败");
