@@ -46,6 +46,14 @@ public class BaseEnumConverterFactory<R extends Enum<R> & BaseEnum<? extends Ser
                     );
         }
 
+        /**
+         * 该convert方法下，切不可抛异常， 否则会导致 枚举常量匹配生效！这是我们不希望的
+         * 枚举常量匹配生效 是 调用 org.springframework.beans.TypeConverterDelegate#attemptToConvertStringToEnum 方法生效的
+         * 故而，传入的source在codeEnumValues中不存在时，应该返回null
+         *
+         * @param source
+         * @return
+         */
         @Override
         public U convert(@NonNull String source) {
             // 调用BaseEnum的静态方法匹配枚举

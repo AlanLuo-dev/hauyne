@@ -2,6 +2,7 @@ package com.luoyx.hauyne.admin.sys.enums;
 
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.luoyx.hauyne.web.me.BaseEnum;
 import com.luoyx.hauyne.web.yiyiyiyi.CodeEnum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import java.util.Map;
  */
 @Getter
 @RequiredArgsConstructor
-public enum AccountNonExpiredEnum implements CodeEnum<Boolean> {
+public enum AccountNonExpiredEnum implements BaseEnum<Boolean, AccountNonExpiredEnum> {
 
     NORMAL(true, "正常"),
     EXPIRED(false, "已过期");
