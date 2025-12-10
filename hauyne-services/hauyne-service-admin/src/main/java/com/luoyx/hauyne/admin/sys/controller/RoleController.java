@@ -8,6 +8,7 @@ import com.luoyx.hauyne.admin.sys.enums.TestCodeEnum;
 import com.luoyx.hauyne.admin.sys.feignclient.AuditFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UAAFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UserFeignClient;
+import com.luoyx.hauyne.admin.sys.query.JsonQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleQuery;
@@ -75,19 +76,26 @@ public class RoleController {
 
     @Operation(summary = "测试调用Audit服务")
     @GetMapping(value = "/testCallAudit")
-    public Map<String, String> testCallAudit(){
+    public Map<String, String> testCallAudit() {
         return traceLogFeignClient.testCallAudit();
     }
 
     @Operation(summary = "测试枚举接收参数")
     @GetMapping(value = "/testEnum")
-    public TestCodeEnum test(@RequestParam TestCodeEnum testCodeEnum){
+    public TestCodeEnum test(@RequestParam TestCodeEnum testCodeEnum) {
         return testCodeEnum;
     }
 
+    @Operation(summary = "测试Json枚举接收参数")
+    @GetMapping(value = "/testJsonEnum")
+    public JsonQuery testJsonEnum(@RequestBody JsonQuery jsonQuery) {
+        return jsonQuery;
+    }
+
+
     @Operation(summary = "测试boolean枚举接收参数")
     @GetMapping(value = "/testBoolEnum")
-    public TestBoolEnum test2(@RequestParam TestBoolEnum testBoolEnum){
+    public TestBoolEnum test2(@RequestParam TestBoolEnum testBoolEnum) {
         return testBoolEnum;
     }
 
@@ -102,7 +110,7 @@ public class RoleController {
     @PreAuthorize("hasAuthority('sys-role:find-page')")
     @GetMapping
     public PageResult<RolePageResultVO> findPage(@Validated RoleQuery query) {
-        Authentication auth =  SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 //        System.out.println("auth.name = " + auth.getName());
 //        Map<String, String> stringStringMap = uaaFeignClient.testCallUAA();
@@ -110,7 +118,7 @@ public class RoleController {
         return roleService.findPage(query);
     }
 
-//    @HystrixCommand(fallbackMethod = "testFallback")
+    //    @HystrixCommand(fallbackMethod = "testFallback")
     @GetMapping("/test")
     public String test() {
         return userFeignClient.testRPC();

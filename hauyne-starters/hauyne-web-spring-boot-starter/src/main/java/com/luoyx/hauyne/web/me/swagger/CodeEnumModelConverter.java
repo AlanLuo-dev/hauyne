@@ -1,13 +1,8 @@
-package com.luoyx.hauyne.web.yiyiyiyi.swagger;
+package com.luoyx.hauyne.web.me.swagger;
 
-import io.swagger.v3.core.converter.AnnotatedType;
-import io.swagger.v3.core.converter.ModelConverter;
-import io.swagger.v3.core.converter.ModelConverterContext;
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
-
-import java.util.Iterator;
 
 public class CodeEnumModelConverter extends ModelResolver implements CodeEnumResolver {
 
@@ -17,11 +12,9 @@ public class CodeEnumModelConverter extends ModelResolver implements CodeEnumRes
 
     @Override
     @SuppressWarnings("rawtypes")
-    public Schema resolve(AnnotatedType type, ModelConverterContext context, Iterator<ModelConverter> next) {
-        Schema schema = super.resolve(type, context, next);
-        Class<?> enumClass = (Class<?>) type.getType();
+    public Schema _createSchemaForEnum(Class<Enum<?>> enumClass) {
+        Schema schema = super._createSchemaForEnum(enumClass);
         if (this.isCodeEnum(enumClass)) {
-
             this.fillCodeEnumSchema(schema, enumClass);
         }
 

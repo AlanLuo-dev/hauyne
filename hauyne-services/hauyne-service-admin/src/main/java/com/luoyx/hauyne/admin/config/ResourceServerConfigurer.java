@@ -43,7 +43,8 @@ public class ResourceServerConfigurer {
                         "/userInfo/**",
                         LOGIN_LOOKUP,
                         "/sys/roles/testEnum",
-                        "/sys/roles/testBoolEnum"
+                        "/sys/roles/testBoolEnum",
+                        "/sys/roles/testJsonEnum"
                 )
                 .requestMatchers(HttpMethod.POST, "/sys/login-histories");
     }

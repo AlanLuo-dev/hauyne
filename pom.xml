@@ -59,7 +59,7 @@
 
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
         <springdoc-openapi-starter-webmvc-api.version>2.3.0</springdoc-openapi-starter-webmvc-api.version>
-        <swagger-annotations.version>2.2.19</swagger-annotations.version>
+        <swagger-v3.version>2.2.31</swagger-v3.version>
 
         <!-- mysql驱动包 -->
         <mysql-connector-j.version>8.4.0</mysql-connector-j.version>
@@ -177,7 +177,13 @@
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
-                <version>${swagger-annotations.version}</version>
+                <version>${swagger-v3.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-core-jakarta</artifactId>
+                <version>${swagger-v3.version}</version>
             </dependency>
             <!-- openapi END -->
 
