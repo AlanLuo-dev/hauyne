@@ -82,12 +82,12 @@ public class RoleController {
 
     @Operation(summary = "测试枚举接收参数")
     @GetMapping(value = "/testEnum")
-    public TestCodeEnum test(@RequestParam TestCodeEnum testCodeEnum) {
+    public TestCodeEnum test(@Parameter(description = "测试Query枚举参数") @RequestParam TestCodeEnum testCodeEnum) {
         return testCodeEnum;
     }
 
     @Operation(summary = "测试Json枚举接收参数")
-    @GetMapping(value = "/testJsonEnum")
+    @PostMapping(value = "/testJsonEnum")
     public JsonQuery testJsonEnum(@RequestBody JsonQuery jsonQuery) {
         return jsonQuery;
     }

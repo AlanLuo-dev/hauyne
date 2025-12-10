@@ -2,7 +2,9 @@ package com.luoyx.hauyne.web.me;
 
 import com.luoyx.hauyne.web.me.swagger.CodeEnumModelConverter;
 import com.luoyx.hauyne.web.me.swagger.CodeEnumPropertyCustomizer;
+import com.luoyx.hauyne.web.me.swagger.EnumParameterCustomizer;
 import io.swagger.v3.core.jackson.ModelResolver;
+import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -32,6 +34,11 @@ public class MvcConfiguration implements WebMvcConfigurer {
         @Bean
         public PropertyCustomizer codeEnumPropertyCustomizer() {
             return new CodeEnumPropertyCustomizer();
+        }
+
+        @Bean
+        public ParameterCustomizer enumParameterCustomizer() {
+            return new EnumParameterCustomizer();
         }
 
         @Bean

@@ -29,16 +29,10 @@ public interface CodeEnumResolver {
     }
 
     default boolean isCodeEnum(Class<?> rawClass) {
-        if (!rawClass.isEnum()) {
+        if (rawClass == null || !rawClass.isEnum()) {
             return false;
         }
-
-        for (Class<?> anInterface : rawClass.getInterfaces()) {
-            if (anInterface.isAssignableFrom(EnumSchema.class)) {
-                return true;
-            }
-        }
-
-        return false;
+        // 直接判断 rawClass 是否实现了 EnumSchema 接口（更直接、更可靠）
+        return EnumSchema.class.isAssignableFrom(rawClass);
     }
 }
