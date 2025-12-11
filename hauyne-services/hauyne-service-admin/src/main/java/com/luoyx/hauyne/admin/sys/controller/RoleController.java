@@ -12,6 +12,7 @@ import com.luoyx.hauyne.admin.sys.query.JsonQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleQuery;
+import com.luoyx.hauyne.admin.sys.request.FormDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -25,11 +26,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -92,6 +95,11 @@ public class RoleController {
         return jsonQuery;
     }
 
+    @Operation(summary = "测试普通表单")
+    @PostMapping(value = "/testFormDTO", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public FormDTO testFormDTO(@Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) FormDTO formDTO) {
+        return formDTO;
+    }
 
     @Operation(summary = "测试boolean枚举接收参数")
     @GetMapping(value = "/testBoolEnum")

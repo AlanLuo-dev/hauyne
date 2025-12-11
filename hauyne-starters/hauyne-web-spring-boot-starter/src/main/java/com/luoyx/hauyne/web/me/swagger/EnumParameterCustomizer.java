@@ -1,18 +1,15 @@
 package com.luoyx.hauyne.web.me.swagger;
 
-import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springframework.core.MethodParameter;
-import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Type;
 import java.util.Optional;
 
 /**
  * 为简单参数（query/path/header）中的 CodeEnum 添加 enum 列表 & 描述
  */
-@Component
 public class EnumParameterCustomizer implements ParameterCustomizer, CodeEnumResolver {
 
     @Override
@@ -37,14 +34,12 @@ public class EnumParameterCustomizer implements ParameterCustomizer, CodeEnumRes
                 parameterModel.setSchema(schema);
             }
 
-            // 也把说明加入到 parameter 的 description（一些 UI/模板会显示 parameter.description）
-            String existing = Optional.ofNullable(parameterModel.getDescription()).orElse("");
-            String enumDesc = schema.getDescription();
-
-            // 关键：避免重复追加
-            if (!existing.contains(enumDesc)) {
-                parameterModel.setDescription(existing + enumDesc);
+            String modelDescription = Optional.ofNullable(parameterModel.getDescription()).orElse("");
+            String schemaDescription = schema.getDescription();
+            if (!modelDescription.contains(schemaDescription )) {
+                parameterModel.setDescription(modelDescription + schemaDescription );
             }
+            parameterModel.setExample(schema.getExample());
         }
 
         return parameterModel;
