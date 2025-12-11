@@ -83,30 +83,6 @@ public class RoleController {
         return traceLogFeignClient.testCallAudit();
     }
 
-    @Operation(summary = "测试枚举接收参数")
-    @GetMapping(value = "/testEnum")
-    public TestCodeEnum test(@Parameter(description = "测试Query枚举参数") @RequestParam TestCodeEnum testCodeEnum) {
-        return testCodeEnum;
-    }
-
-    @Operation(summary = "测试Json枚举接收参数")
-    @PostMapping(value = "/testJsonEnum")
-    public JsonQuery testJsonEnum(@RequestBody JsonQuery jsonQuery) {
-        return jsonQuery;
-    }
-
-    @Operation(summary = "测试普通表单")
-    @PostMapping(value = "/testFormDTO", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public FormDTO testFormDTO(@Parameter(content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)) FormDTO formDTO) {
-        return formDTO;
-    }
-
-    @Operation(summary = "测试boolean枚举接收参数")
-    @GetMapping(value = "/testBoolEnum")
-    public TestBoolEnum test2(@RequestParam TestBoolEnum testBoolEnum) {
-        return testBoolEnum;
-    }
-
 
     /**
      * 分页查询角色

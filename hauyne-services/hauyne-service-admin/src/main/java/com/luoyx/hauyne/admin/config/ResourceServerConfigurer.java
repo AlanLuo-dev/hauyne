@@ -42,10 +42,7 @@ public class ResourceServerConfigurer {
                         "/sys/authorities/buildMenuTree",
                         "/userInfo/**",
                         LOGIN_LOOKUP,
-                        "/sys/roles/testEnum",
-                        "/sys/roles/testBoolEnum",
-                        "/sys/roles/testJsonEnum",
-                        "/sys/roles/testFormDTO"
+                        "/EnumController/**"
                 )
                 .requestMatchers(HttpMethod.POST, "/sys/login-histories");
     }

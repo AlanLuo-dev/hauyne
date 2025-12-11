@@ -56,7 +56,7 @@ public class SpringAmqpTest {
         roleAuditDTO.setId(2L);
 
         JaversAuditMessage<RoleAuditDTO> auditMessage = new JaversAuditMessage<>();
-        auditMessage.setAuthor("周杰伦");
+        auditMessage.setAuthorId(1L);
         auditMessage.setAuditType(AuditTypeEnum.COMMIT);
         auditMessage.setPayload(roleAuditDTO);
 
