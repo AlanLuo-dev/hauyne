@@ -20,6 +20,7 @@
     <modules>
         <module>hauyne-starters</module>
         <module>hauyne-services</module>
+        <module>hauyne-services/hauyne-swaggerv3-enum</module>
     </modules>
 
     <properties>
