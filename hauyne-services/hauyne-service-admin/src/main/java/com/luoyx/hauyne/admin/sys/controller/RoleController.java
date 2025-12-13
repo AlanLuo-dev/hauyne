@@ -3,16 +3,12 @@ package com.luoyx.hauyne.admin.sys.controller;
 
 import com.luoyx.hauyne.admin.sys.converter.RoleConverter;
 import com.luoyx.hauyne.admin.sys.entity.Role;
-import com.luoyx.hauyne.admin.sys.enums.TestBoolEnum;
-import com.luoyx.hauyne.admin.sys.enums.TestCodeEnum;
 import com.luoyx.hauyne.admin.sys.feignclient.AuditFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UAAFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UserFeignClient;
-import com.luoyx.hauyne.admin.sys.query.JsonQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleQuery;
-import com.luoyx.hauyne.admin.sys.request.FormDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -26,17 +22,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +38,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -93,12 +85,7 @@ public class RoleController {
     @Operation(summary = "分页查询角色")
     @PreAuthorize("hasAuthority('sys-role:find-page')")
     @GetMapping
-    public PageResult<RolePageResultVO> findPage(@Validated RoleQuery query) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-//        System.out.println("auth.name = " + auth.getName());
-//        Map<String, String> stringStringMap = uaaFeignClient.testCallUAA();
-//        System.out.println("UAA 返回的数据：" + JsonUtil.toString(stringStringMap));
+    public PageResult<RolePageResultVO> findPage(@ParameterObject @Validated RoleQuery query) {
         return roleService.findPage(query);
     }
 
@@ -155,7 +142,7 @@ public class RoleController {
      */
     @Operation(summary = "检查角色编码唯一性")
     @GetMapping(value = "/check-role-code-unique")
-    public Availability checkRoleCodeUnique(RoleCodeUniqueCheckQuery query) {
+    public Availability checkRoleCodeUnique(@ParameterObject RoleCodeUniqueCheckQuery query) {
         return new Availability(roleService.checkRoleCodeUnique(query));
     }
 
@@ -168,7 +155,7 @@ public class RoleController {
      */
     @Operation(summary = "检查角色名称唯一性")
     @GetMapping(value = "/check-role-name-unique")
-    public Availability checkRoleNameUnique(RoleNameUniqueCheckQuery query) {
+    public Availability checkRoleNameUnique(@ParameterObject RoleNameUniqueCheckQuery query) {
         return new Availability(roleService.checkRoleNameUnique(query));
     }
 
