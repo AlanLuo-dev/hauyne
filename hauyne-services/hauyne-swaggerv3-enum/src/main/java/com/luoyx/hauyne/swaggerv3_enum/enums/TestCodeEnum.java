@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.swaggerv3_enum.enums;
 
-import com.luoyx.hauyne.swaggerv3_enum.me.EnumSchema;
+import com.luoyx.hauyne.web.me.EnumSchema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
