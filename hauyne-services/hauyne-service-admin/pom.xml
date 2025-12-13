@@ -19,12 +19,6 @@
             <artifactId>hauyne-service-dependency</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <!-- OpenAPI -->
-        <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-openapi-spring-boot-starter</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>
@@ -39,11 +33,6 @@
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>
             <artifactId>hauyne-web-spring-boot-starter</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-knife4j-spring-boot-starter</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

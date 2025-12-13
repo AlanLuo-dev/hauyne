@@ -17,7 +17,6 @@
         Actuator程序监控器
         Resilience4j熔断器
         Config配置中心客户端
-        Sleuth服务链路追踪
         Bean转换工具MapStruct
     </description>
 

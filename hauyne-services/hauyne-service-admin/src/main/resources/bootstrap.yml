@@ -32,7 +32,7 @@ springdoc:
       display-name: '测试'
       paths-to-match: '/**'
       packages-to-scan: com.luoyx.hauyne
-  default-flat-param-object: true
+#  default-flat-param-object: true
 
 knife4j:
   enable: true
