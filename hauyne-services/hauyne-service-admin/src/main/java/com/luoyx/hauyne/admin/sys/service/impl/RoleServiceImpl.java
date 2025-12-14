@@ -8,8 +8,6 @@ import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.entity.Role;
 import com.luoyx.hauyne.admin.sys.entity.RoleAuthority;
 import com.luoyx.hauyne.admin.sys.mapper.RoleMapper;
-import com.luoyx.hauyne.admin.sys.query.RoleCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.RoleNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -60,23 +58,25 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
     /**
      * 校验角色编码可用性
      *
-     * @param query 角色编码唯一性校验查询参数
+     * @param excludeRoleId 要排除的角色Id（编辑角色的场景）
+     * @param roleCode      角色编码
      * @return true 表示角色编码可用，false 表示角色编码已存在
      */
     @Override
-    public boolean checkRoleCodeUnique(RoleCodeUniqueCheckQuery query) {
-        return baseMapper.countByRoleCode(query) == 0L;
+    public boolean isRoleCodeUnique(Long excludeRoleId, String roleCode) {
+        return baseMapper.selectOneByRoleCode(excludeRoleId, roleCode) == null;
     }
 
     /**
      * 校验角色名称可用性
      *
-     * @param query 角色名称唯一性校验查询参数
+     * @param excludeRoleId 要排除的角色Id（编辑角色的场景）
+     * @param roleName      角色名称
      * @return true 表示角色名称可用，false 表示角色名称已存在
      */
     @Override
-    public boolean checkRoleNameUnique(RoleNameUniqueCheckQuery query) {
-        return baseMapper.countByRoleName(query) == 0L;
+    public boolean isRoleNameUnique(Long excludeRoleId, String roleName) {
+        return baseMapper.selectOneByRoleName(excludeRoleId, roleName) == null;
     }
 
     /**
@@ -88,11 +88,11 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
     public void checkRoleFormData(Role role) {
         Long id = role.getId();
         String roleCode = role.getRoleCode();
-        if (!checkRoleCodeUnique(new RoleCodeUniqueCheckQuery(id, roleCode))) {
+        if (!isRoleCodeUnique(id, roleCode)) {
             throw new ValidateException("角色编码【" + roleCode + "】已存在，请勿重复添加");
         }
         String roleName = role.getRoleName();
-        if (!checkRoleNameUnique(new RoleNameUniqueCheckQuery(id, roleName))) {
+        if (!isRoleNameUnique(id, roleName)) {
             throw new ValidateException("角色名称【" + roleName + "】已存在，请勿重复添加");
         }
     }
@@ -166,7 +166,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
         // 先删除角色的权限资源
         roleAuthorityService.deleteByRoleIds(Collections.singletonList(roleId));
 
-        RoleAuthorityAuditDTO  roleAuthorityAuditDTO = new RoleAuthorityAuditDTO();
+        RoleAuthorityAuditDTO roleAuthorityAuditDTO = new RoleAuthorityAuditDTO();
         roleAuthorityAuditDTO.setRoleId(roleId);
 
         // 再新增角色的权限资源

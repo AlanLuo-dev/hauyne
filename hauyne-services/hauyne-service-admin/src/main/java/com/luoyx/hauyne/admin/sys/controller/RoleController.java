@@ -6,8 +6,6 @@ import com.luoyx.hauyne.admin.sys.entity.Role;
 import com.luoyx.hauyne.admin.sys.feignclient.AuditFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UAAFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UserFeignClient;
-import com.luoyx.hauyne.admin.sys.query.RoleCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.RoleNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.RoleQuery;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
@@ -22,12 +20,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -38,6 +41,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -118,7 +122,8 @@ public class RoleController {
      */
     @Operation(summary = "查看角色详情")
     @GetMapping(value = "/{id}")
-    public RoleVO view(@Parameter(name = "角色id", required = true) @PathVariable(value = "id") Long id) {
+    public RoleVO view(@Parameter(description = "角色id", required = true, in = ParameterIn.PATH)
+                       @PathVariable(value = "id") Long id) {
         return roleConverter.toRoleVO(roleService.getById(id));
     }
 
@@ -137,13 +142,17 @@ public class RoleController {
     /**
      * 检查角色编码唯一性
      *
-     * @param query 要排除的角色id & 角色编码
+     * @param excludeRoleId 要排除的角色id
+     * @param roleCode      角色编码
      * @return 是否可用
      */
     @Operation(summary = "检查角色编码唯一性")
     @GetMapping(value = "/check-role-code-unique")
-    public Availability checkRoleCodeUnique(@ParameterObject RoleCodeUniqueCheckQuery query) {
-        return new Availability(roleService.checkRoleCodeUnique(query));
+    public Availability checkRoleCodeUnique(@Parameter(description = "要排除的角色Id")
+                                            @RequestParam(value = "excludeRoleId", required = false) Long excludeRoleId,
+                                            @Parameter(description = "角色编码")
+                                            @RequestParam(value = "roleCode") String roleCode) {
+        return new Availability(roleService.isRoleCodeUnique(excludeRoleId, roleCode));
     }
 
 
@@ -155,8 +164,11 @@ public class RoleController {
      */
     @Operation(summary = "检查角色名称唯一性")
     @GetMapping(value = "/check-role-name-unique")
-    public Availability checkRoleNameUnique(@ParameterObject RoleNameUniqueCheckQuery query) {
-        return new Availability(roleService.checkRoleNameUnique(query));
+    public Availability checkRoleNameUnique(@Parameter(description = "要排除的角色Id")
+                                            @RequestParam(value = "excludeRoleId", required = false) Long excludeRoleId,
+                                            @Parameter(description = "角色名称")
+                                            @RequestParam(value = "roleName") String roleName) {
+        return new Availability(roleService.isRoleNameUnique(excludeRoleId, roleName));
     }
 
     /**
@@ -168,7 +180,8 @@ public class RoleController {
     @PreAuthorize("hasAuthority('sys-role:delete')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{ids}")
-    public void delete(@PathVariable("ids") List<Long> ids) {
+    public void delete(@Parameter(description = "角色id列表", required = true, in = ParameterIn.PATH)
+                       @PathVariable("ids") List<Long> ids) {
         roleService.deleteByIds(ids);
     }
 
@@ -178,9 +191,26 @@ public class RoleController {
      * @param roleId 角色id
      * @return
      */
-    @Operation(summary = "加载角色已有的权限（忽略部分选中的权限资源父节点），用于配置角色权限的表单回显")
+    @Operation(summary = "加载角色已有的权限（忽略部分选中的权限资源父节点），用于配置角色权限的表单回显",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "权限资源ID列表（仅叶子节点）",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(
+                                            schema = @Schema(
+                                                    description = "权限资源ID",
+                                                    example = "4"
+                                            )
+                                    )
+                            )
+                    )
+            }
+    )
     @GetMapping(value = "/{roleId}/authority-leaf-node-keys")
-    public List<String> selectLeafNodeAuthorityIdsByRoleId(@PathVariable(value = "roleId") Long roleId) {
+    public List<String> selectLeafNodeAuthorityIdsByRoleId(@Parameter(description = "角色id", required = true, in = ParameterIn.PATH)
+                                                           @PathVariable(value = "roleId") Long roleId) {
         return roleService.selectLeafNodeAuthorityIdsByRoleId(roleId);
     }
 

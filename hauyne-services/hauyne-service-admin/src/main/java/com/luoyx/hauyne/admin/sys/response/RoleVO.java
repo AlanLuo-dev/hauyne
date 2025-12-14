@@ -21,7 +21,7 @@ public class RoleVO {
     /**
      * 主键，无符号自增
      */
-    @Schema(description = "Id")
+    @Schema(description = "角色Id")
     private Long id;
 
     /**

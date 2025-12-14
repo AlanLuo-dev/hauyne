@@ -2,8 +2,6 @@ package com.luoyx.hauyne.admin.sys.mapper;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.luoyx.hauyne.admin.sys.entity.Role;
-import com.luoyx.hauyne.admin.sys.query.RoleCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.RoleNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,28 +21,30 @@ public interface RoleMapper extends GenericMapper<Role> {
     /**
      * 角色编码唯一性校验
      *
-     * @param query 角色编码唯一性校验查询参数
-     * @return 返回大于0 则表示角色编码已存在，返回0 则表示角色编码可用
+     * @param excludeRoleId 要排除的角色Id（编辑角色的场景）
+     * @param roleCode      角色编码
+     * @return 返回角色信息 则表示角色编码已存在，返回null 则表示角色编码可用
      */
-    default Long countByRoleCode(RoleCodeUniqueCheckQuery query) {
-        return selectCount(
+    default Role selectOneByRoleCode(Long excludeRoleId, String roleCode) {
+        return selectOne(
                 Wrappers.<Role>lambdaQuery()
-                        .eq(Role::getRoleCode, query.getRoleCode())
-                        .ne(query.getExcludeRoleId() != null, Role::getId, query.getExcludeRoleId())
+                        .eq(Role::getRoleCode, roleCode)
+                        .ne(excludeRoleId != null, Role::getId, excludeRoleId)
         );
     }
 
     /**
      * 角色名称唯一性校验
      *
-     * @param query 角色名称唯一性校验查询参数
-     * @return 返回大于0 则表示角色名称已存在，返回0 则表示角色名称可用
+     * @param excludeRoleId 要排除的角色Id（编辑角色的场景）
+     * @param roleName      角色名称
+     * @return 返回角色信息 则表示角色名称已存在，返回null 则表示角色名称可用
      */
-    default Long countByRoleName(RoleNameUniqueCheckQuery query) {
-        return selectCount(
+    default Role selectOneByRoleName(Long excludeRoleId, String roleName) {
+        return selectOne(
                 Wrappers.<Role>lambdaQuery()
-                        .eq(Role::getRoleName, query.getRoleName())
-                        .ne(query.getExcludeRoleId() != null, Role::getId, query.getExcludeRoleId())
+                        .eq(Role::getRoleName, roleName)
+                        .ne(excludeRoleId != null, Role::getId, excludeRoleId)
         );
     }
 

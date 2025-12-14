@@ -1,8 +1,6 @@
 package com.luoyx.hauyne.admin.sys.service;
 
 import com.luoyx.hauyne.admin.sys.entity.Role;
-import com.luoyx.hauyne.admin.sys.query.RoleCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.RoleNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -24,18 +22,20 @@ public interface RoleService extends BaseService<Role> {
     /**
      * 校验角色编码可用性
      *
-     * @param query
-     * @return
+     * @param excludeRoleId 要排除的角色Id（编辑角色的场景）
+     * @param roleCode      角色编码
+     * @return true 表示角色编码可用，false 表示角色编码已存在
      */
-    boolean checkRoleCodeUnique(RoleCodeUniqueCheckQuery query);
+    boolean isRoleCodeUnique(Long excludeRoleId, String roleCode);
 
     /**
      * 校验角色名称可用性
      *
-     * @param query
-     * @return
+     * @param excludeRoleId 要排除的角色Id（编辑角色的场景）
+     * @param roleName      角色名称
+     * @return true 表示角色名称可用，false 表示角色名称已存在
      */
-    boolean checkRoleNameUnique(RoleNameUniqueCheckQuery query);
+    boolean isRoleNameUnique(Long excludeRoleId, String roleName);
 
     /**
      * 表单参数校验
