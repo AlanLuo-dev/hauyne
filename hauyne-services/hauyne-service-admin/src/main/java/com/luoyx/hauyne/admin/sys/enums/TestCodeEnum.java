@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.admin.sys.enums;
 
-import com.luoyx.hauyne.web.me.EnumSchema;
+import com.luoyx.hauyne.web.enums.core.EnumSchema;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

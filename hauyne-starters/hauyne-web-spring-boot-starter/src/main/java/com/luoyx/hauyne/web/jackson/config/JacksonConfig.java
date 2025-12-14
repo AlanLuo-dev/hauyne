@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.autoconfigure;
+package com.luoyx.hauyne.web.jackson.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.luoyx.hauyne.web.me.EnumToObjectSerializer;
+import com.luoyx.hauyne.web.enums.jackson.EnumToObjectSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Configuration
-public class GlobalJacksonAutoConfiguration {
+public class JacksonConfig {
 
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer customizer() {

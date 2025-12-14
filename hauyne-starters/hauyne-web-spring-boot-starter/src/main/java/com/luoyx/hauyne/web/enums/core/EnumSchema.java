@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.me;
+package com.luoyx.hauyne.web.enums.core;
 
 
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.me.swagger;
+package com.luoyx.hauyne.web.enums.springdoc;
 
 import com.fasterxml.jackson.databind.JavaType;
 import io.swagger.v3.core.converter.AnnotatedType;

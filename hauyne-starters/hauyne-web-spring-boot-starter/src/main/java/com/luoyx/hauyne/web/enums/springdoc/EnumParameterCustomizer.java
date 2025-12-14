@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.me.swagger;
+package com.luoyx.hauyne.web.enums.springdoc;
 
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;

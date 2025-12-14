@@ -1,6 +1,11 @@
-package com.luoyx.hauyne.web.autoconfigure;
+package com.luoyx.hauyne.web.datetime.config;
 
+import com.luoyx.hauyne.web.datetime.filter.RequestDateTimeFilter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
@@ -22,7 +27,7 @@ import java.util.Locale;
  * @since 1.0.0
  */
 @Configuration
-public class GlobalDateTimeFormatAuthConfiguration implements WebMvcConfigurer {
+public class DateTimeFormatConfig implements WebMvcConfigurer {
 
     private static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     private static final String YYYY_MM_DD = "yyyy-MM-dd";
@@ -78,4 +83,14 @@ public class GlobalDateTimeFormatAuthConfiguration implements WebMvcConfigurer {
 
     }
 
+
+    @Bean
+    @ConditionalOnMissingBean(RequestDateTimeFilter.class)
+    public FilterRegistrationBean<RequestDateTimeFilter> requestDateTimeFilter() {
+        FilterRegistrationBean<RequestDateTimeFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new RequestDateTimeFilter());
+        registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE); // 设置为最前置
+        registrationBean.addUrlPatterns("/*"); // 或根据实际匹配路径
+        return registrationBean;
+    }
 }

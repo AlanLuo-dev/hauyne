@@ -1,5 +1,6 @@
-package com.luoyx.hauyne.web.me;
+package com.luoyx.hauyne.web.enums.convert;
 
+import com.luoyx.hauyne.web.enums.core.EnumSchema;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.lang.NonNull;

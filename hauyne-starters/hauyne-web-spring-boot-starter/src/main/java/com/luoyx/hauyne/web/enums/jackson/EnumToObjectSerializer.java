@@ -1,8 +1,9 @@
-package com.luoyx.hauyne.web.me;
+package com.luoyx.hauyne.web.enums.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+import com.luoyx.hauyne.web.enums.core.EnumSchema;
 
 import java.io.IOException;
 import java.io.Serializable;

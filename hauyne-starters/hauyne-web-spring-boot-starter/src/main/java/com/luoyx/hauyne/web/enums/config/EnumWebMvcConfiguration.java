@@ -1,8 +1,10 @@
-package com.luoyx.hauyne.web.me;
+package com.luoyx.hauyne.web.enums.config;
 
-import com.luoyx.hauyne.web.me.swagger.CodeEnumModelConverter;
-import com.luoyx.hauyne.web.me.swagger.CodeEnumPropertyCustomizer;
-import com.luoyx.hauyne.web.me.swagger.EnumParameterCustomizer;
+import com.luoyx.hauyne.web.enums.convert.EnumSchemaConverterFactory;
+import com.luoyx.hauyne.web.enums.core.EnumSchema;
+import com.luoyx.hauyne.web.enums.springdoc.CodeEnumModelConverter;
+import com.luoyx.hauyne.web.enums.springdoc.CodeEnumPropertyCustomizer;
+import com.luoyx.hauyne.web.enums.springdoc.EnumParameterCustomizer;
 import io.swagger.v3.core.jackson.ModelResolver;
 import org.springdoc.core.customizers.ParameterCustomizer;
 import org.springdoc.core.customizers.PropertyCustomizer;
@@ -14,7 +16,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class MvcConfiguration implements WebMvcConfigurer {
+public class EnumWebMvcConfiguration implements WebMvcConfigurer {
 
     @Bean
     public EnumSchemaConverterFactory<?> booleanToBaseEnumConverterFactory() { // 枚举转换器工厂
