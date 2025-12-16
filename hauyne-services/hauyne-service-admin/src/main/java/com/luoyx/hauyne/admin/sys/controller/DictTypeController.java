@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,7 +62,7 @@ public class DictTypeController {
     @Operation(summary = "分页查询字典类型")
     @PreAuthorize("hasAuthority('sys-dict-type:find-page')")
     @GetMapping
-    public PageResult<DictTypePageResultVO> findPage(@Validated DictTypeQuery query) {
+    public PageResult<DictTypePageResultVO> findPage(@ParameterObject @Validated DictTypeQuery query) {
         return dictTypeService.findPage(query);
     }
 
@@ -73,7 +74,7 @@ public class DictTypeController {
      */
     @Operation(summary = "查询单个字典类型")
     @GetMapping(value = "/{id}")
-    public DictTypeDetailVO view(@PathVariable(value = "id") Long id) {
+    public DictTypeDetailVO view(@Parameter(description = "字典类型id") @PathVariable(value = "id") Long id) {
         return dictTypeService.view(id);
     }
 
@@ -141,7 +142,7 @@ public class DictTypeController {
     @PreAuthorize("hasAuthority('sys-dict-type:delete')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{ids}")
-    public void delete(@Parameter(name = "字典类型id列表【多个字典类型id以逗号分隔】") @PathVariable(value = "ids") List<Long> ids) {
+    public void delete(@Parameter(description = "字典类型id列表【多个字典类型id以逗号分隔】") @PathVariable(value = "ids") List<Long> ids) {
         dictTypeService.deleteByIds(ids);
     }
 
@@ -153,7 +154,7 @@ public class DictTypeController {
     @Operation(summary = "启用字典类型")
     @PreAuthorize("hasAuthority('sys-dict-type:toggle-status')")
     @PatchMapping(value = "/{id}/enabled")
-    public void enable(@PathVariable(value = "id") Long id) {
+    public void enable(@Parameter(description = "字典类型id") @PathVariable(value = "id") Long id) {
         dictTypeService.enable(id);
     }
 
@@ -165,7 +166,7 @@ public class DictTypeController {
     @Operation(summary = "禁用字典类型")
     @PreAuthorize("hasAuthority('sys-dict-type:toggle-status')")
     @PatchMapping(value = "/{id}/disabled")
-    public void disable(@PathVariable(value = "id") Long id) {
+    public void disable(@Parameter(description = "字典类型id") @PathVariable(value = "id") Long id) {
         dictTypeService.disable(id);
     }
 
@@ -177,7 +178,8 @@ public class DictTypeController {
      */
     @Operation(summary = "按字典类型编码查询字典选项，用作下拉框数据", description = "只查询已启用的字典选项")
     @GetMapping(value = "/{dictTypeCode}/dropdown")
-    public List<DictItemDropdownVO> loadDropdownData(@PathVariable(value = "dictTypeCode") String dictTypeCode) {
+    public List<DictItemDropdownVO> loadDropdownData(@Parameter(description = "字典类型编码")
+                                                     @PathVariable(value = "dictTypeCode") String dictTypeCode) {
         return dictItemService.selectDropdownData(dictTypeCode);
     }
 
@@ -190,7 +192,7 @@ public class DictTypeController {
     @Operation(summary = "查询已删除的字典类型")
     @PreAuthorize("hasAuthority('sys-dict-type:recycle-bin')")
     @GetMapping(value = "/deleted")
-    public PageResult<DeletedDictTypePageResultVO> findDeletedPage(DictTypeQuery query) {
+    public PageResult<DeletedDictTypePageResultVO> findDeletedPage(@ParameterObject @Validated DictTypeQuery query) {
         return dictTypeService.findDeletedPage(query);
     }
 }

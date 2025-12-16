@@ -25,6 +25,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -63,16 +64,16 @@ public class UserController implements UserAPI {
      * @param loginLookupQuery 登录查询条件
      * @return 用户DTO对象
      */
-    @Operation(summary = "按用户名查询用户信息")
+    @Operation(summary = "按用户名查询用户信息（登录用）")
     @GetMapping(value = "/login-lookup")
     @Override
-    public UserDTO loginLookup(LoginLookupQuery loginLookupQuery) {
+    public UserDTO loginLookup(@ParameterObject LoginLookupQuery loginLookupQuery) {
         return userService.loginLookup(loginLookupQuery);
     }
 
     @Operation(summary = "分页查询用户信息")
     @GetMapping
-    public PageResult<UserPageResultVO> findPage(@Validated UserPageQuery userPageQuery) {
+    public PageResult<UserPageResultVO> findPage(@ParameterObject @Validated UserPageQuery userPageQuery) {
         return userService.findPage(userPageQuery);
     }
 
@@ -97,7 +98,7 @@ public class UserController implements UserAPI {
      */
     @Operation(summary = "按用户id获取用于表单回显的用户数据")
     @GetMapping(value = "/{id}")
-    public UserEditFormVO findUserForEdit(@Parameter(name = "用户id", required = true)
+    public UserEditFormVO findUserForEdit(@Parameter(description = "用户id", required = true)
                                           @PathVariable(value = "id") Long id) {
         return userService.findUserForEdit(id);
     }
@@ -143,8 +144,8 @@ public class UserController implements UserAPI {
      */
     @Operation(summary = "删除用户")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    @DeleteMapping(value = "/{id}")
-    public void delete(@Parameter(name = "用户id", required = true) @PathVariable(value = "id") List<Long> ids) {
+    @DeleteMapping(value = "/{ids}")
+    public void delete(@Parameter(description = "用户id", required = true) @PathVariable(value = "ids") List<Long> ids) {
         userService.deleteByIds(ids);
     }
 
