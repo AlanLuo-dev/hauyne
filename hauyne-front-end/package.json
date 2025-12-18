@@ -27,7 +27,7 @@
         "@ngrx/store": "^20.0.1",
         "@ngrx/store-devtools": "^20.0.1",
         "material-icons": "^1.13.14",
-        "ng-zorro-antd": "^20.4.3",
+        "ng-zorro-antd": "^20.4.4",
         "rxjs": "~7.8.2",
         "screenfull": "^6.0.2",
         "tslib": "^2.3.0",
