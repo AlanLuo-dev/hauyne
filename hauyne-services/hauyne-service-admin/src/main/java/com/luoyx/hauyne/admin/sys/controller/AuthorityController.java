@@ -16,9 +16,11 @@ import com.luoyx.hauyne.admin.sys.service.AuthorityService;
 import com.luoyx.hauyne.api.Availability;
 import com.luoyx.hauyne.web.exception.ResourceNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -58,7 +60,7 @@ public class AuthorityController {
     @Operation(summary = "权限树形数据列表")
     @PreAuthorize("hasAuthority('sys-authority:tree-list')")
     @GetMapping
-    public List<AuthorityTreeNodeVO> list(@Validated AuthorityQuery query) {
+    public List<AuthorityTreeNodeVO> list(@ParameterObject @Validated AuthorityQuery query) {
         return authorityService.findAuthorities(query);
     }
 
@@ -106,7 +108,7 @@ public class AuthorityController {
      */
     @Operation(summary = "校验权限编码是否唯一")
     @GetMapping(value = "/check-authority-code-unique")
-    public Availability checkAuthorityCodeUnique(@Validated AuthorityCodeUniqueCheckQuery query) {
+    public Availability checkAuthorityCodeUnique(@ParameterObject @Validated AuthorityCodeUniqueCheckQuery query) {
         return new Availability(authorityService.checkAuthorityCodeUnique(query));
     }
 
@@ -118,14 +120,14 @@ public class AuthorityController {
      */
     @Operation(summary = "校验权限名称是否唯一")
     @GetMapping(value = "/check-authority-name-unique")
-    public Availability checkAuthorityNameUnique(@Validated AuthorityNameUniqueCheckQuery query) {
+    public Availability checkAuthorityNameUnique(@ParameterObject @Validated AuthorityNameUniqueCheckQuery query) {
         return new Availability(authorityService.checkAuthorityNameAvailability(query));
     }
 
     //    @PreAuthorize("hasAuthority('sys-permission:view')")
     @Operation(summary = "获取单行权限纪录")
     @GetMapping(value = "/{id}")
-    public AuthorityDetailVO view(@NotNull @PathVariable(value = "id") Long id) {
+    public AuthorityDetailVO view(@Parameter(description = "权限id") @NotNull @PathVariable(value = "id") Long id) {
         AuthorityDetailVO authorityDetail = authorityService.view(id);
         if (null == authorityDetail) {
             throw new ResourceNotFoundException("权限数据不存在");
@@ -150,7 +152,7 @@ public class AuthorityController {
     @Operation(summary = "删除权限资源数据")
     @PreAuthorize("hasAuthority('sys-authority:delete')")
     @DeleteMapping(value = "/{id}")
-    public void deleteById(@NotNull @PathVariable(value = "id") Long id) {
+    public void deleteById(@Parameter(description = "权限id") @NotNull @PathVariable(value = "id") Long id) {
         authorityService.deleteById(id);
     }
 

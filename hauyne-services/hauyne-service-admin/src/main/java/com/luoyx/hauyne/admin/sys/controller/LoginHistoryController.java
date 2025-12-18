@@ -10,6 +10,7 @@ import com.luoyx.hauyne.mybatisplus.dto.PageResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,7 +39,7 @@ public class LoginHistoryController implements LoginHistoryAPI {
     private final LoginHistoryService loginHistoryService;
 
     @GetMapping
-    public PageResult<LoginHistoryVO> list(@Validated LoginHistoryQuery loginHistoryQuery) throws Exception {
+    public PageResult<LoginHistoryVO> list(@ParameterObject @Validated LoginHistoryQuery loginHistoryQuery) throws Exception {
         return loginHistoryService.findPage(loginHistoryQuery);
     }
 

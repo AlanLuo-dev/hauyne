@@ -19,6 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -66,7 +67,7 @@ public class DictItemController {
     @PreAuthorize("hasAuthority('sys-dict-item:list')")
     @Operation(summary = "查询某个字典类型下的所有字典选项", description = "维护功能，typeId必传")
     @GetMapping
-    public List<DictItemResultVO> list(@Validated DictItemQuery query) {
+    public List<DictItemResultVO> list(@ParameterObject @Validated DictItemQuery query) {
         return dictItemService.selectDictItemByTypeId(query);
     }
 
@@ -79,7 +80,7 @@ public class DictItemController {
     //    @PreAuthorize("hasAuthority('sys-dict-item:view')")
     @Operation(summary = "查询字典选项的详情")
     @GetMapping(value = "/{id}")
-    public DictItemDetailVO view(@Parameter(name = "字典选项id") @PathVariable(value = "id") Long id) {
+    public DictItemDetailVO view(@Parameter(description = "字典选项id") @PathVariable(value = "id") Long id) {
         return dictItemConverter.toDictItemDetailVO(dictItemService.getById(id));
     }
 
@@ -91,7 +92,7 @@ public class DictItemController {
      */
     @Operation(summary = "校验【字典值编码】是否已被占用（表单输入框onblur事件触发）")
     @GetMapping(value = "/check-dict-item-code-unique")
-    public Availability checkDictItemCodeUnique(DictItemCodeUniqueCheckQuery query) {
+    public Availability checkDictItemCodeUnique(@ParameterObject DictItemCodeUniqueCheckQuery query) {
         return new Availability(dictItemService.checkDictItemCodeUnique(query));
     }
 
@@ -103,7 +104,7 @@ public class DictItemController {
      */
     @Operation(summary = "校验输入的【字典值名称】是否已被占用")
     @GetMapping(value = "/check-dict-item-name-unique")
-    public Availability checkDictItemNameUnique(DictItemNameUniqueCheckQuery query) {
+    public Availability checkDictItemNameUnique(@ParameterObject DictItemNameUniqueCheckQuery query) {
         return new Availability(dictItemService.checkDictItemNameUnique(query));
     }
 
@@ -143,7 +144,7 @@ public class DictItemController {
     @PreAuthorize("hasAuthority('sys-dict-item:delete')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{ids}")
-    public void batchDelete(@Parameter(name = "字典值id列表【多个id以逗号分隔】") @PathVariable(value = "ids") List<Long> ids) {
+    public void batchDelete(@Parameter(description = "字典值id列表【多个id以逗号分隔】") @PathVariable(value = "ids") List<Long> ids) {
         dictItemService.removeByIds(ids);
     }
 
@@ -155,7 +156,7 @@ public class DictItemController {
     @Operation(summary = "启用某个字典")
     @PreAuthorize("hasAuthority('sys-dict-item:toggle-status')")
     @PatchMapping(value = "/{id}/enabled")
-    public void enable(@NotNull @PathVariable(value = "id") Long id) {
+    public void enable(@Parameter(description = "字典选项id") @NotNull @PathVariable(value = "id") Long id) {
         dictItemService.enable(id);
     }
 
@@ -167,7 +168,7 @@ public class DictItemController {
     @Operation(summary = "禁用某个字典")
     @PreAuthorize("hasAuthority('sys-dict-item:toggle-status')")
     @PatchMapping(value = "/{id}/disabled")
-    public void disable(@NotNull @PathVariable(value = "id") Long id) {
+    public void disable(@Parameter(description = "字典选项id") @NotNull @PathVariable(value = "id") Long id) {
         dictItemService.disable(id);
     }
 
@@ -180,8 +181,8 @@ public class DictItemController {
     @Operation(summary = "重新设置字典值的排序")
     @PreAuthorize("hasAuthority('sys-dict-item:reorder')")
     @PatchMapping(value = "/{dict-type-id}/reorder")
-    public void reorder(@Validated @Parameter(name = "字典类型id") @PathVariable(value = "dict-type-id") Long dictTypeId,
-                        @Parameter(name = "重新排序的字典选项id列表")
+    public void reorder(@Validated @Parameter(description = "字典类型id") @PathVariable(value = "dict-type-id") Long dictTypeId,
+                        @Parameter(description = "重新排序的字典选项id列表")
                         @NotNull(message = "字典值id列表不能为空")
                         @NotEmpty(message = "字典值id列表不能为空数组")
                         @RequestBody List<@NotNull(message = "字典值id列表不能包含空元素") Long> reorderedDictItemIds
@@ -197,7 +198,7 @@ public class DictItemController {
      */
     @Operation(summary = "查询字典类型下的字典选项数量")
     @GetMapping(value = "/{dict-type-id}/dict-item-count")
-    public DictItemCountByDictTypeVO findDictItemCountByDictTypeId(@Validated @Parameter(name = "字典类型id")
+    public DictItemCountByDictTypeVO findDictItemCountByDictTypeId(@Validated @Parameter(description = "字典类型id")
                                                                    @PathVariable(value = "dict-type-id") Long dictTypeId) {
         return new DictItemCountByDictTypeVO(dictItemService.countByDictTypeId(dictTypeId));
     }
