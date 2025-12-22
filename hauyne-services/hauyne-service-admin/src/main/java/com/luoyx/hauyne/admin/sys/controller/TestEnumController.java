@@ -1,11 +1,13 @@
 package com.luoyx.hauyne.admin.sys.controller;
 
-import com.luoyx.hauyne.admin.sys.enums.TestBoolEnum;
+import com.luoyx.hauyne.admin.sys.enums.ColorEnum;
 import com.luoyx.hauyne.admin.sys.enums.TestCodeEnum;
+import com.luoyx.hauyne.admin.sys.query.EnumInQuery;
 import com.luoyx.hauyne.admin.sys.query.JsonQuery;
 import com.luoyx.hauyne.admin.sys.request.FormDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,9 +38,9 @@ public class TestEnumController {
         return formDTO;
     }
 
-    @Operation(summary = "测试boolean枚举接收参数")
+    @Operation(summary = "测试枚举在Query类中")
     @GetMapping(value = "/testBoolEnum")
-    public TestBoolEnum test2(@RequestParam TestBoolEnum testBoolEnum) {
-        return testBoolEnum;
+    public EnumInQuery test2(@ParameterObject EnumInQuery enumInQuery) {
+        return enumInQuery;
     }
 }

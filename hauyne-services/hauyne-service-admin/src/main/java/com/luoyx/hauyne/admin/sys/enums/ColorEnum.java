@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TestBoolEnum implements EnumSchema<Boolean, TestBoolEnum> {
-    ZHENG(true, "是"),
-    JIA(false, "否");
+public enum ColorEnum implements EnumSchema<String, ColorEnum> {
+    RED("red", "红色"),
+    BLUE("blue", "蓝色");
 
-    private final Boolean value;
+    private final String value;
     private final String label;
 }
