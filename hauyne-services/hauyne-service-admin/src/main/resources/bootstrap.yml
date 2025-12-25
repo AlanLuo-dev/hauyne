@@ -17,3 +17,7 @@ spring:
 
   main:
     allow-bean-definition-overriding: true
+
+springdoc:
+  cache:
+    disabled: true
