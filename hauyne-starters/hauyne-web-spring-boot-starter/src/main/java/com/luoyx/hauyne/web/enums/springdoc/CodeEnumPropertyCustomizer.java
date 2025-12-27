@@ -37,6 +37,10 @@ public class CodeEnumPropertyCustomizer implements PropertyCustomizer {
             schema.setExample(enumConstants.stream().map(EnumSchema::getValue).map(Object::toString).findFirst().orElse(null));
 
             Function<AnnotatedType, Schema> jsonUnwrappedHandler = annotatedType.getJsonUnwrappedHandler();
+            if (Objects.isNull(jsonUnwrappedHandler)) {
+                System.out.println("=> jsonUnwrappedHandler 为 null");
+                return schema;
+            }
             try {
                 ModelConverterContextImpl modelConverterContext = getArg3FromLambda(jsonUnwrappedHandler);
                 HashSet<AnnotatedType> processedTypesFromContext = getProcessedTypesFromContext(modelConverterContext);

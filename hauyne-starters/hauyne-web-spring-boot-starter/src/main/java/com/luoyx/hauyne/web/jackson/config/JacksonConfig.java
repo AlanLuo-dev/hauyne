@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.luoyx.hauyne.web.enums.jackson.EnumSchemaDeserializerModifier;
 import com.luoyx.hauyne.web.enums.jackson.EnumToObjectSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -25,7 +26,7 @@ public class JacksonConfig {
     }
 
     @Bean
-    public ObjectMapper objectMapper() {
+    public ObjectMapper objectMapper(SimpleModule enumSchemaModule) {
         ObjectMapper objectMapper = new ObjectMapper();
 
         JavaTimeModule javaTimeModule = new JavaTimeModule();
@@ -41,18 +42,19 @@ public class JacksonConfig {
 
         objectMapper.registerModule(javaTimeModule);
 
-        // 创建自定义模块，注册枚举序列化器
-        SimpleModule enumModule = new SimpleModule();
-        // 注册 String 类型 code 的枚举序列化器
-        enumModule.addSerializer(new EnumToObjectSerializer<>());
-        // 注册 Integer 类型 code 的枚举序列化器（如需支持其他类型，新增此行）
-
         // 注册模块到 ObjectMapper（优先级最高）
-        objectMapper.registerModule(enumModule);
-
+        objectMapper.registerModule(enumSchemaModule);
 
         // 反序列化 忽略Java类中 不存在的字段
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         return objectMapper;
+    }
+
+    @Bean
+    public SimpleModule enumSchemaModule() {
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(new EnumToObjectSerializer<>());
+        module.setDeserializerModifier(new EnumSchemaDeserializerModifier());
+        return module;
     }
 }
