@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
 import {NzButtonComponent, NzButtonModule} from "ng-zorro-antd/button";
-import {NzTooltipDirective, NzToolTipModule} from "ng-zorro-antd/tooltip";
+import {NzTooltipDirective, NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NzFormatEmitEvent, NzTreeComponent, NzTreeNode, NzTreeNodeOptions} from "ng-zorro-antd/tree";
 import {NzIconDirective} from "ng-zorro-antd/icon";
@@ -20,7 +20,7 @@ import {NzSpinModule} from "ng-zorro-antd/spin";
     imports: [
         NzDrawerModule,
         NzButtonModule,
-        NzToolTipModule,
+        NzTooltipModule,
 
         ReactiveFormsModule,
         NzTreeComponent,

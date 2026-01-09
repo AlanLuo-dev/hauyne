@@ -13,7 +13,7 @@ import {NzMenuModule} from "ng-zorro-antd/menu";
 import screenfull from 'screenfull';
 import {AuthService} from "../login/auth.service";
 import {SystemMenu} from "./system-menu";
-import {NzDropDownADirective, NzDropDownDirective, NzDropdownMenuComponent} from "ng-zorro-antd/dropdown";
+import {NzDropdownADirective, NzDropDownDirective, NzDropdownMenuComponent} from "ng-zorro-antd/dropdown";
 import {ModifyPasswordComponent} from "./modify-password/modify-password.component";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
@@ -39,7 +39,7 @@ import {selectMenus, selectRealName} from "../store/auth/auth.selector";
         RouterLink,
         NgTemplateOutlet,
         NzContentComponent,
-        NzDropDownADirective,
+        NzDropdownADirective,
         NzDropDownDirective,
         NzDropdownMenuComponent,
         ModifyPasswordComponent,

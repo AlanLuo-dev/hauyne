@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
 import {NzButtonModule} from "ng-zorro-antd/button";
-import {NzToolTipModule} from "ng-zorro-antd/tooltip";
+import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {NzInputDirective, NzInputModule} from "ng-zorro-antd/input";
@@ -21,7 +21,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
     imports: [
         NzDrawerModule,
         NzButtonModule,
-        NzToolTipModule,
+        NzTooltipModule,
         NzColDirective,
         NzFormControlComponent,
         NzFormDirective,
