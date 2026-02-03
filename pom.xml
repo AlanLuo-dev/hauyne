@@ -20,7 +20,6 @@
     <modules>
         <module>hauyne-starters</module>
         <module>hauyne-services</module>
-        <module>hauyne-services/hauyne-swaggerv3-enum</module>
     </modules>
 
     <properties>
@@ -94,6 +93,8 @@
         <javers-spring-boot-starter-sql.version>7.9.0</javers-spring-boot-starter-sql.version>
 
         <fastexcel.version>1.3.0</fastexcel.version>
+
+        <reflections.version>0.10.2</reflections.version>
     </properties>
 
 
@@ -346,6 +347,12 @@
                 <groupId>cn.idev.excel</groupId>
                 <artifactId>fastexcel</artifactId>
                 <version>${fastexcel.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflections.version}</version>
             </dependency>
         </dependencies>
 
