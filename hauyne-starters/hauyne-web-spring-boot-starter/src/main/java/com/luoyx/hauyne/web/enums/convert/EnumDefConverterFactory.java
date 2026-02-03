@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.web.enums.convert;
 
-import com.luoyx.hauyne.web.enums.core.EnumSchema;
+import com.luoyx.hauyne.web.enums.core.EnumDef;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.lang.NonNull;
@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * 枚举转换器工厂：将Serializable类型的枚举值转换为BaseEnum枚举对象
  */
-public class EnumSchemaConverterFactory<R extends Enum<R> & EnumSchema<? extends Serializable, R>>
+public class EnumDefConverterFactory<R extends Enum<R> & EnumDef<? extends Serializable, R>>
         implements ConverterFactory<String, R> {
 
     @Override
@@ -28,16 +28,22 @@ public class EnumSchemaConverterFactory<R extends Enum<R> & EnumSchema<? extends
     /**
      * 内部转换器：实现具体的“值→枚举”转换
      */
-    private static class BaseEnumConverter<U extends Enum<U> & EnumSchema<? extends Serializable, U>>
+    private static class BaseEnumConverter<U extends Enum<U> & EnumDef<? extends Serializable, U>>
             implements Converter<String, U> {
 
-        // 目标枚举类型
+        /**
+         * 枚举类型
+         */
         private final Class<U> enumType;
-        private final Map<Serializable, U> codeEnumValues;
+
+        /**
+         * 枚举值-枚举对象 Map映射
+         */
+        private final Map<Serializable, U> codeEnumMap;
 
         public BaseEnumConverter(Class<U> enumType) {
             this.enumType = enumType;
-            this.codeEnumValues = Arrays.stream(enumType.getEnumConstants())
+            this.codeEnumMap = Arrays.stream(enumType.getEnumConstants())
                     .collect(
                             Collectors.toMap(
                                     codeEnum -> Objects.toString(codeEnum.getValue()),
@@ -52,14 +58,21 @@ public class EnumSchemaConverterFactory<R extends Enum<R> & EnumSchema<? extends
          * 枚举常量匹配生效 是 调用 org.springframework.beans.TypeConverterDelegate#attemptToConvertStringToEnum 方法生效的
          * 故而，传入的source在codeEnumValues中不存在时，应该返回null
          *
-         * @param source
-         * @return
+         * @param source 输入值
+         * @return 转换后的枚举对象
          */
         @Override
         public U convert(@NonNull String source) {
-            // 调用BaseEnum的静态方法匹配枚举
-//            return BaseEnum.getByValue(source, enumType);  // 根据编码获取枚举实例
-            return this.codeEnumValues.get(source);
+            U result = this.codeEnumMap.get(source);
+            if (result == null) {
+
+                // 获取枚举的业务名称
+                final String enumName = enumType.getEnumConstants()[0].getEnumName();
+
+                // 添加到 ThreadLocal
+                EnumConvertContext.add(enumName, source);
+            }
+            return result;
         }
     }
 }

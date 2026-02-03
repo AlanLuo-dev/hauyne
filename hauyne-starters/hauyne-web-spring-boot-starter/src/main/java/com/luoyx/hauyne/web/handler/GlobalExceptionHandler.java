@@ -12,9 +12,13 @@ import com.luoyx.hauyne.api.enums.ErrorCodeEnum;
 import com.luoyx.hauyne.feign.MsStackHolder;
 import com.luoyx.hauyne.feign.exception.RemoteBizFailureException;
 import com.luoyx.hauyne.feign.exception.RemoteFailureInformation;
+import com.luoyx.hauyne.web.enums.convert.EnumConvertContext;
+import com.luoyx.hauyne.web.enums.convert.EnumConvertErrorGroup;
+import com.luoyx.hauyne.web.exception.InvalidEnumValueException;
 import com.luoyx.hauyne.web.exception.ResourceNotFoundException;
 import com.luoyx.hauyne.web.exception.ValidateException;
 //import com.netflix.hystrix.exception.HystrixRuntimeException;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.TypeMismatchException;
@@ -53,6 +57,7 @@ import java.util.stream.Collectors;
  *
  * @author
  */
+@Hidden
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -272,8 +277,28 @@ public class GlobalExceptionHandler {
         log.error("HttpMessageNotReadableException, request url: {} Http Message Not Readable. {}. {}", req.getRequestURI(), originalMsg, e.getMessage());
         String msg = null;
         Throwable cause = e.getCause();
-        if (cause instanceof JsonMappingException) {
-            JsonMappingException jme = (JsonMappingException) cause;
+        // Jackson 严格 JSON 校验失败
+        if (cause instanceof MismatchedInputException
+                && cause.getMessage() != null
+                && cause.getMessage().contains("Trailing token")) {
+
+            return APIError.invalidParam("请求体不是合法 JSON，请检查是否存在多余内容");
+        }
+
+        if (cause instanceof JsonMappingException jme) {
+            Throwable root = jme.getCause();
+
+            // 处理 枚举反序列化失败的场景
+            if (root instanceof InvalidEnumValueException enumEx) {
+                String fieldName = null;
+                if (jme.getPath() != null && !jme.getPath().isEmpty()) {
+                    fieldName = jme.getPath().get(0).getFieldName();
+                }
+                msg = fieldName == null ? enumEx.getMessage() : fieldName + ":" + enumEx.getMessage();
+
+                return APIError.invalidParam(msg);
+            }
+
             msg = jme.getOriginalMessage();
             List<JsonMappingException.Reference> path = jme.getPath();
             if (path != null && !path.isEmpty()) {
@@ -326,6 +351,19 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public <U> APIError<U> methodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
+        List<EnumConvertErrorGroup> invalidValues = EnumConvertContext.getAndClear();
+
+        if (!invalidValues.isEmpty()) {
+            // 这里你就可以用 EnumDef.getEnumName() 拼业务文案
+            EnumConvertErrorGroup enumConvertErrorGroup = invalidValues.get(0);
+            String inputInvalidValue = enumConvertErrorGroup.getInvalidValues().stream()
+                    .collect(Collectors.joining(",", "【", "】"));
+            String msg = inputInvalidValue + "不是合法的 " + enumConvertErrorGroup.getEnumName();
+
+            return APIError.invalidParam(msg);
+        }
+
+        // fallback：走原有校验错误
         Optional<String> optional = e.getBindingResult().getAllErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)

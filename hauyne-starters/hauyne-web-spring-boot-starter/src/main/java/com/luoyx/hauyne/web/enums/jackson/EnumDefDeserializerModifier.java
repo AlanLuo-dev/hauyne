@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.luoyx.hauyne.web.enums.core.EnumSchema;
+import com.luoyx.hauyne.web.enums.core.EnumDef;
 
-public class EnumSchemaDeserializerModifier extends BeanDeserializerModifier {
+public class EnumDefDeserializerModifier extends BeanDeserializerModifier {
 
     @Override
     public JsonDeserializer<?> modifyEnumDeserializer(
@@ -18,10 +18,8 @@ public class EnumSchemaDeserializerModifier extends BeanDeserializerModifier {
 
         Class<?> rawClass = type.getRawClass();
 
-        if (rawClass.isEnum() && EnumSchema.class.isAssignableFrom(rawClass)) {
-            return new EnumSchemaDeserializer(
-                    (Class<? extends Enum<?>>) rawClass
-            );
+        if (rawClass.isEnum() && EnumDef.class.isAssignableFrom(rawClass)) {
+            return new EnumDefDeserializer<>((Class) rawClass);
         }
 
         return deserializer;

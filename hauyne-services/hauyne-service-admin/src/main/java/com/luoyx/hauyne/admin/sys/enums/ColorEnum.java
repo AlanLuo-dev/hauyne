@@ -1,12 +1,12 @@
 package com.luoyx.hauyne.admin.sys.enums;
 
-import com.luoyx.hauyne.web.enums.core.EnumSchema;
+import com.luoyx.hauyne.web.enums.core.EnumDef;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum ColorEnum implements EnumSchema<String, ColorEnum> {
+public enum ColorEnum implements EnumDef<String, ColorEnum> {
     RED("red", "红色"),
     BLUE("blue", "蓝色");
 

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @param <K>
  * @param <T>
  */
-public interface EnumSchema<K extends Serializable, T extends Enum<T> & EnumSchema<K, T>> {
+public interface EnumDef<K extends Serializable, T extends Enum<T> & EnumDef<K, T>> {
 
     /**
      * 枚举编码
@@ -29,6 +29,16 @@ public interface EnumSchema<K extends Serializable, T extends Enum<T> & EnumSche
      */
     String getLabel();
 
+    /**
+     * 枚举的业务名称（用于错误提示、日志等）
+     * 例如：颜色、状态、类型
+     */
+    default String getEnumName() {
+        return this.getClass()
+                .getSimpleName()
+                .replace("Enum", "");
+    }
+
     Map<Class<?>, Map<? extends Serializable, String>> ENUM_MAP_CACHE = new ConcurrentHashMap<>();
 
     /**
@@ -42,7 +52,7 @@ public interface EnumSchema<K extends Serializable, T extends Enum<T> & EnumSche
 
         // 双重检查锁：避免并发重复生成
         if (!ENUM_MAP_CACHE.containsKey(enumClass)) {
-            synchronized (EnumSchema.class) {
+            synchronized (EnumDef.class) {
                 if (!ENUM_MAP_CACHE.containsKey(enumClass)) {
                     Map<K, String> tempMap = new HashMap<>();
                     for (T enumConstant : enumClass.getEnumConstants()) {
@@ -57,7 +67,7 @@ public interface EnumSchema<K extends Serializable, T extends Enum<T> & EnumSche
     }
 
     @SuppressWarnings("unchecked")
-    static <K extends Serializable, T extends Enum<T> & EnumSchema<K, T>> Map<K, String> getMap(Class<T> enumClass) {
+    static <K extends Serializable, T extends Enum<T> & EnumDef<K, T>> Map<K, String> getMap(Class<T> enumClass) {
         if (enumClass.getEnumConstants() == null || enumClass.getEnumConstants().length == 0) {
             return Collections.emptyMap();
         }
@@ -68,7 +78,7 @@ public interface EnumSchema<K extends Serializable, T extends Enum<T> & EnumSche
 
 
     // 通用：根据枚举类型构建 Map<value, label>
-    static <K extends Serializable, T extends Enum<T> & EnumSchema<K, T>> Map<K, String> map(Class<T> enumClass) {
+    static <K extends Serializable, T extends Enum<T> & EnumDef<K, T>> Map<K, String> map(Class<T> enumClass) {
         Map<K, String> statusMap = new HashMap<>();
         for (T item : enumClass.getEnumConstants()) {
             statusMap.put(item.getValue(), item.getLabel());
