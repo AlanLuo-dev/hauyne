@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
+import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -48,7 +49,7 @@ public class UserProfile extends Model<UserProfile> implements Serializable {
     /**
      * 性别(1=男 0=女)
      */
-    private Integer gender;
+    private GenderEnum gender;
 
     /**
      * 出生日期

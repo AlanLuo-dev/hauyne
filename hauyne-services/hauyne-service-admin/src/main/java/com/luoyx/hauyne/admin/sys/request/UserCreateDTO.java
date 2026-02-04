@@ -1,5 +1,6 @@
 package com.luoyx.hauyne.admin.sys.request;
 
+import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
 import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
 import com.luoyx.hauyne.validation.constraint.EnumCheck;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +44,7 @@ public class UserCreateDTO {
      * 是否启用，true=是，false=否
      */
     @Schema(description = "是否启用")
-    private Boolean enabled;
+    private EnabledEnum enabled;
 
     /**
      * 用户资料
@@ -80,8 +81,8 @@ public class UserCreateDTO {
          * 性别
          */
         @Schema(description = "性别")
-        @EnumCheck(enumClazz = GenderEnum.class, getterMethod = "getValue")
-        private Integer gender;
+//        @EnumCheck(enumClazz = GenderEnum.class, getterMethod = "getValue")
+        private GenderEnum gender;
 
         /**
          * 出生日期

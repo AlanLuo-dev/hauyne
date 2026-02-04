@@ -1,5 +1,7 @@
 package com.luoyx.hauyne.admin.sys.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.luoyx.hauyne.web.enums.core.EnumDef;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -14,7 +16,7 @@ import java.util.Map;
  */
 @Getter
 @RequiredArgsConstructor
-public enum GenderEnum {
+public enum GenderEnum implements EnumDef<Integer, GenderEnum> {
 
     MALE(1, "男"),
     FEMALE(0, "女");
@@ -22,6 +24,7 @@ public enum GenderEnum {
     /**
      * 原始值
      */
+    @EnumValue
     private final Integer value;
 
     /**
@@ -29,19 +32,5 @@ public enum GenderEnum {
      */
     private final String label;
 
-    /**
-     * 性别 键值对
-     * <p>
-     * key: 原始值
-     * value: 文本
-     */
-    public static final Map<Integer, String> MAP;
 
-    static {
-        Map<Integer, String> statusMap = new HashMap<>();
-        for (GenderEnum item : GenderEnum.values()) {
-            statusMap.put(item.getValue(), item.getLabel());
-        }
-        MAP = Collections.unmodifiableMap(statusMap);
-    }
 }

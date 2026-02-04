@@ -33,20 +33,4 @@ public enum AccountNonExpiredEnum implements EnumDef<Boolean, AccountNonExpiredE
      */
     private final String label;
 
-    /**
-     * 帐户是否未过期 键值对
-     * <p>
-     * key: 原始值
-     * value: 文本
-     */
-    public static final Map<Boolean, String> MAP;
-
-    static {
-        Map<Boolean, String> statusMap = new HashMap<>();
-        for (AccountNonExpiredEnum item : AccountNonExpiredEnum.values()) {
-            statusMap.put(item.getValue(), item.getLabel());
-        }
-        MAP = Collections.unmodifiableMap(statusMap);
-    }
-
 }

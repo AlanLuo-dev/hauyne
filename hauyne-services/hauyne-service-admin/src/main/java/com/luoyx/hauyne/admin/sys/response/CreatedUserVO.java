@@ -1,5 +1,7 @@
 package com.luoyx.hauyne.admin.sys.response;
 
+import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
@@ -35,7 +37,7 @@ public class CreatedUserVO {
      * 是否已启用（true= 已启用，false= 未启用）
      */
     @Schema(description = "是否已启用（true= 已启用，false= 未启用）")
-    private Boolean enabled;
+    private EnabledEnum enabled;
 
     /**
      * 用户资料
@@ -62,7 +64,7 @@ public class CreatedUserVO {
          * 性别（1= 男，0= 女）
          */
         @Schema(description = "性别（1= 男，0= 女）")
-        private Integer gender;
+        private GenderEnum gender;
 
         /**
          * 头像

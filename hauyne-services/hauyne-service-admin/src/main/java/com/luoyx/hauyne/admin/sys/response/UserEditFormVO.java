@@ -1,5 +1,7 @@
 package com.luoyx.hauyne.admin.sys.response;
 
+import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Getter;
@@ -37,7 +39,7 @@ public class UserEditFormVO {
      * 是否启用，true=是，false=否
      */
     @Schema(description = "是否启用")
-    private Boolean enabled;
+    private EnabledEnum enabled;
 
     /**
      * 角色Id列表
@@ -75,7 +77,7 @@ public class UserEditFormVO {
          * 性别
          */
         @Schema(description = "性别")
-        private Integer gender;
+        private GenderEnum gender;
 
         /**
          * 出生日期

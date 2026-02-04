@@ -1,7 +1,10 @@
 package com.luoyx.hauyne.admin.sys.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.luoyx.hauyne.admin.sys.enums.AccountNonExpiredEnum;
+import com.luoyx.hauyne.admin.sys.enums.AccountNonLockedEnum;
+import com.luoyx.hauyne.admin.sys.enums.CredentialsNonExpiredEnum;
+import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -59,40 +62,22 @@ public class UserPageResultVO {
     private AccountNonExpiredEnum accountNonExpired;
 
     /**
-     * 帐户是否未锁定
-     */
-    @JsonIgnore
-    private Boolean accountNonLockedValue;
-
-    /**
      * 帐户锁定状态
      */
     @Schema(description = "帐户锁定状态")
-    private String accountNonLocked;
-
-    /**
-     * 密码是否未过期
-     */
-    @JsonIgnore
-    private Boolean credentialsNonExpiredValue;
+    private AccountNonLockedEnum accountNonLocked;
 
     /**
      * 密码过期状态
      */
     @Schema(description = "密码过期状态")
-    private String credentialsNonExpired;
+    private CredentialsNonExpiredEnum credentialsNonExpired;
 
     /**
-     * 是否已启用 原始值
-     */
-    @JsonIgnore
-    private Boolean enabledValue;
-
-    /**
-     * 是否已启用 文本值
+     * 是否已启用
      */
     @Schema(description = "是否已启用")
-    private String enabled;
+    private EnabledEnum enabled;
 
     /**
      * 昵称
@@ -109,14 +94,8 @@ public class UserPageResultVO {
     /**
      * 性别
      */
-    @JsonIgnore
-    private Integer genderValue;
-
-    /**
-     * 性别
-     */
     @Schema(description = "性别")
-    private String gender;
+    private GenderEnum gender;
 
     /**
      * 头像

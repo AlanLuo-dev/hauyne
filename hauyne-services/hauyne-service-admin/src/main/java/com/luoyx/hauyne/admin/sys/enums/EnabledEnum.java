@@ -1,12 +1,10 @@
 package com.luoyx.hauyne.admin.sys.enums;
 
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.luoyx.hauyne.web.enums.core.EnumDef;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 是否已启用 枚举类
@@ -15,7 +13,7 @@ import java.util.Map;
  */
 @Getter
 @RequiredArgsConstructor
-public enum EnabledEnum {
+public enum EnabledEnum implements EnumDef<Boolean, EnabledEnum> {
 
     ENABLED(true, "已启用"),
     DISABLED(false, "已禁用");
@@ -23,26 +21,12 @@ public enum EnabledEnum {
     /**
      * 原始值
      */
+    @EnumValue
     private final Boolean value;
 
     /**
      * 文本
      */
-    private final String text;
+    private final String label;
 
-    /**
-     * 是否已启用 键值对
-     * <p>
-     * key: 原始值
-     * value: 文本
-     */
-    public static final Map<Boolean, String> MAP;
-
-    static {
-        Map<Boolean, String> statusMap = new HashMap<>();
-        for (EnabledEnum item : EnabledEnum.values()) {
-            statusMap.put(item.getValue(), item.getText());
-        }
-        MAP = Collections.unmodifiableMap(statusMap);
-    }
 }

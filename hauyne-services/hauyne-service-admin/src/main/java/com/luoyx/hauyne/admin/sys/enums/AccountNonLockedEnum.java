@@ -1,6 +1,8 @@
 package com.luoyx.hauyne.admin.sys.enums;
 
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.luoyx.hauyne.web.enums.core.EnumDef;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +17,7 @@ import java.util.Map;
  */
 @Getter
 @RequiredArgsConstructor
-public enum AccountNonLockedEnum {
+public enum AccountNonLockedEnum implements EnumDef<Boolean, AccountNonLockedEnum> {
 
     NORMAL(true, "正常"),
     EXPIRED(false, "已锁定");
@@ -23,26 +25,12 @@ public enum AccountNonLockedEnum {
     /**
      * 原始值
      */
+    @EnumValue
     private final Boolean value;
 
     /**
      * 文本
      */
-    private final String text;
+    private final String label;
 
-    /**
-     * 帐户是否未锁定 键值对
-     * <p>
-     * key: 原始值
-     * value: 文本
-     */
-    public static final Map<Boolean, String> MAP;
-
-    static {
-        Map<Boolean, String> statusMap = new HashMap<>();
-        for (AccountNonLockedEnum item : AccountNonLockedEnum.values()) {
-            statusMap.put(item.getValue(), item.getText());
-        }
-        MAP = Collections.unmodifiableMap(statusMap);
-    }
 }

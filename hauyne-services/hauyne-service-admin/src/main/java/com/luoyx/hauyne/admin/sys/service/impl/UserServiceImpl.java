@@ -93,16 +93,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             throw new ValidateException("currentUserId 不能从前端传递");
         }
         query.setCurrentUserId(SecurityUtils.getCurrentSysUserId());
-        PageResult<UserPageResultVO> pageResult = super.findPage(query);
-        List<UserPageResultVO> rows = pageResult.getRows();
-        for (UserPageResultVO item : rows) {
-            item.setAccountNonLocked(AccountNonLockedEnum.MAP.get(item.getAccountNonLockedValue()));
-            item.setCredentialsNonExpired(CredentialsNonExpiredEnum.MAP.get(item.getCredentialsNonExpiredValue()));
-            item.setEnabled(EnabledEnum.MAP.get(item.getEnabledValue()));
-            item.setGender(GenderEnum.MAP.get(item.getGenderValue()));
-        }
-
-        return pageResult;
+        return super.findPage(query);
     }
 
     /**
@@ -217,10 +208,10 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         User user = userConverter.toUser(userCreateDTO);
         user.setPassword(bcryptPasswordEncoder.encode(userCreateDTO.getPassword()));
-        user.setAccountNonExpired(AccountNonExpiredEnum.NORMAL.getValue());
-        user.setAccountNonLocked(AccountNonLockedEnum.NORMAL.getValue());
-        user.setCredentialsNonExpired(CredentialsNonExpiredEnum.NORMAL.getValue());
-        user.setEnabled(EnabledEnum.ENABLED.getValue());
+        user.setAccountNonExpired(AccountNonExpiredEnum.NORMAL);
+        user.setAccountNonLocked(AccountNonLockedEnum.NORMAL);
+        user.setCredentialsNonExpired(CredentialsNonExpiredEnum.NORMAL);
+        user.setEnabled(EnabledEnum.ENABLED);
         baseMapper.insert(user);
         final Long userId = user.getId();
 

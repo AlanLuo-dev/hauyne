@@ -2,6 +2,10 @@ package com.luoyx.hauyne.admin.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.luoyx.hauyne.admin.sys.enums.AccountNonExpiredEnum;
+import com.luoyx.hauyne.admin.sys.enums.AccountNonLockedEnum;
+import com.luoyx.hauyne.admin.sys.enums.CredentialsNonExpiredEnum;
+import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
 import com.luoyx.hauyne.mybatisplus.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,25 +42,25 @@ public class User extends BaseEntity<User> {
      * 帐户是否未过期（1=是 0=否）
      */
     @TableField(value = "is_account_non_expired")
-    private Boolean accountNonExpired;
+    private AccountNonExpiredEnum accountNonExpired;
 
     /**
      * 帐户是否未锁定（1=是 0=否）
      */
     @TableField(value = "is_account_non_locked")
-    private Boolean accountNonLocked;
+    private AccountNonLockedEnum accountNonLocked;
 
     /**
      * 凭据（即密码）是否未过期（1=是 0=否）
      */
     @TableField(value = "is_credentials_non_expired")
-    private Boolean credentialsNonExpired;
+    private CredentialsNonExpiredEnum credentialsNonExpired;
 
     /**
      * 是否可用（1=是 0=否）
      */
     @TableField(value = "is_enabled")
-    private Boolean enabled;
+    private EnabledEnum enabled;
 
     /**
      * 修改密码的时间
