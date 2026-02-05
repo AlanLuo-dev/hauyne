@@ -19,6 +19,7 @@ import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {finalize, Observable} from "rxjs";
 import {ResetPasswordComponent} from "../reset-password/reset-password.component";
 import {NzFormLabelComponent} from "ng-zorro-antd/form";
+import {EnumOption} from "../../../../common/enum-option";
 
 /**
  * 查询结果
@@ -39,21 +40,18 @@ export interface User {
     /** 电子邮箱 */
     email: string;
 
-    /** 帐户是否过期 文本值 */
-    accountNonExpired: string;
+    /** 帐户是否过期 */
+    accountNonExpired: EnumOption<boolean>;
 
-    /** 帐户是否锁定 文本值 */
-    accountNonLocked: string;
+    /** 帐户是否锁定 */
+    accountNonLocked: EnumOption<boolean>;
 
 
-    /** 密码是否过期 文本值 */
-    credentialsNonExpired: string;
+    /** 密码是否过期 */
+    credentialsNonExpired: EnumOption<boolean>;
 
-    /** 是否已启用（原始值，true=已启用；false=已禁用） */
-    enabledValue: boolean;
-
-    /** 是否已启用 文本值 */
-    enabled: string;
+    /** 是否已启用 */
+    enabled: EnumOption<boolean>;
 
     /** 昵称 */
     nickname: string;
@@ -62,7 +60,7 @@ export interface User {
     realName: string;
 
     /** 性别 */
-    gender: string;
+    gender: EnumOption<number>;
 
     /** 头像 */
     avatar: string;
