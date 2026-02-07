@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.luoyx.hauyne.commons.constant.Constant.NOT_AVAILABLE;
+
 
 /**
  * <p>
@@ -30,6 +30,10 @@ import static com.luoyx.hauyne.commons.constant.Constant.NOT_AVAILABLE;
 @Service
 public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long, DataSourceRepository> implements DataSourceService {
 
+    /**
+     * 表示不可用
+     */
+    public static final String NOT_AVAILABLE = "N/A";
     private final UserCache userCache;
 
     public DataSourceServiceImpl(DataSourceRepository repository, UserCache userCache) {

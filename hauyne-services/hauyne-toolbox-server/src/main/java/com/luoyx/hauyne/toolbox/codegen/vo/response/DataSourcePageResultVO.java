@@ -1,10 +1,12 @@
 package com.luoyx.hauyne.toolbox.codegen.vo.response;
 
-import com.luoyx.hauyne.commons.vo.BaseVO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.time.LocalDateTime;
 
 /**
  * 数据源VO类
@@ -16,7 +18,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @SuppressWarnings("serial")
-public class DataSourcePageResultVO extends BaseVO {
+public class DataSourcePageResultVO {
 
     /**
      * 数据源名称
@@ -47,4 +49,40 @@ public class DataSourcePageResultVO extends BaseVO {
      */
     @Schema(description = "数据库密码")
     private String password;
+
+    /**
+     * 创建人id
+     */
+    @JsonIgnore
+    private Long createdBy;
+
+    /**
+     * 创建人的真实姓名
+     */
+    @Schema(description = "创建人的真实姓名")
+    private String createdByFullName;
+
+    /**
+     * 创建时间
+     */
+    @Schema(description = "创建时间")
+    private LocalDateTime createdTime;
+
+    /**
+     * 最后修改人id
+     */
+    @JsonIgnore
+    private Long lastUpdatedBy;
+
+    /**
+     * 最后修改人的真实姓名
+     */
+    @Schema(description = "最后修改人的真实姓名")
+    private String lastModifiedByFullName;
+
+    /**
+     * 最后修改时间
+     */
+    @Schema(description = "最后修改时间")
+    private LocalDateTime lastUpdatedTime;
 }

@@ -14,7 +14,6 @@
     <modules>
         <module>hauyne-service-uaa</module>
         <module>hauyne-cache</module>
-        <module>hauyne-commons</module>
         <module>hauyne-service-config</module>
         <module>hauyne-database-redis</module>
         <module>hauyne-service-register</module>

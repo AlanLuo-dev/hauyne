@@ -15,11 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-commons</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
             <artifactId>hauyne-audit-support</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
