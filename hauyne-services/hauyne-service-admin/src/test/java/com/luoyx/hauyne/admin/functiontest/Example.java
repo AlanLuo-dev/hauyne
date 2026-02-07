@@ -1,4 +1,5 @@
-package com.luoyx.hauyne.cache;
+package com.luoyx.hauyne.admin.functiontest;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;

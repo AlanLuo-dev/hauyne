@@ -26,9 +26,8 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-cache</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>

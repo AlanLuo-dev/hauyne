@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.cache;
+package com.luoyx.hauyne.admin.functiontest;
 
 import lombok.Getter;
 import lombok.Setter;

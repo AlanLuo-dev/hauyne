@@ -1,6 +1,5 @@
 package com.luoyx.hauyne.toolbox.codegen.service.impl;
 
-import com.luoyx.hauyne.cache.UserCache;
 import com.luoyx.hauyne.jpa.dto.PageResult;
 import com.luoyx.hauyne.jpa.service.impl.BaseServiceImpl;
 import com.luoyx.hauyne.toolbox.codegen.entity.DataSource;
@@ -34,11 +33,9 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long, Dat
      * 表示不可用
      */
     public static final String NOT_AVAILABLE = "N/A";
-    private final UserCache userCache;
 
-    public DataSourceServiceImpl(DataSourceRepository repository, UserCache userCache) {
+    public DataSourceServiceImpl(DataSourceRepository repository) {
         super(repository);
-        this.userCache = userCache;
     }
 
 
@@ -52,7 +49,8 @@ public class DataSourceServiceImpl extends BaseServiceImpl<DataSource, Long, Dat
                 .flatMap(List::stream)
                 .collect(Collectors.toSet());
 
-        Map<Long, String> cachedUserFullNamesMap = userCache.getUserFullName(userIds);
+//        Map<Long, String> cachedUserFullNamesMap = userCache.getUserFullName(userIds);
+        Map<Long, String> cachedUserFullNamesMap = null;
         list = list.stream()
                 .map(item -> {
                     item.setCreatedByFullName(cachedUserFullNamesMap.getOrDefault(item.getCreatedBy(), NOT_AVAILABLE));
