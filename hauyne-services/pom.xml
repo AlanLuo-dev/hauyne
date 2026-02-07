@@ -12,7 +12,6 @@
     <artifactId>hauyne-services</artifactId>
 
     <modules>
-        <module>hauyne-api-admin</module>
         <module>hauyne-service-uaa</module>
         <module>hauyne-cache</module>
         <module>hauyne-commons</module>
@@ -27,8 +26,6 @@
         <module>hauyne-service-dependency</module>
         <module>hauyne-toolbox-server</module>
         <module>hauyne-service-audit</module>
-        <module>hauyne-api-audit</module>
-        <module>hauyne-api-uaa</module>
         <module>hauyne-sync-user-snapshot-support</module>
     </modules>
 </project>

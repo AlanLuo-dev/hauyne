@@ -20,6 +20,7 @@
     <modules>
         <module>hauyne-starters</module>
         <module>hauyne-services</module>
+        <module>hauyne-apis</module>
     </modules>
 
     <properties>
