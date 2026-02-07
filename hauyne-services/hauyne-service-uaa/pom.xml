@@ -50,16 +50,10 @@
             <artifactId>hauyne-mybatis-plus-spring-boot-starter</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.luoyx.hauyne</groupId>-->
-<!--            <artifactId>hauyne-knife4j-spring-boot-starter</artifactId>-->
-<!--            <version>${project.parent.version}</version>-->
-<!--        </dependency>-->
 
         <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-openapi-spring-boot-starter</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>

@@ -24,6 +24,5 @@
         <module>hauyne-openfeign-spring-boot-starter</module>
         <module>hauyne-idempotent-spring-boot-starter</module>
         <module>hauyne-web-spring-boot-starter</module>
-        <module>hauyne-openapi-spring-boot-starter</module>
     </modules>
 </project>
