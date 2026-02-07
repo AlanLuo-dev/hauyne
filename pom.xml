@@ -56,10 +56,8 @@
 
         <velocity-engine-core.version>2.0</velocity-engine-core.version>
         <gson.version>2.13.2</gson.version> <!-- 旧版本是2.8.9 -->
-        <knife4j-openapi3-jakarta-spring-boot-starter.version>4.5.0</knife4j-openapi3-jakarta-spring-boot-starter.version>
 
         <springdoc-openapi-starter-webmvc-ui.version>2.3.0</springdoc-openapi-starter-webmvc-ui.version>
-        <springdoc-openapi-starter-webmvc-api.version>2.3.0</springdoc-openapi-starter-webmvc-api.version>
         <swagger-v3.version>2.2.31</swagger-v3.version>
 
         <!-- mysql驱动包 -->
@@ -149,32 +147,11 @@
                 <version>${velocity-engine-core.version}</version>
             </dependency>
 
-            <!-- knife4j-openapi3 START -->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-                <version>${knife4j-openapi3-jakarta-spring-boot-starter.version}</version>
-            </dependency>
-
-            <!-- https://mvnrepository.com/artifact/com.github.xiaoymin/knife4j-gateway-spring-boot-starter -->
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
-                <version>${knife4j-openapi3-jakarta-spring-boot-starter.version}</version>
-            </dependency>
-            <!-- knife4j-openapi3  END -->
-
             <!-- openapi START -->
             <dependency>
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springdoc</groupId>
-                <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
-                <version>${springdoc-openapi-starter-webmvc-api.version}</version>
             </dependency>
 
             <dependency>

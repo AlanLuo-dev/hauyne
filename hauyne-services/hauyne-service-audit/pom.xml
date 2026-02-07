@@ -48,11 +48,6 @@
         </dependency>
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-knife4j-spring-boot-starter</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
             <artifactId>hauyne-framework-utils</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

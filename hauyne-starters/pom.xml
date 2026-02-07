@@ -14,7 +14,6 @@
 
     <modules>
         <module>hauyne-jpa-spring-boot-starter</module>
-        <module>hauyne-knife4j-spring-boot-starter</module>
         <module>hauyne-mybatis-plus-spring-boot-starter</module>
         <module>hauyne-audit-support</module>
         <module>hauyne-security-spring-boot-starter</module>
