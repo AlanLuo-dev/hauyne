@@ -53,11 +53,6 @@
         </dependency>
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-validator-spring-boot-starter</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
             <artifactId>hauyne-framework-utils</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

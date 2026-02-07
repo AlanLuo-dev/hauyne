@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.validator.exception;
+package com.luoyx.hauyne.web.validation.exception;
 
 /**
  * @author

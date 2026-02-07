@@ -19,7 +19,6 @@
         <module>hauyne-audit-support</module>
         <module>hauyne-security-spring-boot-starter</module>
         <module>hauyne-validation-api</module>
-        <module>hauyne-validator-spring-boot-starter</module>
         <module>hauyne-api</module>
         <module>hauyne-feign</module>
         <module>hauyne-openfeign-spring-boot-starter</module>

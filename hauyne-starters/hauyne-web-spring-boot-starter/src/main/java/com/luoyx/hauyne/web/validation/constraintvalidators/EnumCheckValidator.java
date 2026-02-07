@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.validator.constraintvalidators;
+package com.luoyx.hauyne.web.validation.constraintvalidators;
 
 
 import com.luoyx.hauyne.validation.constraint.EnumCheck;

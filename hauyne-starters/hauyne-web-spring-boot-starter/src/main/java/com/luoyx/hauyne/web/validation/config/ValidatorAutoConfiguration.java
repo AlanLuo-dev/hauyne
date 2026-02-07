@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.validator.autoconfigure;
+package com.luoyx.hauyne.web.validation.config;
 
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

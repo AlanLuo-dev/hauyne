@@ -19,9 +19,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-validator-spring-boot-starter</artifactId>
-            <version>${project.parent.version}</version>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
 
         <dependency>
