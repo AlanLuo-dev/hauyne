@@ -2,7 +2,7 @@ package com.luoyx.hauyne.admin.sys.enums;
 
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.luoyx.hauyne.web.enums.core.EnumDef;
+import com.luoyx.hauyne.api.enums.core.EnumDefinition;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum EnabledEnum implements EnumDef<Boolean, EnabledEnum> {
+public enum EnabledEnum implements EnumDefinition<Boolean, EnabledEnum> {
 
     ENABLED(true, "已启用"),
     DISABLED(false, "已禁用");

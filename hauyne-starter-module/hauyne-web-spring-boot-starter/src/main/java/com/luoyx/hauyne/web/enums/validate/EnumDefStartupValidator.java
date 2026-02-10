@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.web.enums.validate;
 
-import com.luoyx.hauyne.web.enums.core.EnumDef;
+import com.luoyx.hauyne.api.enums.core.EnumDefinition;
 import lombok.RequiredArgsConstructor;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.SmartInitializingSingleton;
@@ -26,7 +26,7 @@ public class EnumDefStartupValidator implements SmartInitializingSingleton {
             Reflections reflections = new Reflections(basePackage);
             Set<Class<? extends Enum>> enums = reflections.getSubTypesOf(Enum.class);
             for (Class<? extends Enum> enumClass : enums) {
-                if (EnumDef.class.isAssignableFrom(enumClass)) {
+                if (EnumDefinition.class.isAssignableFrom(enumClass)) {
                     EnumDefValidator.validate(enumClass);
                 }
             }

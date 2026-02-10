@@ -2,7 +2,7 @@ package com.luoyx.hauyne.web.enums.config;
 
 
 import com.luoyx.hauyne.web.enums.convert.EnumDefConverterFactory;
-import com.luoyx.hauyne.web.enums.core.EnumDef;
+import com.luoyx.hauyne.api.enums.core.EnumDefinition;
 import com.luoyx.hauyne.web.enums.springdoc.EnumDefModelConverter;
 import com.luoyx.hauyne.web.enums.springdoc.EnumDefParameterCustomizer;
 import com.luoyx.hauyne.web.enums.springdoc.EnumDefPropertyCustomizer;
@@ -43,7 +43,7 @@ public class EnumWebMvcConfiguration implements WebMvcConfigurer {
 
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnClass(EnumDef.class)
+    @ConditionalOnClass(EnumDefinition.class)
     public static class CodeEnumPropertyCustomizerConfiguration implements InitializingBean {
 
         @Bean

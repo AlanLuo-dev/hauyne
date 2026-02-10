@@ -3,7 +3,7 @@ package com.luoyx.hauyne.web.enums.jackson;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.luoyx.hauyne.web.enums.core.EnumDef;
+import com.luoyx.hauyne.api.enums.core.EnumDefinition;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -11,10 +11,10 @@ import java.io.Serializable;
 /**
  * 枚举序列化器：将 BaseEnum 转为嵌套 JSON 对象
  */
-public class EnumDefSerializer<K extends Serializable, T extends Enum<T> & EnumDef<K, T>> extends JsonSerializer<EnumDef<K, T>> {
+public class EnumDefSerializer<K extends Serializable, T extends Enum<T> & EnumDefinition<K, T>> extends JsonSerializer<EnumDefinition<K, T>> {
 
     @Override
-    public void serialize(EnumDef<K, T> enumValue, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(EnumDefinition<K, T> enumValue, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
         gen.writeStartObject();                                           // 开始序列化对象（生成 { ）
         gen.writeObjectField("value", enumValue.getValue());    // 写入 code 字段（值为枚举的 getCode() 结果）
         gen.writeStringField("label", enumValue.getLabel());    // 写入 desc 字段（值为枚举的 getDesc() 结果）
@@ -34,8 +34,8 @@ public class EnumDefSerializer<K extends Serializable, T extends Enum<T> & EnumD
      */
     @Override
     @SuppressWarnings("unchecked")
-    public Class<EnumDef<K, T>> handledType() {
-        return (Class<EnumDef<K, T>>) (Class<?>) EnumDef.class;
+    public Class<EnumDefinition<K, T>> handledType() {
+        return (Class<EnumDefinition<K, T>>) (Class<?>) EnumDefinition.class;
     }
 
 }

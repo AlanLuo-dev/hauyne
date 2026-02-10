@@ -1,7 +1,7 @@
 package com.luoyx.hauyne.web.exception;
 
 
-import com.luoyx.hauyne.web.enums.core.EnumDef;
+import com.luoyx.hauyne.api.enums.core.EnumDefinition;
 
 public class InvalidEnumValueException extends RuntimeException {
 
@@ -18,8 +18,8 @@ public class InvalidEnumValueException extends RuntimeException {
 
         String enumName = enumType.getSimpleName();
 
-        if (EnumDef.class.isAssignableFrom(enumType)) {
-            EnumDef<?, ?>[] constants = (EnumDef<?, ?>[]) enumType.getEnumConstants();
+        if (EnumDefinition.class.isAssignableFrom(enumType)) {
+            EnumDefinition<?, ?>[] constants = (EnumDefinition<?, ?>[]) enumType.getEnumConstants();
             if (constants != null && constants.length > 0) {
                 enumName = constants[0].getEnumName();
             }
