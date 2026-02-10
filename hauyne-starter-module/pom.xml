@@ -10,7 +10,7 @@
     </parent>
     <packaging>pom</packaging>
 
-    <artifactId>hauyne-starters</artifactId>
+    <artifactId>hauyne-starter-module</artifactId>
 
     <modules>
         <module>hauyne-jpa-spring-boot-starter</module>

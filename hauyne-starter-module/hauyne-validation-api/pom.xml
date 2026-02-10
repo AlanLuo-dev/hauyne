@@ -4,17 +4,17 @@
 
     <parent>
         <groupId>com.luoyx.hauyne</groupId>
-        <artifactId>hauyne-starters</artifactId>
+        <artifactId>hauyne-starter-module</artifactId>
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hauyne-audit-support</artifactId>
-    <name>hauyne-audit-support【持久化 - 自动审计支持】</name>
+    <artifactId>hauyne-validation-api</artifactId>
+    <name>hauyne-validation-api【validation注解层】</name>
 
     <dependencies>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
 </project>

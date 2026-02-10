@@ -18,7 +18,7 @@
     <name>hauyne-cloud-parent【hauyne项目所有模块的父工程】</name>
 
     <modules>
-        <module>hauyne-starters</module>
+        <module>hauyne-starter-module</module>
         <module>hauyne-service-module</module>
         <module>hauyne-api-module</module>
     </modules>
