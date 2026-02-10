@@ -19,7 +19,7 @@
 
     <modules>
         <module>hauyne-starters</module>
-        <module>hauyne-services</module>
+        <module>hauyne-service-module</module>
         <module>hauyne-api-module</module>
     </modules>
 

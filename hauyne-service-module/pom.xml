@@ -9,7 +9,7 @@
         <version>0.2.0-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
-    <artifactId>hauyne-services</artifactId>
+    <artifactId>hauyne-service-module</artifactId>
 
     <modules>
         <module>hauyne-service-uaa</module>
