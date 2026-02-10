@@ -1,7 +1,7 @@
 package com.luoyx.hauyne.admin.sys.response;
 
-import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
-import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.Getter;

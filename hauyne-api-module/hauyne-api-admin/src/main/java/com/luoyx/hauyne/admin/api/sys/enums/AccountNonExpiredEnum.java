@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.admin.sys.enums;
+package com.luoyx.hauyne.admin.api.sys.enums;
 
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
@@ -7,16 +7,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 密码是否未过期 枚举类
+ * 帐户是否未过期 枚举类
  *
  * @author LuoYingxiong
  */
 @Getter
 @RequiredArgsConstructor
-public enum CredentialsNonExpiredEnum implements EnumDefinition<Boolean, CredentialsNonExpiredEnum> {
+public enum AccountNonExpiredEnum implements EnumDefinition<Boolean, AccountNonExpiredEnum> {
 
     NORMAL(true, "正常"),
-    EXPIRED(false, "密码已过期");
+    EXPIRED(false, "已过期");
 
     /**
      * 原始值

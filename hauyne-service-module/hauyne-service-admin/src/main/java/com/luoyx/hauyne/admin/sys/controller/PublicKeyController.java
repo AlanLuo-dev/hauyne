@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.admin.sys.controller;
 
-import com.luoyx.hauyne.admin.sys.enums.PrivateKeyRedisKeyEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.PrivateKeyRedisKeyEnum;
 import com.luoyx.hauyne.admin.sys.response.ModifyPasswordPreGeneratedKeyVO;
 import com.luoyx.hauyne.framework.utils.rsa.RSAUtil;
 import com.luoyx.hauyne.validation.constraint.EnumCheck;

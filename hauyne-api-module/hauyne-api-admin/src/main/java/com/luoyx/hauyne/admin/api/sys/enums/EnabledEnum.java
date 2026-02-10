@@ -1,4 +1,5 @@
-package com.luoyx.hauyne.admin.sys.enums;
+package com.luoyx.hauyne.admin.api.sys.enums;
+
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.luoyx.hauyne.api.enums.core.EnumDefinition;
@@ -6,27 +7,26 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 性别 枚举类
+ * 是否已启用 枚举类
  *
  * @author LuoYingxiong
  */
 @Getter
 @RequiredArgsConstructor
-public enum GenderEnum implements EnumDefinition<Integer, GenderEnum> {
+public enum EnabledEnum implements EnumDefinition<Boolean, EnabledEnum> {
 
-    MALE(1, "男"),
-    FEMALE(0, "女");
+    ENABLED(true, "已启用"),
+    DISABLED(false, "已禁用");
 
     /**
      * 原始值
      */
     @EnumValue
-    private final Integer value;
+    private final Boolean value;
 
     /**
      * 文本
      */
     private final String label;
-
 
 }

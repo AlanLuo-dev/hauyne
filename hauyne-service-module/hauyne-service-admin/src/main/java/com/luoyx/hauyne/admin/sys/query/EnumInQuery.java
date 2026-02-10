@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.admin.sys.query;
 
-import com.luoyx.hauyne.admin.sys.enums.ColorEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.ColorEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

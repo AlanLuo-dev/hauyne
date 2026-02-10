@@ -1,5 +1,4 @@
-package com.luoyx.hauyne.admin.sys.enums;
-
+package com.luoyx.hauyne.admin.api.sys.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.luoyx.hauyne.api.enums.core.EnumDefinition;
@@ -7,26 +6,27 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 帐户是否未锁定 枚举类
+ * 性别 枚举类
  *
  * @author LuoYingxiong
  */
 @Getter
 @RequiredArgsConstructor
-public enum AccountNonLockedEnum implements EnumDefinition<Boolean, AccountNonLockedEnum> {
+public enum GenderEnum implements EnumDefinition<Integer, GenderEnum> {
 
-    NORMAL(true, "正常"),
-    EXPIRED(false, "已锁定");
+    MALE(1, "男"),
+    FEMALE(0, "女");
 
     /**
      * 原始值
      */
     @EnumValue
-    private final Boolean value;
+    private final Integer value;
 
     /**
      * 文本
      */
     private final String label;
+
 
 }

@@ -2,10 +2,10 @@ package com.luoyx.hauyne.admin.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.luoyx.hauyne.admin.sys.enums.AccountNonExpiredEnum;
-import com.luoyx.hauyne.admin.sys.enums.AccountNonLockedEnum;
-import com.luoyx.hauyne.admin.sys.enums.CredentialsNonExpiredEnum;
-import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonLockedEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.CredentialsNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
 import com.luoyx.hauyne.mybatisplus.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;

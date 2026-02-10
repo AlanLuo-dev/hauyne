@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.admin.sys.enums;
+package com.luoyx.hauyne.admin.api.sys.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

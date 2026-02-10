@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.admin.sys.controller;
 
-import com.luoyx.hauyne.admin.sys.enums.TestCodeEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.TestCodeEnum;
 import com.luoyx.hauyne.admin.sys.query.EnumInQuery;
 import com.luoyx.hauyne.admin.sys.query.JsonQuery;
 import com.luoyx.hauyne.admin.sys.request.FormDTO;

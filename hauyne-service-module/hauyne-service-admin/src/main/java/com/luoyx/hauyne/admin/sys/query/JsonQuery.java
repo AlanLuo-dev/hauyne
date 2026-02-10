@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.admin.sys.query;
 
-import com.luoyx.hauyne.admin.sys.enums.TestCodeEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.TestCodeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 

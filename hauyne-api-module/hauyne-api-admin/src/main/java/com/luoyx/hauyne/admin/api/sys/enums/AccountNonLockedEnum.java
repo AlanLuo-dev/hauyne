@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.admin.sys.enums;
+package com.luoyx.hauyne.admin.api.sys.enums;
 
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
@@ -7,16 +7,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 是否已启用 枚举类
+ * 帐户是否未锁定 枚举类
  *
  * @author LuoYingxiong
  */
 @Getter
 @RequiredArgsConstructor
-public enum EnabledEnum implements EnumDefinition<Boolean, EnabledEnum> {
+public enum AccountNonLockedEnum implements EnumDefinition<Boolean, AccountNonLockedEnum> {
 
-    ENABLED(true, "已启用"),
-    DISABLED(false, "已禁用");
+    NORMAL(true, "正常"),
+    EXPIRED(false, "已锁定");
 
     /**
      * 原始值

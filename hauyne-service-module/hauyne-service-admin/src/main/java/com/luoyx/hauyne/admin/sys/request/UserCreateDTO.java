@@ -1,8 +1,7 @@
 package com.luoyx.hauyne.admin.sys.request;
 
-import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
-import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
-import com.luoyx.hauyne.validation.constraint.EnumCheck;
+import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

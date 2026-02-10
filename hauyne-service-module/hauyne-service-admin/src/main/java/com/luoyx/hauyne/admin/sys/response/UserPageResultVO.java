@@ -1,10 +1,10 @@
 package com.luoyx.hauyne.admin.sys.response;
 
-import com.luoyx.hauyne.admin.sys.enums.AccountNonExpiredEnum;
-import com.luoyx.hauyne.admin.sys.enums.AccountNonLockedEnum;
-import com.luoyx.hauyne.admin.sys.enums.CredentialsNonExpiredEnum;
-import com.luoyx.hauyne.admin.sys.enums.EnabledEnum;
-import com.luoyx.hauyne.admin.sys.enums.GenderEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonLockedEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.CredentialsNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.GenderEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;

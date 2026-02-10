@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.admin.sys.request;
 
-import com.luoyx.hauyne.admin.sys.enums.AuthorityTypeEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
 import com.luoyx.hauyne.validation.constraint.EnumCheck;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
