@@ -60,7 +60,7 @@ export interface User {
     realName: string;
 
     /** 性别 */
-    gender: EnumOption<number>;
+    gender: EnumOption<number> | null;
 
     /** 头像 */
     avatar: string;
