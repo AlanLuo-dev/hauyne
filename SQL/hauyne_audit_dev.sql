@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 02/12/2025 21:49:39
+ Date: 08/03/2026 17:32:14
 */
 
 SET NAMES utf8mb4;
@@ -69,7 +69,7 @@ CREATE TABLE `jv_commit`  (
   `commit_id` decimal(22, 2) NULL DEFAULT NULL,
   PRIMARY KEY (`commit_pk`) USING BTREE,
   INDEX `jv_commit_commit_id_idx`(`commit_id` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of jv_commit
@@ -82,6 +82,7 @@ INSERT INTO `jv_commit` VALUES (5, '1', '2025-11-13 21:39:07.091', '2025-11-13T1
 INSERT INTO `jv_commit` VALUES (6, '1', '2025-11-13 21:39:34.583', '2025-11-13T13:39:34.583441400Z', 6.00);
 INSERT INTO `jv_commit` VALUES (7, '1', '2025-11-13 21:39:56.477', '2025-11-13T13:39:56.477606900Z', 7.00);
 INSERT INTO `jv_commit` VALUES (8, '1', '2025-11-13 21:40:54.958', '2025-11-13T13:40:54.958756800Z', 8.00);
+INSERT INTO `jv_commit` VALUES (9, '1', '2025-12-23 20:30:14.661', '2025-12-23T12:30:14.661303800Z', 9.00);
 
 -- ----------------------------
 -- Table structure for jv_commit_property
@@ -115,7 +116,7 @@ CREATE TABLE `jv_global_id`  (
   INDEX `jv_global_id_local_id_idx`(`local_id` ASC) USING BTREE,
   INDEX `jv_global_id_owner_id_fk_idx`(`owner_id_fk` ASC) USING BTREE,
   CONSTRAINT `jv_global_id_owner_id_fk` FOREIGN KEY (`owner_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of jv_global_id
@@ -125,6 +126,7 @@ INSERT INTO `jv_global_id` VALUES (2, '62', NULL, 'hyn_sys_role_authority', NULL
 INSERT INTO `jv_global_id` VALUES (3, '65', NULL, 'hyn_sys_role_authority', NULL);
 INSERT INTO `jv_global_id` VALUES (4, '65', NULL, 'hyn_sys_role', NULL);
 INSERT INTO `jv_global_id` VALUES (5, '66', NULL, 'hyn_sys_role', NULL);
+INSERT INTO `jv_global_id` VALUES (6, '0', NULL, 'hyn_sys_role', NULL);
 
 -- ----------------------------
 -- Table structure for jv_snapshot
@@ -144,7 +146,7 @@ CREATE TABLE `jv_snapshot`  (
   INDEX `jv_snapshot_commit_fk_idx`(`commit_fk` ASC) USING BTREE,
   CONSTRAINT `jv_snapshot_commit_fk` FOREIGN KEY (`commit_fk`) REFERENCES `jv_commit` (`commit_pk`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `jv_snapshot_global_id_fk` FOREIGN KEY (`global_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of jv_snapshot
@@ -157,5 +159,6 @@ INSERT INTO `jv_snapshot` VALUES (5, 'INITIAL', 1, '{\n  \"roleCode\": \"blabla\
 INSERT INTO `jv_snapshot` VALUES (6, 'INITIAL', 1, '{\n  \"roleCode\": \"zzzz\",\n  \"roleName\": \"r发过的\",\n  \"id\": 66\n}', '[\n  \"roleCode\",\n  \"roleName\",\n  \"id\"\n]', 'hyn_sys_role', 5, 6);
 INSERT INTO `jv_snapshot` VALUES (7, 'UPDATE', 2, '{\n  \"roleCode\": \"4444\",\n  \"roleName\": \"fgdsfgd\",\n  \"id\": 66\n}', '[\n  \"roleCode\",\n  \"roleName\"\n]', 'hyn_sys_role', 5, 7);
 INSERT INTO `jv_snapshot` VALUES (8, 'UPDATE', 2, '{\n  \"roleCode\": \"000\",\n  \"roleName\": \",mmnm\",\n  \"id\": 65\n}', '[\n  \"roleCode\",\n  \"roleName\"\n]', 'hyn_sys_role', 4, 8);
+INSERT INTO `jv_snapshot` VALUES (9, 'INITIAL', 1, '{\n  \"roleCode\": \"string\",\n  \"roleName\": \"string\",\n  \"id\": 0\n}', '[\n  \"roleCode\",\n  \"roleName\",\n  \"id\"\n]', 'hyn_sys_role', 6, 9);
 
 SET FOREIGN_KEY_CHECKS = 1;

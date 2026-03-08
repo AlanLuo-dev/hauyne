@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 02/12/2025 21:49:23
+ Date: 08/03/2026 17:32:03
 */
 
 SET NAMES utf8mb4;
@@ -360,7 +360,7 @@ INSERT INTO `hyn_sys_dict_type` VALUES (3, 'sex', '性别', 1, '你', 1, '2022-0
 INSERT INTO `hyn_sys_dict_type` VALUES (15, 'authority_type', '权限类型', 1, '我操', 1, '2023-03-07 22:25:54', 1, '2024-09-13 17:12:44');
 INSERT INTO `hyn_sys_dict_type` VALUES (25, 'volume_unit', '体积单位', 1, '哈哈', 1, '2024-08-31 15:48:12', 1, '2025-09-13 15:03:21');
 INSERT INTO `hyn_sys_dict_type` VALUES (40, 'ers', 'drtd', 1, '', 1, '2025-07-05 14:06:00', 1, '2025-09-20 07:38:52');
-INSERT INTO `hyn_sys_dict_type` VALUES (41, 'week', '星期', 1, '', 27, '2025-11-23 11:33:48', 27, '2025-11-23 11:33:48');
+INSERT INTO `hyn_sys_dict_type` VALUES (41, 'week', '星期', 1, '', 27, '2025-11-23 11:33:48', 1, '2025-12-18 21:39:55');
 
 -- ----------------------------
 -- Table structure for hyn_sys_login_history
