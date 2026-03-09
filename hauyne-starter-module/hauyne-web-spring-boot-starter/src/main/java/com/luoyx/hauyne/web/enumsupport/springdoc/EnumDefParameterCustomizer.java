@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.enums.springdoc;
+package com.luoyx.hauyne.web.enumsupport.springdoc;
 
 import com.luoyx.hauyne.api.enums.core.EnumDefinition;
 import io.swagger.v3.oas.models.media.Schema;

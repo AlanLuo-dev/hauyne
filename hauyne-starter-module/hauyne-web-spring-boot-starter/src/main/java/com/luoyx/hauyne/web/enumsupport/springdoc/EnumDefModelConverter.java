@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.enums.springdoc;
+package com.luoyx.hauyne.web.enumsupport.springdoc;
 
 import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;

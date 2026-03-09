@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.enums.validate;
+package com.luoyx.hauyne.web.enumsupport.validate;
 
 
 import com.luoyx.hauyne.api.enums.core.EnumDefinition;

@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.enums.jackson;
+package com.luoyx.hauyne.web.enumsupport.jackson;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;

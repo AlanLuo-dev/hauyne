@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.enums.springdoc;
+package com.luoyx.hauyne.web.enumsupport.springdoc;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.luoyx.hauyne.api.enums.core.EnumDefinition;

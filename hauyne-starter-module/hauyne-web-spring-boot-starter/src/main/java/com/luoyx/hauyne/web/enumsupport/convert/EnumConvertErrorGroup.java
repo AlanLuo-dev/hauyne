@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.enums.convert;
+package com.luoyx.hauyne.web.enumsupport.convert;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.luoyx.hauyne.web.autoconfigure;
 
 import com.luoyx.hauyne.web.datetime.config.DateTimeFormatConfig;
-import com.luoyx.hauyne.web.enums.config.EnumWebMvcConfiguration;
+import com.luoyx.hauyne.web.enumsupport.config.EnumWebMvcConfiguration;
 import com.luoyx.hauyne.web.jackson.JacksonConfig;
 import com.luoyx.hauyne.web.exception.GlobalExceptionHandler;
 import com.luoyx.hauyne.web.validation.config.ValidatorAutoConfiguration;
