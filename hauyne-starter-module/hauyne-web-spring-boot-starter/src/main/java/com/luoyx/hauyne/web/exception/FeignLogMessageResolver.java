@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.handler;
+package com.luoyx.hauyne.web.exception;
 
 import org.springframework.http.HttpStatus;
 

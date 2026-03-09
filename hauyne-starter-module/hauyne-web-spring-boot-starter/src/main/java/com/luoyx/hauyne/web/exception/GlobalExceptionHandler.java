@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.web.handler;
+package com.luoyx.hauyne.web.exception;
 
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -14,9 +14,6 @@ import com.luoyx.hauyne.feign.exception.RemoteBizFailureException;
 import com.luoyx.hauyne.feign.exception.RemoteFailureInformation;
 import com.luoyx.hauyne.web.enums.convert.EnumConvertContext;
 import com.luoyx.hauyne.web.enums.convert.EnumConvertErrorGroup;
-import com.luoyx.hauyne.web.exception.InvalidEnumValueException;
-import com.luoyx.hauyne.web.exception.ResourceNotFoundException;
-import com.luoyx.hauyne.web.exception.ValidateException;
 //import com.netflix.hystrix.exception.HystrixRuntimeException;
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
