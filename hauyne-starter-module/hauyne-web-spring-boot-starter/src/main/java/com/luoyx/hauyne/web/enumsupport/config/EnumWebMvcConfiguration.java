@@ -2,7 +2,7 @@ package com.luoyx.hauyne.web.enumsupport.config;
 
 
 import com.luoyx.hauyne.web.enumsupport.convert.EnumSpecConverterFactory;
-import com.luoyx.hauyne.api.enumdef.EnumSpec;
+import com.luoyx.hauyne.api.enumsupport.EnumSpec;
 import com.luoyx.hauyne.web.enumsupport.springdoc.EnumSpecModelConverter;
 import com.luoyx.hauyne.web.enumsupport.springdoc.EnumSpecParameterCustomizer;
 import com.luoyx.hauyne.web.enumsupport.springdoc.EnumSpecPropertyCustomizer;

@@ -1,7 +1,7 @@
 package com.luoyx.hauyne.web.enumsupport.springdoc;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.luoyx.hauyne.api.enumdef.EnumSpec;
+import com.luoyx.hauyne.api.enumsupport.EnumSpec;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverterContextImpl;
 import io.swagger.v3.core.util.PrimitiveType;

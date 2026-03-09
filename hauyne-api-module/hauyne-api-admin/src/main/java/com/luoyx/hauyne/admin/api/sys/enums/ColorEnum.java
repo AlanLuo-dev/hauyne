@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.admin.api.sys.enums;
 
-import com.luoyx.hauyne.api.enumdef.EnumSpec;
+import com.luoyx.hauyne.api.enumsupport.EnumSpec;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

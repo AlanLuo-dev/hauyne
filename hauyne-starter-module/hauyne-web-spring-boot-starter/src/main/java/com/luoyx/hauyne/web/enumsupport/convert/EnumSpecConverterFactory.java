@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.web.enumsupport.convert;
 
-import com.luoyx.hauyne.api.enumdef.EnumSpec;
+import com.luoyx.hauyne.api.enumsupport.EnumSpec;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.lang.NonNull;

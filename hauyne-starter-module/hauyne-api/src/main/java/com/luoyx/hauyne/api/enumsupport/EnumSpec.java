@@ -1,4 +1,4 @@
-package com.luoyx.hauyne.api.enumdef;
+package com.luoyx.hauyne.api.enumsupport;
 
 
 import java.io.Serializable;
