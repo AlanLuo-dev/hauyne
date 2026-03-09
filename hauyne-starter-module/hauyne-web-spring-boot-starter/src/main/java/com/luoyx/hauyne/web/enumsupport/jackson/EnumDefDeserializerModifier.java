@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 
 public class EnumDefDeserializerModifier extends BeanDeserializerModifier {
 

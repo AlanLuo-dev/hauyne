@@ -1,7 +1,7 @@
 package com.luoyx.hauyne.web.enumsupport.validate;
 
 
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 
 import java.util.HashMap;
 import java.util.Map;

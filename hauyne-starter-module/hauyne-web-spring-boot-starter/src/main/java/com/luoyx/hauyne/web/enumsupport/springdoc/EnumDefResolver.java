@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.web.enumsupport.springdoc;
 
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 

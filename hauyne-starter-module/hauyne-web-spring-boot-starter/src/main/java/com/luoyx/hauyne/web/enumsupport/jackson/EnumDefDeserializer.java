@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 import com.luoyx.hauyne.web.exception.InvalidEnumValueException;
 
 import java.io.IOException;

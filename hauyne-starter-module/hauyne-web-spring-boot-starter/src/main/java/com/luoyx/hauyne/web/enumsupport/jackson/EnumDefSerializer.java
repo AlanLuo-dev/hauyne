@@ -3,7 +3,7 @@ package com.luoyx.hauyne.web.enumsupport.jackson;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 
 import java.io.IOException;
 import java.io.Serializable;

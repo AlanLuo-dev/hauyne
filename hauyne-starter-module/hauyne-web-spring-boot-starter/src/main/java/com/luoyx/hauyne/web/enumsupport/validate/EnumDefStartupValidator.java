@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.web.enumsupport.validate;
 
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 import lombok.RequiredArgsConstructor;
 import org.reflections.Reflections;
 import org.springframework.beans.factory.SmartInitializingSingleton;

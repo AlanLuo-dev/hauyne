@@ -2,7 +2,7 @@ package com.luoyx.hauyne.admin.api.sys.enums;
 
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

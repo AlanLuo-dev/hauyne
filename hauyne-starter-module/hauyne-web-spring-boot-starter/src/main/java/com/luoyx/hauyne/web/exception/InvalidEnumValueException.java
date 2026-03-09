@@ -1,7 +1,7 @@
 package com.luoyx.hauyne.web.exception;
 
 
-import com.luoyx.hauyne.api.enums.core.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumDefinition;
 
 public class InvalidEnumValueException extends RuntimeException {
 
