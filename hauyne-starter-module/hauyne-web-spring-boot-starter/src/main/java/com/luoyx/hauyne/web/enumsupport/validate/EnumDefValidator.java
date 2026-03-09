@@ -1,7 +1,7 @@
 package com.luoyx.hauyne.web.enumsupport.validate;
 
 
-import com.luoyx.hauyne.api.enumdef.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumSpec;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ public final class EnumDefValidator {
 
     public static void validate(Class<? extends Enum> enumClass) {
 
-        if (!EnumDefinition.class.isAssignableFrom(enumClass)) {
+        if (!EnumSpec.class.isAssignableFrom(enumClass)) {
             return;
         }
 
@@ -25,8 +25,8 @@ public final class EnumDefValidator {
         Map<Object, Enum<?>> valueMap = new HashMap<>();
 
         for (Enum<?> e : constants) {
-            EnumDefinition<?, ?> enumDefinition = (EnumDefinition<?, ?>) e;
-            Object value = enumDefinition.getValue();
+            EnumSpec<?, ?> enumSpec = (EnumSpec<?, ?>) e;
+            Object value = enumSpec.getValue();
 
             Enum<?> existed = valueMap.putIfAbsent(value, e);
             if (existed != null) {

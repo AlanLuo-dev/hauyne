@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import com.luoyx.hauyne.api.enumdef.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumSpec;
 
 public class EnumDefSerializerModifier extends BeanSerializerModifier {
 
@@ -18,7 +18,7 @@ public class EnumDefSerializerModifier extends BeanSerializerModifier {
 
         Class<?> rawClass = valueType.getRawClass();
 
-        if (EnumDefinition.class.isAssignableFrom(rawClass)) {
+        if (EnumSpec.class.isAssignableFrom(rawClass)) {
             return new EnumDefSerializer<>();
         }
 

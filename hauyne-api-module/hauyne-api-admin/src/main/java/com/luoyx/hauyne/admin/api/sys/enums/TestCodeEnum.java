@@ -1,12 +1,12 @@
 package com.luoyx.hauyne.admin.api.sys.enums;
 
-import com.luoyx.hauyne.api.enumdef.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumSpec;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TestCodeEnum implements EnumDefinition<Integer, TestCodeEnum> {
+public enum TestCodeEnum implements EnumSpec<Integer, TestCodeEnum> {
 
     SUCCESS(1, "成功"),
     FAIL(2, "失败");

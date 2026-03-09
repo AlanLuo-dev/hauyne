@@ -2,7 +2,7 @@ package com.luoyx.hauyne.admin.api.sys.enums;
 
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
-import com.luoyx.hauyne.api.enumdef.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumSpec;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor
-public enum AccountNonLockedEnum implements EnumDefinition<Boolean, AccountNonLockedEnum> {
+public enum AccountNonLockedEnum implements EnumSpec<Boolean, AccountNonLockedEnum> {
 
     NORMAL(true, "正常"),
     EXPIRED(false, "已锁定");

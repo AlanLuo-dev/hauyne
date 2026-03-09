@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.web.enumsupport.springdoc;
 
-import com.luoyx.hauyne.api.enumdef.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumSpec;
 import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import org.springdoc.core.customizers.ParameterCustomizer;
@@ -36,8 +36,8 @@ public class EnumDefParameterCustomizer implements ParameterCustomizer {
         }
 
         @SuppressWarnings("unchecked")
-        List<EnumDefinition<? extends Serializable, ?>> enumConstants =
-                List.of((EnumDefinition<? extends Serializable, ?>[]) enumClass.getEnumConstants());
+        List<EnumSpec<? extends Serializable, ?>> enumConstants =
+                List.of((EnumSpec<? extends Serializable, ?>[]) enumClass.getEnumConstants());
 
         String enumValuesDesc = enumConstants.stream()
                 .map(e -> e.getValue() + " = " + e.getLabel())
@@ -64,7 +64,7 @@ public class EnumDefParameterCustomizer implements ParameterCustomizer {
             return false;
         }
         // 直接判断 rawClass 是否实现了 EnumSchema 接口（更直接、更可靠）
-        return EnumDefinition.class.isAssignableFrom(rawClass);
+        return EnumSpec.class.isAssignableFrom(rawClass);
     }
 
     private Class<?> resolveEnumClass(MethodParameter methodParameter) {

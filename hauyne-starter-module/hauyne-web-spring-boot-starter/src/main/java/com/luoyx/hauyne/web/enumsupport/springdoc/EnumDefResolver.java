@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.web.enumsupport.springdoc;
 
-import com.luoyx.hauyne.api.enumdef.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumSpec;
 import io.swagger.v3.oas.models.media.Schema;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,14 +13,14 @@ public interface EnumDefResolver {
 
     @SuppressWarnings({"unchecked", "rawtypes"})
     default void fillCodeEnumSchema(Schema schema, Class<?> rawClass) {
-        List<EnumDefinition<? extends Serializable,?>> enumConstants = List.of((EnumDefinition<? extends Serializable,?>[]) rawClass.getEnumConstants());
+        List<EnumSpec<? extends Serializable,?>> enumConstants = List.of((EnumSpec<? extends Serializable,?>[]) rawClass.getEnumConstants());
 
         String description = enumConstants.stream()
                 .map(codeEnum -> codeEnum.getValue() + " = " + codeEnum.getLabel())
                 .collect(Collectors.joining("，", "<b>（", "）</b>"));
 
-        schema.setEnum(enumConstants.stream().map(EnumDefinition::getValue).map(Object::toString).toList());
-        schema.setExample(enumConstants.stream().map(EnumDefinition::getValue).map(Object::toString).findFirst().orElse(null));
+        schema.setEnum(enumConstants.stream().map(EnumSpec::getValue).map(Object::toString).toList());
+        schema.setExample(enumConstants.stream().map(EnumSpec::getValue).map(Object::toString).findFirst().orElse(null));
         schema.setDescription(Optional.ofNullable(schema.getDescription()).orElse(StringUtils.EMPTY) + description);
     }
 
@@ -29,6 +29,6 @@ public interface EnumDefResolver {
             return false;
         }
         // 直接判断 rawClass 是否实现了 EnumSchema 接口（更直接、更可靠）
-        return EnumDefinition.class.isAssignableFrom(rawClass);
+        return EnumSpec.class.isAssignableFrom(rawClass);
     }
 }

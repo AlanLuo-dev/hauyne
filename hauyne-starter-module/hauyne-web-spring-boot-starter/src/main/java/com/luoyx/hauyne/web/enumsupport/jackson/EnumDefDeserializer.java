@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.luoyx.hauyne.api.enumdef.EnumDefinition;
+import com.luoyx.hauyne.api.enumdef.EnumSpec;
 import com.luoyx.hauyne.web.exception.InvalidEnumValueException;
 
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 
-public class EnumDefDeserializer<R extends Enum<R> & EnumDefinition<? extends Serializable, R>> extends JsonDeserializer<R> {
+public class EnumDefDeserializer<R extends Enum<R> & EnumSpec<? extends Serializable, R>> extends JsonDeserializer<R> {
 
     private final Class<R> enumType;
 
