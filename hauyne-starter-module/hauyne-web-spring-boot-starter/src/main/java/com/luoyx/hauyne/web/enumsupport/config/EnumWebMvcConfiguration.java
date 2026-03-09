@@ -1,12 +1,12 @@
 package com.luoyx.hauyne.web.enumsupport.config;
 
 
-import com.luoyx.hauyne.web.enumsupport.convert.EnumDefConverterFactory;
+import com.luoyx.hauyne.web.enumsupport.convert.EnumSpecConverterFactory;
 import com.luoyx.hauyne.api.enumdef.EnumSpec;
-import com.luoyx.hauyne.web.enumsupport.springdoc.EnumDefModelConverter;
-import com.luoyx.hauyne.web.enumsupport.springdoc.EnumDefParameterCustomizer;
-import com.luoyx.hauyne.web.enumsupport.springdoc.EnumDefPropertyCustomizer;
-import com.luoyx.hauyne.web.enumsupport.validate.EnumDefStartupValidator;
+import com.luoyx.hauyne.web.enumsupport.springdoc.EnumSpecModelConverter;
+import com.luoyx.hauyne.web.enumsupport.springdoc.EnumSpecParameterCustomizer;
+import com.luoyx.hauyne.web.enumsupport.springdoc.EnumSpecPropertyCustomizer;
+import com.luoyx.hauyne.web.enumsupport.validate.EnumSpecStartupValidator;
 import io.swagger.v3.core.jackson.ModelResolver;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.customizers.ParameterCustomizer;
@@ -28,12 +28,12 @@ public class EnumWebMvcConfiguration implements WebMvcConfigurer {
 
     @Bean
     public SmartInitializingSingleton enumDefStartupValidator(){
-        return new EnumDefStartupValidator(applicationContext);
+        return new EnumSpecStartupValidator(applicationContext);
     }
 
     @Bean
-    public EnumDefConverterFactory<?> booleanToBaseEnumConverterFactory() { // 枚举转换器工厂
-        return new EnumDefConverterFactory<>();  // 枚举转换器工厂: 将Serializable类型的枚举值转换为BaseEnum枚举对象
+    public EnumSpecConverterFactory<?> booleanToBaseEnumConverterFactory() { // 枚举转换器工厂
+        return new EnumSpecConverterFactory<>();  // 枚举转换器工厂: 将Serializable类型的枚举值转换为BaseEnum枚举对象
     }
 
     @Override
@@ -48,17 +48,17 @@ public class EnumWebMvcConfiguration implements WebMvcConfigurer {
 
         @Bean
         public PropertyCustomizer codeEnumPropertyCustomizer() {
-            return new EnumDefPropertyCustomizer();
+            return new EnumSpecPropertyCustomizer();
         }
 
         @Bean
         public ParameterCustomizer enumParameterCustomizer() {
-            return new EnumDefParameterCustomizer();
+            return new EnumSpecParameterCustomizer();
         }
 
         @Bean
         public ModelResolver codeEnumModelResolver() {
-            return new EnumDefModelConverter();
+            return new EnumSpecModelConverter();
         }
 
         @Override

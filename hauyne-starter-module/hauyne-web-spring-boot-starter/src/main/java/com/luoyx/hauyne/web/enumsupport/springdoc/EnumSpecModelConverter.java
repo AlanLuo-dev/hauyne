@@ -4,9 +4,9 @@ import io.swagger.v3.core.jackson.ModelResolver;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.media.Schema;
 
-public class EnumDefModelConverter extends ModelResolver implements EnumDefResolver {
+public class EnumSpecModelConverter extends ModelResolver implements EnumSpecResolver {
 
-    public EnumDefModelConverter() {
+    public EnumSpecModelConverter() {
         super(Json.mapper());
     }
 

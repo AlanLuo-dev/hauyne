@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.luoyx.hauyne.api.enumdef.EnumSpec;
 
-public class EnumDefDeserializerModifier extends BeanDeserializerModifier {
+public class EnumSpecDeserializerModifier extends BeanDeserializerModifier {
 
     @Override
     public JsonDeserializer<?> modifyEnumDeserializer(
@@ -19,7 +19,7 @@ public class EnumDefDeserializerModifier extends BeanDeserializerModifier {
         Class<?> rawClass = type.getRawClass();
 
         if (rawClass.isEnum() && EnumSpec.class.isAssignableFrom(rawClass)) {
-            return new EnumDefDeserializer<>((Class) rawClass);
+            return new EnumSpecDeserializer<>((Class) rawClass);
         }
 
         return deserializer;

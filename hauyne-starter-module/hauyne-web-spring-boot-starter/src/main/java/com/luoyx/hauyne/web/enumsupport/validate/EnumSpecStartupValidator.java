@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @RequiredArgsConstructor
-public class EnumDefStartupValidator implements SmartInitializingSingleton {
+public class EnumSpecStartupValidator implements SmartInitializingSingleton {
 
     private final ApplicationContext applicationContext;
 
@@ -27,7 +27,7 @@ public class EnumDefStartupValidator implements SmartInitializingSingleton {
             Set<Class<? extends Enum>> enums = reflections.getSubTypesOf(Enum.class);
             for (Class<? extends Enum> enumClass : enums) {
                 if (EnumSpec.class.isAssignableFrom(enumClass)) {
-                    EnumDefValidator.validate(enumClass);
+                    EnumSpecValidator.validate(enumClass);
                 }
             }
         }

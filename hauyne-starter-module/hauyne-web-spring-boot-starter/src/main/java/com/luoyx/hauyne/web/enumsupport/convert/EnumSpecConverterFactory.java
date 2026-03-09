@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * 枚举转换器工厂：将Serializable类型的枚举值转换为BaseEnum枚举对象
  */
-public class EnumDefConverterFactory<R extends Enum<R> & EnumSpec<? extends Serializable, R>>
+public class EnumSpecConverterFactory<R extends Enum<R> & EnumSpec<? extends Serializable, R>>
         implements ConverterFactory<String, R> {
 
     @Override

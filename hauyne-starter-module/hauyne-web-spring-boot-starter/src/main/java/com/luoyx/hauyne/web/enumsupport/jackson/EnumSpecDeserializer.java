@@ -13,11 +13,11 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 
-public class EnumDefDeserializer<R extends Enum<R> & EnumSpec<? extends Serializable, R>> extends JsonDeserializer<R> {
+public class EnumSpecDeserializer<R extends Enum<R> & EnumSpec<? extends Serializable, R>> extends JsonDeserializer<R> {
 
     private final Class<R> enumType;
 
-    public EnumDefDeserializer(Class<R> enumType) {
+    public EnumSpecDeserializer(Class<R> enumType) {
         this.enumType = enumType;
     }
 

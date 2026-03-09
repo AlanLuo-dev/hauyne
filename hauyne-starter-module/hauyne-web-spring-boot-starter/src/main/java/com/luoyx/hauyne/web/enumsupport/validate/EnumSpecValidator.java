@@ -6,9 +6,9 @@ import com.luoyx.hauyne.api.enumdef.EnumSpec;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class EnumDefValidator {
+public final class EnumSpecValidator {
 
-    private EnumDefValidator() {
+    private EnumSpecValidator() {
     }
 
     public static void validate(Class<? extends Enum> enumClass) {

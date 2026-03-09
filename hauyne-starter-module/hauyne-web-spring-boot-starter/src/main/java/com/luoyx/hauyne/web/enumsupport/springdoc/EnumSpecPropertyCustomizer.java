@@ -27,7 +27,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class EnumDefPropertyCustomizer implements PropertyCustomizer {
+public class EnumSpecPropertyCustomizer implements PropertyCustomizer {
 
     @Override
     @SuppressWarnings("rawtypes")

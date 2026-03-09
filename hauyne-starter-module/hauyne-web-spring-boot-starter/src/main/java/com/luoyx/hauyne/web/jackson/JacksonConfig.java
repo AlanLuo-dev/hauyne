@@ -8,8 +8,8 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.luoyx.hauyne.web.enumsupport.jackson.EnumDefDeserializerModifier;
-import com.luoyx.hauyne.web.enumsupport.jackson.EnumDefSerializerModifier;
+import com.luoyx.hauyne.web.enumsupport.jackson.EnumSpecDeserializerModifier;
+import com.luoyx.hauyne.web.enumsupport.jackson.EnumSpecSerializerModifier;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,8 +50,8 @@ public class JacksonConfig {
     @Bean
     public SimpleModule enumSchemaModule() {
         SimpleModule module = new SimpleModule();
-        module.setSerializerModifier(new EnumDefSerializerModifier());
-        module.setDeserializerModifier(new EnumDefDeserializerModifier());
+        module.setSerializerModifier(new EnumSpecSerializerModifier());
+        module.setDeserializerModifier(new EnumSpecDeserializerModifier());
         return module;
     }
 }
