@@ -1,37 +1,43 @@
 package com.luoyx.hauyne.web.enumsupport.validate;
 
 import com.luoyx.hauyne.api.enumsupport.EnumSpec;
-import lombok.RequiredArgsConstructor;
-import org.reflections.Reflections;
-import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.env.EnvironmentPostProcessor;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.type.filter.AssignableTypeFilter;
 
-import java.util.List;
 import java.util.Set;
 
-@RequiredArgsConstructor
-public class EnumSpecStartupValidator implements SmartInitializingSingleton {
+public class EnumSpecStartupValidator implements EnvironmentPostProcessor {
 
-    private final ApplicationContext applicationContext;
+
 
     @Override
-    public void afterSingletonsInstantiated() {
-        List<String> basePackages = AutoConfigurationPackages.get(applicationContext);
-        scanAndValidateEnumDef(basePackages);
+    public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
+        String basePackage = application.getMainApplicationClass().getPackageName();
+        scanAndValidate(basePackage);
     }
 
-    private void scanAndValidateEnumDef(List<String> basePackages) {
-        for (String basePackage : basePackages) {
-            Reflections reflections = new Reflections(basePackage);
-            Set<Class<? extends Enum>> enums = reflections.getSubTypesOf(Enum.class);
-            for (Class<? extends Enum> enumClass : enums) {
-                if (EnumSpec.class.isAssignableFrom(enumClass)) {
-                    EnumSpecValidator.validate(enumClass);
+    private void scanAndValidate(String basePackage) {
+        ClassPathScanningCandidateComponentProvider scanner =
+                new ClassPathScanningCandidateComponentProvider(false);
+        scanner.addIncludeFilter(new AssignableTypeFilter(EnumSpec.class));
+        Set<BeanDefinition> components = scanner.findCandidateComponents(basePackage);
+
+        for (BeanDefinition bd : components) {
+            try {
+
+                Class<?> clazz = Class.forName(bd.getBeanClassName());
+
+                if (clazz.isEnum()) {
+                    EnumSpecValidator.validate((Class<? extends Enum>) clazz);
                 }
+
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
             }
         }
     }
 }
-
-
