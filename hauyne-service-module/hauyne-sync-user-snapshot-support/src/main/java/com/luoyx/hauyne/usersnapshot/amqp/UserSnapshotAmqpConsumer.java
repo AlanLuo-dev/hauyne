@@ -25,17 +25,25 @@ public class UserSnapshotAmqpConsumer {
     private final SyncUserSnapshotService syncUserSnapshotService;
 
     /**
-     * 监听用户快照队列
-     * <p>
-     * queue: 微服务名 + .user.snapshot.queue
-     * exchange: user.snapshot.fanout.exchange
+     * 用户快照消息消费者
      *
-     * @param messages 用户快照MQ消息列表
+     * <p>监听用户快照广播消息，实现各微服务之间的用户快照数据同步。</p>
+     *
+     * <p><b>广播交换器：</b>user.snapshot.fanout.exchange<br>
+     * 所有绑定到该交换器的队列都会收到同一份消息（不依赖 routing key）。</p>
+     *
+     * <p><b>队列：</b>${spring.application.name}.user.snapshot.queue<br>
+     * 每个微服务实例拥有独立队列，实现解耦与广播订阅。</p>
+     *
+     * <p><b>消费逻辑：</b><br>
+     * 接收用户快照消息后，执行本地用户快照数据同步。</p>
+     *
+     * @param message 用户快照消息
      */
     @RabbitListener(
             bindings = @QueueBinding(
-                    value = @Queue(value = "${spring.application.name}.user.snapshot.queue"),
-                    exchange = @Exchange(name = "user.snapshot.fanout.exchange", type = ExchangeTypes.FANOUT)
+                    exchange = @Exchange(type = ExchangeTypes.FANOUT, name = "user.snapshot.fanout.exchange"),
+                    value = @Queue(value = "${spring.application.name}.user.snapshot.queue")
             )
     )
     public void consume(UserSnapshotMessage message) {

@@ -12,8 +12,6 @@ import java.util.Set;
 
 public class EnumSpecStartupValidator implements EnvironmentPostProcessor {
 
-
-
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         String basePackage = application.getMainApplicationClass().getPackageName();

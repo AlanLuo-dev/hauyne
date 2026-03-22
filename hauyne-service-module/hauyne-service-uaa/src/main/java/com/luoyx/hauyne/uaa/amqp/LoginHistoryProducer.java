@@ -15,6 +15,6 @@ public class LoginHistoryProducer {
 
     public void send(SaveLoginHistoryDTO loginHistoryDTO){
         log.debug("生产登录历史消息【{}】", loginHistoryDTO);
-        this.rabbitTemplate.convertAndSend("LOGIN_HISTORY_EXCHANGE", "LOGIN_HISTORY_ROUTING", loginHistoryDTO);
+        this.rabbitTemplate.convertAndSend("login.history.exchange", "login.history.routing", loginHistoryDTO);
     }
 }

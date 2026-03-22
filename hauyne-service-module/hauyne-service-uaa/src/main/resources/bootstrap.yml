@@ -16,9 +16,9 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-logging:
-  level:
-    org.springframework.security: trace
+#logging:
+#  level:
+#    org.springframework.security: trace
 # CloudAMQP
 #  rabbitmq:
 #    host: gerbil-01.rmq.cloudamqp.com

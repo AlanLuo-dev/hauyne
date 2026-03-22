@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginHistoryConsumer {
 
-    @RabbitListener(queues = "LOGIN_HISTORY_QUEUE")
+    @RabbitListener(queues = "login.history.queue")
     public void handleLoginHistory(SaveLoginHistoryDTO saveLoginHistoryDTO) {
         log.info("接收到登录日志消息：" + saveLoginHistoryDTO);
     }

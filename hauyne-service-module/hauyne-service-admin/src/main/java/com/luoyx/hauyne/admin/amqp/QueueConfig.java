@@ -14,12 +14,12 @@ public class QueueConfig {
 
     @Bean
     public DirectExchange loginHistoryDirectExchange() {
-        return new DirectExchange("LOGIN_HISTORY_EXCHANGE");
+        return new DirectExchange("login.history.exchange");
     }
 
     @Bean
     public Queue loginHistoryQueue() {
-        return new Queue("LOGIN_HISTORY_QUEUE", true);
+        return new Queue("login.history.queue");
     }
 
     @Bean
@@ -27,7 +27,7 @@ public class QueueConfig {
         return BindingBuilder
                 .bind(loginHistoryQueue())
                 .to(loginHistoryDirectExchange())
-                .with("LOGIN_HISTORY_ROUTING");
+                .with("login.history.routing");
     }
 
     /*~ END   登录历史 MQ配置 ***************************/
