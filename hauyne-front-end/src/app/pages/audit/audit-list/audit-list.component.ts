@@ -18,7 +18,7 @@ export interface AuditType {
 
 export interface AuditQuery {
     localId: number;
-    typeName: string;
+    auditEnum: string;
 }
 
 export interface AuditChangeInfo {
@@ -97,7 +97,7 @@ export class AuditListComponent implements OnInit, OnDestroy {
             const key: string = entry[0];
             this.auditService.groupChangesByCommit({
                 localId: this.localId,
-                typeName: key
+                auditEnum: key
             }).subscribe({
                 next: result => {
                     this.groupChangesMap.set(key, result);
