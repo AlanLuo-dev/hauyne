@@ -82,7 +82,7 @@ public class AuditServiceImpl implements AuditService {
         return QueryBuilder
                 .byInstanceId(
                         query.getLocalId(),
-                        AuditEnum.TYPE_NAME_CLAZZ_MAP.get(query.getTypeName())
+                        AuditEnum.TYPE_NAME_CLAZZ_MAP.get(query.getAuditEnum().getValue())
                 )
                 .build();
     }
@@ -177,7 +177,7 @@ public class AuditServiceImpl implements AuditService {
                     FieldChangeVO field = FieldChangeVO.builder()
                             .property(valueChange.getPropertyName())
                             .label(
-                                    AuditFieldNameRegistry.resolve(query.getTypeName(), valueChange.getPropertyName())
+                                    AuditFieldNameRegistry.resolve(query.getAuditEnum().getValue(), valueChange.getPropertyName())
                             )
                             .oldValue(valueChange.getLeft())
                             .newValue(valueChange.getRight())
@@ -192,7 +192,7 @@ public class AuditServiceImpl implements AuditService {
                     FieldChangeVO field = FieldChangeVO.builder()
                             .property(listChange.getPropertyName())
                             .label(
-                                    AuditFieldNameRegistry.resolve(query.getTypeName(), listChange.getPropertyName())
+                                    AuditFieldNameRegistry.resolve(query.getAuditEnum().getValue(), listChange.getPropertyName())
                             )
                             .oldValue(listChange.getLeft())
                             .newValue(listChange.getRight())
