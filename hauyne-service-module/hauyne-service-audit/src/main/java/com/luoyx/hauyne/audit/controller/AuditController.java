@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -80,7 +81,7 @@ public class AuditController implements AuditAPI {
      */
     @Operation(summary = "查询分组后的变更日志")
     @GetMapping("/grouped-changes")
-    public List<AuditChangeVO> groupChangesByCommit(@Validated AuditQuery query) {
+    public List<AuditChangeVO> groupChangesByCommit(@ParameterObject @Validated AuditQuery query) {
         return auditService.groupChangesByCommit(query);
     }
 }
