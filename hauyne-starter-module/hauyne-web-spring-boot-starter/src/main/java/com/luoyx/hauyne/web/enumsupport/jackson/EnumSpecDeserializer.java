@@ -23,7 +23,7 @@ public class EnumSpecDeserializer<R extends Enum<R> & EnumSpec<? extends Seriali
 
     @Override
     public R deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        JsonNode node = p.getCodec().readTree(p);
+        JsonNode node = ctxt.readTree(p);
         Serializable inputValue;
         if (node.isObject() && node.has("value")) {
             JsonNode valueNode = node.get("value");
