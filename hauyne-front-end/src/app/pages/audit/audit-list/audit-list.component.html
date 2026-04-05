@@ -17,47 +17,60 @@
                 @for (entry of typeRemarkEntries; track entry[0]; let i = $index) {
                     <nz-tab [nzTitle]="nzTabLabel">
 
-                        <!-- 标签的标题 START -->
+                        <!-- Tab 标题 START -->
                         <ng-template #nzTabLabel>
                             {{ entry[1] }}
                             @if (entry[0] === latestTypeName) {
                                 <nz-badge nzDot nz-tooltip nzTooltipTitle="最新"></nz-badge>
                             }
                         </ng-template>
-                        <!-- 标签的标题 END -->
+                        <!-- Tab 标题 END -->
 
-                        <!-- 时间轴 START -->
-                        <nz-timeline>
-                            @for (change of getGroupChanges(entry[0]); track change.version) {
-                                <nz-timeline-item [nzDot]="dotTemplate">
-                                    <div class="audit-meta">
-                                        <span class="time">{{ change.commitDate }}</span>
-                                        <span class="author">👤 作者：{{ change.author }}</span>
-                                        <span [class]="'type type-' + change.changeType.toLowerCase()"
-                                        >🛠️ 变更类型：{{ change.changeType }}</span>
-                                    </div>
-                                    @for (field of change.changes; track field.property) {
-                                        <div class="audit-field">
-                                            <nz-tag [nzColor]="'#1890ff'">{{ field.label }}</nz-tag>
-                                            <span class="old">旧值：{{ field.oldValue || '空' }}</span>
-                                            →
-                                            <span class="new">新值：{{ field.newValue || '空' }}</span>
-                                        </div>
-                                    }
-                                </nz-timeline-item>
-                            }
-                        </nz-timeline>
-                        <!-- 时间轴 END -->
+                        <!-- Tab 内容 START -->
+                        <ng-container
+                            *ngTemplateOutlet="getTemplate(entry); context: { $implicit: entry }">
+                        </ng-container>
+
+                        <ng-container></ng-container>
+                        <!-- Tab 内容 END -->
                     </nz-tab>
                 }
             </nz-tabs>
             <!-- Tabs END -->
         </nz-spin>
 
-        <ng-template #dotTemplate>
-            <nz-icon nzType="clock-circle" nzTheme="twotone" nzTwotoneColor="#52c41a" style="font-size: 16px;"/>
-        </ng-template>
+
     </ng-container>
-
-
 </nz-drawer>
+
+<ng-template #dotTemplate>
+    <nz-icon nzType="clock-circle" nzTheme="twotone" nzTwotoneColor="#52c41a" style="font-size: 16px;"/>
+</ng-template>
+
+<ng-template #defaultTpl let-entry>
+    <nz-timeline>
+        @for (change of getGroupChanges(entry[0]); track change.version) {
+            <nz-timeline-item [nzDot]="dotTemplate">
+                <div class="audit-meta">
+                    <span class="time">{{ change.commitDate }}</span>
+                    <span class="author">👤 操作人：{{ change.author }}</span>
+                    <span [class]="'type type-' + change.changeType.toLowerCase()"
+                    >🛠️ 变更类型：{{ change.changeType }}</span>
+                </div>
+                @for (field of change.changes; track field.property) {
+                    <div class="audit-field">
+                        <nz-tag [nzColor]="'#1890ff'">{{ field.label }}</nz-tag>
+                        <span class="old">旧值：{{ field.oldValue || '空' }}</span>
+                        →
+                        <span class="new">新值：{{ field.newValue || '空' }}</span>
+                    </div>
+                }
+            </nz-timeline-item>
+        }
+    </nz-timeline>
+</ng-template>
+
+<ng-template #roleAuthorityTpl let-entry>
+
+    😄哈哈哈
+</ng-template>

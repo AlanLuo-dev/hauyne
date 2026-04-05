@@ -1,15 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzTabsModule} from "ng-zorro-antd/tabs";
 import {AuditService} from "../audit.service";
 import {NzTimelineModule} from "ng-zorro-antd/timeline";
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
-import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzCardModule} from "ng-zorro-antd/card";
 import {NzTagModule} from "ng-zorro-antd/tag";
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {NzBadgeModule} from "ng-zorro-antd/badge";
-import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {CommonModule} from "@angular/common";
 
 export interface AuditType {
     typeName: string;
@@ -60,7 +59,7 @@ export interface FieldChangeInfo {
 @Component({
     selector: 'app-audit-list',
     imports: [NzDrawerModule, NzTimelineModule, NzButtonModule, NzTabsModule,
-        NzIconDirective, NzCardModule, NzTagModule, NzSpinModule, NzBadgeModule, NzTooltipDirective
+        NzCardModule, NzTagModule, NzSpinModule, NzBadgeModule, CommonModule
     ],
     standalone: true,
     templateUrl: './audit-list.component.html',
@@ -86,6 +85,20 @@ export class AuditListComponent implements OnInit, OnDestroy {
 
     selectedTabIndex = 0;
     latestTypeName: string | null = null;
+
+    // Tab页内容默认展示的模板
+    @ViewChild('defaultTpl', {static: true}) defaultTpl!: TemplateRef<any>;
+    @ViewChild('roleAuthorityTpl', {static: true}) roleAuthorityTpl!: TemplateRef<any>;
+
+
+    getTemplate(entry: [string, string]): TemplateRef<any> {
+        switch (entry[0]) {
+            case 'hyn_sys_role_authority':
+                return this.roleAuthorityTpl;
+            default:
+                return this.defaultTpl;
+        }
+    }
 
     constructor(private readonly auditService: AuditService) {
 
