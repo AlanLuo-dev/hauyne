@@ -3,7 +3,6 @@ package com.luoyx.hauyne.admin.sys.service;
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.AuthorityNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.request.AuthorityCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.AuthorityUpdateDTO;
@@ -72,10 +71,11 @@ public interface AuthorityService extends BaseService<Authority> {
     /**
      * 校验权限名称可用性【修改场景】
      *
-     * @param query 权限名称唯一性校验 查询条件
-     * @return
+     * @param excludeAuthorityId 要排除的权限id
+     * @param authorityName      权限名称
+     * @return 是否唯一 true=唯一 false=不唯一
      */
-    boolean checkAuthorityNameAvailability(AuthorityNameUniqueCheckQuery query);
+    boolean isAuthorityNameUnique(Long excludeAuthorityId, String authorityName);
 
     /**
      * 校验表单参数

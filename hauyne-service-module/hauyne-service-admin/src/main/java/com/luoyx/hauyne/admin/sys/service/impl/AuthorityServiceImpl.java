@@ -5,7 +5,6 @@ import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.mapper.AuthorityMapper;
 import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.AuthorityNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.request.AuthorityCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.AuthorityUpdateDTO;
@@ -191,14 +190,15 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
     }
 
     /**
-     * 校验权限名称可用性
+     * 校验权限名称可用性【修改场景】
      *
-     * @param query 权限名称唯一性校验 查询条件
-     * @return
+     * @param excludeAuthorityId 要排除的权限id
+     * @param authorityName      权限名称
+     * @return 是否唯一 true=唯一 false=不唯一
      */
     @Override
-    public boolean checkAuthorityNameAvailability(AuthorityNameUniqueCheckQuery query) {
-        return baseMapper.countAuthorityName(query) == 0;
+    public boolean isAuthorityNameUnique(Long excludeAuthorityId, String authorityName) {
+        return baseMapper.selectOneByAuthorityName(excludeAuthorityId, authorityName) == null;
     }
 
     /**
@@ -210,7 +210,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
     public void checkFormData(Authority authority) {
         Long id = authority.getId();
         String authorityName = authority.getAuthorityName();
-        if (!checkAuthorityNameAvailability(new AuthorityNameUniqueCheckQuery(id, authorityName))) {
+        if (!isAuthorityNameUnique(id, authorityName)) {
             throw new ValidateException("权限名称" + authorityName + "已存在, 请勿重复添加");
         }
     }

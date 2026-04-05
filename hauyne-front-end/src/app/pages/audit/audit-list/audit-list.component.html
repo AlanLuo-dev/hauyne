@@ -30,7 +30,6 @@
                         <nz-timeline>
                             @for (change of getGroupChanges(entry[0]); track change.version) {
                                 <nz-timeline-item [nzDot]="dotTemplate">
-                                    <h4 class="version-title">版本 #{{ change.version }}</h4>
                                     <div class="audit-meta">
                                         <span class="time">{{ change.commitDate }}</span>
                                         <span class="author">👤 作者：{{ change.author }}</span>

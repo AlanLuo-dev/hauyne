@@ -159,7 +159,8 @@ public class RoleController {
     /**
      * 检查角色名称唯一性
      *
-     * @param query 要排除的角色id & 角色名称
+     * @param excludeRoleId 要排除的角色id
+     * @param roleName      角色名称
      * @return 是否可用
      */
     @Operation(summary = "检查角色名称唯一性")

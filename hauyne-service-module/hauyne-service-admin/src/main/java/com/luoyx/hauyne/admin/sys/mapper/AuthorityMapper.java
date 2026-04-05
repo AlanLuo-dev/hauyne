@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.AuthorityNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.response.AuthorityCheckBoxTreeVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityDetailVO;
@@ -74,14 +73,15 @@ public interface AuthorityMapper extends GenericMapper<Authority> {
     /**
      * 校验权限名称是否已存在
      *
-     * @param query 权限名称唯一性校验 查询条件
+     * @param excludeAuthorityId 要排除的权限id
+     * @param authorityName      权限名称
      * @return 返回大于0 则表示权限名称已存在，返回0 则表示权限名称可用
      */
-    default Long countAuthorityName(AuthorityNameUniqueCheckQuery query) {
-        return selectCount(
+    default Authority selectOneByAuthorityName(Long excludeAuthorityId, String authorityName) {
+        return selectOne(
                 Wrappers.<Authority>lambdaQuery()
-                        .eq(Authority::getAuthorityName, query.getAuthorityName())
-                        .ne(query.getExcludeAuthorityId() != null, Authority::getId, query.getExcludeAuthorityId())
+                        .eq(Authority::getAuthorityName, authorityName)
+                        .ne(excludeAuthorityId != null, Authority::getId, excludeAuthorityId)
         );
     }
 

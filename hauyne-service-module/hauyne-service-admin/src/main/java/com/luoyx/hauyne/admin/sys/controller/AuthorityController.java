@@ -4,7 +4,6 @@ package com.luoyx.hauyne.admin.sys.controller;
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
-import com.luoyx.hauyne.admin.sys.query.AuthorityNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.request.AuthorityCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.AuthorityUpdateDTO;
@@ -18,6 +17,7 @@ import com.luoyx.hauyne.web.exception.ResourceNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -115,13 +116,21 @@ public class AuthorityController {
     /**
      * 校验权限名称是否唯一
      *
-     * @param query 权限名称唯一性校验 查询条件
-     * @return
+     * @param excludeAuthorityId 要排除的权限id
+     * @param authorityName      权限名称
+     * @return 是否唯一 true=唯一 false=不唯一
      */
     @Operation(summary = "校验权限名称是否唯一")
     @GetMapping(value = "/check-authority-name-unique")
-    public Availability checkAuthorityNameUnique(@ParameterObject @Validated AuthorityNameUniqueCheckQuery query) {
-        return new Availability(authorityService.checkAuthorityNameAvailability(query));
+    public Availability checkAuthorityNameUnique(@Parameter(description = "要排除的权限id")
+                                                 @RequestParam(value = "excludeAuthorityId", required = false)
+                                                 Long excludeAuthorityId,
+
+                                                 @Parameter(description = "权限名称")
+                                                 @NotBlank(message = "权限名称不能为空")
+                                                 @RequestParam(value = "authorityName")
+                                                 String authorityName) {
+        return new Availability(authorityService.isAuthorityNameUnique(excludeAuthorityId, authorityName));
     }
 
     //    @PreAuthorize("hasAuthority('sys-permission:view')")
