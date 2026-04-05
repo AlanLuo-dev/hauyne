@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
-import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.response.AuthorityCheckBoxTreeVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityDetailVO;
@@ -55,20 +54,6 @@ public interface AuthorityMapper extends GenericMapper<Authority> {
     List<AuthorityTreeSelectVO> selectParentAuthorityFormData();
 
     List<AuthorityCheckBoxTreeVO> selectForCheckBoxTree();
-
-    /**
-     * 查询权限编码是否已存在
-     *
-     * @param query 权限编码唯一性校验 查询条件
-     * @return 返回大于0 则表示权限编码已存在，返回0 则表示权限编码可用
-     */
-    default Long countAuthorityCode(AuthorityCodeUniqueCheckQuery query) {
-        return selectCount(
-                Wrappers.<Authority>lambdaQuery()
-                        .eq(Authority::getAuthorityCode, query.getAuthorityCode())
-                        .ne(query.getExcludeAuthorityId() != null, Authority::getId, query.getExcludeAuthorityId())
-        );
-    }
 
     /**
      * 校验权限名称是否已存在

@@ -3,7 +3,6 @@ package com.luoyx.hauyne.admin.sys.controller;
 
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
-import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.request.AuthorityCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.AuthorityUpdateDTO;
@@ -99,18 +98,6 @@ public class AuthorityController {
     public ResponseEntity<Authority> add(@Validated @RequestBody AuthorityCreateDTO authorityCreateDTO) {
         Authority authority = authorityService.create(authorityCreateDTO);
         return ResponseEntity.created(URI.create(AUTHORITY_URI + "/" + authority.getId())).body(authority);
-    }
-
-    /**
-     * 校验权限编码是否唯一
-     *
-     * @param query 权限编码唯一性校验 查询条件
-     * @return
-     */
-    @Operation(summary = "校验权限编码是否唯一")
-    @GetMapping(value = "/check-authority-code-unique")
-    public Availability checkAuthorityCodeUnique(@ParameterObject @Validated AuthorityCodeUniqueCheckQuery query) {
-        return new Availability(authorityService.checkAuthorityCodeUnique(query));
     }
 
     /**

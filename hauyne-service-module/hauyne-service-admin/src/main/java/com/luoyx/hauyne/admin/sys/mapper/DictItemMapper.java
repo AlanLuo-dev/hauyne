@@ -63,16 +63,16 @@ public interface DictItemMapper extends GenericMapper<DictItem> {
     /**
      * 统计某个字典类型的字典数量
      *
-     * @param dictTypeId
-     * @return
+     * @param dictTypeId 字典类型id
+     * @return 字典数量
      */
     int countByDictTypeId(@Param("dictTypeId") Long dictTypeId);
 
     /**
      * 统计一批字典类型的字典数量
      *
-     * @param dictTypeIds
-     * @return
+     * @param dictTypeIds 字典类型id列表
+     * @return 字典数量列表，对应dictTypeIds列表
      */
     List<String> countByDictTypeIds(@Param("dictTypeIds") List<Long> dictTypeIds);
 
@@ -80,7 +80,7 @@ public interface DictItemMapper extends GenericMapper<DictItem> {
      * 按字典类型编码 查询字典选项，升序排序
      *
      * @param dictTypeCode 字典类型编码
-     * @return
+     * @return 字典选项列表，升序排序
      */
     List<DictItemDropdownVO> selectDropdownData(@Param("dictTypeCode") String dictTypeCode);
 

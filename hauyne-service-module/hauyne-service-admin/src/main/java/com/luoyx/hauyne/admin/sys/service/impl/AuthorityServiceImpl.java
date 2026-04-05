@@ -4,7 +4,6 @@ import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.mapper.AuthorityMapper;
-import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.request.AuthorityCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.AuthorityUpdateDTO;
@@ -176,17 +175,6 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
             authority.setIcon("skin");
         }
         baseMapper.updateById(authority);
-    }
-
-    /**
-     * 校验权限编码可用性
-     *
-     * @param query 权限编码唯一性校验 查询条件
-     * @return
-     */
-    @Override
-    public boolean checkAuthorityCodeUnique(AuthorityCodeUniqueCheckQuery query) {
-        return baseMapper.countAuthorityCode(query) == 0;
     }
 
     /**

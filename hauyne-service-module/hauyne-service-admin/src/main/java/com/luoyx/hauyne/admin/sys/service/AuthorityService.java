@@ -2,7 +2,6 @@ package com.luoyx.hauyne.admin.sys.service;
 
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
-import com.luoyx.hauyne.admin.sys.query.AuthorityCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.AuthorityQuery;
 import com.luoyx.hauyne.admin.sys.request.AuthorityCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.AuthorityUpdateDTO;
@@ -59,14 +58,6 @@ public interface AuthorityService extends BaseService<Authority> {
      * @param authorityUpdateDTO 权限表单参数
      */
     void update(AuthorityUpdateDTO authorityUpdateDTO);
-
-    /**
-     * 校验权限编码可用性
-     *
-     * @param query 权限编码唯一性校验 查询条件
-     * @return
-     */
-    boolean checkAuthorityCodeUnique(AuthorityCodeUniqueCheckQuery query);
 
     /**
      * 校验权限名称可用性【修改场景】
