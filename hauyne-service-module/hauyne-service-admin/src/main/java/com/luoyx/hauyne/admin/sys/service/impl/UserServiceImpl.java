@@ -17,7 +17,6 @@ import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.PrivateKeyRedisKeyEnum;
 import com.luoyx.hauyne.admin.sys.event.UserSnapshotEvent;
 import com.luoyx.hauyne.admin.sys.mapper.UserMapper;
-import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.UserPageQuery;
 import com.luoyx.hauyne.admin.sys.request.ModifyPasswordDTO;
@@ -258,7 +257,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 校验邮箱是否存在
         final String email = userCreateDTO.getProfile().getEmail();
-        result = userProfileService.checkEmailUnique(new EmailUniqueCheckQuery(email));
+        result = userProfileService.isEmailUnique(null, email);
         if (!result) {
             throw new ValidateException("邮箱 " + email + " 已存在");
         }
@@ -389,7 +388,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 校验邮箱是否存在
         final String email = userUpdateDTO.getProfile().getEmail();
-        result = userProfileService.checkEmailUnique(new EmailUniqueCheckQuery(excludeUserId, email));
+        result = userProfileService.isEmailUnique(excludeUserId, email);
         if (!result) {
             throw new ValidateException("邮箱 " + email + " 已存在");
         }

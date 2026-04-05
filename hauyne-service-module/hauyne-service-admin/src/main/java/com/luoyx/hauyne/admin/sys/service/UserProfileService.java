@@ -2,7 +2,6 @@ package com.luoyx.hauyne.admin.sys.service;
 
 import com.luoyx.hauyne.admin.api.sys.dto.UserFullNameDTO;
 import com.luoyx.hauyne.admin.sys.entity.UserProfile;
-import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.mybatisplus.service.BaseService;
 //import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
@@ -34,9 +33,10 @@ public interface UserProfileService extends BaseService<UserProfile> {
     /**
      * 检查邮箱是否唯一
      *
-     * @param query 邮箱唯一性校验查询条件
+     * @param excludeUserId 要排除的用户Id（编辑用户的场景）
+     * @param email         邮箱
      * @return true=可用，false=已被占用
      */
-    boolean checkEmailUnique(EmailUniqueCheckQuery query);
+    boolean isEmailUnique(Long excludeUserId, String email);
 
 }

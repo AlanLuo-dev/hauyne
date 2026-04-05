@@ -3,7 +3,6 @@ package com.luoyx.hauyne.admin.sys.mapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.luoyx.hauyne.admin.api.sys.dto.UserFullNameDTO;
 import com.luoyx.hauyne.admin.sys.entity.UserProfile;
-import com.luoyx.hauyne.admin.sys.query.EmailUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.response.UserEditFormVO;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
@@ -43,14 +42,15 @@ public interface UserProfileMapper extends GenericMapper<UserProfile> {
     /**
      * 邮箱唯一性校验
      *
-     * @param query 邮箱唯一性校验查询条件
-     * @return 返回大于0 则表示邮箱已存在，返回0 则表示邮箱可用
+     * @param excludeUserId 要排除的用户Id（编辑用户的场景）
+     * @param email         邮箱
+     * @return 返回邮箱已存在用户对象，否则返回null表示邮箱可用
      */
-    default long countByEmail(EmailUniqueCheckQuery query) {
-        return this.selectCount(
+    default UserProfile selectOneByEmail(Long excludeUserId, String email) {
+        return this.selectOne(
                 Wrappers.<UserProfile>lambdaQuery()
-                        .eq(UserProfile::getEmail, query.getEmail())
-                        .ne(query.getExcludeUserId() != null, UserProfile::getId, query.getExcludeUserId())
+                        .eq(UserProfile::getEmail, email)
+                        .ne(excludeUserId != null, UserProfile::getId, excludeUserId)
         );
     }
 
