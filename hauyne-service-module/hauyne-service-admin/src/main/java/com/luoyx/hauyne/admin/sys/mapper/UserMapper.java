@@ -51,7 +51,7 @@ public interface UserMapper extends GenericMapper<User> {
      * @param username      用户名
      * @return 用户名已存在则返回用户实体，否则返回null
      */
-    default User selectOneByUserName(Long excludeUserId, String username) {
+    default User findByUsernameExcludingId(Long excludeUserId, String username) {
         return this.selectOne(
                 Wrappers.<User>lambdaQuery()
                         .eq(User::getUsername, username)

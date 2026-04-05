@@ -123,7 +123,7 @@ public class UserController implements UserAPI {
                                             @NotBlank(message = "用户名不能为空")
                                             @RequestParam(value = "username")
                                             String username) {
-        return new Availability(userService.isUserNameUnique(excludeUserId, username));
+        return new Availability(userService.isUsernameAvailable(excludeUserId, username));
     }
 
     /**

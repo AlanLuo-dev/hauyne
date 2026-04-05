@@ -63,7 +63,7 @@ public interface UserService extends BaseService<User> {
      * @param username      用户名
      * @return 用户名已存在则返回false，否则返回true
      */
-    boolean isUserNameUnique(Long excludeUserId, String username);
+    boolean isUsernameAvailable(Long excludeUserId, String username);
 
     /**
      * 批量删除用户

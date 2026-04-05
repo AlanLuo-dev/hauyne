@@ -31,7 +31,7 @@ public interface UserProfileMapper extends GenericMapper<UserProfile> {
      * @param phone         手机号
      * @return 返回null 表示手机号可用，否则表示手机号已被占用
      */
-    default UserProfile selectOneByPhone(Long excludeUserId, String phone) {
+    default UserProfile findByPhoneExcludingId(Long excludeUserId, String phone) {
         return this.selectOne(
                 Wrappers.<UserProfile>lambdaQuery()
                         .eq(UserProfile::getPhone, phone)
@@ -46,7 +46,7 @@ public interface UserProfileMapper extends GenericMapper<UserProfile> {
      * @param email         邮箱
      * @return 返回邮箱已存在用户对象，否则返回null表示邮箱可用
      */
-    default UserProfile selectOneByEmail(Long excludeUserId, String email) {
+    default UserProfile findByEmailExcludingId(Long excludeUserId, String email) {
         return this.selectOne(
                 Wrappers.<UserProfile>lambdaQuery()
                         .eq(UserProfile::getEmail, email)

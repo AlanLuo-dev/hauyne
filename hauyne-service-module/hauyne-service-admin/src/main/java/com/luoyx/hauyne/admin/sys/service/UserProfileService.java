@@ -28,7 +28,7 @@ public interface UserProfileService extends BaseService<UserProfile> {
      * @param phone         手机号
      * @return true=可用，false=已被占用
      */
-    boolean isPhoneUnique(Long excludeUserId, String phone);
+    boolean isPhoneAvailable(Long excludeUserId, String phone);
 
     /**
      * 检查邮箱是否唯一
@@ -37,6 +37,6 @@ public interface UserProfileService extends BaseService<UserProfile> {
      * @param email         邮箱
      * @return true=可用，false=已被占用
      */
-    boolean isEmailUnique(Long excludeUserId, String email);
+    boolean isEmailAvailable(Long excludeUserId, String email);
 
 }

@@ -242,22 +242,22 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 校验用户名是否存在
         final String username = userCreateDTO.getUsername();
-        final boolean isUserNameUnique = isUserNameUnique(null, username);
-        if (!isUserNameUnique) {
+        boolean isAvailable = isUsernameAvailable(null, username);
+        if (!isAvailable) {
             throw new ValidateException("用户名 " + username + " 已存在");
         }
 
         // 校验手机号是否存在
         final String phone = userCreateDTO.getProfile().getPhone();
-        boolean result = userProfileService.isPhoneUnique(null, phone);
-        if (!result) {
+        isAvailable = userProfileService.isPhoneAvailable(null, phone);
+        if (!isAvailable) {
             throw new ValidateException("手机号 " + phone + " 已存在");
         }
 
         // 校验邮箱是否存在
         final String email = userCreateDTO.getProfile().getEmail();
-        result = userProfileService.isEmailUnique(null, email);
-        if (!result) {
+        isAvailable = userProfileService.isEmailAvailable(null, email);
+        if (!isAvailable) {
             throw new ValidateException("邮箱 " + email + " 已存在");
         }
 
@@ -273,8 +273,8 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
      * @return 用户名已存在则返回false，否则返回true
      */
     @Override
-    public boolean isUserNameUnique(Long excludeUserId, String username) {
-        return baseMapper.selectOneByUserName(excludeUserId, username) == null;
+    public boolean isUsernameAvailable(Long excludeUserId, String username) {
+        return baseMapper.findByUsernameExcludingId(excludeUserId, username) == null;
     }
 
     /**
@@ -373,22 +373,22 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         // 校验用户名是否存在
         final Long excludeUserId = userUpdateDTO.getId();
         final String username = userUpdateDTO.getUsername();
-        final boolean isUserNameUnique = isUserNameUnique(excludeUserId, username);
-        if (!isUserNameUnique) {
+        boolean isAvailable = isUsernameAvailable(excludeUserId, username);
+        if (!isAvailable) {
             throw new ValidateException("用户名 " + username + " 已存在");
         }
 
         // 校验手机号是否存在
         final String phone = userUpdateDTO.getProfile().getPhone();
-        boolean result = userProfileService.isPhoneUnique(excludeUserId, phone);
-        if (!result) {
+        isAvailable = userProfileService.isPhoneAvailable(excludeUserId, phone);
+        if (!isAvailable) {
             throw new ValidateException("手机号 " + phone + " 已存在");
         }
 
         // 校验邮箱是否存在
         final String email = userUpdateDTO.getProfile().getEmail();
-        result = userProfileService.isEmailUnique(excludeUserId, email);
-        if (!result) {
+        isAvailable = userProfileService.isEmailAvailable(excludeUserId, email);
+        if (!isAvailable) {
             throw new ValidateException("邮箱 " + email + " 已存在");
         }
 

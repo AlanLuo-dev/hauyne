@@ -39,8 +39,8 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfileMapper, U
      * @return true=可用，false=已被占用
      */
     @Override
-    public boolean isPhoneUnique(Long excludeUserId, String phone) {
-        return baseMapper.selectOneByPhone(excludeUserId, phone) == null;
+    public boolean isPhoneAvailable(Long excludeUserId, String phone) {
+        return baseMapper.findByPhoneExcludingId(excludeUserId, phone) == null;
     }
 
     /**
@@ -51,8 +51,8 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfileMapper, U
      * @return true=可用，false=已被占用
      */
     @Override
-    public boolean isEmailUnique(Long excludeUserId, String email) {
-        return baseMapper.selectOneByEmail(excludeUserId, email) == null;
+    public boolean isEmailAvailable(Long excludeUserId, String email) {
+        return baseMapper.findByEmailExcludingId(excludeUserId, email) == null;
     }
 
 }
