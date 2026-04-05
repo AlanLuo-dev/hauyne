@@ -17,7 +17,6 @@ import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.PrivateKeyRedisKeyEnum;
 import com.luoyx.hauyne.admin.sys.event.UserSnapshotEvent;
 import com.luoyx.hauyne.admin.sys.mapper.UserMapper;
-import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.UserPageQuery;
 import com.luoyx.hauyne.admin.sys.request.ModifyPasswordDTO;
 import com.luoyx.hauyne.admin.sys.request.ResetPasswordDTO;
@@ -250,7 +249,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 校验手机号是否存在
         final String phone = userCreateDTO.getProfile().getPhone();
-        boolean result = userProfileService.checkPhoneUnique(new PhoneUniqueCheckQuery(phone));
+        boolean result = userProfileService.isPhoneUnique(null, phone);
         if (!result) {
             throw new ValidateException("手机号 " + phone + " 已存在");
         }
@@ -381,7 +380,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
 
         // 校验手机号是否存在
         final String phone = userUpdateDTO.getProfile().getPhone();
-        boolean result = userProfileService.checkPhoneUnique(new PhoneUniqueCheckQuery(excludeUserId, phone));
+        boolean result = userProfileService.isPhoneUnique(excludeUserId, phone);
         if (!result) {
             throw new ValidateException("手机号 " + phone + " 已存在");
         }

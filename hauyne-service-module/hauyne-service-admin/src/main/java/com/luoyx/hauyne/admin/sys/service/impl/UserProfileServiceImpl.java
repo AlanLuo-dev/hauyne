@@ -3,7 +3,6 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 import com.luoyx.hauyne.admin.api.sys.dto.UserFullNameDTO;
 import com.luoyx.hauyne.admin.sys.entity.UserProfile;
 import com.luoyx.hauyne.admin.sys.mapper.UserProfileMapper;
-import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.service.UserProfileService;
 import com.luoyx.hauyne.mybatisplus.service.impl.BaseServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +34,13 @@ public class UserProfileServiceImpl extends BaseServiceImpl<UserProfileMapper, U
     /**
      * 检查手机号是否唯一
      *
-     * @param query 手机号唯一性校验查询条件
+     * @param excludeUserId 要排除的用户Id（编辑用户的场景）
+     * @param phone         手机号
      * @return true=可用，false=已被占用
      */
     @Override
-    public boolean checkPhoneUnique(PhoneUniqueCheckQuery query) {
-        return baseMapper.countByPhone(query) == 0;
+    public boolean isPhoneUnique(Long excludeUserId, String phone) {
+        return baseMapper.selectOneByPhone(excludeUserId, phone) == null;
     }
 
     /**

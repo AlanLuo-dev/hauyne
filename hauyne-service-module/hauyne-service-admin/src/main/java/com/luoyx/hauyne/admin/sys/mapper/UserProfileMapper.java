@@ -3,7 +3,6 @@ package com.luoyx.hauyne.admin.sys.mapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.luoyx.hauyne.admin.api.sys.dto.UserFullNameDTO;
 import com.luoyx.hauyne.admin.sys.entity.UserProfile;
-import com.luoyx.hauyne.admin.sys.query.PhoneUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.response.UserEditFormVO;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
 //import com.luoyx.hauyne.usersnapshot.msg.UserSnapshotMessage;
@@ -28,14 +27,15 @@ public interface UserProfileMapper extends GenericMapper<UserProfile> {
     /**
      * 手机号唯一性校验
      *
-     * @param query 手机号唯一性校验查询条件
-     * @return 返回大于0 则表示手机号已存在，返回0 则表示手机号可用
+     * @param excludeUserId 要排除的用户Id（编辑用户的场景）
+     * @param phone         手机号
+     * @return 返回null 表示手机号可用，否则表示手机号已被占用
      */
-    default long countByPhone(PhoneUniqueCheckQuery query) {
-        return this.selectCount(
+    default UserProfile selectOneByPhone(Long excludeUserId, String phone) {
+        return this.selectOne(
                 Wrappers.<UserProfile>lambdaQuery()
-                        .eq(UserProfile::getPhone, query.getPhone())
-                        .ne(query.getExcludeUserId() != null, UserProfile::getId, query.getExcludeUserId())
+                        .eq(UserProfile::getPhone, phone)
+                        .ne(excludeUserId != null, UserProfile::getId, excludeUserId)
         );
     }
 
