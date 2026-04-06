@@ -1,9 +1,18 @@
 package com.luoyx.hauyne.uaa.authentication.captcha;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.luoyx.hauyne.admin.api.sys.dto.SaveLoginHistoryDTO;
 import com.luoyx.hauyne.framework.utils.rsa.RSAUtil;
+import com.luoyx.hauyne.security.pojo.CurrentSysUser;
+import com.luoyx.hauyne.uaa.amqp.LoginHistoryProducer;
 import com.luoyx.hauyne.uaa.dto.CachedCaptchaDTO;
+import com.luoyx.hauyne.uaa.enums.LoginHistoryResultEnum;
+import com.luoyx.hauyne.uaa.enums.LoginHistoryTypeEnum;
+import com.luoyx.hauyne.uaa.util.IpAddressUtil;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.UserAgent;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -42,9 +51,12 @@ import org.springframework.security.oauth2.server.authorization.token.OAuth2Toke
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenGenerator;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.net.URLDecoder;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -66,6 +78,10 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
 
     @Resource
     private RedisTemplate redisTemplate;
+
+    @Resource
+    private LoginHistoryProducer loginHistoryProducer;
+
     private final OAuth2AuthorizationService auth2AuthorizationService;
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
 
@@ -248,8 +264,46 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
         if (log.isTraceEnabled()) {
             log.trace("Authenticated token request");
         }
+        log.info("授权已完成！！！");
+        CurrentSysUser currentSysUser = (CurrentSysUser) usernamePasswordAuthenticationToken.getPrincipal();
+        saveLoginHistory(LoginHistoryTypeEnum.LOGIN, LoginHistoryResultEnum.LOGIN_SUCCESS, null, currentSysUser);
 
         return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken, refreshToken, additionalParameters);
+    }
+
+    /**
+     * 发布 记录日志事件
+     *
+     * @param loginHistoryTypeEnum   类型（1=登录；0=注销）
+     * @param loginHistoryResultEnum 登录/注销结果（1=登录成功，2=登录失败，3=注销成功，4=注销失败）
+     * @param failReason             失败原因
+     */
+    private void saveLoginHistory(LoginHistoryTypeEnum loginHistoryTypeEnum,
+                                 LoginHistoryResultEnum loginHistoryResultEnum,
+                                 String failReason,
+                                 CurrentSysUser user) {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        SaveLoginHistoryDTO saveLoginHistoryDTO = new SaveLoginHistoryDTO();
+        saveLoginHistoryDTO.setType(loginHistoryTypeEnum.getValue());
+        saveLoginHistoryDTO.setResult(loginHistoryResultEnum.getValue());
+        saveLoginHistoryDTO.setFailReason(failReason);
+
+        //输入的用户名不存在则记为0
+        saveLoginHistoryDTO.setUserId(user.getId());
+
+        String ip = IpAddressUtil.getHttpServletRequestIpAddress(request);
+        saveLoginHistoryDTO.setIpAddress(ip);
+        saveLoginHistoryDTO.setLocation(IpAddressUtil.getCityInfo(ip));
+
+        String userAgentStr = request.getHeader("User-Agent");
+        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
+        Browser browser = userAgent.getBrowser();
+        saveLoginHistoryDTO.setBrowser(browser.getGroup().getName());
+        saveLoginHistoryDTO.setBrowserVersion(browser.getVersion(userAgentStr).getVersion());
+        saveLoginHistoryDTO.setOsName(userAgent.getOperatingSystem().getName());
+        saveLoginHistoryDTO.setLoginTime(LocalDateTime.now());
+
+        loginHistoryProducer.send(saveLoginHistoryDTO);
     }
 
     @Override

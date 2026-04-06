@@ -14,7 +14,7 @@
         <result column="browser" property="browser" />
         <result column="browser_version" property="browserVersion" />
         <result column="os_name" property="osName" />
-        <result column="created_time" property="createdTime" />
+        <result column="login_time" property="loginTime" />
     </resultMap>
 
 
@@ -39,10 +39,9 @@
             sl.browser as browser,
             sl.browser_version AS browserVersion,
             sl.os_name AS osName,
-            sl.created_time AS createTime
+            sl.login_time AS loginTime
         FROM hyn_sys_login_history sl
-            LEFT JOIN hyn_sys_user u
-                on sl.user_id = u.id
+            LEFT JOIN hyn_sys_user u on sl.user_id = u.id
         <where>
             <if test="type != null">
                 sl.type = #{type, jdbcType=TINYINT}
@@ -61,14 +60,10 @@
                 and sl.os_name = #{osName, jdbcType=VARCHAR}
             </if>
             <if test="startTime != null and startTime != ''">
-                <![CDATA[
-                    and sl.created_time >= STR_TO_DATE(#{startTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
-                ]]>
+                and sl.login_time <![CDATA[ >= ]]> STR_TO_DATE(#{startTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
             </if>
             <if test="endTime != null and endTime != ''">
-                <![CDATA[
-                    and sl.created_time <= STR_TO_DATE(#{endTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
-                ]]>
+                and sl.login_time <![CDATA[ <= ]]> STR_TO_DATE(#{endTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
             </if>
         </where>
         ORDER BY

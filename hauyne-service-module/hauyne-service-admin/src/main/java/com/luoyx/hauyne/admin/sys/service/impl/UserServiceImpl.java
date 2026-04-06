@@ -51,6 +51,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -421,5 +422,17 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         }
         String bcryptPassword = bcryptPasswordEncoder.encode(decryptPassword);
         baseMapper.resetPassword(userId, bcryptPassword);
+    }
+
+    /**
+     * 更新用户最近登录时间
+     *
+     * @param userId        用户id
+     * @param lastLoginTime 最近登录时间
+     * @return 更新的行数
+     */
+    @Override
+    public int updateLastLoginTime(Long userId, LocalDateTime lastLoginTime) {
+        return baseMapper.updateLastLoginTime(userId, lastLoginTime);
     }
 }

@@ -8,6 +8,7 @@ import com.luoyx.hauyne.admin.sys.response.UserEditFormVO;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -78,5 +79,22 @@ public interface UserMapper extends GenericMapper<User> {
         user.setId(userId);
         user.setPassword(bcryptPassword);
         this.updateById(user);
+    }
+
+    /**
+     * 更新用户最近登录时间
+     *
+     * @param userId        用户id
+     * @param lastLoginTime 最近登录时间
+     * @return 更新的行数
+     */
+    default int updateLastLoginTime(Long userId, LocalDateTime lastLoginTime) {
+        User user = new User();
+        user.setId(userId);
+        user.setLastLoginTime(lastLoginTime);
+        user.setLastUpdatedBy(userId);
+        user.setLastUpdatedTime(LocalDateTime.now());
+
+        return this.updateById(user);
     }
 }

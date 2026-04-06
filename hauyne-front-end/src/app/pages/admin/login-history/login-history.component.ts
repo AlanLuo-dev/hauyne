@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {LoginHistoryService} from "./login-history.service";
-import {LoginHistory} from "./login-history";
 import {Column} from "../../../common/column";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -20,6 +19,20 @@ import {
     NzTrDirective
 } from "ng-zorro-antd/table";
 import {LoginHistoryQuery} from "./login-history-query";
+
+export interface LoginHistory {
+    id: number;
+    type: string;
+    result: string;
+    failReason: string;
+    username: string;
+    ipAddress: string;
+    location: string;
+    browser: string;
+    browserVersion: string;
+    osName: string;
+    loginTime: string;
+}
 
 /**
  * 登录日志组件
@@ -95,7 +108,7 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit {
             {field: 'browser', header: '客户端浏览器',},
             {field: 'browserVersion', header: '客户端浏览器版本',},
             {field: 'osName', header: '客户端操作系统名称',},
-            {field: 'createTime', header: '创建时间'}
+            {field: 'loginTime', header: '登录时间'}
         ];
 
         this.types = [

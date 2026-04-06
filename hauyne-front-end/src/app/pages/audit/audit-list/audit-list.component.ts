@@ -9,6 +9,7 @@ import {NzTagModule} from "ng-zorro-antd/tag";
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {NzBadgeModule} from "ng-zorro-antd/badge";
 import {CommonModule} from "@angular/common";
+import {NzTooltipModule} from "ng-zorro-antd/tooltip";
 
 export interface AuditType {
     typeName: string;
@@ -59,7 +60,8 @@ export interface FieldChangeInfo {
 @Component({
     selector: 'app-audit-list',
     imports: [NzDrawerModule, NzTimelineModule, NzButtonModule, NzTabsModule,
-        NzCardModule, NzTagModule, NzSpinModule, NzBadgeModule, CommonModule
+        NzCardModule, NzTagModule, NzSpinModule, NzBadgeModule, CommonModule,
+        NzTooltipModule
     ],
     standalone: true,
     templateUrl: './audit-list.component.html',

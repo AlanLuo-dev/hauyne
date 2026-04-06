@@ -16,6 +16,7 @@ import com.luoyx.hauyne.admin.sys.response.UserPageResultVO;
 import com.luoyx.hauyne.mybatisplus.dto.PageResult;
 import com.luoyx.hauyne.mybatisplus.service.BaseService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -93,4 +94,13 @@ public interface UserService extends BaseService<User> {
      * @param resetPasswordDTO 重置密码DTO
      */
     void resetPassword(ResetPasswordDTO resetPasswordDTO);
+
+    /**
+     * 更新用户最近登录时间
+     *
+     * @param userId        用户id
+     * @param lastLoginTime 最近登录时间
+     * @return 更新的行数
+     */
+    int updateLastLoginTime(Long userId, LocalDateTime lastLoginTime);
 }

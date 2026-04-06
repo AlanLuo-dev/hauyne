@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 08/03/2026 17:32:03
+ Date: 06/04/2026 11:07:02
 */
 
 SET NAMES utf8mb4;
@@ -370,16 +370,16 @@ CREATE TABLE `hyn_sys_login_history`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，无符号自增',
   `type` tinyint NOT NULL COMMENT '类型（1=登录；0=注销）',
   `result` tinyint NOT NULL COMMENT '登录/注销结果（1=登录成功，2=登录失败，3=注销成功，4=注销失败）',
-  `fail_reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '失败原因',
+  `fail_reason` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '失败原因',
   `user_id` bigint NOT NULL DEFAULT 0 COMMENT '用户id（0=用户输入的账号不存在）',
   `ip_address` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端ip',
   `location` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '登录地点',
   `browser` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端浏览器',
   `browser_version` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端浏览器版本',
   `os_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端操作系统名称',
-  `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `login_time` datetime NOT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 634 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1548 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_login_history
@@ -980,6 +980,8 @@ INSERT INTO `hyn_sys_login_history` VALUES (630, 0, 3, '注销成功', 1, '127.0
 INSERT INTO `hyn_sys_login_history` VALUES (631, 0, 3, '注销成功', 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '138.0.0.0', 'Windows 10', '2025-07-17 18:04:42');
 INSERT INTO `hyn_sys_login_history` VALUES (632, 0, 3, '注销成功', 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '138.0.0.0', 'Windows 10', '2025-07-31 09:55:27');
 INSERT INTO `hyn_sys_login_history` VALUES (633, 0, 3, '注销成功', 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '139.0.0.0', 'Linux', '2025-08-30 09:54:18');
+INSERT INTO `hyn_sys_login_history` VALUES (1546, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '146.0.0.0', 'Windows 10', '2026-04-06 10:51:16');
+INSERT INTO `hyn_sys_login_history` VALUES (1547, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '146.0.0.0', 'Windows 10', '2026-04-06 11:03:19');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role
@@ -1007,7 +1009,7 @@ INSERT INTO `hyn_sys_role` VALUES (59, 'tom', '布里', 1, '2025-06-24 16:02:48'
 INSERT INTO `hyn_sys_role` VALUES (62, 'joji', '王菲', 1, '2025-07-05 13:53:59', 1, '2025-10-15 22:03:26');
 INSERT INTO `hyn_sys_role` VALUES (64, 'test_role', '测试角色', 1, '2025-08-26 21:34:32', 1, '2025-08-28 16:21:18');
 INSERT INTO `hyn_sys_role` VALUES (65, '000', ',mmnm', 1, '2025-09-27 07:44:43', 1, '2025-11-13 21:40:55');
-INSERT INTO `hyn_sys_role` VALUES (66, '4444', 'fgdsfgd', 1, '2025-11-13 21:39:34', 1, '2025-11-13 21:39:56');
+INSERT INTO `hyn_sys_role` VALUES (66, '4444', 'fgdsfgd', 1, '2025-11-13 21:39:34', 1, '2026-04-05 10:14:49');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role_authority
@@ -1021,7 +1023,7 @@ CREATE TABLE `hyn_sys_role_authority`  (
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_role_id_authority_id`(`role_id` ASC, `authority_id` ASC) USING BTREE COMMENT '唯一索引（角色id & 权限id）'
-) ENGINE = InnoDB AUTO_INCREMENT = 1374 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色 - 权限 中间表（多对多）' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1404 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色 - 权限 中间表（多对多）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_role_authority
@@ -1116,6 +1118,36 @@ INSERT INTO `hyn_sys_role_authority` VALUES (1370, 65, 41, 1, '2025-10-27 22:40:
 INSERT INTO `hyn_sys_role_authority` VALUES (1371, 65, 42, 1, '2025-10-27 22:40:54');
 INSERT INTO `hyn_sys_role_authority` VALUES (1372, 65, 1, 1, '2025-10-27 22:40:54');
 INSERT INTO `hyn_sys_role_authority` VALUES (1373, 65, 5, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (1374, 66, 1, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1375, 66, 23, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1376, 66, 40, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1377, 66, 37, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1378, 66, 38, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1379, 66, 41, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1380, 66, 42, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1381, 66, 36, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1382, 66, 2, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1383, 66, 63, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1384, 66, 64, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1385, 66, 65, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1386, 66, 66, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1387, 66, 4, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1388, 66, 5, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1389, 66, 43, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1390, 66, 44, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1391, 66, 45, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1392, 66, 46, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1393, 66, 47, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1394, 66, 49, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1395, 66, 48, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1396, 66, 55, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1397, 66, 56, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1398, 66, 57, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1399, 66, 59, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1400, 66, 60, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1401, 66, 62, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1402, 66, 78, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1403, 66, 82, 1, '2026-04-05 15:58:50');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user
@@ -1146,10 +1178,10 @@ CREATE TABLE `hyn_sys_user`  (
 -- ----------------------------
 -- Records of hyn_sys_user
 -- ----------------------------
-INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, '2022-06-21 23:38:34', NULL, NULL, 0, 1, '2022-06-11 10:37:27', 1, '2025-10-15 21:39:24');
+INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-04-06 11:03:19', NULL, 0, 1, '2022-06-11 10:37:27', 1, '2026-04-06 11:03:19');
 INSERT INTO `hyn_sys_user` VALUES (24, 'jack', '1', 1, 1, 1, 1, '2025-09-24 14:13:21', NULL, NULL, 0, 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user` VALUES (25, 'zhangsan', '123456', 1, 1, 1, 1, '2025-11-16 11:05:08', NULL, NULL, 0, 1, '2025-11-16 11:05:09', 1, '2025-11-16 11:07:10');
-INSERT INTO `hyn_sys_user` VALUES (29, 'wenlan', '$2a$10$CCu0MnnwfLmi4hod9b6GVO4pngrc6uaplzujPUosibBRCLg2eWXWG', 1, 1, 1, 1, '2025-11-24 21:47:45', NULL, NULL, 0, 1, '2025-11-24 21:47:45', 1, '2025-12-02 21:27:35');
+INSERT INTO `hyn_sys_user` VALUES (29, 'wenlan', '$2a$10$CCu0MnnwfLmi4hod9b6GVO4pngrc6uaplzujPUosibBRCLg2eWXWG', 1, 1, 1, 1, '2025-11-24 21:47:45', NULL, NULL, 0, 1, '2025-11-24 21:47:45', 1, '2026-04-05 15:18:06');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_profile
@@ -1198,7 +1230,7 @@ INSERT INTO `hyn_sys_user_profile` VALUES (22, '章若楠', '萨菲的', NULL, N
 INSERT INTO `hyn_sys_user_profile` VALUES (23, '我屮艸芔茻', NULL, NULL, NULL, '', NULL, NULL, '', '', 1, '2025-09-23 22:51:35', 1, '2025-09-24 10:56:34');
 INSERT INTO `hyn_sys_user_profile` VALUES (24, '才狼', NULL, NULL, NULL, '', NULL, NULL, '', '', 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user_profile` VALUES (25, '张三', '会飞的猪11', NULL, NULL, '', NULL, NULL, '', '', 1, '2025-11-16 11:05:09', 1, '2025-11-16 11:07:10');
-INSERT INTO `hyn_sys_user_profile` VALUES (29, '温岚1', '_wenlan_', NULL, NULL, '', NULL, NULL, '', '', 1, '2025-11-24 21:47:45', 1, '2025-12-02 21:27:35');
+INSERT INTO `hyn_sys_user_profile` VALUES (29, '温岚1', '_wenlan_', NULL, NULL, '', '132', 'wenlan@qq.com', '', '', 1, '2025-11-24 21:47:45', 1, '2026-04-05 15:18:06');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_role
@@ -1212,7 +1244,7 @@ CREATE TABLE `hyn_sys_user_role`  (
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_user_id_role_id`(`user_id` ASC, `role_id` ASC) USING BTREE COMMENT '唯一索引（用户id & 角色id）'
-) ENGINE = InnoDB AUTO_INCREMENT = 96 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户 - 角色 中间表（多对多）' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 116 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户 - 角色 中间表（多对多）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_user_role
@@ -1221,8 +1253,8 @@ INSERT INTO `hyn_sys_user_role` VALUES (6, 8, 21, 1, '2025-08-22 13:11:05');
 INSERT INTO `hyn_sys_user_role` VALUES (48, 24, 21, 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user_role` VALUES (49, 1, 1, 1, '2025-10-15 21:39:24');
 INSERT INTO `hyn_sys_user_role` VALUES (52, 25, 21, 1, '2025-11-16 11:07:10');
-INSERT INTO `hyn_sys_user_role` VALUES (94, 29, 1, 1, '2025-12-02 21:27:35');
-INSERT INTO `hyn_sys_user_role` VALUES (95, 29, 59, 1, '2025-12-02 21:27:35');
+INSERT INTO `hyn_sys_user_role` VALUES (114, 29, 1, 1, '2026-04-05 15:18:06');
+INSERT INTO `hyn_sys_user_role` VALUES (115, 29, 59, 1, '2026-04-05 15:18:06');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_snapshot
@@ -1262,6 +1294,6 @@ INSERT INTO `hyn_sys_user_snapshot` VALUES (25, '张三', '会飞的猪11', '', 
 INSERT INTO `hyn_sys_user_snapshot` VALUES (26, '白纬889（已删除）', 'zcvxzc（已删除）', 'adfasd', '2025-11-23 11:30:28');
 INSERT INTO `hyn_sys_user_snapshot` VALUES (27, '罗坡鑫1111（已删除）', '天吟（已删除）', '', '2025-11-23 11:34:05');
 INSERT INTO `hyn_sys_user_snapshot` VALUES (28, '张靓颖2（已删除）', 'null（已删除）', '', '2025-11-23 20:11:39');
-INSERT INTO `hyn_sys_user_snapshot` VALUES (29, '温岚1', '_wenlan_', '', '2025-12-02 21:27:35');
+INSERT INTO `hyn_sys_user_snapshot` VALUES (29, '温岚1', '_wenlan_', '', '2026-04-05 15:18:06');
 
 SET FOREIGN_KEY_CHECKS = 1;

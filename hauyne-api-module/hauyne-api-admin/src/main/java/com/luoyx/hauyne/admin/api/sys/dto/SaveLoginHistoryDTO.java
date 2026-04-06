@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.api.sys.dto;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 public class SaveLoginHistoryDTO implements Serializable {
@@ -53,4 +54,9 @@ public class SaveLoginHistoryDTO implements Serializable {
      * 客户端操作系统名称
      */
     private String osName;
+
+    /**
+     * 登录时间
+     */
+    private LocalDateTime loginTime;
 }

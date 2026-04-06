@@ -1,0 +1,1 @@
+-Xms256m -Xmx256m -Xmn96m -Xss1024k

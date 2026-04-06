@@ -70,8 +70,7 @@ public class LoginHistory extends IdEntity<LoginHistory> {
     private String osName;
 
     /**
-     * 创建时间(自动填充)
+     * 登录时间
      */
-    @TableField(value = "created_time", fill = FieldFill.INSERT)
-    private LocalDateTime createdTime;
+    private LocalDateTime loginTime;
 }

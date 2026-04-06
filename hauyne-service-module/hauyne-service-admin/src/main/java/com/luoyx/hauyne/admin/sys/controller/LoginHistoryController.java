@@ -43,18 +43,6 @@ public class LoginHistoryController implements LoginHistoryAPI {
         return loginHistoryService.findPage(loginHistoryQuery);
     }
 
-    /**
-     * 保存登录日志
-     *
-     * @param saveLoginHistoryDTO 登录日志请求参数
-     */
-    @Operation(summary = "保存登录日志")
-    @PostMapping
-    @Override
-    public void save(@RequestBody SaveLoginHistoryDTO saveLoginHistoryDTO) {
-        loginHistoryService.save(saveLoginHistoryDTO);
-    }
-
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{id}")
     public void deleteById(@PathVariable("id") Long id) {
