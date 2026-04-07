@@ -244,4 +244,13 @@
             hyn_sys_user
         where id = #{id}
     </select>
+
+    <update id="updateLastLoginTime">
+        UPDATE hyn_sys_user
+        SET last_login_time = #{lastLoginTime},
+            last_updated_by = #{userId},
+            last_updated_time = now(),
+            login_count = login_count + 1
+        WHERE id = #{userId}
+    </update>
 </mapper>

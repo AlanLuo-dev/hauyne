@@ -88,13 +88,6 @@ public interface UserMapper extends GenericMapper<User> {
      * @param lastLoginTime 最近登录时间
      * @return 更新的行数
      */
-    default int updateLastLoginTime(Long userId, LocalDateTime lastLoginTime) {
-        User user = new User();
-        user.setId(userId);
-        user.setLastLoginTime(lastLoginTime);
-        user.setLastUpdatedBy(userId);
-        user.setLastUpdatedTime(LocalDateTime.now());
-
-        return this.updateById(user);
-    }
+    int updateLastLoginTime(@Param("userId") Long userId,
+                            @Param("lastLoginTime") LocalDateTime lastLoginTime);
 }
