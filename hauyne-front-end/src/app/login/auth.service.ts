@@ -15,12 +15,6 @@ import {ImgCode} from "./img-code";
 })
 export class AuthService {
 
-
-    userProfile: BehaviorSubject<CurrentUserModel> = new BehaviorSubject<CurrentUserModel>({
-        username: '',
-        menus: []
-    });
-
     constructor(private http: HttpClient) {
     }
 
@@ -68,16 +62,6 @@ export class AuthService {
         const base64ClientInfo = 'Basic ' + btoa('service-admin:123456');
         return this.http.post<HttpResponse<any>>('/api/uaa/oauth2/revoke', null, {
             headers: new HttpHeaders().set('Authorization', base64ClientInfo)
-        });
-    }
-
-    /**
-     *清空 userProfile订阅对象
-     */
-    clearUserProfile() {
-        this.userProfile.next({
-            username: '',
-            menus: []
         });
     }
 

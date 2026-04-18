@@ -1,9 +1,4 @@
-import {
-    HttpEvent,
-    HttpHandlerFn,
-    HttpInterceptorFn,
-    HttpRequest, HttpResponse
-} from '@angular/common/http';
+import {HttpHandlerFn, HttpInterceptorFn, HttpRequest, HttpResponse} from '@angular/common/http';
 import {inject} from '@angular/core';
 import {Router} from '@angular/router';
 import {finalize, Observable, share, tap, throwError} from "rxjs";
@@ -40,8 +35,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
             share(),
             tap(() => {}),
             catchError((error) => {
-                // localStorage.removeItem('user-profile');
-                authService.clearUserProfile();
                 route.navigate(['login']);
                 return throwError(() => error);
             }),
@@ -64,8 +57,6 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
             }
             if (error.status === 504) {
                 messageService.create('error', '网关超时 ' + error.statusText);
-                // localStorage.removeItem('user-profile');
-                authService.clearUserProfile();
                 route.navigate(['login']);
                 return throwError(() => error);
             } else if (error.status === 400) {
