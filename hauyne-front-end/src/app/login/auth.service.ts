@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
-import {BehaviorSubject, map, Observable} from 'rxjs';
+import {map, Observable} from 'rxjs';
 import {AbstractControl, ValidatorFn} from "@angular/forms";
-import {CurrentUserModel} from "./current-user.model";
 import {HttpResult} from "../common/http-result";
 import {AuthenticationStatus} from "../common/authentication-status";
 import {ImgCode} from "./img-code";
