@@ -31,7 +31,7 @@
         "rxjs": "~7.8.2",
         "screenfull": "^6.0.2",
         "tslib": "^2.3.0",
-        "zone.js": "~0.15.1"
+        "zone.js": "~0.16.1"
     },
     "devDependencies": {
         "@angular-devkit/core": "^21.2.4",
