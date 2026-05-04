@@ -17,9 +17,10 @@ import {NzDropdownModule} from "ng-zorro-antd/dropdown";
 import {ModifyPasswordComponent} from "./modify-password/modify-password.component";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
-import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
+import {NzModalService} from "ng-zorro-antd/modal";
 import {select, Store} from "@ngrx/store";
 import {selectMenus, selectRealName} from "../store/auth/auth.selector";
+import {authFailure} from "../store/auth/auth.action";
 
 @Component({
     selector: 'app-layout',
@@ -130,7 +131,8 @@ export class LayoutComponent {
                         next: res => {
 
                             // 跳转回登录页
-                            this.router.navigate(['login']);
+                            this.store.dispatch(authFailure()); // ✅ 立即变 false
+                            this.router.navigate(['/login']);
 
                             // 成功，调用 resolve
                             resolve(true);

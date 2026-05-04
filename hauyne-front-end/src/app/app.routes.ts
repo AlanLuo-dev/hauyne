@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {LayoutComponent} from "./layout/layout.component";
 import {LoginComponent} from "./login/login.component";
 import {AuthGuard} from "./shared/auth/auth-guard";
+import {LoginGuard} from "./shared/auth/login-guard";
 
 export const routes: Routes = [
 
@@ -18,5 +19,6 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
+        canActivate: [LoginGuard]
     }
 ];
