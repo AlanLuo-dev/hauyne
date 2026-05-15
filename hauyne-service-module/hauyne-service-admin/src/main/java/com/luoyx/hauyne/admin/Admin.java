@@ -10,7 +10,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
@@ -29,13 +28,10 @@ public class Admin {
 
         Environment env = application.getEnvironment();
         log.info("\n\t----------------------------------------------------------\n\t" +
-                        "Application '{}' is running! Access URLs:\n\t" +
-                        "Local: \t\thttp://localhost:{}\n\t" +
-                        "External: \thttp://{}:{}\n\t" +
+                        "系统管理微服务【{}】已启动！\n\t" +
+                        "接口文档地址 ==> http://localhost:{}/swagger-ui/index.html\n\t" +
                         "----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
-                env.getProperty("server.port"),
-                InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"));
     }
 }
