@@ -104,6 +104,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
      * @return 新增的角色
      */
     @Override
+    @Transactional
     public Role create(RoleCreateDTO roleCreateDTO) {
         Role role = roleConverter.toRole(roleCreateDTO);
         checkRoleFormData(role);
@@ -119,6 +120,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
      * @param roleUpdateDTO 修改角色表单数据
      */
     @Override
+    @Transactional
     public void update(RoleUpdateDTO roleUpdateDTO) {
         Role role = roleConverter.toRole(roleUpdateDTO);
         checkRoleFormData(role);
