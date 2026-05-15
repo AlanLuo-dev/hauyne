@@ -4,6 +4,7 @@ import com.luoyx.hauyne.audit.api.constant.MQConstant;
 import com.luoyx.hauyne.audit.api.dto.JaversAuditMessage;
 import com.luoyx.hauyne.audit.api.enums.AuditTypeEnum;
 import com.luoyx.hauyne.audit.service.AuditService;
+import com.luoyx.hauyne.framework.utils.JsonUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -18,7 +19,7 @@ public class AuditConsumer {
 
     @RabbitListener(queues = MQConstant.AUDIT_QUEUE)
     public <U> void receive(JaversAuditMessage<U> auditMessage) {
-        log.info("AuditConsumer 接收到消息: {}", auditMessage);
+        log.info("AuditConsumer 接收到消息: {}", JsonUtil.toString(auditMessage));
 
         Long authorId = auditMessage.getAuthorId();
         U payload = auditMessage.getPayload();
