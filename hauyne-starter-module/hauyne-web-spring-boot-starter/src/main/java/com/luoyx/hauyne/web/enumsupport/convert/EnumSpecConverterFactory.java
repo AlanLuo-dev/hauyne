@@ -14,6 +14,10 @@ import java.util.stream.Collectors;
 
 /**
  * 枚举转换器工厂：将Serializable类型的枚举值转换为BaseEnum枚举对象
+ *
+ * 2026-05-16  考虑改用 ConditionalGenericConverter 实现， 而不是 ConverterFactory
+ * 因为 ConditionalGenericConverter 可以根据枚举类型动态选择合适的转换器， 而 ConverterFactory 只能固定指定一个转换器
+ * 看 EnumSpecGenericConverter.java
  */
 public class EnumSpecConverterFactory<R extends Enum<R> & EnumSpec<? extends Serializable, R>>
         implements ConverterFactory<String, R> {
