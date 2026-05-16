@@ -1,24 +1,25 @@
 package com.luoyx.hauyne.gateway;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties.SwaggerUrl;
+import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.route.RouteDefinition;
+import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties.SwaggerUrl;
-import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL;
 
-import org.springframework.cloud.gateway.route.RouteDefinition;
-import org.springframework.cloud.gateway.route.RouteDefinition;
-
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Lazy;
 /**
  * 网关主程序
  *
@@ -50,10 +51,10 @@ public class Gateway {
         Set<SwaggerUrl> urls = new HashSet<>();
         List<RouteDefinition> definitions = locator.getRouteDefinitions().collectList().block();
         definitions.stream()
-            .filter(RouteDefinition routeDefinition -> routeDefinition.getId().matches("service-.*"))
-            .forEach(RouteDefinition routeDefinition -> {
+            .filter(routeDefinition -> routeDefinition.getId().matches("service-.*"))
+            .forEach( routeDefinition -> {
                 String name = routeDefinition.getId().replaceAll("service-", "");
-                SwaggerUrl swaggerUrl = new SwaggerUrl(name, name + DEFAULT_API_DOCS_URL, null);
+                SwaggerUrl swaggerUrl = new SwaggerUrl(name, "/api/" + name + DEFAULT_API_DOCS_URL, null);
                 urls.add(swaggerUrl);
             });
         swaggerUiConfigProperties.setUrls(urls);
