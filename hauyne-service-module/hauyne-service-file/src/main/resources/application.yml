@@ -1,0 +1,5 @@
+minio:
+  endpoint: http://127.0.0.1:9000
+  accessKey: admin
+  secretKey: 12345678
+  bucket: file-bucket

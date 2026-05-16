@@ -92,6 +92,8 @@
         <javers-spring-boot-starter-sql.version>7.9.0</javers-spring-boot-starter-sql.version>
 
         <fastexcel.version>1.3.0</fastexcel.version>
+
+        <minio.version>9.0.0</minio.version>
     </properties>
 
 
@@ -323,6 +325,13 @@
                 <groupId>cn.idev.excel</groupId>
                 <artifactId>fastexcel</artifactId>
                 <version>${fastexcel.version}</version>
+            </dependency>
+
+            <!-- Source: https://mvnrepository.com/artifact/io.minio/minio -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
             </dependency>
         </dependencies>
 

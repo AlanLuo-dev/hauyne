@@ -25,5 +25,6 @@
         <module>hauyne-toolbox-server</module>
         <module>hauyne-service-audit</module>
         <module>hauyne-sync-user-snapshot-support</module>
+        <module>hauyne-service-file</module>
     </modules>
 </project>
