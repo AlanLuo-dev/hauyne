@@ -1,47 +1,60 @@
 server:
   port: 8700
+  forward-headers-strategy: framework
 
 spring:
   cloud:
     gateway:
-      discovery:
-        locator:
-          # 微服务名称转为小写（默认注册到 Eureka时会变大写），以方便下面 routes的配置
-          lowerCaseServiceId: true
-          enabled: true
+      server:
+        webflux:
+          trusted-proxies: "192\\.168\\.0\\..*|10\\.88\\.0\\..*|127\\.0\\.0\\.1|144\\.24\\.171\\.248"
+          httpclient:
+            ssl:
+              useInsecureTrustManager: true
+          discovery:
+            locator:
+              # 微服务名称转为小写（默认注册到 Eureka时会变大写），以方便下面 routes的配置
+              lowerCaseServiceId: true
+              enabled: true
 
-      # 配置路由节点: uri -> 目标服务地址; predicates -> 断言; 【filters -> 过滤器: (StripPrefix -> 要去除的 url前缀层级 比如predicates的Path=/api/admin/**, 转发到 service-admin的请求为 /**)】;
-      routes:
+          # 配置路由节点: uri -> 目标服务地址; predicates -> 断言; 【filters -> 过滤器: (StripPrefix -> 要去除的 url前缀层级 比如predicates的Path=/api/admin/**, 转发到 service-admin的请求为 /**)】;
+          routes:
 
-        # 认证服务
-        - id: service-uaa
-          uri: lb://service-uaa
-          predicates:
-            - Path=/api/uaa/**
-          filters:
-            - StripPrefix=2
+            # 认证服务
+            - id: service-uaa
+              uri: lb://service-uaa
+              predicates:
+                - Path=/api/uaa/**
+              filters:
+                - StripPrefix=2
 
-        # 管理服务
-        - id: service-admin
-          uri: lb://service-admin
-          predicates:
-            - Path=/api/admin/**
-          filters:
-            - StripPrefix=2
+            # 管理服务
+            - id: service-admin
+              uri: lb://service-admin
+              predicates:
+                - Path=/api/admin/**
+              filters:
+                - RewritePath=/api/admin/(?<path>.*), /$\{path}
 
-        # 审计服务
-        - id: service-audit
-          uri: lb://service-audit
-          predicates:
-            - Path=/api/audit/**
-          filters:
-            - StripPrefix=2
+            # 审计服务
+            - id: service-audit
+              uri: lb://service-audit
+              predicates:
+                - Path=/api/audit/**
+              filters:
+                - StripPrefix=2
 
-        # 工具箱服务
-        - id: toolbox-server
-          uri: lb://toolbox-server
-          predicates:
-            - Path=/api/toolbox/**
-          filters:
-            - StripPrefix=2
+            # 工具箱服务
+            - id: toolbox-server
+              uri: lb://toolbox-server
+              predicates:
+                - Path=/api/toolbox/**
+              filters:
+                - StripPrefix=2
 
+springdoc:
+  cache:
+    disabled: true
+  version: '@springdoc.version@'
+  swagger-ui:
+    use-root-path: true
