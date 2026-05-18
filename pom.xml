@@ -331,6 +331,13 @@
         <!-- 打包后的jar包文件名: 项目名-版本号 -->
         <finalName>${project.artifactId}-${project.version}</finalName>
 
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resource>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -352,6 +359,7 @@
                         <nonFilteredFileExtension>jks</nonFilteredFileExtension>
                         <nonFilteredFileExtension>key</nonFilteredFileExtension>
                         <nonFilteredFileExtension>pub</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>db</nonFilteredFileExtension>
 
                         <!-- 指定字体文件扩展名，防止Maven编译破坏字体文件 -->
                         <nonFilteredFileExtension>ttf</nonFilteredFileExtension>
