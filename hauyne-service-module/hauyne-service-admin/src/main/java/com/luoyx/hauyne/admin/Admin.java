@@ -1,5 +1,7 @@
 package com.luoyx.hauyne.admin;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +24,9 @@ import java.net.UnknownHostException;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableCaching
+@OpenAPIDefinition(info =
+    @Info(title = "Admin API", version = "${springdoc.version}", description = "系统管理服务 API")
+)
 public class Admin {
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(Admin.class, args);
