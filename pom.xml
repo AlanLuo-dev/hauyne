@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.14</version>
+        <version>4.0.6</version>
     </parent>
 
     <groupId>com.luoyx.hauyne</groupId>
@@ -30,10 +30,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- Spring Boot版本 -->
-        <spring-boot.version>3.5.14</spring-boot.version>
+        <spring-boot.version>4.0.6</spring-boot.version>
 
         <!-- Spring Cloud版本 -->
-        <spring-cloud-dependencies.version>2025.0.2</spring-cloud-dependencies.version>
+        <spring-cloud-dependencies.version>2025.1.1</spring-cloud-dependencies.version>
 
         <!-- lombok版本、lombok-mapstruct中间件版本 -->
         <lombok.version>1.18.40</lombok.version>
