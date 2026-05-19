@@ -109,22 +109,13 @@ public class JacksonConfig {
                 )
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .enable(
-                    
+                    DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS,
+                    DeserializationFeature.FAIL_ON_TRAILING_TOKENS
                 )
-        };
-        builder
-                // EnumDef 支持
-                .modules(enumSchemaModule, javaTimeModule)
-
-                // 枚举 & BigDecimal
-                .featuresToDisable(
-                        SerializationFeature.WRITE_ENUMS_USING_TO_STRING,       // 序列化时，禁用将枚举值转换为字符串
-                        DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES
-                )
-                .featuresToEnable(
-                        DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS,      // 反序列化时，将float、double类型的字符串转换为BigDecimal
-                        DeserializationFeature.FAIL_ON_TRAILING_TOKENS          // 开启 jackson 反序列化的 严格模式
+                .disable(
+                    EnumFeature.WRITE_ENUMS_USING_TO_STRING
                 );
+        };
     }
 
 
