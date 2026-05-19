@@ -1,20 +1,20 @@
 package com.luoyx.hauyne.web.enumsupport.jackson;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.luoyx.hauyne.api.enumsupport.EnumSpec;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.DeserializationConfig;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.ValueDeserializerModifier;
 
-public class EnumSpecDeserializerModifier extends BeanDeserializerModifier {
+public class EnumSpecDeserializerModifier extends ValueDeserializerModifier {
 
     @Override
-    public JsonDeserializer<?> modifyEnumDeserializer(
+    public ValueDeserializer<?> modifyEnumDeserializer(
             DeserializationConfig config,
             JavaType type,
-            BeanDescription beanDesc,
-            JsonDeserializer<?> deserializer) {
+            BeanDescription.Supplier beanDescRef,
+            ValueDeserializer<?> deserializer) {
 
         Class<?> rawClass = type.getRawClass();
 
