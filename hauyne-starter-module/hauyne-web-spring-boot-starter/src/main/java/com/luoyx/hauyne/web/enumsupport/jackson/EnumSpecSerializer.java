@@ -1,11 +1,11 @@
 package com.luoyx.hauyne.web.enumsupport.jackson;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.luoyx.hauyne.api.enumsupport.EnumSpec;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueSerializer;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -14,10 +14,10 @@ import java.io.Serializable;
 public class EnumSpecSerializer<K extends Serializable, T extends Enum<T> & EnumSpec<K, T>> extends JsonSerializer<EnumSpec<K, T>> {
 
     @Override
-    public void serialize(EnumSpec<K, T> enumValue, JsonGenerator gen, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(EnumSpec<K, T> enumValue, JsonGenerator gen, SerializationContext ctxt) throws JacksonException {
         gen.writeStartObject();                                           // 开始序列化对象（生成 { ）
-        gen.writeObjectField("value", enumValue.getValue());    // 写入 code 字段（值为枚举的 getCode() 结果）
-        gen.writeStringField("label", enumValue.getLabel());    // 写入 desc 字段（值为枚举的 getDesc() 结果）
+        gen.writePOJOProperty("value", enumValue.getValue());    // 写入 code 字段（值为枚举的 getCode() 结果）
+        gen.writeStringProperty("label", enumValue.getLabel());    // 写入 desc 字段（值为枚举的 getDesc() 结果）
         gen.writeEndObject();                                             // 结束序列化对象（生成 } ）
     }
 
