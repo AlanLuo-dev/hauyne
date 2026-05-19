@@ -96,9 +96,20 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
                                                                       OAuth2AuthorizationService authorizationService,
                                                                       OAuth2TokenGenerator<?> tokenGenerator,
-                                                                      CookieTokenResponseHandler tokenResponseHandler)
-            throws Exception {
-        
+                                                                      CookieTokenResponseHandler tokenResponseHandler) {
+
+        http
+                .oauth2AuthorizationServer(
+                        (authorizationServer) -> {
+                            http.securityMatcher(authorizationServer.getEndpointsMatcher());
+                            authorizationServer
+                                    .oidc(oidc ->
+                                            // 拉取用户信息时，映射权限到声明属性中
+                                            oidc.userInfoEndpoint(user -> user.userInfoMapper(userInfoMapper()))
+                                    );    // Enable OpenID Connect 1.0
+                        }
+                );
+
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
 
                 // 设置自定义的图形验证码模式
@@ -122,12 +133,6 @@ public class AuthorizationServerConfig {
                                         new PasswordGrantAuthenticationProvider(authorizationService, tokenGenerator)
                                 )
                 )
-
-                // 开启OpenID Connect 1.0 （其中oidc为 OpenID Connect 的缩写）。
-                .oidc(oidc ->
-                        // 拉取用户信息时，映射权限到声明属性中
-                        oidc.userInfoEndpoint(user -> user.userInfoMapper(userInfoMapper()))
-                )   // Enable OpenID Connect 1.0
                 .tokenRevocationEndpoint(tokenRevocationEndpoint ->
                         tokenRevocationEndpoint
                                 .revocationRequestConverter(new CookieOAuth2TokenRevocationAuthenticationConverter())
