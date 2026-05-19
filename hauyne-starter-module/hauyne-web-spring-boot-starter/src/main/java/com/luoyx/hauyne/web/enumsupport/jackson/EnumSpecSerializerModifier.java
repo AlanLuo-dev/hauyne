@@ -1,20 +1,20 @@
 package com.luoyx.hauyne.web.enumsupport.jackson;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.luoyx.hauyne.api.enumsupport.EnumSpec;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationConfig;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.ser.ValueSerializerModifier;
 
-public class EnumSpecSerializerModifier extends BeanSerializerModifier {
+public class EnumSpecSerializerModifier extends ValueSerializerModifier {
 
     @Override
-    public JsonSerializer<?> modifyEnumSerializer(
+    public ValueSerializer<?> modifyEnumSerializer(
             SerializationConfig config,
             JavaType valueType,
-            BeanDescription beanDesc,
-            JsonSerializer<?> serializer) {
+            BeanDescription.Supplier beanDesc,
+            ValueSerializer<?> serializer) {
 
         Class<?> rawClass = valueType.getRawClass();
 
