@@ -71,8 +71,8 @@ public class PasswordGrantAuthenticationProvider implements AuthenticationProvid
         AuthorizationGrantType authorizationGrantType = passwordGrantAuthenticationToken.getGrantType();
 
         // 用户名、密码、请求参数权限范围、请求参数权限范围专场集合
-        String username = (String) additionalParameters.get(OAuth2ParameterNames.USERNAME);
-        String password = (String) additionalParameters.get(OAuth2ParameterNames.PASSWORD);
+        String username = (String) additionalParameters.get("username");
+        String password = (String) additionalParameters.get("password");
         String requestScopesStr = (String) additionalParameters.get(OAuth2ParameterNames.SCOPE);
         Set<String> requestScopeSet = Stream.of(requestScopesStr.split(" ")).collect(Collectors.toSet());
 
