@@ -41,15 +41,13 @@ public class CaptchaGrantAuthenticationConverter implements AuthenticationConver
         MultiValueMap<String, String> parameters = getParameters(request);
 
         // username (REQUIRED)
-        String username = parameters.getFirst(OAuth2ParameterNames.USERNAME);
-        if (!StringUtils.hasText(username)
-                || parameters.get(OAuth2ParameterNames.USERNAME).size() != 1) {
+        String username = parameters.getFirst("username");
+        if (!StringUtils.hasText(username) || parameters.get("username").size() != 1) {
             throw new OAuth2AuthenticationException(new OAuth2Error("400","用户名不能为空", null));
         }
 
-        String password = parameters.getFirst(OAuth2ParameterNames.PASSWORD);
-        if (!StringUtils.hasText(password)
-                || parameters.get(OAuth2ParameterNames.PASSWORD).size() != 1) {
+        String password = parameters.getFirst("password");
+        if (!StringUtils.hasText(password) || parameters.get("password").size() != 1) {
             throw new OAuth2AuthenticationException(new OAuth2Error("400","密码不能为空", null));
         }
 
