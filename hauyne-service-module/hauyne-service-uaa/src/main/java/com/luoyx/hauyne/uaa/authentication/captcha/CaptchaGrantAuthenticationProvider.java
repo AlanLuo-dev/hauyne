@@ -110,8 +110,8 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
         AuthorizationGrantType authorizationGrantType = captchaGrantAuthenticationToken.getGrantType();
 
         // 用户名、密码
-        String username = (String) additionalParameters.get(OAuth2ParameterNames.USERNAME);
-        String password = (String) additionalParameters.get(OAuth2ParameterNames.PASSWORD);
+        String username = (String) additionalParameters.get("username");
+        String password = (String) additionalParameters.get("password");
 
         String requestImgCode = (String) additionalParameters.get("captcha");
         String captchaKey = (String) additionalParameters.get("captchaKey");
