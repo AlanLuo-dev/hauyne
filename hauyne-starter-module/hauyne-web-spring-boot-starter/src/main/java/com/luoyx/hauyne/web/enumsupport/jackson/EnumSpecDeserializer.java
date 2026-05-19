@@ -1,19 +1,19 @@
 package com.luoyx.hauyne.web.enumsupport.jackson;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.luoyx.hauyne.api.enumsupport.EnumSpec;
 import com.luoyx.hauyne.web.exception.InvalidEnumValueException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 
-public class EnumSpecDeserializer<R extends Enum<R> & EnumSpec<? extends Serializable, R>> extends JsonDeserializer<R> {
+public class EnumSpecDeserializer<R extends Enum<R> & EnumSpec<? extends Serializable, R>> extends ValueDeserializer<R> {
 
     private final Class<R> enumType;
 
@@ -22,7 +22,7 @@ public class EnumSpecDeserializer<R extends Enum<R> & EnumSpec<? extends Seriali
     }
 
     @Override
-    public R deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public R deserialize(JsonParser p, DeserializationContext ctxt) throws JacksonException {
         JsonNode node = ctxt.readTree(p);
         Serializable inputValue;
         if (node.isObject() && node.has("value")) {
@@ -65,8 +65,8 @@ public class EnumSpecDeserializer<R extends Enum<R> & EnumSpec<? extends Seriali
         if (node.isLong()) {
             return node.longValue();
         }
-        if (node.isTextual()) {
-            return node.textValue();
+        if (node.isString()) {
+            return node.stringValue();
         }
         if (node.isBoolean()) {
             return node.booleanValue();
@@ -77,6 +77,6 @@ public class EnumSpecDeserializer<R extends Enum<R> & EnumSpec<? extends Seriali
         if (node.isNumber()) {
             return node.numberValue();
         }
-        return node.asText();
+        return node.asString();
     }
 }
