@@ -2,6 +2,7 @@
 
 server:
   port: 8762
+  forward-headers-strategy: framework
 
 spring:
   datasource:
@@ -27,3 +28,8 @@ spring:
 login:
   lookup:
     secret: b1bb9d50-cb3b-4ddd-881e-7f71049a3acf
+
+springdoc:
+  cache:
+    disabled: true
+  version: '@springdoc.version@'
