@@ -1,5 +1,7 @@
 package com.luoyx.hauyne.uaa;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,6 +30,9 @@ import java.net.UnknownHostException;
 @EnableDiscoveryClient
 @EnableAsync
 @EnableFeignClients
+@OpenAPIDefinition(info =
+    @Info(title = "UAA API", version = "${springdoc.version}", description = "授权服务器 API")
+)
 public class UAA {
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(UAA.class, args);
