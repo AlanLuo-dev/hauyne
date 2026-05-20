@@ -15,7 +15,7 @@ spring:
         enabled: true
       fail-fast: true
       profile: dev
-      name: eureka-client, ${spring.application.name}
+      name: eureka-client, ${spring.application.name}, swagger
 
 management:
   endpoints:
