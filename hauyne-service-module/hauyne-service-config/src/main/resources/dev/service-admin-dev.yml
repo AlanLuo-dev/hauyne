@@ -2,7 +2,6 @@
 
 server:
   port: 8763
-  forward-headers-strategy: framework
 
 spring:
   datasource:
@@ -35,8 +34,3 @@ decorator:
     p6spy:
       logging: SLF4J
       log-format: executionTime:%(executionTime) | sql:%(sqlSingleLine)
-
-springdoc:
-  cache:
-    disabled: true
-  version: '@springdoc.version@'
