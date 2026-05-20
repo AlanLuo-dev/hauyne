@@ -1,6 +1,5 @@
 server:
   port: 8700
-  forward-headers-strategy: framework
 
 spring:
   cloud:
@@ -51,10 +50,3 @@ spring:
                 - Path=/api/toolbox/**
               filters:
                 - StripPrefix=2
-
-springdoc:
-  cache:
-    disabled: true
-  version: '@springdoc.version@'
-  swagger-ui:
-    use-root-path: true
