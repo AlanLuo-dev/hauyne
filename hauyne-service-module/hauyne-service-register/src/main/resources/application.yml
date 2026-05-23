@@ -11,6 +11,7 @@ spring:
 
 server:
   port: 8761
+  forward-headers-strategy: framework
 
 eureka:
   instance:
@@ -21,8 +22,7 @@ eureka:
     register-with-eureka: false
     fetch-registry: false
     service-url:
-      defaultZone:
-        http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
   # Eureka Server配置
   server:
