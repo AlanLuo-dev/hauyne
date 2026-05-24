@@ -38,10 +38,6 @@
             <artifactId>spring-security-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>tools.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-core</artifactId>
         </dependency>
