@@ -1,17 +1,33 @@
 package com.luoyx.hauyne.framework.utils;
 
+//import com.fasterxml.jackson.annotation.JsonInclude;
+//import com.fasterxml.jackson.core.JsonGenerator;
+//import com.fasterxml.jackson.core.JsonParser;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.core.type.TypeReference;
+//import com.fasterxml.jackson.databind.*;
+//import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.cfg.DateTimeFeature;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.module.SimpleModule;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,12 +44,7 @@ import java.util.Set;
 public class JsonUtil {
 
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-    /**
-     * 日期类型的转换，为了兼容，不改以前的，update by 方亚军
-     */
-    private static final ObjectMapper OBJECT_DATA_MAPPER = new ObjectMapper();
+    private static final JsonMapper OBJECT_MAPPER;
 
     /**
      * 时间格式
@@ -41,44 +52,33 @@ public class JsonUtil {
     private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     static {
-        // 对象的所有字段全部列入
-        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-
-        // 取消默认转换timestamps形式
-        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-
-        // 忽略空Bean转json的错误
-        OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-
-        // 所有的日期格式都统一为以下的样式，即yyyy-MM-dd HH:mm:ss
-        OBJECT_MAPPER.setDateFormat(new SimpleDateFormat(STANDARD_FORMAT));
-
-        // 忽略 在json字符串中存在，但是在java对象中不存在对应属性的情况。防止错误
-        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
         // LocalDateTime序列化处理
-        JavaTimeModule timeModule = new JavaTimeModule();
+        SimpleModule timeModule = new SimpleModule();
 
         timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer());
         timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer());
-        OBJECT_MAPPER.registerModule(timeModule);
 
-        //////////////OBJECT_DATA_MAPPER////////////
-        //对象的所有字段全部列入
-        OBJECT_DATA_MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-        //取消默认转换timestamps形式
-        OBJECT_DATA_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        //忽略空Bean转json的错误
-        OBJECT_DATA_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        //所有的日期格式都统一为以下的样式，即yyyy-MM-dd HH:mm:ss
-        OBJECT_DATA_MAPPER.setDateFormat(new SimpleDateFormat(STANDARD_FORMAT));
-        //忽略 在json字符串中存在，但是在java对象中不存在对应属性的情况。防止错误
-        OBJECT_DATA_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        //LocalDateTime序列化处理
-        JavaTimeModule timeDataModule = new JavaTimeModule();
-        timeModule.addSerializer(LocalDateTime.class, new LocalDateTimeStringFormatSerializer());
-        timeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeStringFormatDeserializer());
-        OBJECT_DATA_MAPPER.registerModule(timeDataModule);
+        OBJECT_MAPPER = JsonMapper.builder()
+
+                // 对象的所有字段全部列入
+                .changeDefaultPropertyInclusion(incl -> incl.withValueInclusion(JsonInclude.Include.ALWAYS))
+                .changeDefaultPropertyInclusion(incl -> incl.withContentInclusion(JsonInclude.Include.ALWAYS))
+
+                // 所有的日期格式都统一为以下的样式，即yyyy-MM-dd HH:mm:ss
+                .defaultDateFormat(new SimpleDateFormat(STANDARD_FORMAT))
+
+                // 忽略空Bean转json的错误
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+
+                // 关闭“将日期写为时间戳”，让其输出 ISO-8601 字符串
+                .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
+
+                // 忽略 在json字符串中存在，但是在java对象中不存在对应属性的情况。防止错误
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+                .enable(DateTimeFeature.WRITE_DATES_WITH_ZONE_ID)
+                .addModule(timeModule)
+                .build();
     }
 
     public static ObjectMapper getObjectMapper() {
@@ -98,7 +98,7 @@ public class JsonUtil {
         }
         try {
             return obj instanceof String ? (String) obj : OBJECT_MAPPER.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             return null;
         }
     }
@@ -116,7 +116,7 @@ public class JsonUtil {
         }
         try {
             return OBJECT_MAPPER.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             return null;
         }
     }
@@ -136,7 +136,7 @@ public class JsonUtil {
             return obj instanceof String
                     ? (String) obj
                     : OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             return null;
         }
     }
@@ -214,7 +214,7 @@ public class JsonUtil {
                 return result;
             }
             return OBJECT_MAPPER.readValue(str, type);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             log.warn("JSON parse failed: {}", str, e); // 推荐加日志
             return null;
         }
@@ -233,7 +233,7 @@ public class JsonUtil {
         JavaType javaType = OBJECT_MAPPER.getTypeFactory().constructParametricType(collection, elements);
         try {
             return OBJECT_MAPPER.readValue(str, javaType);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             return null;
         }
     }
@@ -241,9 +241,9 @@ public class JsonUtil {
     /**
      * LocalDateTime序列化策略: LocalDateTime类型序列化为时间戳
      */
-    public static class LocalDateTimeSerializer extends JsonSerializer<LocalDateTime> {
+    public static class LocalDateTimeSerializer extends ValueSerializer<LocalDateTime> {
         @Override
-        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializationContext ctxt) throws JacksonException {
             jsonGenerator.writeNumber(DateUtil.toLong(localDateTime));
         }
     }
@@ -251,9 +251,9 @@ public class JsonUtil {
     /**
      * LocalDateTime序列化策略: LocalDateTime类型序列化为 yyyy-MM-dd HH:mm:ss字符串
      */
-    public static class LocalDateTimeStringFormatSerializer extends JsonSerializer<LocalDateTime> {
+    public static class LocalDateTimeStringFormatSerializer extends ValueSerializer<LocalDateTime> {
         @Override
-        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializationContext serializerProvider) throws JacksonException {
             jsonGenerator.writeString(DateUtil.toString(localDateTime, STANDARD_FORMAT));
         }
     }
@@ -261,9 +261,9 @@ public class JsonUtil {
     /**
      * 时间戳反序列化策略：时间戳反序列化LocalDateTime
      */
-    public static class LocalDateTimeDeserializer extends JsonDeserializer<LocalDateTime> {
+    public static class LocalDateTimeDeserializer extends ValueDeserializer<LocalDateTime> {
         @Override
-        public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+        public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws JacksonException {
             return DateUtil.toLocalDateTime(jsonParser.getLongValue());
         }
     }
@@ -271,9 +271,9 @@ public class JsonUtil {
     /**
      * yyyy-MM-dd HH:mm:ss字符串反序列化策略：yyyy-MM-dd HH:mm:ss字符串 反序列化为LocalDateTime类型
      */
-    public static class LocalDateTimeStringFormatDeserializer extends JsonDeserializer<LocalDateTime> {
+    public static class LocalDateTimeStringFormatDeserializer extends ValueDeserializer<LocalDateTime> {
         @Override
-        public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+        public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws JacksonException {
             return DateUtil.toLocalDateTime(jsonParser.getValueAsString());
         }
     }
