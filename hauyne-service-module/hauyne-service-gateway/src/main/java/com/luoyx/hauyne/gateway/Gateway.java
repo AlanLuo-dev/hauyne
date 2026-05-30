@@ -54,7 +54,7 @@ public class Gateway {
                 .filter(routeDefinition -> routeDefinition.getId().matches("service-.*"))
                 .forEach(routeDefinition -> {
                     String name = routeDefinition.getId().replaceAll("service-", "");
-                    SwaggerUrl swaggerUrl = new SwaggerUrl(name, DEFAULT_API_DOCS_URL+"/" + name, null);
+                    SwaggerUrl swaggerUrl = new SwaggerUrl(name, "/api/" + name + DEFAULT_API_DOCS_URL, null);
                     urls.add(swaggerUrl);
                 });
         swaggerUiConfigProperties.setUrls(urls);

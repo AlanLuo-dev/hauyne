@@ -18,13 +18,6 @@ spring:
 
           # 配置路由节点: uri -> 目标服务地址; predicates -> 断言; 【filters -> 过滤器: (StripPrefix -> 要去除的 url前缀层级 比如predicates的Path=/api/admin/**, 转发到 service-admin的请求为 /**)】;
           routes:
-            # swagger重写
-            - id: openapi
-              uri: http://localhost:${server.port}
-              predicates:
-                - Path=/v3/api-docs/**
-              filters:
-                - RewritePath=/v3/api-docs/(?<path>.*), /api/$\{path}/v3/api-docs
 
             # 认证服务
             - id: service-uaa
