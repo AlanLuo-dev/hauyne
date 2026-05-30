@@ -16,7 +16,7 @@ spring:
         enabled: true
       fail-fast: true
       profile: dev
-      name: eureka-client, service-common, ${spring.application.name}
+      name: eureka-client, service-common, ${spring.application.name}, oauth2-resource
 
   main:
     allow-bean-definition-overriding: true
