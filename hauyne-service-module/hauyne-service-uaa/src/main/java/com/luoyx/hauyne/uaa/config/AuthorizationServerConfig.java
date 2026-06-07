@@ -47,8 +47,6 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-//import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
-//import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.jackson2.OAuth2AuthorizationServerJackson2Module;
 import org.springframework.security.oauth2.server.authorization.oidc.authentication.OidcUserInfoAuthenticationContext;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
@@ -102,11 +100,6 @@ public class AuthorizationServerConfig {
                 .oauth2AuthorizationServer(
                         (authorizationServer) -> {
                             http.securityMatcher(authorizationServer.getEndpointsMatcher());
-                            authorizationServer
-                                    .oidc(oidc ->
-                                            // 拉取用户信息时，映射权限到声明属性中
-                                            oidc.userInfoEndpoint(user -> user.userInfoMapper(userInfoMapper()))
-                                    );    // Enable OpenID Connect 1.0
                         }
                 );
 
