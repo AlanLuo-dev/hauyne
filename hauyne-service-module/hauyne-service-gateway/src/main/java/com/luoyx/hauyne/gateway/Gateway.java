@@ -34,13 +34,10 @@ public class Gateway {
 
         Environment env = application.getEnvironment();
         log.info("\n\t----------------------------------------------------------\n\t" +
-                        "Application '{}' is running! Access URLs:\n\t" +
-                        "Local: \t\thttp://localhost:{}\n\t" +
-                        "External: \thttp://{}:{}\n\t" +
+                        "应用网关微服务【{}】已启动！\n\t" +
+                        "接口文档地址 ==> http://127.0.0.1:{}/swagger-ui/index.html\n\t" +
                         "----------------------------------------------------------",
                 env.getProperty("spring.application.name"),
-                env.getProperty("server.port"),
-                InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"));
     }
 
