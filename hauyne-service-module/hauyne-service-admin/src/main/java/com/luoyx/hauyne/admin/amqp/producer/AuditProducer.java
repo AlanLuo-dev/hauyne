@@ -1,8 +1,8 @@
 package com.luoyx.hauyne.admin.amqp.producer;
 
-import com.luoyx.hauyne.audit.api.constant.MQConstant;
-import com.luoyx.hauyne.audit.api.dto.JaversAuditMessage;
-import com.luoyx.hauyne.audit.api.enums.AuditTypeEnum;
+import com.luoyx.hauyne.eventlog.api.constant.MQConstant;
+import com.luoyx.hauyne.eventlog.api.dto.JaversAuditMessage;
+import com.luoyx.hauyne.eventlog.api.enums.AuditTypeEnum;
 import com.luoyx.hauyne.framework.utils.JsonUtil;
 import com.luoyx.hauyne.security.util.SecurityUtils;
 import lombok.RequiredArgsConstructor;

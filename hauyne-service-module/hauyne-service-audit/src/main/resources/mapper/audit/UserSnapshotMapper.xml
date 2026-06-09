@@ -3,7 +3,7 @@
 <mapper namespace="com.luoyx.hauyne.audit.mapper.UserSnapshotMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.audit.entity.UserSnapshot">
+    <resultMap id="BaseResultMap" type="com.luoyx.hauyne.eventlog.entity.UserSnapshot">
         <result column="id" property="id"/>
         <result column="created_by" property="createdBy"/>
         <result column="created_time" property="createdTime"/>
