@@ -15,7 +15,7 @@ export class AuditService extends BaseService<number> {
      * @param endpoint 具体业务的API
      */
     constructor(http: HttpClient) {
-        super(http, `audit`);
+        super(http, `eventlog`);
     }
 
 

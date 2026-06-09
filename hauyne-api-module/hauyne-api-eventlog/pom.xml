@@ -7,7 +7,7 @@
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hauyne-api-audit</artifactId>
+    <artifactId>hauyne-api-eventlog</artifactId>
     <name>hauyne-api-audit【审计服务 API】</name>
 
     <dependencies>

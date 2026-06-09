@@ -14,7 +14,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 审计日志 微服务启动类
+ * 事件日志 微服务启动类
  *
  * @author LuoYingxiong
  */
@@ -24,9 +24,9 @@ import java.net.UnknownHostException;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableCaching
-public class Audit {
+public class EventLog {
     public static void main(String[] args) throws UnknownHostException {
-        ConfigurableApplicationContext application = SpringApplication.run(Audit.class, args);
+        ConfigurableApplicationContext application = SpringApplication.run(EventLog.class, args);
 
         Environment env = application.getEnvironment();
         log.info("\n\t----------------------------------------------------------\n\t" +

@@ -35,11 +35,11 @@ spring:
               filters:
                 - StripPrefix=2
 
-            # 审计服务
-            - id: service-audit
-              uri: lb://service-audit
+            # 事件日志服务
+            - id: service-eventlog
+              uri: lb://service-eventlog
               predicates:
-                - Path=/api/audit/**
+                - Path=/api/eventlog/**
               filters:
                 - StripPrefix=2
 

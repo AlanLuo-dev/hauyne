@@ -47,7 +47,7 @@
 
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-api-audit</artifactId>
+            <artifactId>hauyne-api-eventlog</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>

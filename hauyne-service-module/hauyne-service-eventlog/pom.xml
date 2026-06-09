@@ -7,13 +7,13 @@
         <version>0.2.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>hauyne-service-audit</artifactId>
-    <name>hauyne-service-audit【审计日志服务】</name>
+    <artifactId>hauyne-service-eventlog</artifactId>
+    <name>hauyne-service-eventlog【事件日志服务】</name>
 
     <dependencies>
         <dependency>
             <groupId>com.luoyx.hauyne</groupId>
-            <artifactId>hauyne-api-audit</artifactId>
+            <artifactId>hauyne-api-eventlog</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
@@ -119,7 +119,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.luoyx.hauyne.eventlog.Audit</mainClass>
+                    <mainClass>com.luoyx.hauyne.eventlog.EventLog</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>

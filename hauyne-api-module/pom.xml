@@ -13,7 +13,7 @@
 
     <modules>
         <module>hauyne-api-admin</module>
-        <module>hauyne-api-audit</module>
+        <module>hauyne-api-eventlog</module>
         <module>hauyne-api-uaa</module>
     </modules>
 
