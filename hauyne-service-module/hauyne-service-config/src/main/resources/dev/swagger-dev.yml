@@ -7,3 +7,4 @@ springdoc:
   version: '@springdoc.version@'
   swagger-ui:
     use-root-path: true
+    default-model-expand-depth: 4    # 接口返回示例里的Schema默认展开深度
