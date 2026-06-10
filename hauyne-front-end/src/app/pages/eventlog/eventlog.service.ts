@@ -1,13 +1,13 @@
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {BaseService} from "../../common/base.service";
 import {Injectable} from "@angular/core";
-import {AuditChangeInfo, AuditQuery} from "./audit-list/audit-list.component";
+import {AuditChangeInfo, AuditQuery} from "./eventlog-list/eventlog-list.component";
 import {Observable} from "rxjs";
 
 @Injectable({
     providedIn: 'root'
 })
-export class AuditService extends BaseService<number> {
+export class EventlogService extends BaseService<number> {
 
     /**
      * 构造函数

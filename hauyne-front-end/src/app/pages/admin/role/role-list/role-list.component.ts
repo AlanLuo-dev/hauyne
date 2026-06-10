@@ -19,7 +19,7 @@ import {AuthorityDirective} from "../../../../directives/authority.directive";
 import {Store} from "@ngrx/store";
 import {AppState} from "../../../../store";
 import {finalize, Observable} from "rxjs";
-import {AuditListComponent} from "../../../audit/audit-list/audit-list.component";
+import {EventlogListComponent} from "../../../eventlog/eventlog-list/eventlog-list.component";
 import {RoleConfigAuthorityComponent} from "../role-config-authority/role-config-authority.component";
 
 export interface Role extends AuditInfo {
@@ -60,7 +60,7 @@ class RoleQuery extends PageQuery {
         NzRowDirective, NzColDirective,
         NzInputDirective, NzFormLabelComponent,
         NzButtonComponent, NzIconDirective, FormsModule, ReactiveFormsModule,
-        RoleEditFormComponent, NzTooltipDirective, NzPopconfirmDirective, AuthorityDirective, AuditListComponent, RoleConfigAuthorityComponent
+        RoleEditFormComponent, NzTooltipDirective, NzPopconfirmDirective, AuthorityDirective, EventlogListComponent, RoleConfigAuthorityComponent
     ],
     templateUrl: './role-list.component.html',
     styleUrl: './role-list.component.less',

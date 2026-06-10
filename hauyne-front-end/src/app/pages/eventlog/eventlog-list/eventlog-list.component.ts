@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzTabsModule} from "ng-zorro-antd/tabs";
-import {AuditService} from "../audit.service";
+import {EventlogService} from "../eventlog.service";
 import {NzTimelineModule} from "ng-zorro-antd/timeline";
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
 import {NzCardModule} from "ng-zorro-antd/card";
@@ -64,10 +64,10 @@ export interface FieldChangeInfo {
         NzTooltipModule
     ],
     standalone: true,
-    templateUrl: './audit-list.component.html',
-    styleUrl: './audit-list.component.less'
+    templateUrl: './eventlog-list.component.html',
+    styleUrl: './eventlog-list.component.less'
 })
-export class AuditListComponent implements OnInit, OnDestroy {
+export class EventlogListComponent implements OnInit, OnDestroy {
 
     /*~ START 生命周期绑定（创建 / 销毁） *******************************/
     @Input() auditDisplay: boolean = false;
@@ -102,7 +102,7 @@ export class AuditListComponent implements OnInit, OnDestroy {
         }
     }
 
-    constructor(private readonly auditService: AuditService) {
+    constructor(private readonly auditService: EventlogService) {
 
     }
 
