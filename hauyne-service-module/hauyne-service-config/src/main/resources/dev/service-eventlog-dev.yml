@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver # com.mysql.cj.jdbc.Driver
-    url: jdbc:p6spy:mysql://localhost:3306/hauyne_audit_dev?useSSL=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&allowMultiQueries=true
+    url: jdbc:p6spy:mysql://localhost:3306/hauyne_eventlog_dev?useSSL=true&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&allowMultiQueries=true
     username: root
     password: 123456
 
