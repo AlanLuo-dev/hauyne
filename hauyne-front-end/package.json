@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@angular-devkit/core": "^21.2.22",
-    "@angular/build": "^21.2.13",
+    "@angular/build": "^21.2.22",
     "@angular/cli": "^21.2.13",
     "@angular/compiler-cli": "^21.2.15",
     "@ngrx/schematics": "^21.1.1",
