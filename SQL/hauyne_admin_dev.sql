@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 06/04/2026 11:07:02
+ Date: 29/08/2026 14:40:52
 */
 
 SET NAMES utf8mb4;
@@ -379,7 +379,7 @@ CREATE TABLE `hyn_sys_login_history`  (
   `os_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端操作系统名称',
   `login_time` datetime NOT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1548 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1587 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_login_history
@@ -982,6 +982,45 @@ INSERT INTO `hyn_sys_login_history` VALUES (632, 0, 3, '注销成功', 1, '127.0
 INSERT INTO `hyn_sys_login_history` VALUES (633, 0, 3, '注销成功', 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '139.0.0.0', 'Linux', '2025-08-30 09:54:18');
 INSERT INTO `hyn_sys_login_history` VALUES (1546, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '146.0.0.0', 'Windows 10', '2026-04-06 10:51:16');
 INSERT INTO `hyn_sys_login_history` VALUES (1547, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '146.0.0.0', 'Windows 10', '2026-04-06 11:03:19');
+INSERT INTO `hyn_sys_login_history` VALUES (1548, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-04-18 08:50:12');
+INSERT INTO `hyn_sys_login_history` VALUES (1549, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:00:08');
+INSERT INTO `hyn_sys_login_history` VALUES (1550, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:02:30');
+INSERT INTO `hyn_sys_login_history` VALUES (1551, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:03:36');
+INSERT INTO `hyn_sys_login_history` VALUES (1552, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:05:19');
+INSERT INTO `hyn_sys_login_history` VALUES (1553, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:12:22');
+INSERT INTO `hyn_sys_login_history` VALUES (1554, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:12:48');
+INSERT INTO `hyn_sys_login_history` VALUES (1555, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:24:21');
+INSERT INTO `hyn_sys_login_history` VALUES (1556, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:33:47');
+INSERT INTO `hyn_sys_login_history` VALUES (1557, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:34:28');
+INSERT INTO `hyn_sys_login_history` VALUES (1558, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-04 10:34:44');
+INSERT INTO `hyn_sys_login_history` VALUES (1559, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-16 21:00:54');
+INSERT INTO `hyn_sys_login_history` VALUES (1560, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '147.0.0.0', 'Windows 10', '2026-05-17 10:01:07');
+INSERT INTO `hyn_sys_login_history` VALUES (1561, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-05-19 21:18:13');
+INSERT INTO `hyn_sys_login_history` VALUES (1562, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-05-23 11:26:32');
+INSERT INTO `hyn_sys_login_history` VALUES (1563, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-05-24 11:09:16');
+INSERT INTO `hyn_sys_login_history` VALUES (1564, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-05-24 11:10:11');
+INSERT INTO `hyn_sys_login_history` VALUES (1565, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-05-24 11:47:52');
+INSERT INTO `hyn_sys_login_history` VALUES (1566, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-05-30 11:27:22');
+INSERT INTO `hyn_sys_login_history` VALUES (1567, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 09:56:53');
+INSERT INTO `hyn_sys_login_history` VALUES (1568, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 11:23:26');
+INSERT INTO `hyn_sys_login_history` VALUES (1569, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 15:02:31');
+INSERT INTO `hyn_sys_login_history` VALUES (1570, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 15:03:31');
+INSERT INTO `hyn_sys_login_history` VALUES (1571, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 15:10:45');
+INSERT INTO `hyn_sys_login_history` VALUES (1572, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 15:16:50');
+INSERT INTO `hyn_sys_login_history` VALUES (1573, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 15:17:16');
+INSERT INTO `hyn_sys_login_history` VALUES (1574, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 15:36:58');
+INSERT INTO `hyn_sys_login_history` VALUES (1575, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 15:53:10');
+INSERT INTO `hyn_sys_login_history` VALUES (1576, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 16:02:01');
+INSERT INTO `hyn_sys_login_history` VALUES (1577, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 16:02:33');
+INSERT INTO `hyn_sys_login_history` VALUES (1578, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 16:04:38');
+INSERT INTO `hyn_sys_login_history` VALUES (1579, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 16:06:20');
+INSERT INTO `hyn_sys_login_history` VALUES (1580, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 16:33:52');
+INSERT INTO `hyn_sys_login_history` VALUES (1581, 1, 1, NULL, 1, '127.0.0.1', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-07 16:50:58');
+INSERT INTO `hyn_sys_login_history` VALUES (1582, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '148.0.0.0', 'Windows 10', '2026-06-09 22:04:40');
+INSERT INTO `hyn_sys_login_history` VALUES (1583, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '151.0.0.0', 'Windows 10', '2026-08-27 22:22:26');
+INSERT INTO `hyn_sys_login_history` VALUES (1584, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '151.0.0.0', 'Windows 10', '2026-08-29 09:04:46');
+INSERT INTO `hyn_sys_login_history` VALUES (1585, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '151.0.0.0', 'Windows 10', '2026-08-29 09:55:41');
+INSERT INTO `hyn_sys_login_history` VALUES (1586, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '151.0.0.0', 'Windows 10', '2026-08-29 13:01:00');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role
@@ -1016,138 +1055,109 @@ INSERT INTO `hyn_sys_role` VALUES (66, '4444', 'fgdsfgd', 1, '2025-11-13 21:39:3
 -- ----------------------------
 DROP TABLE IF EXISTS `hyn_sys_role_authority`;
 CREATE TABLE `hyn_sys_role_authority`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，无符号自增',
   `role_id` bigint NOT NULL COMMENT '角色 id（关联 hyn_sys_role 表的 id字段）',
   `authority_id` bigint NOT NULL COMMENT '权限 id（关联 hyn_sys_authority 表的 id 字段）',
   `created_by` bigint NOT NULL COMMENT '创建人 id（关联 hyn_sys_user_snapshot 表的 id 字段）',
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_role_id_authority_id`(`role_id` ASC, `authority_id` ASC) USING BTREE COMMENT '唯一索引（角色id & 权限id）'
+  PRIMARY KEY (`role_id`, `authority_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1404 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色 - 权限 中间表（多对多）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_role_authority
 -- ----------------------------
-INSERT INTO `hyn_sys_role_authority` VALUES (996, 1, 64, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (997, 1, 1, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (998, 1, 65, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (999, 1, 2, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1000, 1, 66, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1001, 1, 4, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1002, 1, 5, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1003, 1, 78, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1005, 1, 23, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1006, 1, 36, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1007, 1, 37, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1008, 1, 38, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1009, 1, 39, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1010, 1, 40, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1011, 1, 41, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1012, 1, 42, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1013, 1, 43, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1014, 1, 44, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1015, 1, 45, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1016, 1, 46, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1017, 1, 47, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1018, 1, 48, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1019, 1, 49, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1020, 1, 55, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1021, 1, 56, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1022, 1, 57, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1023, 1, 59, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1024, 1, 60, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1025, 1, 62, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1026, 1, 63, 1, '2025-05-20 12:56:49');
-INSERT INTO `hyn_sys_role_authority` VALUES (1237, 21, 39, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1238, 21, 1, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1239, 21, 23, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1240, 21, 40, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1241, 21, 37, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1242, 21, 38, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1243, 21, 41, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1244, 21, 42, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1245, 21, 36, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1246, 21, 2, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1247, 21, 63, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1248, 21, 64, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1249, 21, 65, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1250, 21, 66, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1251, 21, 4, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1252, 21, 5, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1253, 21, 43, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1254, 21, 44, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1255, 21, 45, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1256, 21, 46, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1257, 21, 47, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1258, 21, 49, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1259, 21, 48, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1260, 21, 55, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1261, 21, 56, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1262, 21, 57, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1263, 21, 59, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1264, 21, 60, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1265, 21, 62, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1266, 21, 78, 1, '2025-07-05 13:37:00');
-INSERT INTO `hyn_sys_role_authority` VALUES (1293, 59, 36, 1, '2025-08-02 12:19:07');
-INSERT INTO `hyn_sys_role_authority` VALUES (1294, 59, 1, 1, '2025-08-02 12:19:07');
-INSERT INTO `hyn_sys_role_authority` VALUES (1346, 64, 23, 1, '2025-08-30 17:24:21');
-INSERT INTO `hyn_sys_role_authority` VALUES (1347, 64, 40, 1, '2025-08-30 17:24:21');
-INSERT INTO `hyn_sys_role_authority` VALUES (1348, 64, 37, 1, '2025-08-30 17:24:21');
-INSERT INTO `hyn_sys_role_authority` VALUES (1349, 64, 38, 1, '2025-08-30 17:24:21');
-INSERT INTO `hyn_sys_role_authority` VALUES (1350, 64, 41, 1, '2025-08-30 17:24:21');
-INSERT INTO `hyn_sys_role_authority` VALUES (1351, 64, 42, 1, '2025-08-30 17:24:21');
-INSERT INTO `hyn_sys_role_authority` VALUES (1352, 64, 1, 1, '2025-08-30 17:24:21');
-INSERT INTO `hyn_sys_role_authority` VALUES (1353, 62, 2, 1, '2025-10-15 21:51:45');
-INSERT INTO `hyn_sys_role_authority` VALUES (1354, 62, 63, 1, '2025-10-15 21:51:45');
-INSERT INTO `hyn_sys_role_authority` VALUES (1355, 62, 64, 1, '2025-10-15 21:51:45');
-INSERT INTO `hyn_sys_role_authority` VALUES (1356, 62, 65, 1, '2025-10-15 21:51:45');
-INSERT INTO `hyn_sys_role_authority` VALUES (1357, 62, 66, 1, '2025-10-15 21:51:45');
-INSERT INTO `hyn_sys_role_authority` VALUES (1358, 62, 1, 1, '2025-10-15 21:51:45');
-INSERT INTO `hyn_sys_role_authority` VALUES (1359, 65, 48, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1360, 65, 55, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1361, 65, 56, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1362, 65, 57, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1363, 65, 59, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1364, 65, 60, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1365, 65, 62, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1366, 65, 23, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1367, 65, 40, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1368, 65, 37, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1369, 65, 38, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1370, 65, 41, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1371, 65, 42, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1372, 65, 1, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1373, 65, 5, 1, '2025-10-27 22:40:54');
-INSERT INTO `hyn_sys_role_authority` VALUES (1374, 66, 1, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1375, 66, 23, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1376, 66, 40, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1377, 66, 37, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1378, 66, 38, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1379, 66, 41, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1380, 66, 42, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1381, 66, 36, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1382, 66, 2, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1383, 66, 63, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1384, 66, 64, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1385, 66, 65, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1386, 66, 66, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1387, 66, 4, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1388, 66, 5, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1389, 66, 43, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1390, 66, 44, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1391, 66, 45, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1392, 66, 46, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1393, 66, 47, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1394, 66, 49, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1395, 66, 48, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1396, 66, 55, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1397, 66, 56, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1398, 66, 57, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1399, 66, 59, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1400, 66, 60, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1401, 66, 62, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1402, 66, 78, 1, '2026-04-05 15:58:50');
-INSERT INTO `hyn_sys_role_authority` VALUES (1403, 66, 82, 1, '2026-04-05 15:58:50');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 1, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 2, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 4, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 5, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 23, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 36, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 37, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 38, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 39, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 40, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 41, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 42, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 43, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 44, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 45, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 46, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 47, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 48, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 49, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 55, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 56, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 57, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 59, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 60, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 62, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 63, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 64, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 65, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 66, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (1, 78, 1, '2025-05-20 12:56:49');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 1, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 2, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 4, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 5, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 23, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 36, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 37, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 38, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 39, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 40, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 41, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 42, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 43, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 44, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 45, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 46, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 47, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 48, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 49, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 55, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 56, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 57, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 59, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 60, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 62, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 63, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 64, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 65, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 66, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (21, 78, 1, '2025-07-05 13:37:00');
+INSERT INTO `hyn_sys_role_authority` VALUES (59, 1, 1, '2025-08-02 12:19:07');
+INSERT INTO `hyn_sys_role_authority` VALUES (59, 36, 1, '2025-08-02 12:19:07');
+INSERT INTO `hyn_sys_role_authority` VALUES (62, 1, 1, '2025-10-15 21:51:45');
+INSERT INTO `hyn_sys_role_authority` VALUES (62, 2, 1, '2025-10-15 21:51:45');
+INSERT INTO `hyn_sys_role_authority` VALUES (62, 63, 1, '2025-10-15 21:51:45');
+INSERT INTO `hyn_sys_role_authority` VALUES (62, 64, 1, '2025-10-15 21:51:45');
+INSERT INTO `hyn_sys_role_authority` VALUES (62, 65, 1, '2025-10-15 21:51:45');
+INSERT INTO `hyn_sys_role_authority` VALUES (62, 66, 1, '2025-10-15 21:51:45');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 1, 1, '2025-08-30 17:24:21');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 23, 1, '2025-08-30 17:24:21');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 37, 1, '2025-08-30 17:24:21');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 38, 1, '2025-08-30 17:24:21');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 40, 1, '2025-08-30 17:24:21');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 41, 1, '2025-08-30 17:24:21');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 42, 1, '2025-08-30 17:24:21');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 1, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 5, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 23, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 37, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 38, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 40, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 41, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 42, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 48, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 55, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 56, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 57, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 59, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 60, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (65, 62, 1, '2025-10-27 22:40:54');
+INSERT INTO `hyn_sys_role_authority` VALUES (66, 1, 1, '2026-08-29 14:29:02');
+INSERT INTO `hyn_sys_role_authority` VALUES (66, 23, 1, '2026-08-29 14:29:02');
+INSERT INTO `hyn_sys_role_authority` VALUES (66, 37, 1, '2026-08-29 14:29:02');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user
@@ -1178,10 +1188,10 @@ CREATE TABLE `hyn_sys_user`  (
 -- ----------------------------
 -- Records of hyn_sys_user
 -- ----------------------------
-INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-04-06 11:03:19', NULL, 0, 1, '2022-06-11 10:37:27', 1, '2026-04-06 11:03:19');
+INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-08-29 13:01:00', NULL, 39, 1, '2022-06-11 10:37:27', 1, '2026-08-29 13:00:59');
 INSERT INTO `hyn_sys_user` VALUES (24, 'jack', '1', 1, 1, 1, 1, '2025-09-24 14:13:21', NULL, NULL, 0, 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user` VALUES (25, 'zhangsan', '123456', 1, 1, 1, 1, '2025-11-16 11:05:08', NULL, NULL, 0, 1, '2025-11-16 11:05:09', 1, '2025-11-16 11:07:10');
-INSERT INTO `hyn_sys_user` VALUES (29, 'wenlan', '$2a$10$CCu0MnnwfLmi4hod9b6GVO4pngrc6uaplzujPUosibBRCLg2eWXWG', 1, 1, 1, 1, '2025-11-24 21:47:45', NULL, NULL, 0, 1, '2025-11-24 21:47:45', 1, '2026-04-05 15:18:06');
+INSERT INTO `hyn_sys_user` VALUES (29, 'wenlan', '$2a$10$CCu0MnnwfLmi4hod9b6GVO4pngrc6uaplzujPUosibBRCLg2eWXWG', 1, 1, 1, 1, '2025-11-24 21:47:45', NULL, NULL, 0, 1, '2025-11-24 21:47:45', 1, '2026-08-29 14:39:49');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_profile
@@ -1230,31 +1240,28 @@ INSERT INTO `hyn_sys_user_profile` VALUES (22, '章若楠', '萨菲的', NULL, N
 INSERT INTO `hyn_sys_user_profile` VALUES (23, '我屮艸芔茻', NULL, NULL, NULL, '', NULL, NULL, '', '', 1, '2025-09-23 22:51:35', 1, '2025-09-24 10:56:34');
 INSERT INTO `hyn_sys_user_profile` VALUES (24, '才狼', NULL, NULL, NULL, '', NULL, NULL, '', '', 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user_profile` VALUES (25, '张三', '会飞的猪11', NULL, NULL, '', NULL, NULL, '', '', 1, '2025-11-16 11:05:09', 1, '2025-11-16 11:07:10');
-INSERT INTO `hyn_sys_user_profile` VALUES (29, '温岚1', '_wenlan_', NULL, NULL, '', '132', 'wenlan@qq.com', '', '', 1, '2025-11-24 21:47:45', 1, '2026-04-05 15:18:06');
+INSERT INTO `hyn_sys_user_profile` VALUES (29, '温岚1', '_wenlan_', NULL, NULL, '', '132', 'wenlan@qq.com', '', '', 1, '2025-11-24 21:47:45', 1, '2026-08-29 14:39:49');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `hyn_sys_user_role`;
 CREATE TABLE `hyn_sys_user_role`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，无符号自增',
   `user_id` bigint NOT NULL COMMENT '用户 id（关联 hyn_sys_user_snapshot 表的 id 字段）',
   `role_id` bigint NOT NULL COMMENT '角色 id（关联 hyn_sys_role 表的 id 字段）',
   `created_by` bigint UNSIGNED NOT NULL COMMENT '创建人 id（关联 hyn_sys_user_snapshot 表的 id 字段）',
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_user_id_role_id`(`user_id` ASC, `role_id` ASC) USING BTREE COMMENT '唯一索引（用户id & 角色id）'
+  PRIMARY KEY (`user_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 116 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户 - 角色 中间表（多对多）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_user_role
 -- ----------------------------
-INSERT INTO `hyn_sys_user_role` VALUES (6, 8, 21, 1, '2025-08-22 13:11:05');
-INSERT INTO `hyn_sys_user_role` VALUES (48, 24, 21, 1, '2025-09-24 22:13:11');
-INSERT INTO `hyn_sys_user_role` VALUES (49, 1, 1, 1, '2025-10-15 21:39:24');
-INSERT INTO `hyn_sys_user_role` VALUES (52, 25, 21, 1, '2025-11-16 11:07:10');
-INSERT INTO `hyn_sys_user_role` VALUES (114, 29, 1, 1, '2026-04-05 15:18:06');
-INSERT INTO `hyn_sys_user_role` VALUES (115, 29, 59, 1, '2026-04-05 15:18:06');
+INSERT INTO `hyn_sys_user_role` VALUES (1, 1, 1, '2025-10-15 21:39:24');
+INSERT INTO `hyn_sys_user_role` VALUES (8, 21, 1, '2025-08-22 13:11:05');
+INSERT INTO `hyn_sys_user_role` VALUES (24, 21, 1, '2025-09-24 22:13:11');
+INSERT INTO `hyn_sys_user_role` VALUES (25, 21, 1, '2025-11-16 11:07:10');
+INSERT INTO `hyn_sys_user_role` VALUES (29, 1, 1, '2026-08-29 14:39:49');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_snapshot
@@ -1294,6 +1301,6 @@ INSERT INTO `hyn_sys_user_snapshot` VALUES (25, '张三', '会飞的猪11', '', 
 INSERT INTO `hyn_sys_user_snapshot` VALUES (26, '白纬889（已删除）', 'zcvxzc（已删除）', 'adfasd', '2025-11-23 11:30:28');
 INSERT INTO `hyn_sys_user_snapshot` VALUES (27, '罗坡鑫1111（已删除）', '天吟（已删除）', '', '2025-11-23 11:34:05');
 INSERT INTO `hyn_sys_user_snapshot` VALUES (28, '张靓颖2（已删除）', 'null（已删除）', '', '2025-11-23 20:11:39');
-INSERT INTO `hyn_sys_user_snapshot` VALUES (29, '温岚1', '_wenlan_', '', '2026-04-05 15:18:06');
+INSERT INTO `hyn_sys_user_snapshot` VALUES (29, '温岚1', '_wenlan_', '', '2026-08-29 14:39:49');
 
 SET FOREIGN_KEY_CHECKS = 1;
