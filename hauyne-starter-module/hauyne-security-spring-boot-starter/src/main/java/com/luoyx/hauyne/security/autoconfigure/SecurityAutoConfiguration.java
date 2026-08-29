@@ -1,6 +1,6 @@
 package com.luoyx.hauyne.security.autoconfigure;
 
-import com.luoyx.hauyne.security.filter.UserContextFilter;
+import com.luoyx.hauyne.security.interceptor.UserContextInterceptor;
 import feign.RequestInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -14,14 +14,19 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenResolv
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Slf4j
 @Configuration
-public class SecurityAutoConfiguration {
+public class SecurityAutoConfiguration implements WebMvcConfigurer {
 
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
 
-
-
+        registry.addInterceptor(new UserContextInterceptor())
+                .addPathPatterns("/**");
+    }
 
     /**
      * 设置SecurityContextHolder的策略为SecurityContextHolder.MODE_INHERITABLETHREADLOCAL。
@@ -38,28 +43,6 @@ public class SecurityAutoConfiguration {
 //        log.info("Spring Security安全上下文管理策略设置为 -> {}", SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 //        return () -> SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
 //    }
-
-
-    @Bean
-    public UserContextFilter userContextFilter() {
-        UserContextFilter userContextFilter = new UserContextFilter();
-        log.info("已创建Bean UserContextFilter");
-
-        return userContextFilter;
-    }
-
-//    @Bean
-//    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new CustomJwtAuthenticationConverter());
-//        return jwtAuthenticationConverter;
-//    }
-
-    @Bean
-    public UserContextFilterConfigurer userContextFilterConfigurer() {
-        return new UserContextFilterConfigurer(userContextFilter());
-    }
-
     @Bean
     public RequestInterceptor cookieRelayInterceptor() {
         log.info("开始设置Feign转发 登录凭据");
@@ -103,6 +86,7 @@ public class SecurityAutoConfiguration {
                 .build();
     }
 
+
     @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
     private String clientId;
 
@@ -113,7 +97,7 @@ public class SecurityAutoConfiguration {
     private String introspectionUri;
 
     @Bean
-    public OpaqueTokenIntrospector opaqueTokenIntrospector(){
+    public OpaqueTokenIntrospector opaqueTokenIntrospector() {
         return new CustomOpaqueTokenIntrospector(introspectionUri, clientId, clientSecret);
     }
 
