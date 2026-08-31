@@ -87,7 +87,7 @@
 
         <apt-maven-plugin.version>1.1.3</apt-maven-plugin.version>
 
-        <javers-spring-boot-starter-sql.version>7.11.1</javers-spring-boot-starter-sql.version>
+        <javers-spring-boot-starter-sql.version>7.11.8</javers-spring-boot-starter-sql.version>
 
         <fastexcel.version>1.3.0</fastexcel.version>
 
