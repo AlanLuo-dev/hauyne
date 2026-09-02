@@ -7,7 +7,8 @@
         delete from hyn_sys_role_authority where authority_id = #{authorityId}
     </delete>
 
-    <delete id="deleteByRoleIds" parameterType="list">
+    <!-- 按角色id删除 角色-权限资源关联记录 -->
+    <delete id="deleteByRoleIds" parameterType="collection">
         delete from hyn_sys_role_authority
         where role_id IN
         <foreach collection="roleIds" item="item" open="(" close=")" separator=",">

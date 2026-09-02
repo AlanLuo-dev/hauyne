@@ -6,6 +6,7 @@ import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
 import com.luoyx.hauyne.mybatisplus.service.BaseService;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -64,7 +65,7 @@ public interface RoleService extends BaseService<Role> {
      *
      * @param ids 角色id集合
      */
-    void deleteByIds(List<Long> ids);
+    void deleteByIds(Collection<Long> ids);
 
     /**
      * 更新角色的权限资源（先删后增）

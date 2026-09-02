@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -129,7 +130,7 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
             throw new ValidateException("角色不存在");
         }
         if (YesNoEnum.YES.equals(existRole.getBuiltin())) {
-            throw new ValidateException("系统内置角色不允许修改");
+            throw new ValidateException("【" + existRole.getRoleName() + "】是系统内置角色，不允许修改");
         }
         Role role = roleConverter.toRole(roleUpdateDTO);
         checkRoleFormData(role);
@@ -145,16 +146,31 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteByIds(List<Long> ids) {
+    public void deleteByIds(Collection<Long> ids) {
+
+        // 去除重复角色id
+        ids = new HashSet<>(ids);
+        List<Role> existRoleList = baseMapper.selectByIds(ids);
+        if (CollectionUtils.isEmpty(existRoleList)) {
+            throw new ValidateException("角色不存在");
+        }
+        if (existRoleList.size() != ids.size()) {
+            throw new ValidateException("部分角色不存在，请刷新后重试");
+        }
+        for (Role existRole : existRoleList) {
+            if (YesNoEnum.YES.equals(existRole.getBuiltin())) {
+                throw new ValidateException("【" + existRole.getRoleName() + "】是系统内置角色，不允许删除");
+            }
+        }
         String roleName = userRoleService.countUserRoleByRoleIds(ids);
         if (StringUtils.isNotBlank(roleName)) {
             throw new ValidateException("角色【" + roleName + "】已分配给用户，请先解除关联后删除");
         }
-        List<Role> roles = baseMapper.selectBatchIds(ids);
+        List<Role> roles = baseMapper.selectByIds(ids);
         for (Role role : roles) {
             auditProducer.sendToShadowDelete(roleConverter.toRoleAuditDTO(role));
         }
-        baseMapper.deleteBatchIds(ids);
+        baseMapper.deleteByIds(ids);
         roleAuthorityService.deleteByRoleIds(ids);
     }
 
@@ -167,7 +183,10 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateRoleAuthorities(Long roleId, List<Long> authorityIds) {
-        checkRoleExists(roleId);
+        Role role = checkRoleExists(roleId);
+        if (YesNoEnum.YES.equals(role.getBuiltin())) {
+            throw new ValidateException("【" + role.getRoleName() + "】是系统内置角色，不允许修改权限");
+        }
         Set<Long> authorityIdSet = new LinkedHashSet<>(authorityIds); // 去重
         Map<Long, Authority> authorityMap = Collections.emptyMap();
         if (CollectionUtils.isNotEmpty(authorityIdSet)) {

@@ -161,8 +161,8 @@
         where r.id = #{roleId}
     </select>
 
-    <!-- 查询某个权限（authorityId）被哪些角色（role_name）所引用。-->
-    <select id="findRoleNamesByAuthorityId" parameterType="Long" resultType="String">
+    <!-- 查询某个权限（authorityId）被哪些非内置角色（role_name）所引用。-->
+    <select id="findNonBuiltinRoleNamesByAuthorityId" parameterType="Long" resultType="String">
         SELECT
             r.role_name
         FROM
@@ -170,5 +170,6 @@
             INNER JOIN hyn_sys_role_authority ra ON ra.role_id = r.id
         WHERE
             ra.authority_id = #{authorityId}
+            AND r.is_builtin = 0
     </select>
 </mapper>

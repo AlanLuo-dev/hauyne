@@ -1,6 +1,8 @@
 package com.luoyx.hauyne.admin.sys.mapper;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.luoyx.hauyne.admin.api.sys.constant.RoleConstants;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.sys.entity.Role;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
@@ -64,4 +66,18 @@ public interface RoleMapper extends GenericMapper<Role> {
      * @return 角色下拉框数据列表
      */
     List<RoleDropdownVO> selectDropdown();
+
+    /**
+     * 查询超级管理员角色
+     *
+     * @return 超级管理员角色
+     */
+    default Role selectSuperAdminRole() {
+        return selectOne(
+                Wrappers.<Role>lambdaQuery()
+                        .eq(Role::getRoleCode, RoleConstants.SUPER_ADMIN)
+                        .eq(Role::getBuiltin, YesNoEnum.YES)
+
+        );
+    }
 }

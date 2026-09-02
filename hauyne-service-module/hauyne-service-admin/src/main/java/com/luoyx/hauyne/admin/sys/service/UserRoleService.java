@@ -4,6 +4,7 @@ import com.luoyx.hauyne.admin.sys.entity.UserRole;
 import com.luoyx.hauyne.mybatisplus.service.BaseService;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public interface UserRoleService extends BaseService<UserRole> {
      * @param roleIds 角色id集合
      * @return 角色名称
      */
-    String countUserRoleByRoleIds(@Param("roleIds") List<Long> roleIds);
+    String countUserRoleByRoleIds(@Param("roleIds") Collection<Long> roleIds);
 
     /**
      * 批量删除 用户-角色 关联信息

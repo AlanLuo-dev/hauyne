@@ -147,7 +147,7 @@ export class RoleConfigAuthorityComponent implements OnInit {
                 this.isCancelDisabled = false;
             },
             error: err => {
-                this.messageService.create('error', err.error.msg);
+                this.messageService.create('error', err.error.errorTips);
                 this.isOkLoading = false;
                 this.isCancelDisabled = false;
             }

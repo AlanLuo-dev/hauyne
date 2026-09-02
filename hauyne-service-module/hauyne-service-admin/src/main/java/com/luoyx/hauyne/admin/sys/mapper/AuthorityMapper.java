@@ -109,10 +109,10 @@ public interface AuthorityMapper extends GenericMapper<Authority> {
     }
 
     /**
-     * 查询某个权限（authorityId）被哪些角色（role_name）所引用。
+     * 查询某个权限（authorityId）被哪些非内置角色（role_name）所引用。
      *
      * @param authorityId 权限id
      * @return 角色名称集合
      */
-    List<String> findRoleNamesByAuthorityId(@Param("authorityId") Long authorityId);
+    List<String> findNonBuiltinRoleNamesByAuthorityId(@Param("authorityId") Long authorityId);
 }

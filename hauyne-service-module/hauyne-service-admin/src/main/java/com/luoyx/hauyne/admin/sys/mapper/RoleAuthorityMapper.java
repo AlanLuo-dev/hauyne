@@ -4,7 +4,7 @@ import com.luoyx.hauyne.admin.sys.entity.RoleAuthority;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * <p>
@@ -27,5 +27,5 @@ public interface RoleAuthorityMapper extends GenericMapper<RoleAuthority> {
      *
      * @param roleIds 角色id
      */
-    void deleteByRoleIds(@Param("roleIds") List<Long> roleIds);
+    void deleteByRoleIds(@Param("roleIds") Collection<Long> roleIds);
 }

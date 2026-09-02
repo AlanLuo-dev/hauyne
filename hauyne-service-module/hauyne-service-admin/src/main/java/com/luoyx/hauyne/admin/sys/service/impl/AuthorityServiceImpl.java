@@ -158,6 +158,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
             authority.setSort(null == maxSort ? 1 : maxSort + 1);
         }
         baseMapper.insert(authority);
+        roleAuthorityService.grantNewAuthorityToSuperAdminRole(authority.getId());
 
         return authority;
     }
@@ -300,7 +301,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
         }
 
         // 校验权限资源是否被角色引用
-        List<String> roleNames = baseMapper.findRoleNamesByAuthorityId(id);
+        List<String> roleNames = baseMapper.findNonBuiltinRoleNamesByAuthorityId(id);
         if (CollectionUtils.isNotEmpty(roleNames)) {
             int limit = 3;
             List<String> displayNames = roleNames.size() > limit
