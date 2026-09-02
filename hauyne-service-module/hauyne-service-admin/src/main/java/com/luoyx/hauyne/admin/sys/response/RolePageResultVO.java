@@ -1,5 +1,6 @@
 package com.luoyx.hauyne.admin.sys.response;
 
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,45 +18,27 @@ import java.time.LocalDateTime;
 @ToString
 public class RolePageResultVO {
 
-    /**
-     * 主键id
-     */
-    @Schema(description = "Id")
+    @Schema(description = "主键id")
     private Long id;
 
-    /**
-     * 角色编码
-     */
     @Schema(description = "角色编码")
     private String roleCode;
 
-    /**
-     * 角色名称
-     */
     @Schema(description = "角色名称")
     private String roleName;
 
-    /**
-     * 创建人的真实姓名
-     */
+    @Schema(description = "是否系统内置角色（false=否，true=是）")
+    private YesNoEnum builtin;
+
     @Schema(description = "创建人姓名")
     private String createdBy;
 
-    /**
-     * 创建时间
-     */
     @Schema(description = "创建时间")
     private LocalDateTime createdTime;
 
-    /**
-     * 最后修改人的真实姓名
-     */
     @Schema(description = "最后修改人的真实姓名")
     private String lastUpdatedBy;
 
-    /**
-     * 最后修改时间
-     */
     @Schema(description = "最后修改时间")
     private LocalDateTime lastUpdatedTime;
 }

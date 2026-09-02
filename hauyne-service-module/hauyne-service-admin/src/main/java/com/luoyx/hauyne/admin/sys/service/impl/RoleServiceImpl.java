@@ -2,6 +2,7 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.amqp.producer.AuditProducer;
 import com.luoyx.hauyne.admin.api.sys.audit.RoleAuthorityAuditDTO;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.converter.RoleConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
@@ -29,6 +30,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -122,10 +124,17 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
     @Override
     @Transactional
     public void update(RoleUpdateDTO roleUpdateDTO) {
+        Role existRole = baseMapper.selectById(roleUpdateDTO.getId());
+        if (Objects.isNull(existRole)) {
+            throw new ValidateException("角色不存在");
+        }
+        if (YesNoEnum.YES.equals(existRole.getBuiltin())) {
+            throw new ValidateException("系统内置角色不允许修改");
+        }
         Role role = roleConverter.toRole(roleUpdateDTO);
         checkRoleFormData(role);
-        baseMapper.updateById(role);
 
+        baseMapper.updateById(role);
         auditProducer.sendToAudit(roleConverter.toRoleAuditDTO(role));
     }
 

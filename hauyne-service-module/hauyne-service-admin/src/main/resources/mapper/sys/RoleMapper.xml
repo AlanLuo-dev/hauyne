@@ -19,6 +19,7 @@
             t.id as id,
             t.role_code as roleCode,
             t.role_name as roleName,
+            t.is_builtin as builtin,
             c.real_name as createdBy,
             t.created_time as createdTime,
             u.real_name as lastUpdatedBy,
