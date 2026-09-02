@@ -2,6 +2,7 @@ package com.luoyx.hauyne.admin.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
 import com.luoyx.hauyne.mybatisplus.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,7 +40,7 @@ public class Authority extends BaseEntity<Authority> {
     /**
      * 权限类型（menu=菜单，operation=操作,可扩展）
      */
-    private String authorityType;
+    private AuthorityTypeEnum authorityType;
 
     /**
      * 权限编码

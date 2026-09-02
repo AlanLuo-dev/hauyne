@@ -1,30 +1,25 @@
 package com.luoyx.hauyne.admin.api.sys.enums;
 
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.luoyx.hauyne.api.enumsupport.EnumSpec;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 /**
  * 权限类型枚举
  *
  * @author luoyingxiong
  */
-public enum AuthorityTypeEnum {
+@Getter
+@RequiredArgsConstructor
+public enum AuthorityTypeEnum implements EnumSpec<String, AuthorityTypeEnum> {
 
     MENU("menu", "菜单"),
     BUTTON("button", "按钮");
 
+    @EnumValue
     private final String value;
-    private final String text;
-
-    AuthorityTypeEnum(String value, String text) {
-        this.value = value;
-        this.text = text;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public String getText() {
-        return text;
-    }
+    private final String label;
 
     /**
      * 数据校验

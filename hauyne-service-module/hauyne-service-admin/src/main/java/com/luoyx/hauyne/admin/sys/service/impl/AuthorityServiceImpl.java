@@ -1,6 +1,7 @@
 package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
+import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.mapper.AuthorityMapper;
@@ -139,6 +140,9 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
             if (null == parentAuthority) {
                 throw new ResourceNotFoundException("父节点不存在");
             }
+            if (AuthorityTypeEnum.BUTTON.equals(parentAuthority.getAuthorityType())) {
+                throw new ValidateException("按钮不能作为父节点");
+            }
 
             // 如果父节点是叶子节点，则取消其叶子节点
             if (Boolean.TRUE.equals(parentAuthority.getLeaf())) {
@@ -185,6 +189,9 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
 
         // 处理输入的父节点id，Null 和 0 都表示根节点
         final Long newParentId = null == inputParentId ? 0L : inputParentId;
+        if (newParentId.equals(id)) {
+            throw new ValidateException("不能将自身设置为自己的父节点");
+        }
 
         // 如果更换了父节点，需要处理 旧父节点、新父节点的叶子节点状态
         if (!oldParentId.equals(newParentId)) {
@@ -199,6 +206,9 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
                 final Authority newParentAuthority = baseMapper.selectById(newParentId);
                 if (Objects.isNull(newParentAuthority)) {
                     throw new ResourceNotFoundException("父节点不存在");
+                }
+                if (AuthorityTypeEnum.BUTTON.equals(newParentAuthority.getAuthorityType())) {
+                    throw new ValidateException("按钮不能作为父节点");
                 }
                 authority.setLevel(newParentAuthority.getLevel() + 1);
 

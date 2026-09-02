@@ -108,7 +108,10 @@
             authority_name as title,
             is_leaf as leaf,
             icon
-        from hyn_sys_authority
+        from
+            hyn_sys_authority
+        where
+            authority_type = 'menu'
         order by sort
     </select>
 

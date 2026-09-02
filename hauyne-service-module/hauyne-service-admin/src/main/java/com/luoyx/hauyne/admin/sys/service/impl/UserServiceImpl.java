@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.amqp.producer.UserSnapshotProducer;
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.api.sys.query.LoginLookupQuery;
 import com.luoyx.hauyne.admin.sys.converter.UserConverter;
 import com.luoyx.hauyne.admin.sys.converter.UserProfileConverter;
@@ -347,6 +348,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void update(UserUpdateDTO userUpdateDTO) {
         checkFormData(userUpdateDTO);
         final Long userId = userUpdateDTO.getId();
+        User existUser = baseMapper.selectById(userId);
+        if (Objects.isNull(existUser)) {
+            throw new ValidateException("用户不存在");
+        }
+        if (YesNoEnum.YES.equals(existUser.getBuiltin())) {
+            throw new ValidateException("系统内置用户不能修改");
+        }
         User user = userConverter.toUser(userUpdateDTO);
         UserProfile userProfile = userProfileConverter.toUserProfile(userUpdateDTO.getProfile());
         userProfile.setId(userId);
