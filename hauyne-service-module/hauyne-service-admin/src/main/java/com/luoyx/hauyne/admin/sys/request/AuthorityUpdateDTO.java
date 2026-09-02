@@ -31,8 +31,8 @@ public class AuthorityUpdateDTO {
     /**
      * 父权限id【不选择父级菜单时，默认为0】
      */
-    @Schema(description = "父权限id【不选择父级菜单时，默认为0】", requiredMode = Schema.RequiredMode.REQUIRED)
-    private Long parentId = 0L;
+    @Schema(description = "父权限id【不传递时，视为根节点】", requiredMode = Schema.RequiredMode.REQUIRED)
+    private Long parentId;
 
     /**
      * 权限类型（menu=菜单，operation=操作,可扩展）

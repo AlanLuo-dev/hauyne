@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -170,8 +171,57 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
      */
     @Override
     public void update(AuthorityUpdateDTO authorityUpdateDTO) {
+        Long id = authorityUpdateDTO.getId();
+        Authority existingAuthority = baseMapper.selectById(id);
+        if (Objects.isNull(existingAuthority)) {
+            throw new ValidateException("你要修改的权限资源不存在");
+        }
         authorityUpdateDTO.setAuthorityCode(authorityUpdateDTO.getAuthorityCode().trim());
         Authority authority = authorityConverter.toEntity(authorityUpdateDTO);
+
+        // 记录旧的、新的父节点id
+        final Long oldParentId = existingAuthority.getParentId();
+        final Long inputParentId = authority.getParentId();
+
+        // 处理输入的父节点id，Null 和 0 都表示根节点
+        final Long newParentId = null == inputParentId ? 0L : inputParentId;
+
+        // 如果更换了父节点，需要处理 旧父节点、新父节点的叶子节点状态
+        if (!oldParentId.equals(newParentId)) {
+
+            // 没有传递父节点id，默认为根节点，当前菜单则为第1层菜单
+            if (newParentId == 0) {
+                authority.setParentId(0L);
+                authority.setLevel(1);
+            } else {
+
+                // 校验新父节点是否存在
+                final Authority newParentAuthority = baseMapper.selectById(newParentId);
+                if (Objects.isNull(newParentAuthority)) {
+                    throw new ResourceNotFoundException("父节点不存在");
+                }
+                authority.setLevel(newParentAuthority.getLevel() + 1);
+
+                // 如果新父节点是叶子节点，则取消其叶子节点
+                if (Boolean.TRUE.equals(newParentAuthority.getLeaf())) {
+                    Authority updateNewParentAuthority = new Authority();
+                    updateNewParentAuthority.setId(newParentId);
+                    updateNewParentAuthority.setLeaf(false);
+                    baseMapper.updateById(updateNewParentAuthority);
+                }
+            }
+
+            if (oldParentId != 0) {
+                // 如果旧的父节点下没有子节点，则设置为叶子节点
+                long count = baseMapper.selectCountByParentId(oldParentId, id);
+                if (count == 0) {
+                    Authority updateOldParentAuthority = new Authority();
+                    updateOldParentAuthority.setId(oldParentId);
+                    updateOldParentAuthority.setLeaf(true);
+                    baseMapper.updateById(updateOldParentAuthority);
+                }
+            }
+        }
         if (StringUtils.isBlank(authority.getIcon())) {
             authority.setIcon("skin");
         }

@@ -115,4 +115,12 @@ public interface AuthorityMapper extends GenericMapper<Authority> {
      * @return 角色名称集合
      */
     List<String> findNonBuiltinRoleNamesByAuthorityId(@Param("authorityId") Long authorityId);
+
+    default long selectCountByParentId(Long parentId, Long excludeAuthorityId) {
+        return selectCount(
+                Wrappers.<Authority>lambdaQuery()
+                        .eq(Authority::getParentId, parentId)
+                        .ne(Authority::getId, excludeAuthorityId)
+        );
+    }
 }

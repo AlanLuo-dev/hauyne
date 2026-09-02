@@ -33,7 +33,7 @@ public class Role extends BaseEntity<Role> {
     private String roleName;
 
     /**
-     * 是否系统内置角色（0=否，1=是）
+     * 是否为系统内置角色（0=否，1=是）
      */
     @TableField(value = "is_builtin")
     private YesNoEnum builtin;
