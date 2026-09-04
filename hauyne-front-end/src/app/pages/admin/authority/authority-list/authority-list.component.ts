@@ -161,7 +161,7 @@ export class AuthorityListComponent implements OnInit {
             {field: 'path', header: '请求路径', width: '13%'},
             {field: 'authorityType', header: '类型', width: '5%'},
             {field: 'level', header: '层级', width: '3%'},
-            {field: 'leaf', header: '叶子节点', width: '7%'},
+            {field: 'leaf', header: '下级权限', width: '7%'},
             {field: 'sort', header: '排序', sortable: true, width: '3%'},
             {field: 'createdByFullName', header: '创建人', width: '5%'},
             {field: 'createdTime', header: '创建时间', width: '10%'},
@@ -310,5 +310,22 @@ export class AuthorityListComponent implements OnInit {
                     }
                 });
         });
+    }
+
+    /**
+     * 点击 文件夹图标 切换展开状态
+     * @param item
+     * @param dataId
+     */
+    toggleExpand(item: Authority, dataId: number): void {
+        if (item.leaf) {
+            return;
+        }
+        item.expand = !item.expand;
+        this.collapse(
+            this.mapOfExpandedData.get(dataId) || [],
+            item,
+            item.expand
+        );
     }
 }

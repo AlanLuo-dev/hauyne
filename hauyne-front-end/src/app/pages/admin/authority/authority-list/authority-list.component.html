@@ -93,7 +93,18 @@
                             <td>{{ item.authorityType }}</td>
                             <td>{{ item.level }}</td>
                             <td>
-                                {{ item.leaf ? '是' : '否' }}
+
+                                <!-- 展开/收起图标 -->
+                                <nz-icon
+                                    [nzType]="item.leaf ? 'file' : (item.expand ? 'folder-open' : 'folder')"
+                                    nzTheme="fill"
+                                    nz-tooltip
+                                    [nzTooltipTitle]="item.leaf ? '无下级' : (item.expand ? '点击收起' : '点击可展开')"
+                                    (click)="toggleExpand(item, data.id)"
+                                    [style.cursor]="item.leaf ? 'default' : 'pointer'"
+                                    [class.authority-folder]="!item.leaf"
+                                    [class.authority-file]="item.leaf"
+                                />
                             </td>
                             <td>{{ item.sort }}</td>
                             <td>{{ item.createdBy }}</td>
