@@ -26,7 +26,7 @@
     "@ngrx/router-store": "^21.1.1",
     "@ngrx/store": "^21.1.1",
     "@ngrx/store-devtools": "^21.1.1",
-    "material-icons": "^1.13.14",
+    "material-symbols": "^0.47.0",
     "ng-zorro-antd": "^21.3.3",
     "rxjs": "~7.8.2",
     "screenfull": "^6.0.2",

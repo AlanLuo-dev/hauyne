@@ -66,14 +66,16 @@
                           [nzTooltipTitle]="'点击' + (drawerOpened ? '隐藏' : '展示') + '导航菜单'"
                           nzTooltipPlacement="right"
                     >
-                        <mat-icon>menu</mat-icon>
+                        <mat-icon fontSet="material-symbols-outlined">menu</mat-icon>
                     </span>
                 </div>
                 <div nz-col nzSpan="3">
                     <span class="header-trigger" (click)="toggleFullscreen()"
                           nz-tooltip [nzTooltipTitle]="isFullScreen ? '点击退出全屏' : '点击全屏'"
                           nzTooltipPlacement="bottom">
-                        <mat-icon>{{ isFullScreen ? 'fullscreen_exit' : 'fullscreen' }}</mat-icon>
+                        <mat-icon fontSet="material-symbols-sharp">
+                            {{ isFullScreen ? 'fullscreen_exit' : 'fullscreen' }}
+                        </mat-icon>
                     </span>
 
                     <!-- 用户名 -->
