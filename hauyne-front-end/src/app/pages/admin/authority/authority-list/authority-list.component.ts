@@ -41,7 +41,7 @@ export interface Authority extends AuditInfo {
     /**
      * 权限类型
      */
-    authorityType: EnumOption<string>;
+    authorityType: EnumOption<string> | null;
 
     /**
      * 权限编码

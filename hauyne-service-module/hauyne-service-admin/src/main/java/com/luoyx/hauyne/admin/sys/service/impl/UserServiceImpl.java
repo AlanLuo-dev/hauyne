@@ -291,11 +291,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         if (userIds.contains(currentSysUserId)) {
             throw new ValidateException("你不能删除自己");
         }
-
         List<User> users = baseMapper.selectByIds(userIds);
+        if (users.size() != userIds.size()) {
+            throw new ValidateException("部分用户不存在，可能已被其他人删除，请刷新后重试");
+        }
         for (User user : users) {
-            if ("admin".equals(user.getUsername())) {
-                throw new ValidateException("admin用户不能删除");
+            if (YesNoEnum.YES.equals(user.getBuiltin())) {
+                throw new ValidateException("【" + user.getUsername() + "】是系统内置用户，不允许删除");
             }
         }
 
@@ -319,7 +321,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         userProfileService.removeByIds(userIds);
         userRoleService.deleteUserRoleByUserIds(userIds);
 
-        // 发送已更新用户的快照消息
+        // 发送已删除用户的快照消息
         applicationEventPublisher.publishEvent(new UserSnapshotEvent(userSnapshotList, EventType.DELETE));
     }
 
@@ -353,7 +355,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             throw new ValidateException("用户不存在");
         }
         if (YesNoEnum.YES.equals(existUser.getBuiltin())) {
-            throw new ValidateException("系统内置用户不能修改");
+            throw new ValidateException("系统内置用户不允许修改");
         }
         User user = userConverter.toUser(userUpdateDTO);
         UserProfile userProfile = userProfileConverter.toUserProfile(userUpdateDTO.getProfile());
@@ -425,8 +427,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             throw new ValidateException("解密失败");
         }
         final Long userId = resetPasswordDTO.getUserId();
-        if (null == baseMapper.selectById(userId)) {
+        User targetUser = baseMapper.selectById(userId);
+        if (Objects.isNull(targetUser)) {
             throw new ResourceNotFoundException("用户不存在");
+        }
+        if (YesNoEnum.YES.equals(targetUser.getBuiltin())) {
+            throw new ValidateException("系统内置用户不允许重置密码");
         }
         String bcryptPassword = bcryptPasswordEncoder.encode(decryptPassword);
         baseMapper.resetPassword(userId, bcryptPassword);
