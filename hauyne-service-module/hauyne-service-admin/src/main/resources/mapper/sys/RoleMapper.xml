@@ -74,5 +74,7 @@
             role_code as roleCode,
             role_name as roleName
         from hyn_sys_role
+        where
+            is_builtin = 0
     </select>
 </mapper>

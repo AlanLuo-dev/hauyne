@@ -73,7 +73,8 @@
             CASE
                 WHEN u.id = #{currentUserId} THEN true
                 ELSE false
-            END AS self
+            END AS self,
+            is_builtin AS builtin
         FROM
             hyn_sys_user u
             INNER JOIN hyn_sys_user_profile p ON u.id = p.id

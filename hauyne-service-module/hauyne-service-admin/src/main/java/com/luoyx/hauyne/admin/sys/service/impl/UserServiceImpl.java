@@ -3,6 +3,11 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.amqp.producer.UserSnapshotProducer;
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonLockedEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.CredentialsNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.PrivateKeyRedisKeyEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.api.sys.query.LoginLookupQuery;
 import com.luoyx.hauyne.admin.sys.converter.UserConverter;
@@ -11,11 +16,6 @@ import com.luoyx.hauyne.admin.sys.converter.UserSnapshotConverter;
 import com.luoyx.hauyne.admin.sys.entity.User;
 import com.luoyx.hauyne.admin.sys.entity.UserProfile;
 import com.luoyx.hauyne.admin.sys.entity.UserSnapshot;
-import com.luoyx.hauyne.admin.api.sys.enums.AccountNonExpiredEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.AccountNonLockedEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.CredentialsNonExpiredEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.PrivateKeyRedisKeyEnum;
 import com.luoyx.hauyne.admin.sys.event.UserSnapshotEvent;
 import com.luoyx.hauyne.admin.sys.mapper.UserMapper;
 import com.luoyx.hauyne.admin.sys.query.UserPageQuery;
@@ -365,8 +365,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         userProfileService.updateById(userProfile);
 
         // 更新用户角色 关联关系
-        Set<Long> roleIdSet = new HashSet<>(userUpdateDTO.getRoleIds());
-        if (userUpdateDTO.getRoleIds().size() > roleIdSet.size()) {
+        final List<Long> inputRoleIds = userUpdateDTO.getRoleIds();
+        Set<Long> roleIdSet = new HashSet<>(inputRoleIds);
+        if (inputRoleIds.size() > roleIdSet.size()) {
             throw new ValidateException("选择的角色不能重复");
         }
         userRoleService.updateUserRoleByUserId(userId, roleIdSet);

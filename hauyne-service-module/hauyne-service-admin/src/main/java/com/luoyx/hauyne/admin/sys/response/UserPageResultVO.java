@@ -5,6 +5,7 @@ import com.luoyx.hauyne.admin.api.sys.enums.AccountNonLockedEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.CredentialsNonExpiredEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.GenderEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -132,6 +133,12 @@ public class UserPageResultVO {
     /**
      * 是否是自己
      */
-    @Schema(description = "是否是自己（true=是，false=否）")
-    private Boolean self;
+    @Schema(description = "是否是自己")
+    private YesNoEnum self;
+
+    /**
+     * 是否是内置用户
+     */
+    @Schema(description = "是否是内置用户")
+    private YesNoEnum builtin;
 }
