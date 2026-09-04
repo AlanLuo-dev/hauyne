@@ -111,7 +111,7 @@
                                     [nzType]="item.leaf ? 'file' : (item.expand ? 'folder-open' : 'folder')"
                                     nzTheme="fill"
                                     nz-tooltip
-                                    [nzTooltipTitle]="item.leaf ? '无下级' : (item.expand ? '点击收起' : '点击可展开')"
+                                    [nzTooltipTitle]="item.leaf ? '无下级' : (item.expand ? '点击收起' : '点击展开')"
                                     (click)="toggleExpand(item, data.id)"
                                     [style.cursor]="item.leaf ? 'default' : 'pointer'"
                                     [class.authority-folder]="!item.leaf"
