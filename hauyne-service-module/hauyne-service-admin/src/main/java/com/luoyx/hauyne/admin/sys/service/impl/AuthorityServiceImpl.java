@@ -13,9 +13,7 @@ import com.luoyx.hauyne.admin.sys.response.AuthorityDetailVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityTreeNodeVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityTreeSelectVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityVO;
-import com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO;
 import com.luoyx.hauyne.admin.sys.service.AuthorityService;
-import com.luoyx.hauyne.admin.sys.service.DictItemService;
 import com.luoyx.hauyne.admin.sys.service.RoleAuthorityService;
 import com.luoyx.hauyne.admin.util.MenuTreeUtil;
 import com.luoyx.hauyne.mybatisplus.service.impl.BaseServiceImpl;
@@ -51,7 +49,6 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
 
     private final RoleAuthorityService roleAuthorityService;
     private final AuthorityConverter authorityConverter;
-    private final DictItemService dictItemService;
 
     @Override
     public Set<String> findAuthoritiesByUserId(Long userId) {
@@ -72,25 +69,10 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
         List<AuthorityTreeNodeVO> authorityTreeNodeList = new ArrayList<>();
         List<AuthorityVO> authorities = baseMapper.findList(query);
 
-        if (CollectionUtils.isNotEmpty(authorities)) {
-            Map<String, String> authorityTypeMap = dictItemService.selectDropdownData("authority_type")
-                    .stream()
-                    .collect(
-                            Collectors.toMap(
-                                    DictItemDropdownVO::getValue,
-                                    DictItemDropdownVO::getLabel,
-                                    (v1, v2) -> v2
-                            )
-                    );
-            authorities.forEach(item -> {
-                item.setAuthorityType(authorityTypeMap.get(item.getAuthorityType()));
-            });
-        }
-
         // 根节点
         List<AuthorityVO> rootList = authorities.stream()
                 .filter(item -> item.getParentId() == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         for (AuthorityVO rootNode : rootList) {
             AuthorityTreeNodeVO treeNodeVO = authorityConverter.toAuthorityTreeNode(rootNode);

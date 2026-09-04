@@ -1,6 +1,7 @@
 package com.luoyx.hauyne.admin.sys.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,8 +45,8 @@ public class AuthorityVO {
     /**
      * 权限类型（menu=菜单，button=按钮）
      */
-    @Schema(description = "权限类型（menu=菜单，button=按钮）")
-    private String authorityType;
+    @Schema(description = "权限类型")
+    private AuthorityTypeEnum authorityType;
 
     /**
      * 权限编码

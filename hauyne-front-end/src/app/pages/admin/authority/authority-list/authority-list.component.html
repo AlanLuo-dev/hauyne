@@ -90,8 +90,20 @@
                             </td>
                             <td>{{ item.authorityCode }}</td>
                             <td>{{ item.path }}</td>
-                            <td>{{ item.authorityType }}</td>
+                            <td>
+                                @if (item.authorityType?.value == 'menu') {
+                                    <nz-icon nzType="menu" nzTheme="outline" style="font-size: 17px;"
+                                             nz-tooltip nzTooltipTitle="菜单"
+                                    />
+                                }
+                                @else if (item.authorityType?.value == 'button'){
+                                    <nz-icon nzType="tool" nzTheme="twotone" style="font-size: 17px;"
+                                             nz-tooltip nzTooltipTitle="按钮"
+                                    />
+                                }
+                            </td>
                             <td>{{ item.level }}</td>
+                            <td>{{ item.sort }}</td>
                             <td>
 
                                 <!-- 展开/收起图标 -->
@@ -106,7 +118,6 @@
                                     [class.authority-file]="item.leaf"
                                 />
                             </td>
-                            <td>{{ item.sort }}</td>
                             <td>{{ item.createdBy }}</td>
                             <td>{{ item.createdTime }}</td>
                             <td>{{ item.lastUpdatedBy }}</td>

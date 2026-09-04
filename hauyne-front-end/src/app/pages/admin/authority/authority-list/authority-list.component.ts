@@ -18,6 +18,7 @@ import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
 import {DictTypeService} from "../../dictionary/dict-type/dict-type.service";
 import {AuthorityEditFormComponent} from "../authority-edit-form/authority-edit-form.component";
 import {finalize, Observable} from "rxjs";
+import {EnumOption} from "../../../../common/enum-option";
 
 export interface Authority extends AuditInfo {
     // key: string;
@@ -40,7 +41,7 @@ export interface Authority extends AuditInfo {
     /**
      * 权限类型
      */
-    authorityType: string;
+    authorityType: EnumOption<string>;
 
     /**
      * 权限编码
@@ -161,8 +162,8 @@ export class AuthorityListComponent implements OnInit {
             {field: 'path', header: '请求路径', width: '13%'},
             {field: 'authorityType', header: '类型', width: '5%'},
             {field: 'level', header: '层级', width: '3%'},
-            {field: 'leaf', header: '下级权限', width: '7%'},
             {field: 'sort', header: '排序', sortable: true, width: '3%'},
+            {field: 'leaf', header: '下级权限', width: '7%'},
             {field: 'createdByFullName', header: '创建人', width: '5%'},
             {field: 'createdTime', header: '创建时间', width: '10%'},
             {field: 'lastModifiedByFullName', header: '修改人', width: '5%'},

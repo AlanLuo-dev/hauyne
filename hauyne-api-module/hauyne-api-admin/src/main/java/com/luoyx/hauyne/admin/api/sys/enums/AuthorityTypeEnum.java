@@ -20,20 +20,4 @@ public enum AuthorityTypeEnum implements EnumSpec<String, AuthorityTypeEnum> {
     @EnumValue
     private final String value;
     private final String label;
-
-    /**
-     * 数据校验
-     *
-     * @param value
-     * @return
-     */
-    public static boolean validate(String value) {
-        for (AuthorityTypeEnum authorityTypeEnum : AuthorityTypeEnum.values()) {
-            if (authorityTypeEnum.value.equals(value)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
