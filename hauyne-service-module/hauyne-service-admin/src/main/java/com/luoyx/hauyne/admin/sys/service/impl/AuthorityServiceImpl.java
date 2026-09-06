@@ -221,15 +221,27 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
     }
 
     /**
-     * 校验权限名称可用性【修改场景】
+     * 校验权限编码可用性
      *
-     * @param excludeAuthorityId 要排除的权限id
-     * @param authorityName      权限名称
+     * @param excludeId     要排除的权限id
+     * @param authorityCode 权限编码
      * @return 是否唯一 true=唯一 false=不唯一
      */
     @Override
-    public boolean isAuthorityNameUnique(Long excludeAuthorityId, String authorityName) {
-        return baseMapper.selectOneByAuthorityName(excludeAuthorityId, authorityName) == null;
+    public boolean isAuthorityCodeUnique(Long excludeId, String authorityCode) {
+        return baseMapper.selectOneByAuthorityCode(excludeId, authorityCode) == null;
+    }
+
+    /**
+     * 校验权限名称可用性
+     *
+     * @param excludeId     要排除的权限id
+     * @param authorityName 权限名称
+     * @return 是否唯一 true=唯一 false=不唯一
+     */
+    @Override
+    public boolean isAuthorityNameUnique(Long excludeId, String authorityName) {
+        return baseMapper.selectOneByAuthorityName(excludeId, authorityName) == null;
     }
 
     /**

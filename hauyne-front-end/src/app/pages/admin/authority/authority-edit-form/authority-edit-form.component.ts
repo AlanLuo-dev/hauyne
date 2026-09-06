@@ -118,10 +118,12 @@ export class AuthorityEditFormComponent implements OnInit {
                 this.selectedAuthorityType = data.authorityType;
                 this.authorityForm.addControl('id', new FormControl(data.id, Validators.required));
 
+                this.authorityCode.addAsyncValidators(this.authorityService.authorityCodeAsyncValidator(id));
                 this.authorityName.addAsyncValidators(this.authorityService.authorityNameAsyncValidator(id));
                 this.selectedParentId = this.parentId.value;
             });
         } else {
+            this.authorityCode.addAsyncValidators(this.authorityService.authorityCodeAsyncValidator());
             this.authorityName.addAsyncValidators(this.authorityService.authorityNameAsyncValidator());
         }
 
