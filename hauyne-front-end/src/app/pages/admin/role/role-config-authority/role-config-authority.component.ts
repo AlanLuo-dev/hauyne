@@ -110,22 +110,62 @@ export class RoleConfigAuthorityComponent implements OnInit {
         });
     }
 
+    /**
+     * 递归获取所有选中的节点
+     * @param nodes 树节点数组
+     * @private 私有方法
+     */
+    private getAllCheckedNodes(nodes: NzTreeNode[]): NzTreeNode[] {
+        const result: NzTreeNode[] = [];
+        const walk = (nodeList: NzTreeNode[]) => {
+            for (const node of nodeList) {
+                if (node.isChecked) {
+                    result.push(node);
+                }
+                if (node.children?.length) {
+                    walk(node.children);
+                }
+            }
+        };
+        walk(nodes);
+
+        return result;
+    }
+
     // 调用 tree 实例方法统计节点数量
     updateOkDangerStatus(): void {
-        const checked = this.nzTreeComponent?.getCheckedNodeList() ?? [];
-        const halfChecked = this.nzTreeComponent?.getHalfCheckedNodeList() ?? [];
-        const total = checked.length + halfChecked.length;
+        const allNodes = this.nzTreeComponent?.getTreeNodes() ?? [];
+        const checkedNodes = this.getAllCheckedNodes(allNodes);
+
+
+        const halfCheckedNodes = this.nzTreeComponent?.getHalfCheckedNodeList() ?? [];   // 半选中的节点数组
+        const total = checkedNodes.length + halfCheckedNodes.length;                                // 总选中的节点数量
         this.isOkDanger = (total === 0);
-        console.log('选中的' + checked + ', 半选中的' + halfChecked);
+
+        const checkedKeys = checkedNodes.map(value => value.key + ' = ' + value.title);
+        const halfCheckedKeys = halfCheckedNodes.map(value => value.key + ' = ' + value.title);
+        console.log('选中的【' + checkedKeys + '】, 半选中的【' + halfCheckedKeys + '】');
+
+
     }
 
     /**
      * 提交授权配置表单
      */
     submitAuthorityConfig() {
-        const checked = this.defaultCheckedKeys;
-        const halfCheckedKeys = this.nzTreeComponent.getHalfCheckedNodeList().map(item => item.key);
+        const allNodes = this.nzTreeComponent?.getTreeNodes() ?? [];
+
+        const checkedNodes = this.getAllCheckedNodes(allNodes);
+        const halfCheckedNodeList = this.nzTreeComponent.getHalfCheckedNodeList();
+
+        const checked = checkedNodes.map(item => item.key);
+        const halfCheckedKeys = halfCheckedNodeList.map(item => item.key);
         console.log('提交授权配置表单, 选中的' + checked + ', 半选中的' + halfCheckedKeys);
+
+        const checkedObj = checkedNodes.map(value => value.key + ' = ' + value.title);
+        const halfCheckedObj = halfCheckedNodeList.map(value => value.key + ' = ' + value.title);
+        console.log('选中的【' + checkedObj + '】, 半选中的【' + halfCheckedObj + '】');
+
         const allCheckedKeys = checked.concat(halfCheckedKeys);
         if (allCheckedKeys.length === 0) {
             this.showConfirm();
