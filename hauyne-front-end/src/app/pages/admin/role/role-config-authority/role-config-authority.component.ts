@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
 import {NzButtonComponent, NzButtonModule} from "ng-zorro-antd/button";
 import {NzTooltipDirective, NzTooltipModule} from "ng-zorro-antd/tooltip";
@@ -14,6 +14,8 @@ import {Role} from "../role-list/role-list.component";
 import {forkJoin} from "rxjs";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {NzSpinModule} from "ng-zorro-antd/spin";
+import {NzSwitchComponent} from "ng-zorro-antd/switch";
+import {RoleAuthorityUpdateRequest} from "./RoleAuthorityUpdateRequest";
 
 @Component({
     selector: 'app-role-config-authority',
@@ -33,11 +35,12 @@ import {NzSpinModule} from "ng-zorro-antd/spin";
         NzInputDirective,
         FormsModule,
         NzSpinModule,
+        NzSwitchComponent,
     ],
     templateUrl: './role-config-authority.component.html',
     styleUrl: './role-config-authority.component.less'
 })
-export class RoleConfigAuthorityComponent implements OnInit {
+export class RoleConfigAuthorityComponent implements OnChanges {
 
     // 是否显示授权弹窗
     @Input() configAuthorityFormDialogDisplay: boolean = false;
@@ -65,7 +68,7 @@ export class RoleConfigAuthorityComponent implements OnInit {
 
     nodes: NzTreeNodeOptions[] = [];
 
-    roleName: string = '';
+    role?: Role;
 
     confirmModal?: NzModalRef; // For testing by now
 
@@ -79,35 +82,67 @@ export class RoleConfigAuthorityComponent implements OnInit {
     constructor(private readonly roleService: RoleService,
                 private readonly authorityService: AuthorityService,
                 private readonly messageService: NzMessageService,
-                private readonly modal: NzModalService,
-                private readonly cdr: ChangeDetectorRef) {
+                private readonly modal: NzModalService) {
     }
 
-    ngOnInit(): void {
-        this.roleService.getOne<Role>(this.roleId).subscribe(data => {
-            this.roleName = data.roleName;
-        });
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['roleId'] && this.roleId != null) {
+            this.init();
+        }
+    }
 
+    private init(): void {
+        this.isLoading = true;      // 1. 进入加载状态
+        this.role = undefined;      // 2. 清理上一次角色的数据
+        this.nodes = [];
+        this.defaultCheckedKeys = [];
+        this.treeReady = false;     // 3. Tree 暂时不要创建
+
+        // 4. 清理 UI 状态
+        this.searchValue = '';
+        this.isOkDanger = true;
+
+        // 5. 一次性加载三个数据
         forkJoin({
+            role: this.roleService.getOne<Role>(this.roleId),
             nodes: this.authorityService.loadAuthorityCheckBoxTree(),
             checkedKeys: this.roleService.authorityLeafNodeKeys(this.roleId)
         }).subscribe({
-            next: ({nodes, checkedKeys}) => {
-                this.nodes = nodes;        // 1. 设置树数据
-                this.treeReady = true;     // 2. 触发 @if 渲染 <nz-tree>
-                this.cdr.detectChanges();  // 3. 强制触发视图更新
-                this.defaultCheckedKeys = checkedKeys;  // 4. 设置勾选节点
+            next: ({ role, nodes, checkedKeys }) => {
 
-                // 5. 再等待一个事件循环，确保树组件实际渲染完成
-                setTimeout(() => {
-                    this.updateOkDangerStatus();
-                });
-                this.isLoading = false; // ✅ 成功后关闭 loading
+                // 数据全部准备完成
+                this.role = role;
+                this.nodes = nodes;
+                this.defaultCheckedKeys = checkedKeys;
+
+                // 已经有权限 → 不危险
+                this.isOkDanger = checkedKeys.length === 0;
+
+                // 最后一步才允许 Tree 创建
+                this.treeReady = true;
+                this.isLoading = false;
             },
-            error: (err) => {
-                this.isLoading = false; // ✅ 出错也关闭 loading
+            error: err => {
+                this.isLoading = false;
+                this.treeReady = false;
+
+                this.messageService.error('加载角色权限失败');
             }
         });
+    }
+
+    get drawerTitle(): string {
+        return this.role
+            ? `配置【${this.role.roleName}】角色的权限`
+            : '配置角色的权限';
+    }
+
+    changeCheckStrictly(): void {
+        if (!this.role) {
+            return;
+        }
+
+        this.role.authorityCheckLinkage.value = !this.role.authorityCheckLinkage.value;
     }
 
     /**
@@ -177,7 +212,11 @@ export class RoleConfigAuthorityComponent implements OnInit {
     doSubmit(allCheckedKeys: number[]) {
         this.isOkLoading = true;
         this.isCancelDisabled = true;
-        this.roleService.updateRoleAuthorities(this.roleId, allCheckedKeys).subscribe({
+
+        this.roleService.updateRoleAuthorities(this.roleId, {
+            authorityIds: allCheckedKeys,
+            authorityCheckLinkage: this.role!.authorityCheckLinkage.value
+        }).subscribe({
             next: x => {
                 this.configAuthorityFormDialogDisplay = false;
                 this.messageService.create("success", "操作成功");

@@ -1,6 +1,7 @@
 package com.luoyx.hauyne.admin.sys.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +36,12 @@ public class RoleVO {
      */
     @Schema(description = "角色名称")
     private String roleName;
+
+    @Schema(description = "是否为系统内置角色")
+    private YesNoEnum builtin;
+
+    @Schema(description = "权限菜单父子节点选中状态是否联动")
+    private YesNoEnum authorityCheckLinkage;
 
     /**
      * 创建人姓名

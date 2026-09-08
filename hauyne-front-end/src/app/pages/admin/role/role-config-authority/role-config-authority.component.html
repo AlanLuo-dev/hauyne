@@ -3,7 +3,7 @@
         [nzMaskClosable]="false"
         [nzWidth]="'40%'"
         [(nzVisible)]="configAuthorityFormDialogDisplay"
-        [nzTitle]="'配置「' + roleName + '」角色的权限'"
+        [nzTitle]="drawerTitle"
         [nzFooter]="footerTpl"
         (nzOnClose)="handleCancel()"
         [nzKeyboard]="false"
@@ -29,6 +29,13 @@
                             <span nz-icon nzType="minus-square" nzTheme="outline"></span>收起全部
                         </button>
                     </div>
+                    <div nz-col nzSpan="12">
+                        父子关联？
+                        <nz-switch [(ngModel)]="role!.authorityCheckLinkage!.value" nzSize="small"
+                                   [nzControl]="true" (click)="changeCheckStrictly()"
+                        >
+                        </nz-switch>
+                    </div>
                 </div>
                 <nz-tree
                     id="authorityKeys"
@@ -40,6 +47,7 @@
                     nzShowIcon
                     [nzSearchValue]="searchValue"
                     (nzSearchValueChange)="nzEvent($event)"
+                    [nzCheckStrictly]="!role!.authorityCheckLinkage!.value"
                 >
                 </nz-tree>
             }

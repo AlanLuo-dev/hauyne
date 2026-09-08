@@ -28,6 +28,7 @@ export interface Role extends AuditInfo {
     roleCode: string;
     roleName: string;
     builtin: EnumOption<boolean>;
+    authorityCheckLinkage: EnumOption<boolean>;
 }
 
 

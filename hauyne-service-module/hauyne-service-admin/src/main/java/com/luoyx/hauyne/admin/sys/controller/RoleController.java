@@ -7,6 +7,7 @@ import com.luoyx.hauyne.admin.sys.feignclient.AuditFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UAAFeignClient;
 import com.luoyx.hauyne.admin.sys.feignclient.UserFeignClient;
 import com.luoyx.hauyne.admin.sys.query.RoleQuery;
+import com.luoyx.hauyne.admin.sys.request.RoleAuthoritiesUpdateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -215,22 +216,13 @@ public class RoleController {
         return roleService.selectLeafNodeAuthorityIdsByRoleId(roleId);
     }
 
-    /**
-     * 更新角色的权限
-     *
-     * @param roleId       角色id
-     * @param authorityIds 权限资源id数组
-     */
-    @Parameters({
-            @Parameter(name = "roleId", description = "角色id", required = true, in = ParameterIn.PATH),
-            @Parameter(name = "authorityIds", description = "权限资源id数组", required = true, in = ParameterIn.DEFAULT)
-    })
     @Operation(summary = "更新角色的权限")
     @PreAuthorize("hasAuthority('sys-role:assign-authorities')")
     @PutMapping(value = "/{roleId}/authorities")
-    public void updateRoleAuthorities(@NotNull(message = "角色id不能为空") @PathVariable(value = "roleId") Long roleId,
-                                      @RequestBody @NotNull(message = "权限资源id不能为空") List<Long> authorityIds) {
-        roleService.updateRoleAuthorities(roleId, authorityIds);
+    public void updateRoleAuthorities(@Parameter(name = "roleId", description = "角色id", required = true, in = ParameterIn.PATH)
+                                      @NotNull(message = "角色id不能为空") @PathVariable(value = "roleId") Long roleId,
+                                      @Validated @RequestBody RoleAuthoritiesUpdateDTO roleAuthoritiesUpdateDTO) {
+        roleService.updateRoleAuthorities(roleId, roleAuthoritiesUpdateDTO);
     }
 
     @Operation(summary = "查询所有")

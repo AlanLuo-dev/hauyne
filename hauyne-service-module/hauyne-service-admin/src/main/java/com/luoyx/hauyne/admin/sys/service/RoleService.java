@@ -1,6 +1,7 @@
 package com.luoyx.hauyne.admin.sys.service;
 
 import com.luoyx.hauyne.admin.sys.entity.Role;
+import com.luoyx.hauyne.admin.sys.request.RoleAuthoritiesUpdateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -70,10 +71,10 @@ public interface RoleService extends BaseService<Role> {
     /**
      * 更新角色的权限资源（先删后增）
      *
-     * @param roleId       角色id
-     * @param authorityIds 权限资源id数组
+     * @param roleId                   角色id
+     * @param roleAuthoritiesUpdateDTO 参数DTO
      */
-    void updateRoleAuthorities(Long roleId, List<Long> authorityIds);
+    void updateRoleAuthorities(Long roleId, RoleAuthoritiesUpdateDTO roleAuthoritiesUpdateDTO);
 
     /**
      * 查询角色已有的权限（只查询叶子节点，前端Ng-Zorro的复选框树会根据子节点的选中情况决定的父节点是否半选中）

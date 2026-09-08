@@ -9,6 +9,7 @@ import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.entity.Role;
 import com.luoyx.hauyne.admin.sys.entity.RoleAuthority;
 import com.luoyx.hauyne.admin.sys.mapper.RoleMapper;
+import com.luoyx.hauyne.admin.sys.request.RoleAuthoritiesUpdateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -177,20 +178,27 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
     /**
      * 更新角色的权限资源（先删后增）
      *
-     * @param roleId       角色id
-     * @param authorityIds 权限资源id数组
+     * @param roleId                   角色id
+     * @param roleAuthoritiesUpdateDTO 参数DTO
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateRoleAuthorities(Long roleId, List<Long> authorityIds) {
+    public void updateRoleAuthorities(Long roleId, RoleAuthoritiesUpdateDTO roleAuthoritiesUpdateDTO) {
         Role role = checkRoleExists(roleId);
         if (YesNoEnum.YES.equals(role.getBuiltin())) {
             throw new ValidateException("【" + role.getRoleName() + "】是系统内置角色，不允许修改权限");
         }
-        Set<Long> authorityIdSet = new LinkedHashSet<>(authorityIds); // 去重
+        final List<Long> authorityIds = roleAuthoritiesUpdateDTO.getAuthorityIds();
+        final Set<Long> authorityIdSet = new LinkedHashSet<>(authorityIds); // 去重
+        if (authorityIdSet.size() != authorityIds.size()) {
+            throw new ValidateException("提交的权限菜单重复，请检查后重试");
+        }
         Map<Long, Authority> authorityMap = Collections.emptyMap();
         if (CollectionUtils.isNotEmpty(authorityIdSet)) {
             authorityMap = authorityService.checkAuthorityIds(authorityIdSet);
+            if (authorityMap.size() != authorityIdSet.size()) {
+                throw new ValidateException("部分权限菜单不存在，请刷新后重试");
+            }
         }
 
         // 先删除角色的权限资源
@@ -217,6 +225,12 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
                     .collect(Collectors.toList());
             roleAuthorityAuditDTO.setAuthorityNames(authorityNames);
         }
+
+        // 更新角色权限菜单父子节点选中状态是否联动
+        Role updateRole = new Role();
+        updateRole.setId(roleId);
+        updateRole.setAuthorityCheckLinkage(roleAuthoritiesUpdateDTO.getAuthorityCheckLinkage());
+        baseMapper.updateById(updateRole);
 
         auditProducer.sendToAudit(roleAuthorityAuditDTO);
     }

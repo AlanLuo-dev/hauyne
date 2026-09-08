@@ -37,4 +37,10 @@ public class Role extends BaseEntity<Role> {
      */
     @TableField(value = "is_builtin")
     private YesNoEnum builtin;
+
+    /**
+     * 权限菜单父子节点选中状态是否联动（0=否，1=是）
+     */
+    @TableField(value = "is_authority_check_linkage")
+    private YesNoEnum authorityCheckLinkage;
 }

@@ -5,6 +5,7 @@ import {AbstractControl, AsyncValidatorFn, ValidationErrors} from "@angular/form
 import {catchError} from "rxjs/operators";
 import {AdminBaseService} from "../admin-base.service";
 import {RoleDropdown} from "./role-dropdown";
+import {RoleAuthorityUpdateRequest} from "./role-config-authority/RoleAuthorityUpdateRequest";
 
 @Injectable({
     providedIn: 'root'
@@ -65,11 +66,12 @@ export class RoleService extends AdminBaseService<number> {
 
     /**
      * 修改角色的权限资源
+     *
      * @param roleId 角色id
-     * @param authorityIds 权限资源id数组
+     * @param request 角色权限配置
      */
-    updateRoleAuthorities(roleId: number, authorityIds: number[]): Observable<any> {
-        return this.http.put<any>(this.apiUrl + `/${roleId}/authorities`, authorityIds);
+    updateRoleAuthorities(roleId: number, request: RoleAuthorityUpdateRequest): Observable<void> {
+        return this.http.put<void>(this.apiUrl + `/${roleId}/authorities`, request);
     }
 
     selectDropdown(): Observable<RoleDropdown[]> {
