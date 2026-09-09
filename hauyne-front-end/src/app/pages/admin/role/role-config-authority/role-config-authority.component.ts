@@ -79,6 +79,9 @@ export class RoleConfigAuthorityComponent implements OnChanges {
     // 是否加载中 true=是，false=否
     isLoading: boolean = true;
 
+    // 是否已展开全部节点
+    isAllExpanded: boolean = false;
+
     constructor(private readonly roleService: RoleService,
                 private readonly authorityService: AuthorityService,
                 private readonly messageService: NzMessageService,
@@ -93,14 +96,6 @@ export class RoleConfigAuthorityComponent implements OnChanges {
 
     private init(): void {
         this.isLoading = true;      // 1. 进入加载状态
-        this.role = undefined;      // 2. 清理上一次角色的数据
-        this.nodes = [];
-        this.defaultCheckedKeys = [];
-        this.treeReady = false;     // 3. Tree 暂时不要创建
-
-        // 4. 清理 UI 状态
-        this.searchValue = '';
-        this.isOkDanger = true;
 
         // 5. 一次性加载三个数据
         forkJoin({
@@ -245,10 +240,20 @@ export class RoleConfigAuthorityComponent implements OnChanges {
         this.configAuthorityFormDialogDisplayChange.emit(false);
     }
 
+    toggleExpandAll(): void {
+        if (this.isAllExpanded) {
+            this.collapseAll();
+        } else {
+            this.expandAll();
+        }
+
+        this.isAllExpanded = !this.isAllExpanded;
+    }
+
     /**
      * 展开所有节点
      */
-    expandAll(): void {
+    private expandAll(): void {
         const expandRecursive = (nodes: NzTreeNode[]): void => {
             nodes.forEach(node => {
                 node.isExpanded = true;
@@ -265,7 +270,7 @@ export class RoleConfigAuthorityComponent implements OnChanges {
     /**
      * 折叠所有节点
      */
-    collapseAll(): void {
+    private collapseAll(): void {
         const collapseRecursive = (nodes: NzTreeNode[]): void => {
             nodes.forEach(node => {
                 node.isExpanded = false;
