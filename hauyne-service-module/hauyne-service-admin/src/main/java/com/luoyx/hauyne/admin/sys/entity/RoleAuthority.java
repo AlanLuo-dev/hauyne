@@ -3,10 +3,7 @@ package com.luoyx.hauyne.admin.sys.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.luoyx.hauyne.mybatisplus.entity.IdEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
@@ -18,12 +15,9 @@ import java.time.LocalDateTime;
  * @author 罗英雄
  * @since 2022-07-30
  */
-@Getter
-@Setter
-@ToString
+@Data
 @TableName("hyn_sys_role_authority")
-@SuppressWarnings("serial")
-public class RoleAuthority extends IdEntity<RoleAuthority> {
+public class RoleAuthority {
 
     /**
      * 角色id

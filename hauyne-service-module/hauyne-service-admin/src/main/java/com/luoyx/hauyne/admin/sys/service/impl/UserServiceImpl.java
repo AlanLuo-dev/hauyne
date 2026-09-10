@@ -3,6 +3,12 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.amqp.producer.UserSnapshotProducer;
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.AccountNonLockedEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.CredentialsNonExpiredEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.PrivateKeyRedisKeyEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.api.sys.query.LoginLookupQuery;
 import com.luoyx.hauyne.admin.sys.converter.UserConverter;
 import com.luoyx.hauyne.admin.sys.converter.UserProfileConverter;
@@ -10,11 +16,6 @@ import com.luoyx.hauyne.admin.sys.converter.UserSnapshotConverter;
 import com.luoyx.hauyne.admin.sys.entity.User;
 import com.luoyx.hauyne.admin.sys.entity.UserProfile;
 import com.luoyx.hauyne.admin.sys.entity.UserSnapshot;
-import com.luoyx.hauyne.admin.api.sys.enums.AccountNonExpiredEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.AccountNonLockedEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.CredentialsNonExpiredEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.EnabledEnum;
-import com.luoyx.hauyne.admin.api.sys.enums.PrivateKeyRedisKeyEnum;
 import com.luoyx.hauyne.admin.sys.event.UserSnapshotEvent;
 import com.luoyx.hauyne.admin.sys.mapper.UserMapper;
 import com.luoyx.hauyne.admin.sys.query.UserPageQuery;
@@ -290,11 +291,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         if (userIds.contains(currentSysUserId)) {
             throw new ValidateException("你不能删除自己");
         }
-
         List<User> users = baseMapper.selectByIds(userIds);
+        if (users.size() != userIds.size()) {
+            throw new ValidateException("部分用户不存在，可能已被其他人删除，请刷新后重试");
+        }
         for (User user : users) {
-            if ("admin".equals(user.getUsername())) {
-                throw new ValidateException("admin用户不能删除");
+            if (YesNoEnum.YES.equals(user.getBuiltin())) {
+                throw new ValidateException("【" + user.getUsername() + "】是系统内置用户，不允许删除");
             }
         }
 
@@ -318,7 +321,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         userProfileService.removeByIds(userIds);
         userRoleService.deleteUserRoleByUserIds(userIds);
 
-        // 发送已更新用户的快照消息
+        // 发送已删除用户的快照消息
         applicationEventPublisher.publishEvent(new UserSnapshotEvent(userSnapshotList, EventType.DELETE));
     }
 
@@ -347,6 +350,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
     public void update(UserUpdateDTO userUpdateDTO) {
         checkFormData(userUpdateDTO);
         final Long userId = userUpdateDTO.getId();
+        User existUser = baseMapper.selectById(userId);
+        if (Objects.isNull(existUser)) {
+            throw new ValidateException("用户不存在");
+        }
+        if (YesNoEnum.YES.equals(existUser.getBuiltin())) {
+            throw new ValidateException("系统内置用户不允许修改");
+        }
         User user = userConverter.toUser(userUpdateDTO);
         UserProfile userProfile = userProfileConverter.toUserProfile(userUpdateDTO.getProfile());
         userProfile.setId(userId);
@@ -355,8 +365,9 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
         userProfileService.updateById(userProfile);
 
         // 更新用户角色 关联关系
-        Set<Long> roleIdSet = new HashSet<>(userUpdateDTO.getRoleIds());
-        if (userUpdateDTO.getRoleIds().size() > roleIdSet.size()) {
+        final List<Long> inputRoleIds = userUpdateDTO.getRoleIds();
+        Set<Long> roleIdSet = new HashSet<>(inputRoleIds);
+        if (inputRoleIds.size() > roleIdSet.size()) {
             throw new ValidateException("选择的角色不能重复");
         }
         userRoleService.updateUserRoleByUserId(userId, roleIdSet);
@@ -417,8 +428,12 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User> implement
             throw new ValidateException("解密失败");
         }
         final Long userId = resetPasswordDTO.getUserId();
-        if (null == baseMapper.selectById(userId)) {
+        User targetUser = baseMapper.selectById(userId);
+        if (Objects.isNull(targetUser)) {
             throw new ResourceNotFoundException("用户不存在");
+        }
+        if (YesNoEnum.YES.equals(targetUser.getBuiltin())) {
+            throw new ValidateException("系统内置用户不允许重置密码");
         }
         String bcryptPassword = bcryptPasswordEncoder.encode(decryptPassword);
         baseMapper.resetPassword(userId, bcryptPassword);

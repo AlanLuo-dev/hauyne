@@ -100,24 +100,37 @@ public class AuthorityController {
         return ResponseEntity.created(URI.create(AUTHORITY_URI + "/" + authority.getId())).body(authority);
     }
 
+    @Operation(summary = "校验权限编码是否唯一")
+    @GetMapping(value = "/check-authority-code-unique")
+    public Availability checkAuthorityCodeUnique(@Parameter(description = "要排除的权限id")
+                                                 @RequestParam(value = "excludeId", required = false)
+                                                 Long excludeId,
+
+                                                 @Parameter(description = "权限编码")
+                                                 @NotBlank(message = "权限编码不能为空")
+                                                 @RequestParam(value = "authorityCode")
+                                                 String authorityCode) {
+        return new Availability(authorityService.isAuthorityCodeUnique(excludeId, authorityCode));
+    }
+
     /**
      * 校验权限名称是否唯一
      *
-     * @param excludeAuthorityId 要排除的权限id
+     * @param excludeId 要排除的权限id
      * @param authorityName      权限名称
      * @return 是否唯一 true=唯一 false=不唯一
      */
     @Operation(summary = "校验权限名称是否唯一")
     @GetMapping(value = "/check-authority-name-unique")
     public Availability checkAuthorityNameUnique(@Parameter(description = "要排除的权限id")
-                                                 @RequestParam(value = "excludeAuthorityId", required = false)
-                                                 Long excludeAuthorityId,
+                                                 @RequestParam(value = "excludeId", required = false)
+                                                 Long excludeId,
 
                                                  @Parameter(description = "权限名称")
                                                  @NotBlank(message = "权限名称不能为空")
                                                  @RequestParam(value = "authorityName")
                                                  String authorityName) {
-        return new Availability(authorityService.isAuthorityNameUnique(excludeAuthorityId, authorityName));
+        return new Availability(authorityService.isAuthorityNameUnique(excludeId, authorityName));
     }
 
     //    @PreAuthorize("hasAuthority('sys-permission:view')")

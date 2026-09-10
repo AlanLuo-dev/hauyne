@@ -5,6 +5,7 @@ import com.luoyx.hauyne.admin.sys.entity.UserRole;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public interface UserRoleMapper extends GenericMapper<UserRole> {
      * @param roleIds 角色id集合
      * @return 角色名称
      */
-    String countUserRoleByRoleIds(@Param("roleIds") List<Long> roleIds);
+    String countUserRoleByRoleIds(@Param("roleIds") Collection<Long> roleIds);
 
     /**
      * 批量删除 用户-角色 关联信息

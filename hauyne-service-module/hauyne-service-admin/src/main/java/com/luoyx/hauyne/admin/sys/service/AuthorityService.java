@@ -60,13 +60,22 @@ public interface AuthorityService extends BaseService<Authority> {
     void update(AuthorityUpdateDTO authorityUpdateDTO);
 
     /**
-     * 校验权限名称可用性【修改场景】
+     * 校验权限编码可用性
      *
-     * @param excludeAuthorityId 要排除的权限id
-     * @param authorityName      权限名称
-     * @return 是否唯一 true=唯一 false=不唯一
+     * @param excludeId     要排除的权限id
+     * @param authorityCode 权限编码
+     * @return 是否唯一: true=唯一 false=不唯一
      */
-    boolean isAuthorityNameUnique(Long excludeAuthorityId, String authorityName);
+    boolean isAuthorityCodeUnique(Long excludeId, String authorityCode);
+
+    /**
+     * 校验权限名称可用性
+     *
+     * @param excludeId     要排除的权限id
+     * @param authorityName 权限名称
+     * @return 是否唯一: true=唯一 false=不唯一
+     */
+    boolean isAuthorityNameUnique(Long excludeId, String authorityName);
 
     /**
      * 校验表单参数

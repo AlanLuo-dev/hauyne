@@ -2,12 +2,14 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.amqp.producer.AuditProducer;
 import com.luoyx.hauyne.admin.api.sys.audit.RoleAuthorityAuditDTO;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.converter.RoleConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.entity.Role;
 import com.luoyx.hauyne.admin.sys.entity.RoleAuthority;
 import com.luoyx.hauyne.admin.sys.mapper.RoleMapper;
+import com.luoyx.hauyne.admin.sys.request.RoleAuthoritiesUpdateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.RoleUpdateDTO;
 import com.luoyx.hauyne.admin.sys.response.RoleDropdownVO;
@@ -26,9 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -122,10 +126,17 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
     @Override
     @Transactional
     public void update(RoleUpdateDTO roleUpdateDTO) {
+        Role existRole = baseMapper.selectById(roleUpdateDTO.getId());
+        if (Objects.isNull(existRole)) {
+            throw new ValidateException("角色不存在");
+        }
+        if (YesNoEnum.YES.equals(existRole.getBuiltin())) {
+            throw new ValidateException("【" + existRole.getRoleName() + "】是系统内置角色，不允许修改");
+        }
         Role role = roleConverter.toRole(roleUpdateDTO);
         checkRoleFormData(role);
-        baseMapper.updateById(role);
 
+        baseMapper.updateById(role);
         auditProducer.sendToAudit(roleConverter.toRoleAuditDTO(role));
     }
 
@@ -136,33 +147,58 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteByIds(List<Long> ids) {
+    public void deleteByIds(Collection<Long> ids) {
+
+        // 去除重复角色id
+        ids = new HashSet<>(ids);
+        List<Role> existRoleList = baseMapper.selectByIds(ids);
+        if (CollectionUtils.isEmpty(existRoleList)) {
+            throw new ValidateException("角色不存在");
+        }
+        if (existRoleList.size() != ids.size()) {
+            throw new ValidateException("部分角色不存在，请刷新后重试");
+        }
+        for (Role existRole : existRoleList) {
+            if (YesNoEnum.YES.equals(existRole.getBuiltin())) {
+                throw new ValidateException("【" + existRole.getRoleName() + "】是系统内置角色，不允许删除");
+            }
+        }
         String roleName = userRoleService.countUserRoleByRoleIds(ids);
         if (StringUtils.isNotBlank(roleName)) {
             throw new ValidateException("角色【" + roleName + "】已分配给用户，请先解除关联后删除");
         }
-        List<Role> roles = baseMapper.selectBatchIds(ids);
+        List<Role> roles = baseMapper.selectByIds(ids);
         for (Role role : roles) {
             auditProducer.sendToShadowDelete(roleConverter.toRoleAuditDTO(role));
         }
-        baseMapper.deleteBatchIds(ids);
+        baseMapper.deleteByIds(ids);
         roleAuthorityService.deleteByRoleIds(ids);
     }
 
     /**
      * 更新角色的权限资源（先删后增）
      *
-     * @param roleId       角色id
-     * @param authorityIds 权限资源id数组
+     * @param roleId                   角色id
+     * @param roleAuthoritiesUpdateDTO 参数DTO
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateRoleAuthorities(Long roleId, List<Long> authorityIds) {
-        checkRoleExists(roleId);
-        Set<Long> authorityIdSet = new LinkedHashSet<>(authorityIds); // 去重
+    public void updateRoleAuthorities(Long roleId, RoleAuthoritiesUpdateDTO roleAuthoritiesUpdateDTO) {
+        Role role = checkRoleExists(roleId);
+        if (YesNoEnum.YES.equals(role.getBuiltin())) {
+            throw new ValidateException("【" + role.getRoleName() + "】是系统内置角色，不允许修改权限");
+        }
+        final List<Long> authorityIds = roleAuthoritiesUpdateDTO.getAuthorityIds();
+        final Set<Long> authorityIdSet = new LinkedHashSet<>(authorityIds); // 去重
+        if (authorityIdSet.size() != authorityIds.size()) {
+            throw new ValidateException("提交的权限菜单重复，请检查后重试");
+        }
         Map<Long, Authority> authorityMap = Collections.emptyMap();
         if (CollectionUtils.isNotEmpty(authorityIdSet)) {
             authorityMap = authorityService.checkAuthorityIds(authorityIdSet);
+            if (authorityMap.size() != authorityIdSet.size()) {
+                throw new ValidateException("部分权限菜单不存在，请刷新后重试");
+            }
         }
 
         // 先删除角色的权限资源
@@ -189,6 +225,12 @@ public class RoleServiceImpl extends BaseServiceImpl<RoleMapper, Role> implement
                     .collect(Collectors.toList());
             roleAuthorityAuditDTO.setAuthorityNames(authorityNames);
         }
+
+        // 更新角色权限菜单父子节点选中状态是否联动
+        Role updateRole = new Role();
+        updateRole.setId(roleId);
+        updateRole.setAuthorityCheckLinkage(roleAuthoritiesUpdateDTO.getAuthorityCheckLinkage());
+        baseMapper.updateById(updateRole);
 
         auditProducer.sendToAudit(roleAuthorityAuditDTO);
     }

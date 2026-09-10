@@ -7,6 +7,7 @@ import com.luoyx.hauyne.mybatisplus.service.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class UserRoleServiceImpl extends BaseServiceImpl<UserRoleMapper, UserRol
      * @return 角色名称
      */
     @Override
-    public String countUserRoleByRoleIds(List<Long> roleIds) {
+    public String countUserRoleByRoleIds(Collection<Long> roleIds) {
         return baseMapper.countUserRoleByRoleIds(roleIds);
     }
 

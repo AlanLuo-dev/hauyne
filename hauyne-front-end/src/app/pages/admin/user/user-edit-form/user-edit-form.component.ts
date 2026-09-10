@@ -97,7 +97,14 @@ export class UserEditFormComponent implements OnInit {
         // 编辑、数据回显、authorityForm对象增加id字段
         if (this.userId) {
             this.userService.getOne<any>(this.userId).subscribe(data => {
-                this.userForm.patchValue(data);
+                this.userForm.patchValue({
+                    ...data,
+                    enabled: data.enabled?.value,
+                    profile: {
+                        ...data.profile,
+                        gender: data.profile.gender?.value
+                    }
+                });
                 this.userForm.addControl('id', new FormControl(data.id, Validators.required));
 
                 // 移除 password 控件

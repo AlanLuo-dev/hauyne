@@ -1,6 +1,7 @@
 package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
+import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.mapper.AuthorityMapper;
@@ -12,9 +13,7 @@ import com.luoyx.hauyne.admin.sys.response.AuthorityDetailVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityTreeNodeVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityTreeSelectVO;
 import com.luoyx.hauyne.admin.sys.response.AuthorityVO;
-import com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO;
 import com.luoyx.hauyne.admin.sys.service.AuthorityService;
-import com.luoyx.hauyne.admin.sys.service.DictItemService;
 import com.luoyx.hauyne.admin.sys.service.RoleAuthorityService;
 import com.luoyx.hauyne.admin.util.MenuTreeUtil;
 import com.luoyx.hauyne.mybatisplus.service.impl.BaseServiceImpl;
@@ -31,6 +30,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,7 +49,6 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
 
     private final RoleAuthorityService roleAuthorityService;
     private final AuthorityConverter authorityConverter;
-    private final DictItemService dictItemService;
 
     @Override
     public Set<String> findAuthoritiesByUserId(Long userId) {
@@ -70,25 +69,10 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
         List<AuthorityTreeNodeVO> authorityTreeNodeList = new ArrayList<>();
         List<AuthorityVO> authorities = baseMapper.findList(query);
 
-        if (CollectionUtils.isNotEmpty(authorities)) {
-            Map<String, String> authorityTypeMap = dictItemService.selectDropdownData("authority_type")
-                    .stream()
-                    .collect(
-                            Collectors.toMap(
-                                    DictItemDropdownVO::getValue,
-                                    DictItemDropdownVO::getLabel,
-                                    (v1, v2) -> v2
-                            )
-                    );
-            authorities.forEach(item -> {
-                item.setAuthorityType(authorityTypeMap.get(item.getAuthorityType()));
-            });
-        }
-
         // 根节点
         List<AuthorityVO> rootList = authorities.stream()
                 .filter(item -> item.getParentId() == 0)
-                .collect(Collectors.toList());
+                .toList();
 
         for (AuthorityVO rootNode : rootList) {
             AuthorityTreeNodeVO treeNodeVO = authorityConverter.toAuthorityTreeNode(rootNode);
@@ -138,6 +122,9 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
             if (null == parentAuthority) {
                 throw new ResourceNotFoundException("父节点不存在");
             }
+            if (AuthorityTypeEnum.BUTTON.equals(parentAuthority.getAuthorityType())) {
+                throw new ValidateException("按钮不能作为父节点");
+            }
 
             // 如果父节点是叶子节点，则取消其叶子节点
             if (Boolean.TRUE.equals(parentAuthority.getLeaf())) {
@@ -158,6 +145,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
             authority.setSort(null == maxSort ? 1 : maxSort + 1);
         }
         baseMapper.insert(authority);
+        roleAuthorityService.grantNewAuthorityToSuperAdminRole(authority.getId());
 
         return authority;
     }
@@ -169,8 +157,63 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
      */
     @Override
     public void update(AuthorityUpdateDTO authorityUpdateDTO) {
+        Long id = authorityUpdateDTO.getId();
+        Authority existingAuthority = baseMapper.selectById(id);
+        if (Objects.isNull(existingAuthority)) {
+            throw new ValidateException("你要修改的权限资源不存在");
+        }
         authorityUpdateDTO.setAuthorityCode(authorityUpdateDTO.getAuthorityCode().trim());
         Authority authority = authorityConverter.toEntity(authorityUpdateDTO);
+
+        // 记录旧的、新的父节点id
+        final Long oldParentId = existingAuthority.getParentId();
+        final Long inputParentId = authority.getParentId();
+
+        // 处理输入的父节点id，Null 和 0 都表示根节点
+        final Long newParentId = null == inputParentId ? 0L : inputParentId;
+        if (newParentId.equals(id)) {
+            throw new ValidateException("不能将自身设置为自己的父节点");
+        }
+
+        // 如果更换了父节点，需要处理 旧父节点、新父节点的叶子节点状态
+        if (!oldParentId.equals(newParentId)) {
+
+            // 没有传递父节点id，默认为根节点，当前菜单则为第1层菜单
+            if (newParentId == 0) {
+                authority.setParentId(0L);
+                authority.setLevel(1);
+            } else {
+
+                // 校验新父节点是否存在
+                final Authority newParentAuthority = baseMapper.selectById(newParentId);
+                if (Objects.isNull(newParentAuthority)) {
+                    throw new ResourceNotFoundException("父节点不存在");
+                }
+                if (AuthorityTypeEnum.BUTTON.equals(newParentAuthority.getAuthorityType())) {
+                    throw new ValidateException("按钮不能作为父节点");
+                }
+                authority.setLevel(newParentAuthority.getLevel() + 1);
+
+                // 如果新父节点是叶子节点，则取消其叶子节点
+                if (Boolean.TRUE.equals(newParentAuthority.getLeaf())) {
+                    Authority updateNewParentAuthority = new Authority();
+                    updateNewParentAuthority.setId(newParentId);
+                    updateNewParentAuthority.setLeaf(false);
+                    baseMapper.updateById(updateNewParentAuthority);
+                }
+            }
+
+            if (oldParentId != 0) {
+                // 如果旧的父节点下没有子节点，则设置为叶子节点
+                long count = baseMapper.selectCountByParentId(oldParentId, id);
+                if (count == 0) {
+                    Authority updateOldParentAuthority = new Authority();
+                    updateOldParentAuthority.setId(oldParentId);
+                    updateOldParentAuthority.setLeaf(true);
+                    baseMapper.updateById(updateOldParentAuthority);
+                }
+            }
+        }
         if (StringUtils.isBlank(authority.getIcon())) {
             authority.setIcon("skin");
         }
@@ -178,15 +221,27 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
     }
 
     /**
-     * 校验权限名称可用性【修改场景】
+     * 校验权限编码可用性
      *
-     * @param excludeAuthorityId 要排除的权限id
-     * @param authorityName      权限名称
+     * @param excludeId     要排除的权限id
+     * @param authorityCode 权限编码
      * @return 是否唯一 true=唯一 false=不唯一
      */
     @Override
-    public boolean isAuthorityNameUnique(Long excludeAuthorityId, String authorityName) {
-        return baseMapper.selectOneByAuthorityName(excludeAuthorityId, authorityName) == null;
+    public boolean isAuthorityCodeUnique(Long excludeId, String authorityCode) {
+        return baseMapper.selectOneByAuthorityCode(excludeId, authorityCode) == null;
+    }
+
+    /**
+     * 校验权限名称可用性
+     *
+     * @param excludeId     要排除的权限id
+     * @param authorityName 权限名称
+     * @return 是否唯一 true=唯一 false=不唯一
+     */
+    @Override
+    public boolean isAuthorityNameUnique(Long excludeId, String authorityName) {
+        return baseMapper.selectOneByAuthorityName(excludeId, authorityName) == null;
     }
 
     /**
@@ -300,7 +355,7 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
         }
 
         // 校验权限资源是否被角色引用
-        List<String> roleNames = baseMapper.findRoleNamesByAuthorityId(id);
+        List<String> roleNames = baseMapper.findNonBuiltinRoleNamesByAuthorityId(id);
         if (CollectionUtils.isNotEmpty(roleNames)) {
             int limit = 3;
             List<String> displayNames = roleNames.size() > limit

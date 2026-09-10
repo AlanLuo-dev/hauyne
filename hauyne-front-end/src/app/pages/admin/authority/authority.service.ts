@@ -34,6 +34,26 @@ export class AuthorityService extends AdminBaseService<number> {
     }
 
     /**
+     * 权限编码异步校验【新增、编辑共用】
+     * @param id 为可选参数。新增不传，编辑要传
+     */
+    authorityCodeAsyncValidator(id?: number): AsyncValidatorFn {
+        return (control: AbstractControl): Observable<ValidationErrors | null> => {
+            const authorityCode = control.value;
+            return this.http
+                .get<any>(`${this.apiUrl}/check-authority-code-unique?authorityCode=${authorityCode}${id ? `&excludeId=${id}` : ''}`)
+                .pipe(
+                    map(data =>
+                        data.availability === false
+                            ? {msg: `权限编码 ${authorityCode} 已存在，请勿重复添加！`}
+                            : null
+                    ),
+                    catchError(() => of(null))
+                );
+        }
+    }
+
+    /**
      * 权限名称异步校验【新增、编辑共用】
      * @param id 为可选参数。新增不传，编辑要传
      */
@@ -41,7 +61,7 @@ export class AuthorityService extends AdminBaseService<number> {
         return (control: AbstractControl): Observable<ValidationErrors | null> => {
             const authorityName = control.value;
             return this.http
-                .get<any>(`${this.apiUrl}/check-authority-name-unique?authorityName=${authorityName}${id ? `&excludeAuthorityId=${id}` : ''}`)
+                .get<any>(`${this.apiUrl}/check-authority-name-unique?authorityName=${authorityName}${id ? `&excludeId=${id}` : ''}`)
                 .pipe(
                 map(data => (data.availability === false ? {msg: `权限名称 ${authorityName} 已存在，请勿重复添加！`} : null)),
                 catchError(() => of(null))

@@ -21,11 +21,14 @@ import {AppState} from "../../../../store";
 import {finalize, Observable} from "rxjs";
 import {EventlogListComponent} from "../../../eventlog/eventlog-list/eventlog-list.component";
 import {RoleConfigAuthorityComponent} from "../role-config-authority/role-config-authority.component";
+import {EnumOption} from "../../../../common/enum-option";
 
 export interface Role extends AuditInfo {
     id: number;
     roleCode: string;
     roleName: string;
+    builtin: EnumOption<boolean>;
+    authorityCheckLinkage: EnumOption<boolean>;
 }
 
 
@@ -118,6 +121,7 @@ export class RoleListComponent implements OnInit {
             {field: 'id', header: 'Id', isDataKey: true},
             {field: 'roleCode', header: '角色编码'},
             {field: 'roleName', header: '角色名称'},
+            {field: 'builtin', header: '是否系统内置角色'},
             {field: 'createdByFullName', header: '创建人'},
             {field: 'createdTime', header: '创建时间', sortable: true},
             {field: 'lastModifiedByFullName', header: '修改人'},

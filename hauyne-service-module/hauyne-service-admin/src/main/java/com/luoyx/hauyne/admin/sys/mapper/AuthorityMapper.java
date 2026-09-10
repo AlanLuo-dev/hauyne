@@ -56,11 +56,26 @@ public interface AuthorityMapper extends GenericMapper<Authority> {
     List<AuthorityCheckBoxTreeVO> selectForCheckBoxTree();
 
     /**
+     * 查询权限编码是否已存在
+     *
+     * @param excludeId     要排除的权限id
+     * @param authorityCode 权限编码
+     * @return 返回对象 不为null 表示权限编码已存在
+     */
+    default Authority selectOneByAuthorityCode(Long excludeId, String authorityCode) {
+        return selectOne(
+                Wrappers.<Authority>lambdaQuery()
+                        .eq(Authority::getAuthorityCode, authorityCode)
+                        .ne(excludeId != null, Authority::getId, excludeId)
+        );
+    }
+
+    /**
      * 校验权限名称是否已存在
      *
      * @param excludeAuthorityId 要排除的权限id
      * @param authorityName      权限名称
-     * @return 返回大于0 则表示权限名称已存在，返回0 则表示权限名称可用
+     * @return 返回对象 不为null 表示权限名称已存在
      */
     default Authority selectOneByAuthorityName(Long excludeAuthorityId, String authorityName) {
         return selectOne(
@@ -109,10 +124,18 @@ public interface AuthorityMapper extends GenericMapper<Authority> {
     }
 
     /**
-     * 查询某个权限（authorityId）被哪些角色（role_name）所引用。
+     * 查询某个权限（authorityId）被哪些非内置角色（role_name）所引用。
      *
      * @param authorityId 权限id
      * @return 角色名称集合
      */
-    List<String> findRoleNamesByAuthorityId(@Param("authorityId") Long authorityId);
+    List<String> findNonBuiltinRoleNamesByAuthorityId(@Param("authorityId") Long authorityId);
+
+    default long selectCountByParentId(Long parentId, Long excludeAuthorityId) {
+        return selectCount(
+                Wrappers.<Authority>lambdaQuery()
+                        .eq(Authority::getParentId, parentId)
+                        .ne(Authority::getId, excludeAuthorityId)
+        );
+    }
 }

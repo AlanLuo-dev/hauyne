@@ -3,11 +3,8 @@ package com.luoyx.hauyne.admin.sys.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.luoyx.hauyne.mybatisplus.entity.IdEntity;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
@@ -19,12 +16,9 @@ import java.time.LocalDateTime;
  * @since 2022-09-07
  */
 @Builder
-@Getter
-@Setter
-@ToString
+@Data
 @TableName("hyn_sys_user_role")
-@SuppressWarnings("serial")
-public class UserRole extends IdEntity<UserRole> {
+public class UserRole {
 
     /**
      * 用户id

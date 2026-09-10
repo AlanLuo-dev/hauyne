@@ -6,18 +6,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 /**
- * 权限类型枚举
- *
- * @author luoyingxiong
+ * 是否枚举（false=否，true=是）
  */
 @Getter
 @RequiredArgsConstructor
-public enum AuthorityTypeEnum implements EnumSpec<String, AuthorityTypeEnum> {
+public enum YesNoEnum implements EnumSpec<Boolean, YesNoEnum> {
 
-    MENU("menu", "菜单"),
-    BUTTON("button", "按钮");
+    NO(false, "否"),
+    YES(true, "是");
 
     @EnumValue
-    private final String value;
+    private final Boolean value;
     private final String label;
 }

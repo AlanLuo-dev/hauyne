@@ -19,6 +19,7 @@
             t.id as id,
             t.role_code as roleCode,
             t.role_name as roleName,
+            t.is_builtin as builtin,
             c.real_name as createdBy,
             t.created_time as createdTime,
             u.real_name as lastUpdatedBy,
@@ -64,7 +65,16 @@
             INNER JOIN hyn_sys_role_authority sra ON sa.id = sra.authority_id
             INNER JOIN hyn_sys_role sr ON sra.role_id = sr.id
         WHERE
-            sr.id = #{roleId} and sa.is_leaf = 1
+            sr.id = #{roleId}
+            AND
+            (
+                <!-- 开启父子节点联动：只查询叶子节点 -->
+                (sr.is_authority_check_linkage = 1 AND sa.is_leaf = 1)
+                OR
+
+                <!-- 未开启父子节点联动：查询全部节点 -->
+                sr.is_authority_check_linkage = 0
+            )
     </select>
 
     <select id="selectDropdown" resultType="com.luoyx.hauyne.admin.sys.response.RoleDropdownVO">
@@ -73,5 +83,7 @@
             role_code as roleCode,
             role_name as roleName
         from hyn_sys_role
+        where
+            is_builtin = 0
     </select>
 </mapper>

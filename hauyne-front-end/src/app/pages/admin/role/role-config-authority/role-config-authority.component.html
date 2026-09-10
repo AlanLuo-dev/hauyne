@@ -3,7 +3,7 @@
         [nzMaskClosable]="false"
         [nzWidth]="'40%'"
         [(nzVisible)]="configAuthorityFormDialogDisplay"
-        [nzTitle]="'配置「' + roleName + '」角色的权限'"
+        [nzTitle]="drawerTitle"
         [nzFooter]="footerTpl"
         (nzOnClose)="handleCancel()"
         [nzKeyboard]="false"
@@ -12,34 +12,64 @@
     <ng-container *nzDrawerContent>
         <nz-spin [nzSpinning]="isLoading" nzTip="加载中...">
             @if (treeReady) {
-                <div nz-row>
-                    <div nz-col nzSpan="12">
+                <div class="authority-toolbar">
+
+                    <!-- 搜索 -->
+                    <div class="authority-search">
                         <nz-input-group [nzSuffix]="suffixIcon">
-                            <input type="text" nz-input placeholder="Search" [(ngModel)]="searchValue" nzSize="small"/>
+                            <input type="text" nz-input placeholder="搜索权限" [(ngModel)]="searchValue" nzSize="small"/>
                         </nz-input-group>
                         <ng-template #suffixIcon>
                             <nz-icon nzType="search"/>
                         </ng-template>
                     </div>
-                    <div nz-col nzSpan="12">
-                        <button type="button" style="margin-right: 8px;" nz-button nzSize="small" (click)="expandAll()">
-                            <span nz-icon nzType="plus-square" nzTheme="outline"></span>展开全部
-                        </button>
-                        <button type="button" nz-button nzSize="small" (click)="collapseAll()">
-                            <span nz-icon nzType="minus-square" nzTheme="outline"></span>收起全部
+
+                    <!-- 父子联动 -->
+                    <div class="authority-linkage">
+                        <span>
+                            父子联动
+                        </span>
+
+                        <nz-switch [(ngModel)]="role!.authorityCheckLinkage!.value"
+                            nzSize="small" [nzControl]="true" (click)="changeCheckStrictly()"
+                            nz-tooltip [nzTooltipTitle]="role!.authorityCheckLinkage!.value ? '已开启' : '已关闭'"
+                            nzTooltipPlacement="top"
+                        >
+                        </nz-switch>
+                    </div>
+
+                    <!-- 树操作 -->
+                    <div class="authority-actions">
+                        <button
+                            type="button"
+                            nz-button
+                            nzSize="small"
+                            (click)="toggleExpandAll()"
+                            nz-tooltip
+                            [nzTooltipTitle]="isAllExpanded ? '收起全部权限节点' : '展开全部权限节点'"
+                            nzTooltipPlacement="top"
+                        >
+                        <span
+                            nz-icon
+                            [nzType]="isAllExpanded ? 'minus-square' : 'plus-square'"
+                            nzTheme="outline">
+                        </span>
+                            {{ isAllExpanded ? '收起全部' : '展开全部' }}
                         </button>
                     </div>
                 </div>
+
                 <nz-tree
                     id="authorityKeys"
                     #nzTreeComponent
                     [nzData]="nodes"
                     nzCheckable
-                    [(nzCheckedKeys)]="defaultCheckedKeys"
+                    [nzCheckedKeys]="defaultCheckedKeys"
                     (nzCheckboxChange)="updateOkDangerStatus()"
                     nzShowIcon
                     [nzSearchValue]="searchValue"
                     (nzSearchValueChange)="nzEvent($event)"
+                    [nzCheckStrictly]="!role!.authorityCheckLinkage!.value"
                 >
                 </nz-tree>
             }

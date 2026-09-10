@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.sys.service;
 import com.luoyx.hauyne.admin.sys.entity.RoleAuthority;
 import com.luoyx.hauyne.mybatisplus.service.BaseService;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -27,5 +28,12 @@ public interface RoleAuthorityService extends BaseService<RoleAuthority> {
      *
      * @param roleIds 角色id集合
      */
-    void deleteByRoleIds(List<Long> roleIds);
+    void deleteByRoleIds(Collection<Long> roleIds);
+
+    /**
+     * 为超级管理员角色授权新权限资源
+     *
+     * @param authorityId 权限资源id
+     */
+    void grantNewAuthorityToSuperAdminRole(Long authorityId);
 }

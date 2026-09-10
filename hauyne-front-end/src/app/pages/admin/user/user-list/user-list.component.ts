@@ -71,6 +71,12 @@ export interface User {
     /** 备注 */
     remark: string;
 
+    /** 是否是自己 */
+    self: EnumOption<boolean>;
+
+    /** 是否是内置用户 */
+    builtin: EnumOption<boolean>;
+
     createdTime: string;
     lastUpdatedTime: string;
 }
@@ -216,6 +222,8 @@ export class UserListComponent {
             {field: 'gender', header: '性别', width: '100px'},
             {field: 'position', header: '职位', width: '100px'},
             {field: 'remark', header: '备注', width: '200px'},
+            {field: 'self', header: '是否是自己', width: '100px'},
+            {field: 'builtin', header: '是否是内置用户', width: '100px'},
             {field: 'createdTime', header: '创建时间', sortable: true, width: '180px'},
             {field: 'lastUpdatedTime', header: '修改时间', sortable: true, width: '180px'},
             {field: 'operation', header: '操作', width: '100px'}
