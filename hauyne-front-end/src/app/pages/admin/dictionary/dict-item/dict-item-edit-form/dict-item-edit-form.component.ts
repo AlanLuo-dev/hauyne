@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {filter, map, startWith, Subject, take, tap} from "rxjs";
 import {switchMap} from "rxjs/operators";
@@ -15,6 +15,7 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 @Component({
     selector: 'app-dict-item-edit-form',
     templateUrl: './dict-item-edit-form.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NzModalComponent,
         NzModalContentDirective,

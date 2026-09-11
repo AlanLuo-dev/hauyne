@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {NzTableModule, NzTableQueryParams, NzTdAddOnComponent} from "ng-zorro-antd/table";
 
 import {FormBuilder, FormsModule} from "@angular/forms";
@@ -100,6 +100,7 @@ export interface Authority extends AuditInfo {
     ],
     templateUrl: './authority-list.component.html',
     styleUrl: './authority-list.component.less',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
 export class AuthorityListComponent implements OnInit {

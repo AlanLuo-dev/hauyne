@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, TemplateRef, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {NzTabsModule} from "ng-zorro-antd/tabs";
 import {EventlogService} from "../eventlog.service";

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {filter, startWith, Subject, take, tap} from "rxjs";
 import {switchMap} from "rxjs/operators";
@@ -7,8 +7,7 @@ import {AuthService} from "../../login/auth.service";
 import {NzModalComponent, NzModalContentDirective, NzModalService} from "ng-zorro-antd/modal";
 import {NzFormControlComponent, NzFormDirective, NzFormItemComponent, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
-import {NzInputDirective, NzInputGroupComponent, NzInputGroupWhitSuffixOrPrefixDirective} from "ng-zorro-antd/input";
-import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzInputModule} from 'ng-zorro-antd/input';
 import {encryptAsymmetricKey, importRsaPublicKeyBase64} from "../../util/rsa-util";
 
 
@@ -25,13 +24,11 @@ import {encryptAsymmetricKey, importRsaPublicKeyBase64} from "../../util/rsa-uti
         NzFormLabelComponent,
         NzColDirective,
         NzFormControlComponent,
-        NzInputDirective,
         NzRowDirective,
-        NzInputGroupWhitSuffixOrPrefixDirective,
-        NzInputGroupComponent,
         FormsModule,
-        NzIconDirective
+        NzInputModule
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
 export class ModifyPasswordComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {NzDrawerComponent, NzDrawerContentDirective} from "ng-zorro-antd/drawer";
 import {FormsModule} from "@angular/forms";
 import {NzButtonComponent} from "ng-zorro-antd/button";
@@ -75,6 +75,7 @@ export interface DeletedDictType {
         NgClass
     ],
     templateUrl: './deleted-dict-type-list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './deleted-dict-type-list.component.less'
 })
 export class DeletedDictTypeListComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzFormDirective, NzFormItemComponent, NzFormLabelComponent, NzFormModule} from "ng-zorro-antd/form";
@@ -27,6 +27,7 @@ import {encryptAsymmetricKey, importRsaPublicKeyBase64} from "../../../../util/r
         NzIconModule
     ],
     templateUrl: './reset-password.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './reset-password.component.less'
 })
 export class ResetPasswordComponent implements OnInit {

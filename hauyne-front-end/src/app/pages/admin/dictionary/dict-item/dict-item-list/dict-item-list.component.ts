@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {DictItemService} from "../dict-item.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzDrawerComponent, NzDrawerContentDirective} from "ng-zorro-antd/drawer";
@@ -47,6 +47,7 @@ export interface DictItem extends AuditInfo {
     selector: 'app-dict-item-list',
     templateUrl: './dict-item-list.component.html',
     styleUrls: ['dict-item-list.component.less'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NzDrawerComponent,
         NzTableComponent,

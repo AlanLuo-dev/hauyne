@@ -1,5 +1,5 @@
 import {NzModalComponent, NzModalContentDirective, NzModalService} from "ng-zorro-antd/modal";
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {filter, map, startWith, Subject, take, tap} from "rxjs";
 import {switchMap} from "rxjs/operators";
@@ -26,6 +26,7 @@ import {NzInputDirective} from "ng-zorro-antd/input";
     ],
     templateUrl: './role-edit-form.component.html',
     styleUrl: './role-edit-form.component.less',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         NzModalService
     ]

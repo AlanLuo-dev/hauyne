@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {PageQuery} from "../../../../common/page-query";
 import {NzTableModule, NzTableQueryParams} from "ng-zorro-antd/table";
 import {Column} from "../../../../common/column";
@@ -138,6 +138,7 @@ export class UserQuery extends PageQuery {
         NzFormLabelComponent
     ],
     templateUrl: './user-list.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './user-list.component.less'
 })
 export class UserListComponent {

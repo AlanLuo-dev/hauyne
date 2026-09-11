@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NzFormModule} from 'ng-zorro-antd/form';
-import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
+import { NzInputModule } from 'ng-zorro-antd/input';
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzImageModule} from "ng-zorro-antd/image";
@@ -26,17 +26,17 @@ import {AsyncPipe} from "@angular/common";
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.less'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         NzFormModule,
         FormsModule,
         ReactiveFormsModule,
-        NzInputGroupComponent,
         NzIconDirective,
-        NzInputDirective,
         NzButtonComponent,
         NzImageModule,
         NzSpinComponent,
-        AsyncPipe
+        AsyncPipe,
+        NzInputModule
     ]
 })
 export class LoginComponent implements OnInit {

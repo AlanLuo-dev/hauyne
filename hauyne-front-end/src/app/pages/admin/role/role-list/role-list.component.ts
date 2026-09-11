@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {NzTableComponent, NzTableModule, NzTableQueryParams} from 'ng-zorro-antd/table';
 import {RoleService} from "../role.service";
 import {NzFormDirective, NzFormLabelComponent} from "ng-zorro-antd/form";
@@ -67,6 +67,7 @@ class RoleQuery extends PageQuery {
     ],
     templateUrl: './role-list.component.html',
     styleUrl: './role-list.component.less',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
 export class RoleListComponent implements OnInit {

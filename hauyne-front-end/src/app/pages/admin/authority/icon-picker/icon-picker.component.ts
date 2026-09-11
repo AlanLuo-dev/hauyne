@@ -1,9 +1,9 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {NZ_ICONS, NzIconDirective} from "ng-zorro-antd/icon";
 
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
-import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
+import { NzInputModule } from 'ng-zorro-antd/input';
 import {FormsModule} from "@angular/forms";
 
 @Component({
@@ -13,11 +13,11 @@ import {FormsModule} from "@angular/forms";
         NzModalContentDirective,
         NzIconDirective,
         NzTooltipDirective,
-        NzInputGroupComponent,
-        NzInputDirective,
-        FormsModule
+        FormsModule,
+        NzInputModule
     ],
     templateUrl: './icon-picker.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './icon-picker.component.less'
 })
 export class IconPickerComponent implements OnInit {

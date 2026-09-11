@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {LoginHistoryService} from "./login-history.service";
 import {Column} from "../../../common/column";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -41,6 +41,7 @@ export interface LoginHistory {
     selector: 'app-login-history',
     templateUrl: './login-history.component.html',
     styleUrls: ['./login-history.component.less'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [
         FormsModule,
         NzButtonComponent,

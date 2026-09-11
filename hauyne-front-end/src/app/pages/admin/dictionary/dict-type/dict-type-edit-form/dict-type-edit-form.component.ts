@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {DictTypeService} from "../dict-type.service";
 import {filter, map, startWith, Subject, take, tap} from "rxjs";
@@ -28,6 +28,7 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
         NzTooltipDirective,
         FormsModule
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './dict-type-edit-form.component.html'
 })
 export class DictTypeEditFormComponent implements OnInit {

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {NgTemplateOutlet} from "@angular/common";
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
@@ -48,6 +48,7 @@ import {authFailure} from "../store/auth/auth.action";
     ],
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.less',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
 export class LayoutComponent {

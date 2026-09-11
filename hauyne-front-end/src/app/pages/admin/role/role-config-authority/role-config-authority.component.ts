@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, ChangeDetectionStrategy} from '@angular/core';
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
 import {NzButtonComponent, NzButtonModule} from "ng-zorro-antd/button";
 import {NzTooltipDirective, NzTooltipModule} from "ng-zorro-antd/tooltip";
@@ -11,7 +11,7 @@ import {AuthorityService} from "../../authority/authority.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Role} from "../role-list/role-list.component";
 import {forkJoin} from "rxjs";
-import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
+import { NzInputModule } from 'ng-zorro-antd/input';
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
 
@@ -27,14 +27,14 @@ import {NzSwitchComponent} from "ng-zorro-antd/switch";
         NzIconDirective,
         NzButtonComponent,
         NzTooltipDirective,
-        NzInputGroupComponent,
-        NzInputDirective,
+        NzInputModule,
         FormsModule,
         NzSpinModule,
         NzSwitchComponent,
 
     ],
     templateUrl: './role-config-authority.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './role-config-authority.component.less'
 })
 export class RoleConfigAuthorityComponent implements OnChanges {

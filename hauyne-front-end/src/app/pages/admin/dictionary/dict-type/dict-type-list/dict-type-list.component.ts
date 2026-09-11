@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {DictTypeService} from "../dict-type.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Column} from "../../../../../common/column";
@@ -78,6 +78,7 @@ export interface DictType extends AuditInfo {
         AuthorityDirective
     ],
     styleUrls: ['./dict-type-list.component.less'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
 export class DictTypeListComponent implements OnInit {

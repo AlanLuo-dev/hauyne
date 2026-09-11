@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ChangeDetectionStrategy} from '@angular/core';
 import {NzModalComponent, NzModalContentDirective} from "ng-zorro-antd/modal";
 import {
     NzTableCellDirective,
@@ -34,6 +34,7 @@ export interface OperationLog {
         NzTbodyComponent
     ],
     templateUrl: './operation-log.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './operation-log.component.less'
 })
 export class OperationLogComponent {

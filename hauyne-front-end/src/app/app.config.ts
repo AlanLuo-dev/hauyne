@@ -7,7 +7,7 @@ import {provideNzI18n, zh_CN} from 'ng-zorro-antd/i18n';
 import {registerLocaleData} from '@angular/common';
 import zh from '@angular/common/locales/zh';
 import {FormsModule} from '@angular/forms';
-import {provideHttpClient, withInterceptors} from '@angular/common/http';
+import {provideHttpClient, withInterceptors, withXhr} from '@angular/common/http';
 import {authInterceptor} from "./shared/auth/auth-interceptor-fn";
 
 registerLocaleData(zh);
@@ -39,7 +39,7 @@ export const appConfig: ApplicationConfig = {
         importProvidersFrom(FormsModule),
         provideAnimationsAsync(),
         // 拦截器配置 总入口
-        provideHttpClient(withInterceptors([authInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
         provideNzIcons(icons),
         // 状态管理
         provideEffects(AuthEffects),

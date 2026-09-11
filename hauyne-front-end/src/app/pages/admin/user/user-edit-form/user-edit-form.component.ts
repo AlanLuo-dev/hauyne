@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
 import {NzDrawerModule} from "ng-zorro-antd/drawer";
 import {NzButtonModule} from "ng-zorro-antd/button";
 import {NzTooltipModule} from "ng-zorro-antd/tooltip";
@@ -37,6 +37,7 @@ import {NzMessageService} from "ng-zorro-antd/message";
         NzSelectComponent
     ],
     templateUrl: './user-edit-form.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './user-edit-form.component.less'
 })
 export class UserEditFormComponent implements OnInit {
