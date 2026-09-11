@@ -1,7 +1,7 @@
 import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NzFormModule} from 'ng-zorro-antd/form';
-import { NzInputModule } from 'ng-zorro-antd/input';
+import {NzInputModule} from 'ng-zorro-antd/input';
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzImageModule} from "ng-zorro-antd/image";
@@ -40,8 +40,6 @@ import {AsyncPipe} from "@angular/common";
     ]
 })
 export class LoginComponent implements OnInit {
-    passwordVisible: boolean = false;
-
 
     captchaKey: string = '';
     base64ImageCode: string = '';

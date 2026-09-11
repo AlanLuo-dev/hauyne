@@ -41,21 +41,8 @@
                         <nz-form-item>
                             <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">密码</nz-form-label>
                             <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-<!--                                <nz-input-group [nzSuffix]="suffixTemplate">-->
-<!--                                    <input id="password" [type]="passwordVisible ? 'text' : 'password'" nz-input-->
-<!--                                           autocomplete="new-password" formControlName="password"-->
-<!--                                    />-->
-<!--                                </nz-input-group>-->
-<!--                                <ng-template #suffixTemplate>-->
-<!--                                    <nz-icon-->
-<!--                                        class="ant-input-password-icon"-->
-<!--                                        [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"-->
-<!--                                        (click)="passwordVisible = !passwordVisible"-->
-<!--                                    />-->
-<!--                                </ng-template>-->
-
                                 <nz-input-password>
-                                    <input nz-input placeholder="input password" formControlName="password" />
+                                    <input id="password" nz-input placeholder="请输入密码" formControlName="password" />
                                 </nz-input-password>
                             </nz-form-control>
                         </nz-form-item>

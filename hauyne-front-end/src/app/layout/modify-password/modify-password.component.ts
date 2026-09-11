@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {filter, startWith, Subject, take, tap} from "rxjs";
+import {filter, map, startWith, Subject, take, tap} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {AuthService} from "../../login/auth.service";
@@ -40,18 +40,15 @@ export class ModifyPasswordComponent implements OnInit {
 
     modifyPasswordForm: FormGroup;
     formSubmitSubject: any;
-    oldPwdVisible = false;
-    newPwdVisible = false;
-    confirmPwdVisible = false;
 
     rsaPublicKey!: string;
 
     isOkLoading: boolean = false;
     isCancelDisabled: boolean = false;
 
-    constructor(private formBuilder: FormBuilder,
-                private messageService: NzMessageService,
-                private authService: AuthService) {
+    constructor(private readonly formBuilder: FormBuilder,
+                private readonly messageService: NzMessageService,
+                private readonly authService: AuthService) {
 
         // 构建表单验证
         this.modifyPasswordForm = this.formBuilder.group({
@@ -78,11 +75,18 @@ export class ModifyPasswordComponent implements OnInit {
                 this.modifyPasswordForm.statusChanges.pipe(
                     startWith(this.modifyPasswordForm.status),
                     filter(status => status !== 'PENDING'),
-                    take(1)
+                    take(1),
+                    map(status => (status === 'VALID' ? 'VALID' : 'INVALID'))
                 )
-            ),
-            filter(status => status === 'VALID')
-        ).subscribe((validationSuccessful: any) => this.submit());
+            )
+        ).subscribe((result: 'VALID' | 'INVALID') => {
+            if (result === 'VALID') {
+                this.submit();
+            } else {
+                this.isOkLoading = false;
+                this.isCancelDisabled = false;
+            }
+        });
     }
 
     /**

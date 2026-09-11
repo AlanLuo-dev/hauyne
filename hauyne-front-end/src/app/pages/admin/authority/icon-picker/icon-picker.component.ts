@@ -67,4 +67,9 @@ export class IconPickerComponent implements OnInit {
             this.icons = this.outlineIcons;
         }
     }
+
+    clearSearchKey(): void {
+        this.searchKey = '';
+        this.search();
+    }
 }

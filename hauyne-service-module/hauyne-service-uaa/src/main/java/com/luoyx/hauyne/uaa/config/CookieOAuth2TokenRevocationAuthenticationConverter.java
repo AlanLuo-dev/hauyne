@@ -24,7 +24,7 @@ public class CookieOAuth2TokenRevocationAuthenticationConverter implements Authe
 
     @Override
     public Authentication convert(HttpServletRequest request) {
-        if (!"/oauth2/revoke".equals(request.getRequestURI())) {
+        if (!request.getRequestURI().endsWith("/oauth2/revoke")) {
             return null;
         }
         Authentication clientPrincipal = SecurityContextHolder.getContext().getAuthentication();

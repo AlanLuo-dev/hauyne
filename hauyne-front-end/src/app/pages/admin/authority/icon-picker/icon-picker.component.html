@@ -8,25 +8,17 @@
 >
     <ng-container *nzModalContent>
         <!-- 搜索框 -->
-<!--        <nz-input-group [nzSuffix]="suffixIconSearch">-->
-<!--            <input type="text" nz-input placeholder="输入图标名称进行搜索"-->
-<!--                   [(ngModel)]="searchKey" (keyup)="search()"-->
-<!--            />-->
-<!--            <ng-template #suffixIconSearch>-->
-<!--                @if (searchKey) {-->
-<!--                    <span-->
-<!--                        nz-icon-->
-<!--                        class="ant-input-clear-icon"-->
-<!--                        nzTheme="fill"-->
-<!--                        nzType="close-circle"-->
-<!--                        (click)="searchKey = ''"-->
-<!--                    ></span>-->
-<!--                }-->
-<!--                <i nz-icon nzType="search"></i>-->
-<!--            </ng-template>-->
-<!--        </nz-input-group>-->
-
-
+        <nz-input-wrapper nzAllowClear>
+            <input
+                type="text"
+                nz-input
+                placeholder="输入图标名称进行搜索"
+                [(ngModel)]="searchKey"
+                (keyup)="search()"
+            />
+            <nz-icon nzInputClearIcon nzType="close" class="ant-input-clear-icon" (click)="clearSearchKey()"/>
+            <nz-icon nzInputSuffix nzType="search" />
+        </nz-input-wrapper>
 
 
         <div class="container">
