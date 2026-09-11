@@ -115,6 +115,7 @@ export class ResetPasswordComponent implements OnInit {
      */
     submit() {
         if (this.resetPasswordForm.valid) {
+            this.resetPasswordForm.disable();
             this.authService.getPublickKey("resetPassword").subscribe({
                 next: async result => {
                     this.rsaPublicKey = result.rsaPublicKey;
@@ -133,16 +134,19 @@ export class ResetPasswordComponent implements OnInit {
                             this.triggerUserListRefreshEmitter.emit();
                             this.formDialogDisplayChange.emit(false);
                             this.isOkLoading = false;
+                            this.resetPasswordForm.enable();
                         },
                         error: (err: any) => {
                             this.messageService.create('error', err.error.errorTips);
                             this.isOkLoading = false;
+                            this.resetPasswordForm.enable();
                         }
                     });
                 },
                 error: (err: any) => {
                     this.messageService.create('error', err.error.errorTips);
                     this.isOkLoading = false;
+                    this.resetPasswordForm.enable();
                 }
             });
         }
