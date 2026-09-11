@@ -1,16 +1,29 @@
+/* 确保加载遮罩和内部 Flex 撑满高度 */
+.authority-spin-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    ::ng-deep .ant-spin-container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 .authority-toolbar {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
     min-height: 32px;
+    flex-shrink: 0; /* 阻止工具栏被压缩 */
 }
 
 .authority-search {
     flex: 1;
     min-width: 160px;
 }
-
 .authority-linkage {
     display: flex;
     align-items: center;
@@ -25,19 +38,42 @@
     color: rgba(0, 0, 0, 0.65);
 }
 
-//.authority-actions {
-//    display: flex;
-//    align-items: center;
-//    gap: 6px;
-//    white-space: nowrap;
-//}
-
 .authority-actions {
     display: flex;
     align-items: center;
     gap: 4px;
+    white-space: nowrap;
 
     button {
         color: rgba(0, 0, 0, 0.65);
+    }
+}
+
+/* 仅树区域产生纵向滚动条，独立于工具栏 */
+/* 带边框的树容器卡片 */
+.authority-tree-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    /* 边框及视觉优化 */
+    border: 1px solid #f0f0f0;    /* Ant Design 细边框颜色 */
+    border-radius: 6px;           /* 圆角 */
+    padding: 12px;                /* 内边距，避免树节点贴边 */
+    background-color: #fafafa;    /* 极浅灰底色，增强层次感（可选，若不需要可设为 #fff） */
+
+    /* 优化内嵌容器的滚动条样式，使其更精致 */
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: #d9d9d9;
+        border-radius: 3px;
+        &:hover {
+            background-color: #bfbfbf;
+        }
+    }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
     }
 }

@@ -5,7 +5,6 @@ import {NzTooltipDirective, NzTooltipModule} from "ng-zorro-antd/tooltip";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NzFormatEmitEvent, NzTreeComponent, NzTreeNode, NzTreeNodeOptions} from "ng-zorro-antd/tree";
 import {NzIconDirective} from "ng-zorro-antd/icon";
-import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
 import {RoleService} from "../role.service";
 import {AuthorityService} from "../../authority/authority.service";
@@ -15,7 +14,6 @@ import {forkJoin} from "rxjs";
 import {NzInputDirective, NzInputGroupComponent} from "ng-zorro-antd/input";
 import {NzSpinModule} from "ng-zorro-antd/spin";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
-import {RoleAuthorityUpdateRequest} from "./RoleAuthorityUpdateRequest";
 
 @Component({
     selector: 'app-role-config-authority',
@@ -27,8 +25,6 @@ import {RoleAuthorityUpdateRequest} from "./RoleAuthorityUpdateRequest";
         ReactiveFormsModule,
         NzTreeComponent,
         NzIconDirective,
-        NzColDirective,
-        NzRowDirective,
         NzButtonComponent,
         NzTooltipDirective,
         NzInputGroupComponent,
@@ -36,6 +32,7 @@ import {RoleAuthorityUpdateRequest} from "./RoleAuthorityUpdateRequest";
         FormsModule,
         NzSpinModule,
         NzSwitchComponent,
+
     ],
     templateUrl: './role-config-authority.component.html',
     styleUrl: './role-config-authority.component.less'
@@ -103,7 +100,7 @@ export class RoleConfigAuthorityComponent implements OnChanges {
             nodes: this.authorityService.loadAuthorityCheckBoxTree(),
             checkedKeys: this.roleService.authorityLeafNodeKeys(this.roleId)
         }).subscribe({
-            next: ({ role, nodes, checkedKeys }) => {
+            next: ({role, nodes, checkedKeys}) => {
 
                 // 数据全部准备完成
                 this.role = role;
