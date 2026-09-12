@@ -26,6 +26,7 @@
                         nzPlaceHolder="Please select"
                         [(ngModel)]="selectedParentId" [ngModelOptions]="{standalone: true}"
                         (ngModelChange)="nodeSelected($event)"
+                        nzSize="small"
                     ></nz-tree-select>
                 </nz-form-control>
             </nz-form-item>
@@ -36,7 +37,7 @@
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="authorityTypeErrTpl">
                     <nz-select id="authorityType"
                                [(ngModel)]="selectedAuthorityType" [ngModelOptions]="{standalone: true}"
-                               (ngModelChange)="onSelectChange($event)"
+                               (ngModelChange)="onSelectChange($event)" nzSize="small"
                     >
                         @for (option of authorityTypeOptions; track option) {
                             <nz-option
@@ -56,7 +57,7 @@
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="authorityName">权限名称</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="nameErrTpl">
-                    <input id="authorityName" type="text" nz-input autocomplete="off" formControlName="authorityName"/>
+                    <input id="authorityName" type="text" nz-input autocomplete="off" formControlName="authorityName" nzSize="small"/>
                 </nz-form-control>
                 <ng-template #nameErrTpl>
                     @if (authorityName.dirty && authorityName.errors?.['required']) {
@@ -72,7 +73,7 @@
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="authorityCode">权限编码</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="codeErrTpl">
-                    <input id="authorityCode" type="text" nz-input autocomplete="off" formControlName="authorityCode"/>
+                    <input id="authorityCode" type="text" nz-input autocomplete="off" formControlName="authorityCode" nzSize="small"/>
                 </nz-form-control>
                 <ng-template #codeErrTpl>
                     @if (authorityCode.dirty && authorityCode.errors?.['required']) {
@@ -88,7 +89,7 @@
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="path">请求路径</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-                    <input id="path" type="text" nz-input autocomplete="off" formControlName="path"/>
+                    <input id="path" type="text" nz-input autocomplete="off" formControlName="path" nzSize="small"/>
                 </nz-form-control>
             </nz-form-item>
 
@@ -109,7 +110,7 @@
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="sort">排序</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="sortErrTpl">
                     <input id="sort" type="text" nz-input autocomplete="off" formControlName="sort" [min]="0"
-                           [max]="255"/>
+                           [max]="255" nzSize="small"/>
                 </nz-form-control>
                 <ng-template #sortErrTpl>
                     @if (sort.dirty && (sort.errors?.['min'] || sort.errors?.['max'])) {
@@ -122,8 +123,8 @@
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="remarkErrTpl">
-          <textarea id="remark" type="text" nz-input autocomplete="off" formControlName="remark">
-          </textarea>
+                    <textarea id="remark" type="text" nz-input autocomplete="off" formControlName="remark" nzSize="small">
+                    </textarea>
                 </nz-form-control>
                 <ng-template #remarkErrTpl>
                     @if (remark.dirty && remark.errors?.['maxlength']) {
