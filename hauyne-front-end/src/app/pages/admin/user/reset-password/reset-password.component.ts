@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NzModalModule} from "ng-zorro-antd/modal";
 import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzFormDirective, NzFormItemComponent, NzFormLabelComponent, NzFormModule} from "ng-zorro-antd/form";
@@ -7,10 +7,10 @@ import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} fr
 import {UserService} from "../user.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzIconModule} from "ng-zorro-antd/icon";
-import {filter, map, startWith, Subject, take, tap} from "rxjs";
-import {switchMap} from "rxjs/operators";
+import {concatMap, finalize, from} from "rxjs";
 import {AuthService} from "../../../../login/auth.service";
 import {encryptAsymmetricKey, importRsaPublicKeyBase64} from "../../../../util/rsa-util";
+import {NzButtonModule} from "ng-zorro-antd/button";
 
 @Component({
     selector: 'app-reset-password',
@@ -24,10 +24,11 @@ import {encryptAsymmetricKey, importRsaPublicKeyBase64} from "../../../../util/r
         NzInputModule,
         NzRowDirective,
         ReactiveFormsModule,
-        NzIconModule
+        NzIconModule,
+        NzButtonModule
     ],
     templateUrl: './reset-password.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrl: './reset-password.component.less'
 })
 export class ResetPasswordComponent implements OnInit {
@@ -49,12 +50,10 @@ export class ResetPasswordComponent implements OnInit {
     /**
      * 确认按钮loading状态
      */
-    isOkLoading: boolean = false;
+    isSubmitting: boolean = false;
 
     resetPasswordForm: FormGroup;
     formSubmitSubject$: any;
-
-    passwordVisible: boolean = false;
 
     rsaPublicKey!: string;
 
@@ -80,76 +79,49 @@ export class ResetPasswordComponent implements OnInit {
             username: this.username,
             password: '123456'
         })
-
-
-        this.formSubmitSubject$ = new Subject();
-        this.formSubmitSubject$.pipe(
-            tap(() => {
-                Object.keys(this.resetPasswordForm.controls).forEach(key => {
-
-                    // 将每个FormControl 标记为脏
-                    const control = this.resetPasswordForm.get(key);
-                    control?.markAsDirty();
-                    control?.updateValueAndValidity({onlySelf: true});
-                })
-            }),
-            switchMap(() =>
-                this.resetPasswordForm.statusChanges.pipe(
-                    startWith(this.resetPasswordForm.status),
-                    filter(status => status !== 'PENDING'),
-                    take(1),
-                    map(status => (status === 'VALID' ? 'VALID' : 'INVALID'))
-                )
-            )
-        ).subscribe((result: 'VALID' | 'INVALID') => {
-            if (result === 'VALID') {
-                this.submit();
-            } else {
-                this.isOkLoading = false;
-            }
-        });
     }
 
     /**
      * 提交表单
      */
     submit() {
-        if (this.resetPasswordForm.valid) {
-            this.resetPasswordForm.disable();
-            this.authService.getPublickKey("resetPassword").subscribe({
-                next: async result => {
-                    this.rsaPublicKey = result.rsaPublicKey;
 
-                    const password = await this.getEncryptPwd(this.password.value);
-                    const formData = {
-                        userId: this.userId,
-                        key: result.key,
-                        encryptPassword: password,
-                    };
+        // 1. 统一开启 Loading 并禁用表单
+        this.isSubmitting = true;
+        this.resetPasswordForm.disable();
 
-                    // 执行修改密码
-                    this.userService.resetPassword(formData).subscribe({
-                        next: (x: any) => {
-                            this.messageService.create('success', '操作成功');
-                            this.triggerUserListRefreshEmitter.emit();
-                            this.formDialogDisplayChange.emit(false);
-                            this.isOkLoading = false;
-                            this.resetPasswordForm.enable();
-                        },
-                        error: (err: any) => {
-                            this.messageService.create('error', err.error.errorTips);
-                            this.isOkLoading = false;
-                            this.resetPasswordForm.enable();
-                        }
-                    });
-                },
-                error: (err: any) => {
-                    this.messageService.create('error', err.error.errorTips);
-                    this.isOkLoading = false;
-                    this.resetPasswordForm.enable();
-                }
-            });
-        }
+        // 2. 链式调用：获取公钥 -> 加密密码 -> 提交修改
+        this.authService.getPublickKey("resetPassword").pipe(
+            concatMap(result => {
+                this.rsaPublicKey = result.rsaPublicKey;
+                // 将 Promise (getEncryptPwd) 转为 Observable 链入流中
+                return from(this.getEncryptPwd(this.password.value))
+                    .pipe(
+                        concatMap(password => {
+                            const formData = {
+                                userId: this.userId,
+                                key: result.key,
+                                encryptPassword: password,
+                            };
+                            return this.userService.resetPassword(formData);
+                        })
+                    );
+            }),
+            // 3. 全局统一收尾：无论公钥接口失败、加密失败还是提交失败，都只在此处恢复一次状态
+            finalize(() => {
+                this.isSubmitting = false;
+                this.resetPasswordForm.enable();
+            })
+        ).subscribe({
+            next: () => {
+                this.messageService.create('success', '操作成功');
+                this.triggerUserListRefreshEmitter.emit();
+                this.formDialogDisplayChange.emit(false);
+            },
+            error: (err: any) => {
+                this.messageService.create('error', err.error?.errorTips || '密码修改失败');
+            }
+        });
     }
 
     /**
@@ -172,11 +144,38 @@ export class ResetPasswordComponent implements OnInit {
         this.formDialogDisplayChange.emit(false);
     }
 
-    onConfirmClick(): void {
-        this.isOkLoading = true;
+    /**
+     * 点击确定按钮
+     */
+    async onConfirmClick(): Promise<void> {
+        // 1. 标记所有控件为 dirty 以触发错误提示显示
+        Object.values(this.resetPasswordForm.controls)
+            .forEach(control => {
+                control.markAsDirty();
+                control.updateValueAndValidity({onlySelf: true});
+            });
 
-        // 触发表单验证逻辑
-        this.formSubmitSubject$.next();
+        // 2. 如果表单还在异步验证中 (PENDING)，等待验证完成
+        if (this.resetPasswordForm.pending) {
+            this.isSubmitting = true;
+            await new Promise<void>(resolve => {
+                const sub = this.resetPasswordForm.statusChanges.subscribe(status => {
+                    if (status !== 'PENDING') {
+                        sub.unsubscribe();
+                        resolve();
+                    }
+                });
+            });
+        }
+
+        // 3. 校验不通过，直接打断
+        if (this.resetPasswordForm.invalid) {
+            this.isSubmitting = false;
+            return;
+        }
+
+        // 4. 校验通过，执行提交
+        this.submit();
     }
 
 
