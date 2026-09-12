@@ -20,7 +20,7 @@
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="_username">用户名</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中..."
                                          [nzErrorTip]="usernameErrorTpl">
-                            <input nz-input autocomplete="new-username" formControlName="username" id="_username"/>
+                            <input nz-input autocomplete="new-username" formControlName="username" id="_username" nzSize="small"/>
                             <ng-template #usernameErrorTpl>
                                 @if (username.dirty && username.errors?.['required']) {
                                     请填写用户名
@@ -42,7 +42,7 @@
                             <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">密码</nz-form-label>
                             <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
                                 <nz-input-password>
-                                    <input id="password" nz-input placeholder="请输入密码" formControlName="password" />
+                                    <input id="password" nz-input placeholder="请输入密码" formControlName="password" nzSize="small"/>
                                 </nz-input-password>
                             </nz-form-control>
                         </nz-form-item>
@@ -100,7 +100,7 @@
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中..."
                                          [nzErrorTip]="realNameErrorTpl"
                         >
-                            <input nz-input autocomplete="off" formControlName="realName" id="realName"/>
+                            <input nz-input autocomplete="off" formControlName="realName" id="realName" nzSize="small"/>
                             <ng-template #realNameErrorTpl>
                                 @if (realName.dirty && realName.errors?.['required']) {
                                     请填写用户名
@@ -118,7 +118,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="_nickname">昵称</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="nickname" id="_nickname"/>
+                            <input nz-input autocomplete="off" formControlName="nickname" id="_nickname" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -128,7 +128,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="avatar">头像</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="avatar" id="avatar"/>
+                            <input nz-input autocomplete="off" formControlName="avatar" id="avatar" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -138,7 +138,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="gender">性别</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="gender" id="gender"/>
+                            <input nz-input autocomplete="off" formControlName="gender" id="gender" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -148,7 +148,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="birthday">出生日期</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="birthday" id="birthday"/>
+                            <input nz-input autocomplete="off" formControlName="birthday" id="birthday" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -158,7 +158,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email">邮箱</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="email" id="email"/>
+                            <input nz-input autocomplete="off" formControlName="email" id="email" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -168,7 +168,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phone">手机号</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="phone" id="phone"/>
+                            <input nz-input autocomplete="off" formControlName="phone" id="phone" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -178,7 +178,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="position">岗位</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="position" id="position"/>
+                            <input nz-input autocomplete="off" formControlName="position" id="position" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -188,7 +188,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>
                         <nz-form-control [nzSm]="18" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中...">
-                            <input nz-input autocomplete="off" formControlName="remark" id="remark"/>
+                            <input nz-input autocomplete="off" formControlName="remark" id="remark" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -199,11 +199,13 @@
     <!-- 页脚 -->
     <ng-template #footerTpl>
         <div style="float: right">
-            <button style="margin-right: 8px;" type="button" nz-button (click)="handleCancel()" [disabled]="isOkLoading">
+            <button style="margin-right: 8px;" type="button" nz-button (click)="handleCancel()" [disabled]="isOkLoading" nzSize="small">
+                <nz-icon nzType="close" />
                 取消
             </button>
 
-            <button nz-button nzType="primary" [nzLoading]="isOkLoading" (click)="onConfirmClick()">
+            <button nz-button nzType="primary" [nzLoading]="isOkLoading" (click)="onConfirmClick()" nzSize="small">
+                <nz-icon nzType="check" />
                 确定
             </button>
         </div>

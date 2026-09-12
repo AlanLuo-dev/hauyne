@@ -44,6 +44,8 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import tools.jackson.databind.DatabindException;
+
 import java.io.UnsupportedEncodingException;
 import java.text.MessageFormat;
 import java.util.*;
@@ -302,6 +304,9 @@ public class GlobalExceptionHandler {
                 msg = path.get(0).getFieldName() + ":" + jme.getOriginalMessage();
                 log.warn(msg);
             }
+        }
+        if (cause instanceof DatabindException) {
+            return APIError.invalidParam(((DatabindException) cause).getOriginalMessage());
         }
 
         return APIError.invalidParam(msg);
