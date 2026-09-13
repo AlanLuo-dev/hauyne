@@ -2,6 +2,7 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.luoyx.hauyne.admin.api.sys.dto.UserDTO;
 import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.sys.converter.AuthorityConverter;
 import com.luoyx.hauyne.admin.sys.entity.Authority;
 import com.luoyx.hauyne.admin.sys.mapper.AuthorityMapper;
@@ -161,6 +162,10 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
         Authority existingAuthority = baseMapper.selectById(id);
         if (Objects.isNull(existingAuthority)) {
             throw new ValidateException("你要修改的权限资源不存在");
+        }
+        // 校验是否为系统内置权限
+        if (YesNoEnum.YES.equals(existingAuthority.getBuiltin())) {
+            throw new ValidateException("【" + existingAuthority.getAuthorityName() + "】为系统内置权限， 不允许修改。");
         }
         authorityUpdateDTO.setAuthorityCode(authorityUpdateDTO.getAuthorityCode().trim());
         Authority authority = authorityConverter.toEntity(authorityUpdateDTO);
@@ -346,6 +351,10 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
         Authority existAuthority = baseMapper.selectById(id);
         if (null == existAuthority) {
             throw new ResourceNotFoundException("权限数据id " + id + "不存在");
+        }
+        // 校验是否为系统内置权限
+        if (YesNoEnum.YES.equals(existAuthority.getBuiltin())) {
+            throw new ValidateException("【" + existAuthority.getAuthorityName() + "】为系统内置权限， 不允许删除。");
         }
 
         // 校验当前权限是否存在子级权限
