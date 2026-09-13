@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 08/09/2026 11:58:58
+ Date: 13/09/2026 15:59:28
 */
 
 SET NAMES utf8mb4;
@@ -231,6 +231,7 @@ CREATE TABLE `hyn_sys_authority`  (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
   `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父权限 id （关联本表的 id 字段）',
   `is_leaf` tinyint NOT NULL DEFAULT 1 COMMENT '是否为叶子节点（1=是，0=否）',
+  `is_builtin` tinyint NOT NULL DEFAULT 0 COMMENT '是否为系统内置权限（0=否，1=是）',
   `level` tinyint UNSIGNED NOT NULL COMMENT '权限树层级（1=第1层，2=第2层，以此类推）',
   `authority_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限类型（menu=菜单，operation=操作,可扩展）',
   `authority_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限编码',
@@ -251,33 +252,33 @@ CREATE TABLE `hyn_sys_authority`  (
 -- ----------------------------
 -- Records of hyn_sys_authority
 -- ----------------------------
-INSERT INTO `hyn_sys_authority` VALUES (1, 0, 0, 1, 'menu', 'sys-manage', '系统管理', 'setting', '', 1, '', 1, '2020-10-27 22:43:13', 1, '2026-09-02 16:43:56');
-INSERT INTO `hyn_sys_authority` VALUES (2, 1, 0, 2, 'menu', 'sys-authority:tree-list', '权限管理', 'safety', 'admin/authority', 3, '', 1, '2021-03-06 23:27:39', 1, '2024-11-22 22:45:00');
-INSERT INTO `hyn_sys_authority` VALUES (4, 1, 1, 2, 'menu', 'sys-login-history:list', '登录历史', 'history', 'admin/login-history', 4, '', 1, '2021-09-14 21:23:21', 1, '2024-10-04 13:50:06');
-INSERT INTO `hyn_sys_authority` VALUES (5, 1, 0, 2, 'menu', 'sys-dict-type:find-page', '字典管理', 'book', 'admin/dictionary/dict-type', 5, '', 1, '2022-07-23 16:32:14', 1, '2024-11-22 13:01:11');
-INSERT INTO `hyn_sys_authority` VALUES (23, 1, 0, 2, 'menu', 'sys-role:find-page', '角色管理', 'team', 'admin/role', 0, '', 1, '2022-09-05 16:50:59', 1, '2024-11-22 10:46:58');
-INSERT INTO `hyn_sys_authority` VALUES (36, 1, 1, 2, 'menu', 'sys:user:list', '用户管理', 'user', 'admin/user', 0, '', 1, '2023-07-02 15:30:37', 1, '2024-09-25 15:52:44');
-INSERT INTO `hyn_sys_authority` VALUES (37, 23, 1, 3, 'button', 'sys-role:add', '创建角色', 'usergroup-add', '', 2, '', 1, '2024-11-19 17:27:19', 1, '2026-09-06 09:53:02');
-INSERT INTO `hyn_sys_authority` VALUES (38, 23, 1, 3, 'button', 'sys-role:update', '修改角色', 'edit', '', 3, '', 1, '2024-11-21 12:17:49', 1, '2024-11-22 10:59:04');
-INSERT INTO `hyn_sys_authority` VALUES (39, 0, 1, 1, 'menu', 'dashboard', '首页', 'dashboard', 'dashboard', 0, '', 1, '2024-11-21 21:16:19', 25, '2026-09-02 18:37:14');
-INSERT INTO `hyn_sys_authority` VALUES (41, 23, 1, 3, 'button', 'sys-role:delete', '删除角色', 'delete', '', 4, '', 1, '2024-11-22 11:00:34', 1, '2024-11-22 11:00:34');
-INSERT INTO `hyn_sys_authority` VALUES (42, 23, 1, 3, 'button', 'sys-role:assign-authorities', '分配权限', 'safety', '', 5, '', 1, '2024-11-22 11:12:24', 1, '2024-11-22 11:12:24');
-INSERT INTO `hyn_sys_authority` VALUES (44, 5, 1, 3, 'button', 'sys-dict-type:add', '新增字典类型', 'plus', '', 2, '', 1, '2024-11-22 13:02:46', 1, '2024-11-22 13:05:04');
-INSERT INTO `hyn_sys_authority` VALUES (45, 5, 1, 3, 'button', 'sys-dict-type:update', '修改字典类型', 'edit', '', 3, '', 1, '2024-11-22 13:04:02', 1, '2024-11-22 13:04:02');
-INSERT INTO `hyn_sys_authority` VALUES (46, 5, 1, 1, 'button', 'sys-dict-type:delete', '删除字典类型', 'delete', '', 4, '', 1, '2024-11-22 13:06:11', 1, '2024-11-22 13:59:45');
-INSERT INTO `hyn_sys_authority` VALUES (47, 5, 1, 3, 'button', 'sys-dict-type:recycle-bin', '回收站', 'rest', '', 5, '', 1, '2024-11-22 15:59:09', 1, '2025-07-31 11:52:50');
-INSERT INTO `hyn_sys_authority` VALUES (48, 5, 0, 3, 'button', 'sys-dict-item:list', '字典值管理', 'skin', '', 8, '', 1, '2024-11-22 16:00:57', 1, '2024-11-22 17:00:02');
-INSERT INTO `hyn_sys_authority` VALUES (49, 5, 1, 3, 'button', 'sys-dict-type:toggle-status', '启用/禁用字典类型', 'check-circle', '', 6, '', 1, '2024-11-22 16:09:52', 1, '2024-12-07 13:20:43');
-INSERT INTO `hyn_sys_authority` VALUES (56, 48, 1, 4, 'button', 'sys-dict-item:add', '新增字典值', 'plus', '', 2, '', 1, '2024-11-22 17:03:54', 1, '2024-11-22 17:03:54');
-INSERT INTO `hyn_sys_authority` VALUES (57, 48, 1, 4, 'button', 'sys-dict-item:update', '修改字典值', 'edit', '', 3, '', 1, '2024-11-22 17:05:07', 1, '2024-11-22 17:05:07');
-INSERT INTO `hyn_sys_authority` VALUES (59, 48, 1, 4, 'button', 'sys-dict-item:delete', '删除字典值', 'skin', '', 4, '', 1, '2024-11-22 17:08:11', 1, '2024-11-22 17:08:11');
-INSERT INTO `hyn_sys_authority` VALUES (60, 48, 1, 4, 'button', 'sys-dict-item:toggle-status', '启用/禁用字典值', 'skin', '', 5, '', 1, '2024-11-22 17:08:58', 1, '2024-11-23 13:51:56');
-INSERT INTO `hyn_sys_authority` VALUES (62, 48, 1, 4, 'button', 'sys-dict-item:reorder', '调整字典值排序', 'drag', '', 7, '', 1, '2024-11-22 17:13:02', 1, '2024-11-22 17:13:02');
-INSERT INTO `hyn_sys_authority` VALUES (64, 2, 1, 3, 'button', 'sys-authority:add', '新增权限资源', 'plus', '', 2, '', 1, '2024-11-22 22:47:10', 1, '2024-11-22 22:47:10');
-INSERT INTO `hyn_sys_authority` VALUES (65, 2, 1, 3, 'button', 'sys-authority:update', '修改权限资源', 'edit', '', 3, '', 1, '2024-11-22 22:47:55', 1, '2024-11-22 22:47:55');
-INSERT INTO `hyn_sys_authority` VALUES (66, 2, 1, 3, 'button', 'sys-authority:delete', '删除权限资源', 'delete', '', 4, '', 1, '2024-11-22 22:48:48', 1, '2024-11-22 22:48:48');
-INSERT INTO `hyn_sys_authority` VALUES (78, 1, 0, 2, 'menu', 'test', '测试', 'dribbble-square', '332', 6, '', 1, '2025-05-19 23:24:04', 1, '2025-07-04 23:52:41');
-INSERT INTO `hyn_sys_authority` VALUES (82, 78, 1, 3, 'menu', '32', '23', 'skin', '', 1, '', 1, '2025-07-15 22:09:11', 1, '2025-07-15 22:09:11');
+INSERT INTO `hyn_sys_authority` VALUES (1, 0, 0, 1, 1, 'menu', 'sys-manage', '系统管理', 'setting', '', 1, '', 1, '2020-10-27 22:43:13', 1, '2026-09-13 15:14:18');
+INSERT INTO `hyn_sys_authority` VALUES (2, 1, 0, 1, 2, 'menu', 'sys-authority:tree-list', '权限管理', 'safety', 'admin/authority', 3, '', 1, '2021-03-06 23:27:39', 1, '2026-09-13 15:20:54');
+INSERT INTO `hyn_sys_authority` VALUES (4, 1, 1, 1, 2, 'menu', 'sys-login-history:list', '登录历史', 'history', 'admin/login-history', 4, '', 1, '2021-09-14 21:23:21', 1, '2026-09-13 15:20:57');
+INSERT INTO `hyn_sys_authority` VALUES (5, 1, 0, 1, 2, 'menu', 'sys-dict-type:find-page', '字典管理', 'book', 'admin/dictionary/dict-type', 5, '', 1, '2022-07-23 16:32:14', 1, '2026-09-13 15:20:59');
+INSERT INTO `hyn_sys_authority` VALUES (23, 1, 0, 1, 2, 'menu', 'sys-role:find-page', '角色管理', 'team', 'admin/role', 0, '', 1, '2022-09-05 16:50:59', 1, '2026-09-13 15:21:01');
+INSERT INTO `hyn_sys_authority` VALUES (36, 1, 1, 1, 2, 'menu', 'sys:user:list', '用户管理', 'user', 'admin/user', 0, '', 1, '2023-07-02 15:30:37', 1, '2026-09-13 15:21:03');
+INSERT INTO `hyn_sys_authority` VALUES (37, 23, 1, 1, 3, 'button', 'sys-role:add', '创建角色', 'usergroup-add', '', 2, '', 1, '2024-11-19 17:27:19', 1, '2026-09-13 15:21:05');
+INSERT INTO `hyn_sys_authority` VALUES (38, 23, 1, 1, 3, 'button', 'sys-role:update', '修改角色', 'edit', '', 3, '', 1, '2024-11-21 12:17:49', 1, '2026-09-13 15:21:07');
+INSERT INTO `hyn_sys_authority` VALUES (39, 0, 1, 1, 1, 'menu', 'dashboard', '首页', 'dashboard', 'dashboard', 0, '', 1, '2024-11-21 21:16:19', 25, '2026-09-13 15:21:09');
+INSERT INTO `hyn_sys_authority` VALUES (41, 23, 1, 1, 3, 'button', 'sys-role:delete', '删除角色', 'delete', '', 4, '', 1, '2024-11-22 11:00:34', 1, '2026-09-13 15:21:11');
+INSERT INTO `hyn_sys_authority` VALUES (42, 23, 1, 1, 3, 'button', 'sys-role:assign-authorities', '分配权限', 'safety', '', 5, '', 1, '2024-11-22 11:12:24', 1, '2026-09-13 15:21:16');
+INSERT INTO `hyn_sys_authority` VALUES (44, 5, 1, 1, 3, 'button', 'sys-dict-type:add', '新增字典类型', 'plus', '', 2, '', 1, '2024-11-22 13:02:46', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (45, 5, 1, 1, 3, 'button', 'sys-dict-type:update', '修改字典类型', 'edit', '', 3, '', 1, '2024-11-22 13:04:02', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (46, 5, 1, 1, 1, 'button', 'sys-dict-type:delete', '删除字典类型', 'delete', '', 4, '', 1, '2024-11-22 13:06:11', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (47, 5, 1, 1, 3, 'button', 'sys-dict-type:recycle-bin', '回收站', 'rest', '', 5, '', 1, '2024-11-22 15:59:09', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (48, 5, 0, 1, 3, 'button', 'sys-dict-item:list', '字典值管理', 'skin', '', 8, '', 1, '2024-11-22 16:00:57', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (49, 5, 1, 1, 3, 'button', 'sys-dict-type:toggle-status', '启用/禁用字典类型', 'check-circle', '', 6, '', 1, '2024-11-22 16:09:52', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (56, 48, 1, 1, 4, 'button', 'sys-dict-item:add', '新增字典值', 'plus', '', 2, '', 1, '2024-11-22 17:03:54', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (57, 48, 1, 1, 4, 'button', 'sys-dict-item:update', '修改字典值', 'edit', '', 3, '', 1, '2024-11-22 17:05:07', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (59, 48, 1, 1, 4, 'button', 'sys-dict-item:delete', '删除字典值', 'skin', '', 4, '', 1, '2024-11-22 17:08:11', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (60, 48, 1, 1, 4, 'button', 'sys-dict-item:toggle-status', '启用/禁用字典值', 'skin', '', 5, '', 1, '2024-11-22 17:08:58', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (62, 48, 1, 1, 4, 'button', 'sys-dict-item:reorder', '调整字典值排序', 'drag', '', 7, '', 1, '2024-11-22 17:13:02', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (64, 2, 1, 1, 3, 'button', 'sys-authority:add', '新增权限资源', 'plus', '', 2, '', 1, '2024-11-22 22:47:10', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (65, 2, 1, 1, 3, 'button', 'sys-authority:update', '修改权限资源', 'edit', '', 3, '', 1, '2024-11-22 22:47:55', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (66, 2, 1, 1, 3, 'button', 'sys-authority:delete', '删除权限资源', 'delete', '', 4, '', 1, '2024-11-22 22:48:48', 1, '2026-09-13 15:21:43');
+INSERT INTO `hyn_sys_authority` VALUES (78, 1, 0, 0, 2, 'menu', 'test', '测试', 'dribbble-square', '332', 6, '', 1, '2025-05-19 23:24:04', 1, '2026-09-13 15:22:50');
+INSERT INTO `hyn_sys_authority` VALUES (82, 78, 1, 0, 3, 'menu', '32', '23', 'skin', '', 1, '', 1, '2025-07-15 22:09:11', 1, '2026-09-13 15:22:53');
 
 -- ----------------------------
 -- Table structure for hyn_sys_dept
@@ -376,7 +377,7 @@ CREATE TABLE `hyn_sys_login_history`  (
   `os_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端操作系统名称',
   `login_time` datetime NOT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1610 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1614 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_login_history
@@ -1041,6 +1042,10 @@ INSERT INTO `hyn_sys_login_history` VALUES (1606, 1, 1, NULL, 25, '192.168.3.15'
 INSERT INTO `hyn_sys_login_history` VALUES (1607, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-04 15:12:22');
 INSERT INTO `hyn_sys_login_history` VALUES (1608, 1, 1, NULL, 25, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-04 15:12:59');
 INSERT INTO `hyn_sys_login_history` VALUES (1609, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-06 09:15:30');
+INSERT INTO `hyn_sys_login_history` VALUES (1610, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-12 08:59:56');
+INSERT INTO `hyn_sys_login_history` VALUES (1611, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-12 09:01:20');
+INSERT INTO `hyn_sys_login_history` VALUES (1612, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-12 09:07:36');
+INSERT INTO `hyn_sys_login_history` VALUES (1613, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-12 09:19:15');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role
@@ -1067,7 +1072,7 @@ CREATE TABLE `hyn_sys_role`  (
 INSERT INTO `hyn_sys_role` VALUES (1, 'SUPER_ADMIN', '超级管理员', 1, 1, 1, '2020-10-27 22:32:04', 1, '2026-09-08 10:33:56');
 INSERT INTO `hyn_sys_role` VALUES (21, 'developer', '开发人员', 0, 1, 1, '2024-08-28 21:44:41', 1, '2026-09-08 10:33:58');
 INSERT INTO `hyn_sys_role` VALUES (59, 'tom', '布里', 0, 1, 1, '2025-06-24 16:02:48', 1, '2026-09-08 10:33:59');
-INSERT INTO `hyn_sys_role` VALUES (64, 'test_role', '测试角色', 0, 0, 1, '2025-08-26 21:34:32', 1, '2026-09-08 11:56:42');
+INSERT INTO `hyn_sys_role` VALUES (64, 'test_role', '测试角色', 0, 0, 1, '2025-08-26 21:34:32', 1, '2026-09-09 07:50:44');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role_authority
@@ -1138,6 +1143,10 @@ INSERT INTO `hyn_sys_role_authority` VALUES (21, 65, 1, '2026-09-06 09:16:30');
 INSERT INTO `hyn_sys_role_authority` VALUES (21, 66, 1, '2026-09-06 09:16:30');
 INSERT INTO `hyn_sys_role_authority` VALUES (59, 1, 1, '2025-08-02 12:19:07');
 INSERT INTO `hyn_sys_role_authority` VALUES (59, 36, 1, '2025-08-02 12:19:07');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 1, 1, '2026-09-09 07:50:44');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 23, 1, '2026-09-09 07:50:44');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 37, 1, '2026-09-09 07:50:44');
+INSERT INTO `hyn_sys_role_authority` VALUES (64, 39, 1, '2026-09-09 07:50:44');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user
@@ -1169,9 +1178,9 @@ CREATE TABLE `hyn_sys_user`  (
 -- ----------------------------
 -- Records of hyn_sys_user
 -- ----------------------------
-INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-09-06 09:15:30', NULL, 55, 1, '2022-06-11 10:37:27', 1, '2026-09-06 09:15:29');
+INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-09-12 09:19:15', NULL, 59, 1, '2022-06-11 10:37:27', 1, '2026-09-12 09:19:15');
 INSERT INTO `hyn_sys_user` VALUES (24, 'jack', '1', 1, 1, 1, 1, 0, '2025-09-24 14:13:21', NULL, NULL, 0, 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
-INSERT INTO `hyn_sys_user` VALUES (25, 'zhangsan', '$2a$10$aj9lPWMoDfIAefNUEzgCHeIatJ5vCJB3YhMW7X.39os6OpB2e4ora', 1, 1, 1, 1, 0, '2025-11-16 11:05:08', '2026-09-04 15:12:59', NULL, 6, 1, '2025-11-16 11:05:09', 25, '2026-09-04 15:12:58');
+INSERT INTO `hyn_sys_user` VALUES (25, 'zhangsan', '$2a$10$WiUyJJj9wh6GnE1TPUbaXe6TU.550OwdGPhhzQI8IsbmrRfZeOe/a', 1, 1, 1, 1, 0, '2025-11-16 11:05:08', '2026-09-04 15:12:59', NULL, 6, 1, '2025-11-16 11:05:09', 1, '2026-09-12 16:18:40');
 
 -- ----------------------------
 -- Table structure for hyn_sys_user_profile
