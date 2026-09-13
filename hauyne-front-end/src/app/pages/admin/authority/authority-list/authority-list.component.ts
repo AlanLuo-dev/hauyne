@@ -141,6 +141,9 @@ export class AuthorityListComponent implements OnInit {
 
     cancelButtonDisabled: boolean = false;
 
+    // 1. 新增控制全局展开/折叠状态的变量
+    isAllExpanded: boolean = false;
+
     /**
      * 构造函数
      * @param authorityService
@@ -215,6 +218,7 @@ export class AuthorityListComponent implements OnInit {
         this.authorityName = '';
         this.authorityType = '';
         this.expandedNodes.clear();
+        this.isAllExpanded = false; // 还原状态
         this.search();
     }
 
@@ -331,5 +335,38 @@ export class AuthorityListComponent implements OnInit {
             item,
             item.expand
         );
+    }
+
+
+    /**
+     * 2. 新增切换全部展开/折叠的方法
+     */
+    toggleExpandAll(): void {
+        this.isAllExpanded = !this.isAllExpanded;
+
+        if (this.isAllExpanded) {
+            // 递归收集所有节点 ID 到 expandedNodes 集合中
+            this.expandAllNodes(this.treeNodeListOfAuthority);
+        } else {
+            // 清空展开状态集合
+            this.expandedNodes.clear();
+        }
+
+        // 重新构建展开树视图数据
+        this.treeNodeListOfAuthority.forEach(item => {
+            this.mapOfExpandedData.set(item.id, this.convertTreeToList(item));
+        });
+    }
+
+    /**
+     * 递归将所有非叶子/有子节点的节点 ID 放入 expandedNodes 集合
+     */
+    private expandAllNodes(nodes: Authority[]): void {
+        nodes?.forEach(node => {
+            this.expandedNodes.add(node.id);
+            if (node.children && node.children.length > 0) {
+                this.expandAllNodes(node.children);
+            }
+        });
     }
 }

@@ -44,6 +44,11 @@
                     <button nz-button nzSize="small" (click)="reset()">
                         <span nz-icon nzType="reload" nzTheme="outline"></span>重置
                     </button>
+                    <!-- 动态显示“展开全部”与“收起全部”按钮 -->
+                    <button nz-button nzSize="small" (click)="toggleExpandAll()" >
+                        <span nz-icon [nzType]="isAllExpanded ? 'folder-open' : 'folder'" nzTheme="fill" class="authority-folder"></span>
+                        {{ isAllExpanded ? '收起全部' : '展开全部' }}
+                    </button>
                 </nz-form-control>
             </nz-form-item>
         </div>
