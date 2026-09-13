@@ -57,6 +57,7 @@
             t.id AS id,
             t.parent_id AS parentId,
             t.is_leaf AS leaf,
+            t.is_builtin AS builtin,
             t.LEVEL AS LEVEL,
             t.authority_type AS authorityType,
             t.authority_code AS authorityCode,

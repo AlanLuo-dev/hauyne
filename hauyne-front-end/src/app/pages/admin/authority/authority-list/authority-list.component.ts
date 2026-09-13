@@ -36,6 +36,7 @@ export interface Authority extends AuditInfo {
      */
     id: number;
     leaf: boolean;
+    builtin: EnumOption<boolean>;
     level: number;
 
     /**
@@ -165,6 +166,7 @@ export class AuthorityListComponent implements OnInit {
             {field: 'level', header: '层级', width: '3%'},
             {field: 'sort', header: '排序', sortable: true, width: '3%'},
             {field: 'leaf', header: '下级权限', width: '7%'},
+            {field: 'builtin', header: '是否内置', width: '10%'},
             {field: 'createdByFullName', header: '创建人', width: '5%'},
             {field: 'createdTime', header: '创建时间', width: '10%'},
             {field: 'lastModifiedByFullName', header: '修改人', width: '5%'},

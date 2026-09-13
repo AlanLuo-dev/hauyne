@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.mybatisplus.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,12 @@ public class Authority extends BaseEntity<Authority> {
      */
     @TableField(value = "is_leaf")
     private Boolean leaf;
+
+    /**
+     * 是否为内置权限（1=是，0=否）
+     */
+    @TableField(value = "is_builtin")
+    private YesNoEnum builtin;
 
     /**
      * 权限树层级（1=第1层，2=第2层，以此类推）

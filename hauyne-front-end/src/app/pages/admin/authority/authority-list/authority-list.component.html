@@ -118,6 +118,17 @@
                                     [class.authority-file]="item.leaf"
                                 />
                             </td>
+                            <td>
+                                <span
+                                    nz-icon
+                                    [nzType]="item.builtin.value ? 'lock' : 'unlock'"
+                                    nzTheme="fill"
+                                    nz-tooltip
+                                    [nzTooltipTitle]="item.builtin.value ? '系统内置' : '自定义'"
+                                    [class.authority-builtin]="item.builtin.value"
+                                    [class.authority-custom]="!item.builtin.value"
+                                ></span>
+                            </td>
                             <td>{{ item.createdBy }}</td>
                             <td>{{ item.createdTime }}</td>
                             <td>{{ item.lastUpdatedBy }}</td>

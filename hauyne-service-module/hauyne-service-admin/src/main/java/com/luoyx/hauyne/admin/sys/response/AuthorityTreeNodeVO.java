@@ -3,6 +3,7 @@ package com.luoyx.hauyne.admin.sys.response;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.luoyx.hauyne.admin.api.sys.enums.AuthorityTypeEnum;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,9 @@ public class AuthorityTreeNodeVO {
      * 是否为叶子节点（是，否）
      */
     private Boolean leaf;
+
+    @Schema(description = "是否为内置权限")
+    private YesNoEnum builtin;
 
     /**
      * 权限树层级（1=第1层，2=第2层，以此类推）
