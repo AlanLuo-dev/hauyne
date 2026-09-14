@@ -9,14 +9,19 @@
 // @primary-color: #1890ff;
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
-    height: 100%;
-}
 
+html,
 body {
+    height: 100%;
     margin: 0;
+    overflow: hidden;
 }
 
+app-root {
+    display: block;
+    height: 100%;
+    min-height: 0;
+}
 
 /** Material样式 */
 @import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";

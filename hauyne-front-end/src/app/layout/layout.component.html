@@ -100,54 +100,9 @@
 
         <nz-content>
             <div class="inner-content">
-                <!--                <nz-tabs-->
-                <!--                    [(nzSelectedIndex)]="activatedMenuIndex"-->
-                <!--                    nzType="card"-->
-                <!--                >-->
-                <!--                    <nz-tab-->
-                <!--                        *ngFor="let tab of tabs"-->
-                <!--                        [nzTitle]="titleTemplate"-->
-                <!--                        (nzSelect)="toggleTab(tab.path)">-->
-                <!--                        <ng-template #titleTemplate>-->
-                <!--                            <div>-->
-                <!--                                {{ tab.title }}-->
-                <!--                                <i-->
-                <!--                                    class="tab-remove-btn"-->
-                <!--                                    nz-icon nzType="close"-->
-                <!--                                    nzTheme="outline"-->
-                <!--                                    (click)="closeTab(tab.path)"-->
-                <!--                                ></i>-->
-                <!--                            </div>-->
-                <!--                        </ng-template>-->
-                <!--                    </nz-tab>-->
-                <!--                </nz-tabs>-->
                 <router-outlet></router-outlet>
             </div>
         </nz-content>
-
-        <!--        <app-header [selectedMenuItems]="checkedMenuItems" (toggleSidebarForMe)="sideBarToggler()"-->
-        <!--                    [sideBarIsOpen]="sideBarOpen"></app-header>-->
-
-        <!-- Tab标签页的右键菜单 -->
-        <!--        <p-contextMenu #menu [model]="contextMenuItems" appendTo="body">-->
-        <!--        </p-contextMenu>-->
-
-        <!--        <nz-tabs nzSize="small"-->
-        <!--                   (nzClose)="closeTab($event)"-->
-        <!--                   nzType="editable-card"-->
-        <!--                   nzHideAdd-->
-        <!--                   nzLinkRouter-->
-        <!--        >-->
-        <!--            <nz-tab *ngFor="let tab of tabDataArr" [nzDisabled]="tab.disabled" nzClosable>-->
-        <!--                <a *nzTabLink nz-tab-link [routerLink]="[tab.routerLink]">-->
-        <!--                    &lt;!&ndash;   先不设置图标                 <span nz-icon [nzType]="tab.icon"></span>&ndash;&gt;-->
-        <!--                    {{tab.label}}-->
-        <!--                </a>-->
-        <!--            </nz-tab>-->
-        <!--        </nz-tabs>-->
-        <!--        <router-outlet></router-outlet>-->
-
-
     </mat-drawer-content>
 </mat-drawer-container>
 
