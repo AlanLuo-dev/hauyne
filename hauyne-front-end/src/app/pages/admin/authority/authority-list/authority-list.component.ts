@@ -1,8 +1,10 @@
 import {
     AfterViewInit,
-    ChangeDetectionStrategy, ChangeDetectorRef,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
-    ElementRef, HostListener,
+    ElementRef,
+    HostListener,
     OnDestroy,
     OnInit,
     ViewChild
@@ -19,8 +21,7 @@ import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
-import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
-import {NzFormDirective, NzFormLabelComponent} from "ng-zorro-antd/form";
+import {NzFormDirective} from "ng-zorro-antd/form";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
 import {DictTypeService} from "../../dictionary/dict-type/dict-type.service";
@@ -98,13 +99,10 @@ export interface Authority extends AuditInfo {
         NzPopconfirmDirective,
         NzTooltipDirective,
         FormsModule,
-        NzColDirective,
         NzFormDirective,
-        NzFormLabelComponent,
         NzInputDirective,
         NzRadioComponent,
         NzRadioGroupComponent,
-        NzRowDirective,
         AuthorityEditFormComponent
     ],
     templateUrl: './authority-list.component.html',

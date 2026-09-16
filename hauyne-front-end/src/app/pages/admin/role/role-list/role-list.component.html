@@ -1,58 +1,46 @@
 <form nz-form class="role-list-search-form">
-    <div nz-row>
-        <div nz-col nzXl="8" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button *appAuthority="'sys-role:add'" nz-button nzType="primary" (click)="showFormDialog()"
-                            nzSize="small">
-                        <span nz-icon nzType="plus" nzTheme="outline"></span>
-                        创建角色
-                    </button>
-                    <button *appAuthority="'sys-role:delete'" nz-button nzType="primary" nzDanger nzSize="small"
-                            [disabled]="setOfCheckedId.size == 0"
-                            (click)="showDeleteConfirm()">
-                        <span nz-icon nzType="delete" nzTheme="outline"></span>
-                        删除角色
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
+    <div class="search-form-wrapper">
+        <!-- 左侧：全局数据操作区（创建 / 批量删除） -->
+        <div class="left-action-group">
+            <button *appAuthority="'sys-role:add'" nz-button nzType="primary" (click)="showFormDialog()" nzSize="small">
+                <span nz-icon nzType="plus" nzTheme="outline"></span>
+                创建角色
+            </button>
+            <button *appAuthority="'sys-role:delete'" nz-button nzType="primary" nzDanger nzSize="small"
+                    [disabled]="setOfCheckedId.size == 0"
+                    (click)="showDeleteConfirm()">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+                删除角色
+            </button>
         </div>
 
-        <div nz-col nzXl="6" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'roleCode'">角色编码</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'roleCode'" [(ngModel)]="roleCode"
-                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="6" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'roleName'">角色名称</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'roleName'" [(ngModel)]="roleName"
-                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="4" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()"
-                            *appAuthority="'sys-role:find-page'">
+        <!-- 右侧：带有原生 fieldset 虚线圈的查询区 -->
+        <fieldset class="filter-fieldset">
+            <div class="right-filter-group">
+                <div class="filter-item">
+                    <span class="filter-label">角色编码：</span>
+                    <input nz-input [(ngModel)]="roleCode" [ngModelOptions]="{standalone: true}" nzSize="small" class="filter-input" />
+                </div>
+
+                <div class="filter-item">
+                    <span class="filter-label">角色名称：</span>
+                    <input nz-input [(ngModel)]="roleName" [ngModelOptions]="{standalone: true}" nzSize="small" class="filter-input" />
+                </div>
+
+                <div class="button-group">
+                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()" *appAuthority="'sys-role:find-page'">
                         <span nz-icon nzType="search" nzTheme="outline"></span>查询
                     </button>
                     <button nz-button nzSize="small" (click)="resetForm()" *appAuthority="'sys-role:find-page'">
                         <span nz-icon nzType="reload" nzTheme="outline"></span>重置
                     </button>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
+                </div>
+            </div>
+        </fieldset>
     </div>
 </form>
 
-<div class="search-result-list">
+<div class="table-container">
     <nz-table
         nzShowSizeChanger
         [nzData]="listOfRole"
