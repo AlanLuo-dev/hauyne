@@ -111,8 +111,6 @@
             icon
         from
             hyn_sys_authority
-        where
-            authority_type = 'menu'
         order by sort
     </select>
 

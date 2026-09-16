@@ -123,9 +123,6 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
             if (null == parentAuthority) {
                 throw new ResourceNotFoundException("父节点不存在");
             }
-            if (AuthorityTypeEnum.BUTTON.equals(parentAuthority.getAuthorityType())) {
-                throw new ValidateException("按钮不能作为父节点");
-            }
 
             // 如果父节点是叶子节点，则取消其叶子节点
             if (Boolean.TRUE.equals(parentAuthority.getLeaf())) {
@@ -193,9 +190,6 @@ public class AuthorityServiceImpl extends BaseServiceImpl<AuthorityMapper, Autho
                 final Authority newParentAuthority = baseMapper.selectById(newParentId);
                 if (Objects.isNull(newParentAuthority)) {
                     throw new ResourceNotFoundException("父节点不存在");
-                }
-                if (AuthorityTypeEnum.BUTTON.equals(newParentAuthority.getAuthorityType())) {
-                    throw new ValidateException("按钮不能作为父节点");
                 }
                 authority.setLevel(newParentAuthority.getLevel() + 1);
 
