@@ -56,10 +56,10 @@
     </div>
 </form>
 
-<div class="search-result-list" >
+<div #tableContainer class="table-container">
     <nz-table #expandTable [nzData]="treeNodeListOfAuthority" nzOuterBordered nzTableLayout="fixed"
               (nzQueryParams)="onQueryParamsChange($event)"
-              [nzScroll]="{ x: '1560px', y: '500px' }"
+              [nzScroll]="{ x: '1560px', y: tableScrollY }"
               nzShowSizeChanger
               [nzFrontPagination]="false"
               [nzLoading]="_loading"
@@ -171,7 +171,6 @@
         </tbody>
     </nz-table>
 </div>
-
 
 <!-- 新增、编辑权限资源 弹窗  -->
 @if (formDialogDisplay) {

@@ -1,4 +1,12 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy, ChangeDetectorRef,
+    Component,
+    ElementRef, HostListener,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import {NzTableModule, NzTableQueryParams, NzTdAddOnComponent} from "ng-zorro-antd/table";
 
 import {FormsModule} from "@angular/forms";
@@ -141,6 +149,14 @@ export class AuthorityListComponent implements OnInit, AfterViewInit, OnDestroy 
     // 1. 新增控制全局展开/折叠状态的变量
     isAllExpanded: boolean = false;
 
+    @ViewChild('tableContainer')
+    tableContainer!: ElementRef<HTMLElement>;
+
+    tableScrollY = '500px';
+
+    private resizeObserver?: ResizeObserver;
+    private resizeTimer?: number;
+
     /**
      * 构造函数
      * @param authorityService
@@ -149,17 +165,73 @@ export class AuthorityListComponent implements OnInit, AfterViewInit, OnDestroy 
      */
     constructor(private readonly authorityService: AuthorityService,
                 private readonly dictTypeService: DictTypeService,
-                private readonly messageService: NzMessageService) {
+                private readonly messageService: NzMessageService,
+                private readonly cdr: ChangeDetectorRef) {
 
         this.dictTypeService.loadDropdownData('authority_type').subscribe(res => {
             this.authorityTypeOption = res;
         })
     }
 
+    @HostListener('window:resize')
+    onWindowResize(): void {
+        this.scheduleTableScrollUpdate();
+    }
+
+    private scheduleTableScrollUpdate(): void {
+        if (this.resizeTimer) {
+            cancelAnimationFrame(this.resizeTimer);
+        }
+
+        this.resizeTimer = requestAnimationFrame(() => {
+            this.updateTableScrollY();
+        });
+    }
+
     ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
+
+        if (this.resizeTimer) {
+            cancelAnimationFrame(this.resizeTimer);
+        }
     }
 
     ngAfterViewInit(): void {
+        this.scheduleTableScrollUpdate();
+
+        this.resizeObserver = new ResizeObserver(() => {
+            this.scheduleTableScrollUpdate();
+        });
+
+        this.resizeObserver.observe(
+            this.tableContainer.nativeElement
+        );
+    }
+
+    private updateTableScrollY(): void {
+        if (!this.tableContainer) {
+            return;
+        }
+
+        const container = this.tableContainer.nativeElement;
+
+        const containerHeight = container.clientHeight;
+
+        const tableHeader = container.querySelector(
+            '.ant-table-thead'
+        ) as HTMLElement | null;
+
+        const headerHeight = tableHeader?.offsetHeight ?? 40;
+
+        const scrollHeight = Math.max(
+            containerHeight - headerHeight - 2,
+            100
+        );
+
+        this.tableScrollY = `${scrollHeight}px`;
+
+        // 确保 Angular 模板立即更新
+        this.cdr.detectChanges();
     }
 
     ngOnInit(): void {
