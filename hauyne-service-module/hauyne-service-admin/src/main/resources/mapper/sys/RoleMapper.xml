@@ -37,6 +37,9 @@
                 <bind name="roleNamePattern" value="'%' + roleName + '%' "/>
                 AND t.role_name like #{roleNamePattern}
             </if>
+            <if test="builtIn">
+                AND t.is_builtin = #{builtIn}
+            </if>
         </where>
         ORDER BY
         <choose>

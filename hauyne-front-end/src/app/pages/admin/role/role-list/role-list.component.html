@@ -26,6 +26,18 @@
                     <span class="filter-label">角色名称：</span>
                     <input nz-input [(ngModel)]="roleName" [ngModelOptions]="{standalone: true}" nzSize="small" class="filter-input" />
                 </div>
+                <div class="filter-item">
+                    <span class="filter-label">是否内置：</span>
+                    <nz-radio-group [(ngModel)]="builtIn" [ngModelOptions]="{standalone: true}" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                        @for (item of builtInOption; track item) {
+                            <label nz-radio-button [nzValue]="item.value">
+                                <span nz-icon [nzType]="item.icon" nzTheme="fill"
+                                      nz-tooltip [nzTooltipTitle]="item.label" [class]="item.class">
+                                </span>
+                            </label>
+                        }
+                    </nz-radio-group>
+                </div>
 
                 <div class="button-group">
                     <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()" *appAuthority="'sys-role:find-page'">

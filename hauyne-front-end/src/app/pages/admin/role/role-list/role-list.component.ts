@@ -1,16 +1,7 @@
-import {
-    Component,
-    OnInit,
-    ViewChild,
-    ChangeDetectionStrategy,
-    AfterViewInit,
-    OnDestroy,
-    ElementRef
-} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {NzTableComponent, NzTableModule, NzTableQueryParams} from 'ng-zorro-antd/table';
 import {RoleService} from "../role.service";
-import {NzFormDirective, NzFormLabelComponent} from "ng-zorro-antd/form";
-import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
+import {NzFormDirective} from "ng-zorro-antd/form";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
@@ -21,15 +12,13 @@ import {NzModalService} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
-import {Column} from "../../../../common/column";
 import {AuditInfo} from "../../../../common/audit-info";
 import {AuthorityDirective} from "../../../../directives/authority.directive";
-import {Store} from "@ngrx/store";
-import {AppState} from "../../../../store";
 import {finalize, Observable} from "rxjs";
 import {EventlogListComponent} from "../../../eventlog/eventlog-list/eventlog-list.component";
 import {RoleConfigAuthorityComponent} from "../role-config-authority/role-config-authority.component";
 import {EnumOption} from "../../../../common/enum-option";
+import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
 
 export interface Role extends AuditInfo {
     id: number;
@@ -56,10 +45,18 @@ class RoleQuery extends PageQuery {
      */
     roleName: string;
 
-    constructor(queryParams: NzTableQueryParams, roleCode: string, roleName: string) {
+    /**
+     * 是否系统内置
+     */
+    builtIn: boolean | null = null;
+
+    constructor(queryParams: NzTableQueryParams, roleCode: string, roleName: string, builtIn: boolean | null = null) {
         super(queryParams);
         this.roleCode = roleCode;
         this.roleName = roleName;
+        if (builtIn !== null) {
+            this.builtIn = builtIn;
+        }
     }
 }
 
@@ -68,17 +65,16 @@ class RoleQuery extends PageQuery {
     imports: [
         NzTableModule,
         NzFormDirective,
-        NzRowDirective, NzColDirective,
-        NzInputDirective, NzFormLabelComponent,
-        NzButtonComponent, NzIconDirective, FormsModule, ReactiveFormsModule,
-        RoleEditFormComponent, NzTooltipDirective, NzPopconfirmDirective, AuthorityDirective, EventlogListComponent, RoleConfigAuthorityComponent
+        NzInputDirective, NzButtonComponent, NzIconDirective, FormsModule, ReactiveFormsModule,
+        RoleEditFormComponent, NzTooltipDirective, NzPopconfirmDirective, AuthorityDirective, EventlogListComponent,
+        RoleConfigAuthorityComponent, NzRadioComponent, NzRadioGroupComponent
     ],
     templateUrl: './role-list.component.html',
     styleUrl: './role-list.component.less',
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
-export class RoleListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RoleListComponent implements AfterViewInit, OnDestroy {
 
     // 数据结果
     listOfRole: Role[] = [];
@@ -94,6 +90,12 @@ export class RoleListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     roleCode: string = '';
     roleName: string = '';
+    builtIn: boolean | null = null;
+
+    builtInOption: any[] = [
+        {value: false, label: '自定义', icon: 'unlock', class: 'sys-status-custom'},
+        {value: true, label: '系统内置', icon: 'lock', class: 'sys-status-builtin'}
+    ]
 
     @ViewChild('basicTable', {static: false}) table!: NzTableComponent<any>;
 
@@ -171,9 +173,6 @@ export class RoleListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableScrollY = `${Math.max(calculatedHeight, 100)}px`;
     }
 
-    ngOnInit(): void {
-    }
-
     search(): void {
         this.onQueryParamsChange(this.roleService.createLazyLoadMetaData(this.pageSize));
     }
@@ -186,7 +185,7 @@ export class RoleListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     onQueryParamsChange(queryParams: NzTableQueryParams): void {
         this.pageSize = queryParams.pageSize;
-        const roleQuery: RoleQuery = new RoleQuery(queryParams, this.roleCode, this.roleName);
+        const roleQuery: RoleQuery = new RoleQuery(queryParams, this.roleCode, this.roleName, this.builtIn);
         this.loading = true;
         this.roleService.loadPageData<Role, RoleQuery>(roleQuery)
             .subscribe({
