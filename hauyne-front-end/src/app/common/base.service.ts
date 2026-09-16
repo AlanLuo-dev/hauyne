@@ -58,9 +58,9 @@ export class BaseService<ID> {
      */
     loadPageData<U, Q extends PageQuery>(query: Q): Observable<PageResult<U>> {
 
-        // 过滤掉值为 null、空字符串或 undefined 的键值对
+        // 只过滤掉值为 null 或 undefined 的键值对
         let filterAndPageParams = Object.entries(query)
-            .filter(([key, value]) => value )
+            .filter(([key, value]) => value !== null && value !== undefined)
             .reduce((newObj, [key, value]) => {
                 newObj[key] = value;
                 return newObj;
