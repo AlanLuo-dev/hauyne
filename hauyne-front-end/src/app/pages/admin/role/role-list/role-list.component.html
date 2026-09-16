@@ -40,33 +40,48 @@
     </div>
 </form>
 
-<div class="table-container">
+<div #tableContainer class="table-container">
+    <!-- 分页总条数模板 -->
+    <ng-template #totalTemplate let-total>
+        共 {{ total }} 条记录
+    </ng-template>
+
     <nz-table
         nzShowSizeChanger
         [nzData]="listOfRole"
         [nzFrontPagination]="false"
         [nzLoading]="loading"
         [nzTotal]="total"
+        [nzShowTotal]="totalTemplate"
         [nzPageSize]="pageSize"
         nzSize="small"
         (nzQueryParams)="onQueryParamsChange($event)"
+        [nzScroll]="{y: tableScrollY }"
     >
         <thead>
         <tr>
-            @for (col of cols; track col.field) {
-                @if (col.field == 'id') {
-                    <th [id]="col.field" [nzChecked]="checked" (nzCheckedChange)="onAllChecked($event)"
-                        [nzIndeterminate]="indeterminate"
-                    >
-                    </th>
-                } @else {
-                    @if (col.sortable == true) {
-                        <th [id]="col.field" [nzColumnKey]="col.field" [nzSortFn]="col.sortable">{{ col.header }}</th>
-                    } @else {
-                        <th [id]="col.field">{{ col.header }}</th>
-                    }
-                }
-            }
+            <!-- 1. 多选/ID 列 -->
+            <th id="id" nzWidth="50px"
+                [nzChecked]="checked"
+                [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="onAllChecked($event)">
+            </th>
+
+            <!-- 2. 核心业务识别区 -->
+            <th id="roleCode" nzWidth="100px">角色编码</th>
+            <th id="roleName" nzWidth="100px">角色名称</th>
+
+            <!-- 3. 属性与状态区 -->
+            <th id="builtin" nzWidth="80px">是否内置</th>
+
+            <!-- 4. 审计追溯区 (低频信息沉底) -->
+            <th id="createdBy" nzWidth="90px">创建人</th>
+            <th id="createdTime" nzWidth="150px" nzColumnKey="createdTime" [nzSortFn]="true">创建时间</th>
+            <th id="lastModifiedBy" nzWidth="90px">修改人</th>
+            <th id="lastUpdatedTime" nzWidth="150px">修改时间</th>
+
+            <!-- 5. 高频操作区 (固定右侧) -->
+            <th id="operation" nzWidth="150px" nzRight>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -78,12 +93,23 @@
                     </td>
                     <td>{{ data.roleCode }}</td>
                     <td>{{ data.roleName }}</td>
-                    <td>{{ data.builtin.label }}</td>
+<!--                    <td>{{ data.builtin.label }}</td>-->
+                    <td>
+                        <span
+                            nz-icon
+                            [nzType]="data.builtin.value ? 'lock' : 'unlock'"
+                            nzTheme="fill"
+                            nz-tooltip
+                            [nzTooltipTitle]="data.builtin.value ? '系统内置' : '自定义'"
+                            [class.sys-status-builtin]="data.builtin.value"
+                            [class.sys-status-custom]="!data.builtin.value"
+                        ></span>
+                    </td>
                     <td>{{ data.createdBy }}</td>
                     <td>{{ data.createdTime }}</td>
                     <td>{{ data.lastUpdatedBy }}</td>
                     <td>{{ data.lastUpdatedTime }}</td>
-                    <td>
+                    <td nzRight class="button-group">
                         <button *appAuthority="'sys-role:assign-authorities'" nz-button nzSize="small" nzShape="circle"
                                 nz-tooltip nzTooltipTitle="分配权限" nzTooltipPlacement="top"
                                 (click)="showAssignAuthorityDialog(data.id)"
@@ -112,7 +138,7 @@
                             <span nz-icon nzType="delete" nzTheme="outline"></span>
                         </button>
                         <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle"
-                                nz-tooltip nzTooltipTitle="审计日志" nzTooltipPlacement="top"
+                                nz-tooltip nzTooltipTitle="操作日志" nzTooltipPlacement="top"
                                 (click)="showAuditlog(data.id)"
                         >
                             <span nz-icon nzType="audit" nzTheme="outline"></span>

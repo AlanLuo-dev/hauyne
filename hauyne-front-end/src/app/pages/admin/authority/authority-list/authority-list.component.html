@@ -126,8 +126,8 @@
                                     nzTheme="fill"
                                     nz-tooltip
                                     [nzTooltipTitle]="item.builtin.value ? '系统内置' : '自定义'"
-                                    [class.authority-builtin]="item.builtin.value"
-                                    [class.authority-custom]="!item.builtin.value"
+                                    [class.sys-status-builtin]="item.builtin.value"
+                                    [class.sys-status-custom]="!item.builtin.value"
                                 ></span>
                             </td>
                             <td>{{ item.createdBy }}</td>

@@ -78,16 +78,46 @@
     }
 }
 
+/* 核心容器：将内部布局转化为 Flex 上下分布 */
 .table-container {
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
 
-    nz-table {
-        height: 100%;
-    }
-}
+    ::ng-deep {
+        /* 强行拉满表格组件容器高度 */
+        nz-table,
+        .ant-table-wrapper,
+        .ant-spin-nested-loading,
+        .ant-spin-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
 
-button {
-    margin-right: 0; // 清除全局默认margin，由 Flex gap 统一管理间距
+        /* 旋转/数据主体占满剩余空间 */
+        .ant-spin-container {
+            justify-content: space-between;
+        }
+
+        /* 表格区域 */
+        .ant-table {
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* 底部分页条：固定吸附底部 */
+        .ant-pagination {
+            flex: 0 0 auto;
+            margin: 12px 0 0 0 !important;
+            padding: 0 8px;
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+    }
 }

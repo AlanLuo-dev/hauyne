@@ -1,4 +1,12 @@
-import {Component, OnInit, ViewChild, ChangeDetectionStrategy} from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    ChangeDetectionStrategy,
+    AfterViewInit,
+    OnDestroy,
+    ElementRef
+} from '@angular/core';
 import {NzTableComponent, NzTableModule, NzTableQueryParams} from 'ng-zorro-antd/table';
 import {RoleService} from "../role.service";
 import {NzFormDirective, NzFormLabelComponent} from "ng-zorro-antd/form";
@@ -70,17 +78,13 @@ class RoleQuery extends PageQuery {
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
-export class RoleListComponent implements OnInit {
-
-
-    // 列定义
-    cols: Column[] = [];
+export class RoleListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // 数据结果
     listOfRole: Role[] = [];
 
-    pageSize: number = 10;
-    total = 1;
+    pageSize: number = 20;
+    total: number = 0;
 
     loading = true;
 
@@ -114,21 +118,57 @@ export class RoleListComponent implements OnInit {
 
     cancelButtonDisabled: boolean = false;
 
+    @ViewChild('tableContainer') tableContainer!: ElementRef<HTMLElement>;
+
+    // 1. 声明动态滚动高度变量
+    tableScrollY: string = '400px';
+    private resizeObserver?: ResizeObserver;
+
     constructor(private readonly roleService: RoleService,
                 private readonly modal: NzModalService,
                 private readonly messageService: NzMessageService) {
+    }
 
-        this.cols = [
-            {field: 'id', header: 'Id', isDataKey: true},
-            {field: 'roleCode', header: '角色编码'},
-            {field: 'roleName', header: '角色名称'},
-            {field: 'builtin', header: '是否系统内置角色'},
-            {field: 'createdByFullName', header: '创建人'},
-            {field: 'createdTime', header: '创建时间', sortable: true},
-            {field: 'lastModifiedByFullName', header: '修改人'},
-            {field: 'lastUpdatedTime', header: '修改时间'},
-            {field: 'operation', header: '操作'}
-        ];
+    ngAfterViewInit(): void {
+        // 延迟一帧，确保页面初始化渲染完成后计算高度
+        setTimeout(() => this.calculateTableScrollY(), 0);
+
+        // 2. 监听容器尺寸变化（兼容浏览器缩放、分辨率改变、窗口 Resize）
+        if (typeof ResizeObserver !== 'undefined') {
+            this.resizeObserver = new ResizeObserver(() => {
+                window.requestAnimationFrame(() => this.calculateTableScrollY());
+            });
+            this.resizeObserver.observe(this.tableContainer.nativeElement);
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
+    }
+
+    /**
+     * 动态计算表格内容区域可滚动的真实高度
+     */
+    /**
+     * 动态计算表格内容区域可滚动的真实高度
+     */
+    private calculateTableScrollY(): void {
+        if (!this.tableContainer) return;
+
+        // 获取 table 容器外层的实际像素高度
+        const containerHeight = this.tableContainer.nativeElement.clientHeight;
+        if (containerHeight === 0) return;
+
+        /**
+         * 扣除项说明：
+         * 1. nzSize="small" 表头高度 (~39px)
+         * 2. 底部分页栏高度 (~48px)
+         * 综合扣除约 87px - 90px
+         */
+        const calculatedHeight = containerHeight - 88;
+
+        // 赋值给 nzScroll.y
+        this.tableScrollY = `${Math.max(calculatedHeight, 100)}px`;
     }
 
     ngOnInit(): void {
