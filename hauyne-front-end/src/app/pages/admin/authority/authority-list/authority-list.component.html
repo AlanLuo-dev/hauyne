@@ -143,7 +143,7 @@
                             <td>{{ item.lastUpdatedTime }}</td>
                             <td nzRight>
                                 <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle"
-                                        nz-tooltip nzTooltipTitle="编辑" nzTooltipPlacement="left"
+                                        nz-tooltip nzTooltipTitle="编辑"
                                         (click)="showFormDialog(item.id)"
                                 >
                                     <span nz-icon nzType="edit" nzTheme="outline"></span>
@@ -151,7 +151,6 @@
 
                                 <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle" nzDanger
                                         nz-tooltip [nzTooltipTitle]="item.leaf ? '删除' : '只能删除叶子节点'"
-                                        nzTooltipPlacement="left"
                                         [disabled]="!item.leaf"
 
                                         nz-popconfirm
