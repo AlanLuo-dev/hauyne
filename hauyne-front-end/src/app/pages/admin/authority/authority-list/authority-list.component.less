@@ -5,14 +5,14 @@
     min-height: 0;
 }
 
-.authority-list-search-form {
-    flex: 0 0 auto;
-    padding: 24px;
-    margin-bottom: 16px;
-    background: #fbfbfb;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
-}
+//.authority-list-search-form {
+//    flex: 0 0 auto;
+//    padding: 24px;
+//    margin-bottom: 16px;
+//    background: #fbfbfb;
+//    border: 1px solid #d9d9d9;
+//    border-radius: 6px;
+//}
 
 nz-table {
     flex: 1;
@@ -77,3 +77,79 @@ button {
     font-size: 16px;
 }
 
+.authority-list-search-form {
+    flex: 0 0 auto;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    background: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+
+    .search-form-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .left-action-group {
+        display: flex;
+        align-items: center;
+    }
+
+    .right-filter-group {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+
+            .filter-label {
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.85);
+                margin-right: 8px;
+            }
+
+            .filter-input {
+                width: 160px;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            button {
+                margin-right: 0; // 覆盖默认边距
+            }
+        }
+    }
+}
+
+
+.filter-fieldset {
+    border: 1px dashed #d9d9d9; // 可选: 虚线 (dashed) 或实线 (solid)
+    border-radius: 6px;
+    padding: 8px 16px 12px;
+    margin: 0;
+    transition: all 0.3s;
+
+    &:hover {
+        border-color: #40a9ff; // 悬停高亮
+    }
+
+    .filter-legend {
+        width: auto;
+        margin-bottom: 0;
+        padding: 0 8px;
+        font-size: 12px;
+        color: #8c8c8c;
+        border-bottom: none;
+    }
+}

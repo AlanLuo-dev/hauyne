@@ -1,58 +1,51 @@
 <form nz-form class="authority-list-search-form">
-    <div nz-row>
-        <div nz-col nzXl="7" nzXXl="12">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button nz-button nzType="primary" (click)="showFormDialog()" nzSize="small">
-                        <span nz-icon nzType="plus" nzTheme="outline"></span>
-                        创建权限资源
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="7" nzXXl="5">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'authorityName'">权限名称</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'authorityName'" [(ngModel)]="authorityName"
-                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="6" nzXXl="4">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'dictTypeName'">权限类型</nz-form-label>
-                <nz-form-control>
-                    <nz-radio-group [(ngModel)]="authorityType" [ngModelOptions]="{standalone: true}"
-                                    nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
-                    >
-                        @for (item of authorityTypeOption; track item) {
-                            <label nz-radio-button [nzValue]="item.value">
-                                {{ item.label }}
-                            </label>
-                        }
-                    </nz-radio-group>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="4" nzXXl="3">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
-                        <span nz-icon nzType="search" nzTheme="outline"></span>查询
-                    </button>
-                    <button nz-button nzSize="small" (click)="reset()">
-                        <span nz-icon nzType="reload" nzTheme="outline"></span>重置
-                    </button>
-                    <!-- 动态显示“展开全部”与“收起全部”按钮 -->
-                    <button nz-button nzSize="small" (click)="toggleExpandAll()" >
-                        <span nz-icon [nzType]="isAllExpanded ? 'folder-open' : 'folder'" nzTheme="fill" class="authority-folder"></span>
-                        {{ isAllExpanded ? '收起全部' : '展开全部' }}
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
+    <div class="search-form-wrapper">
+        <!-- 左侧：全局/新建操作 -->
+        <div class="left-action-group">
+            <button nz-button nzType="primary" (click)="showFormDialog()" nzSize="small">
+                <span nz-icon nzType="plus" nzTheme="outline"></span>
+                创建权限资源
+            </button>
         </div>
 
+        <!-- 右侧：查询与筛选条件 -->
+        <div class="right-filter-group">
+            <fieldset class="filter-fieldset">
+                <div class="right-filter-group">
+                    <div class="filter-item">
+                        <span class="filter-label">权限名称：</span>
+                        <input nz-input [(ngModel)]="authorityName" [ngModelOptions]="{standalone: true}" nzSize="small" class="filter-input" />
+                    </div>
+
+                    <div class="filter-item">
+                        <span class="filter-label">权限类型：</span>
+                        <nz-radio-group [(ngModel)]="authorityType" [ngModelOptions]="{standalone: true}" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                            @for (item of authorityTypeOption; track item) {
+                                <label nz-radio-button [nzValue]="item.value">{{ item.label }}</label>
+                            }
+                        </nz-radio-group>
+                    </div>
+
+                    <div class="button-group">
+                        <button nz-button nzType="primary" nzSize="small" (click)="search()">
+                            <span nz-icon nzType="search" nzTheme="outline"></span>查询
+                        </button>
+                        <button nz-button nzSize="small" (click)="reset()">
+                            <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+
+
+
+            <div class="button-group">
+                <button nz-button nzSize="small" (click)="toggleExpandAll()">
+                    <span nz-icon [nzType]="isAllExpanded ? 'folder-open' : 'folder'" nzTheme="fill" class="authority-folder"></span>
+                    {{ isAllExpanded ? '收起全部' : '展开全部' }}
+                </button>
+            </div>
+        </div>
     </div>
 </form>
 
