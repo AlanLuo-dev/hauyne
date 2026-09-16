@@ -61,9 +61,9 @@
         <thead>
         <tr>
             <th id="authorityName" nzWidth="350px">权限名称</th>
+            <th id="authorityType" nzWidth="65px">类型</th>
             <th id="authorityCode" nzWidth="250px">权限编码</th>
             <th id="path" nzWidth="250px">请求路径</th>
-            <th id="authorityType" nzWidth="65px">类型</th>
             <th id="level" nzWidth="55px">层级</th>
             <th id="sort" nzWidth="70px" [nzSortFn]="true">排序</th>
             <th id="children" nzWidth="80px">下级权限</th>
@@ -89,8 +89,6 @@
                                 <span nz-icon [nzType]="item.icon" nzTheme="outline" style="margin-right: 5px;"></span>
                                 {{ item.authorityName }}
                             </td>
-                            <td>{{ item.authorityCode }}</td>
-                            <td>{{ item.path }}</td>
                             <td>
                                 @if (item.authorityType?.value == 'menu') {
                                     <nz-icon nzType="menu" nzTheme="outline" style="font-size: 17px;"
@@ -103,6 +101,8 @@
                                     />
                                 }
                             </td>
+                            <td>{{ item.authorityCode }}</td>
+                            <td>{{ item.path }}</td>
                             <td>{{ item.level }}</td>
                             <td>{{ item.sort }}</td>
                             <td>
