@@ -1,7 +1,7 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {NzTableModule, NzTableQueryParams, NzTdAddOnComponent} from "ng-zorro-antd/table";
 
-import {FormBuilder, FormsModule} from "@angular/forms";
+import {FormsModule} from "@angular/forms";
 import {AuthorityService} from "../authority.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzModalService} from "ng-zorro-antd/modal";
@@ -104,10 +104,7 @@ export interface Authority extends AuditInfo {
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
-export class AuthorityListComponent implements OnInit {
-
-    // 列定义
-    cols: any[] = [];
+export class AuthorityListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // 列表数据
     treeNodeListOfAuthority: Authority[] = [];
@@ -159,23 +156,14 @@ export class AuthorityListComponent implements OnInit {
         })
     }
 
+    ngOnDestroy(): void {
+    }
+
+    ngAfterViewInit(): void {
+    }
+
     ngOnInit(): void {
 
-        this.cols = [
-            {field: 'authorityName', header: '权限名称', width: '14%'},
-            {field: 'authorityCode', header: '权限编码', width: '11%'},
-            {field: 'path', header: '请求路径', width: '13%'},
-            {field: 'authorityType', header: '类型', width: '5%'},
-            {field: 'level', header: '层级', width: '3%'},
-            {field: 'sort', header: '排序', sortable: true, width: '3%'},
-            {field: 'leaf', header: '下级权限', width: '7%'},
-            {field: 'builtin', header: '是否内置', width: '10%'},
-            {field: 'createdByFullName', header: '创建人', width: '5%'},
-            {field: 'createdTime', header: '创建时间', width: '10%'},
-            {field: 'lastModifiedByFullName', header: '修改人', width: '5%'},
-            {field: 'lastUpdatedTime', header: '修改时间', width: '10%'},
-            {field: 'operation', header: '操作', width: '5%'}
-        ];
     }
 
 
@@ -254,7 +242,7 @@ export class AuthorityListComponent implements OnInit {
         const array: Authority[] = [];
         const hashMap = {};
 
-        stack.push({...root, level: 0, expand: this.expandedNodes.has(root.id)});
+        stack.push({...root, expand: this.expandedNodes.has(root.id)});
 
         while (stack.length !== 0) {
             const node = stack.pop()!;
@@ -263,7 +251,6 @@ export class AuthorityListComponent implements OnInit {
                 for (let i = node.children.length - 1; i >= 0; i--) {
                     stack.push({
                         ...node.children[i],
-                        level: node.level! + 1,
                         expand: this.expandedNodes.has(node.children[i].id),
                         parent: node
                     });
