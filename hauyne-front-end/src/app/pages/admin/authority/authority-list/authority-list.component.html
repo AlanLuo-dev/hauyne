@@ -67,19 +67,19 @@
     >
         <thead>
         <tr>
-            <th nzWidth="220px">权限名称</th>
-            <th nzWidth="150px">权限编码</th>
-            <th nzWidth="180px">请求路径</th>
-            <th nzWidth="65px">类型</th>
-            <th nzWidth="55px">层级</th>
-            <th nzWidth="70px" nzColumnKey="sort" [nzSortFn]="true">排序</th>
-            <th nzWidth="80px">下级权限</th>
-            <th nzWidth="80px">是否内置</th>
-            <th nzWidth="90px">创建人</th>
-            <th nzWidth="150px">创建时间</th>
-            <th nzWidth="90px">修改人</th>
-            <th nzWidth="150px">修改时间</th>
-            <th nzWidth="110px" nzRight>操作</th>
+            <th id="authorityName" nzWidth="400px">权限名称</th>
+            <th id="authorityCode" nzWidth="150px">权限编码</th>
+            <th id="path" nzWidth="180px">请求路径</th>
+            <th id="authorityType" nzWidth="65px">类型</th>
+            <th id="level" nzWidth="55px">层级</th>
+            <th id="sort" nzWidth="70px" [nzSortFn]="true">排序</th>
+            <th id="children" nzWidth="80px">下级权限</th>
+            <th id="isBuiltIn" nzWidth="80px">是否内置</th>
+            <th id="createBy" nzWidth="90px">创建人</th>
+            <th id="createTime" nzWidth="150px">创建时间</th>
+            <th id="updateBy" nzWidth="90px">修改人</th>
+            <th id="updateTime" nzWidth="150px">修改时间</th>
+            <th id="operation" nzWidth="110px" nzRight>操作</th>
         </tr>
         </thead>
         <tbody>
