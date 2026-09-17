@@ -38,25 +38,26 @@ class RoleQuery extends PageQuery {
     /**
      * 角色编码
      */
-    roleCode: string;
+    roleCode: string | null = null;
 
     /**
      * 角色名称
      */
-    roleName: string;
+    roleName: string | null = null;
 
     /**
      * 是否系统内置
      */
     builtIn: boolean | null = null;
 
-    constructor(queryParams: NzTableQueryParams, roleCode: string, roleName: string, builtIn: boolean | null = null) {
+    constructor(queryParams: NzTableQueryParams,
+                roleCode: string | null = null,
+                roleName: string | null = null,
+                builtIn: boolean | null = null) {
         super(queryParams);
         this.roleCode = roleCode;
         this.roleName = roleName;
-        if (builtIn !== null) {
-            this.builtIn = builtIn;
-        }
+        this.builtIn = builtIn;
     }
 }
 
@@ -88,8 +89,8 @@ export class RoleListComponent implements AfterViewInit, OnDestroy {
     indeterminate = false;
     setOfCheckedId: Set<number> = new Set<number>();
 
-    roleCode: string = '';
-    roleName: string = '';
+    roleCode: string | null = null;
+    roleName: string | null = null;
     builtIn: boolean | null = null;
 
     builtInOption: any[] = [
@@ -178,8 +179,9 @@ export class RoleListComponent implements AfterViewInit, OnDestroy {
     }
 
     resetForm(): void {
-        this.roleCode = '';
-        this.roleName = '';
+        this.roleCode = null;
+        this.roleName = null;
+        this.builtIn = null;
         this.search();
     }
 
