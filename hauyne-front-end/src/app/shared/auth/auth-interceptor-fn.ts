@@ -6,6 +6,9 @@ import {catchError, switchMap} from "rxjs/operators";
 import {ProgressBarService} from "./progress-bar.service";
 import {AuthService} from "../../login/auth.service";
 import {NzMessageService} from "ng-zorro-antd/message";
+import {authFailure} from "../../store/auth/auth.action";
+import {Store} from "@ngrx/store";
+import {AppState} from "../../store";
 
 let refresher: Observable<HttpResponse<any>> | null = null;
 
@@ -16,10 +19,11 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     const route = inject(Router);
     const progressBarService = inject(ProgressBarService);
     const messageService = inject(NzMessageService);
+    const store = inject(Store<AppState>);
     /* END 依赖注入 */
 
     const handleAccessToken401Error = (request: HttpRequest<any>, error: any) => {
-        if (request.url !== '/api/uaa/oauth/token') {
+        if (request.url !== '/api/uaa/oauth2/token') {
             if (refresher) {
                 return waitRefresh(request);
             }
@@ -35,7 +39,14 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
             share(),
             tap(() => {}),
             catchError((error) => {
-                route.navigate(['login']);
+                store.dispatch(authFailure()); // ✅ 立即变 false
+                route.navigateByUrl('/login')
+                    .then(success => {
+                        console.log('导航结果:', success);
+                    })
+                    .catch(error => {
+                        console.error('导航异常:', error);
+                    });
                 return throwError(() => error);
             }),
             finalize(() => refresher = null)

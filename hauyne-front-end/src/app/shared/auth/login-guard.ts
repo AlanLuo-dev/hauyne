@@ -19,8 +19,8 @@ import {catchError} from "rxjs/operators";
 })
 export class LoginGuard implements CanActivate {
 
-    constructor(private store: Store<AppState>,
-                private router: Router) {
+    constructor(private readonly store: Store<AppState>,
+                private readonly router: Router) {
     }
 
     canActivate(): Observable<boolean> {
