@@ -37,7 +37,9 @@
                         "styles": [
                             "src/styles.less"
                         ],
-                        "scripts": []
+                        "scripts": [
+                            "src/assets/iconfont/iconfont.js"
+                        ]
                     },
                     "configurations": {
                         "production": {

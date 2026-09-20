@@ -141,10 +141,10 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
     getOsIcon(osName: string): string {
         if (!osName) return 'desktop';
         const name = osName.toLowerCase();
-        if (name.includes('win')) return 'windows';
+        if (name.includes('win')) return 'icon-icon-Windows';
         if (name.includes('mac') || name.includes('darwin') || name.includes('ios')) return 'apple';
         if (name.includes('android')) return 'android';
-        if (name.includes('linux')) return 'linux';
+        if (name.includes('linux')) return 'icon-Linux';
         return 'desktop'; // 兜底图标
     }
 
@@ -154,7 +154,7 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
     getBrowserIcon(browser: string): string {
         if (!browser) return 'global';
         const name = browser.toLowerCase();
-        if (name.includes('chrome')) return 'chrome';
+        if (name.includes('chrome')) return 'icon-Chrome';
         if (name.includes('firefox')) return 'firefox';
         if (name.includes('safari')) return 'compass'; // 或 apple
         if (name.includes('edge') || name.includes('ie')) return 'ie';
