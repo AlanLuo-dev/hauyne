@@ -1,77 +1,113 @@
 <form nz-form class="login-history-list-search-form">
-    <div nz-row>
-        <div nz-col nzXl="7" nzXXl="5">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'types'">类型</nz-form-label>
-                <nz-form-control>
-                    <nz-radio-group [attr.id]="'types'" [(ngModel)]="type" [ngModelOptions]="{standalone: true}"
+    <div class="search-form-wrapper">
+        <!-- 仅右侧保留查询字段与按钮区域 -->
+        <fieldset class="filter-fieldset">
+            <div class="right-filter-group">
+                <div class="filter-item">
+                    <span class="filter-label">类型：</span>
+                    <nz-radio-group [(ngModel)]="type" [ngModelOptions]="{standalone: true}"
                                     nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
                     >
-                        <label nz-radio-button nzValue="1">登录</label>
-                        <label nz-radio-button nzValue="0">注销</label>
+                        <label nz-radio-button [nzValue]="1">登录</label>
+                        <label nz-radio-button [nzValue]="0">注销</label>
                     </nz-radio-group>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="7" nzXXl="5">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'username'">用户名</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'username'" [(ngModel)]="username" [ngModelOptions]="{standalone: true}"
-                           nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="4" nzXXl="3">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
+                </div>
+
+                <div class="filter-item">
+                    <span class="filter-label">用户名：</span>
+                    <input nz-input [(ngModel)]="username" [ngModelOptions]="{standalone: true}"
+                           nzSize="small" class="filter-input" placeholder="请输入用户名" (keyup.enter)="search()"/>
+                </div>
+
+                <div class="button-group">
                     <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
                         <span nz-icon nzType="search" nzTheme="outline"></span>查询
                     </button>
                     <button nz-button nzSize="small" (click)="reset()">
                         <span nz-icon nzType="reload" nzTheme="outline"></span>重置
                     </button>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
+                </div>
+            </div>
+        </fieldset>
     </div>
 </form>
 
-<div class="search-result-list">
+<div #tableContainer class="table-container">
+    <ng-template #totalTemplate let-total>
+        共 {{ total ?? 0 }} 条记录
+    </ng-template>
+
     <nz-table
+        #basicTable
         nzShowSizeChanger
         [nzData]="listOfLoginHistory"
         [nzFrontPagination]="false"
         [nzLoading]="_loading"
         [nzTotal]="totalRecords"
         [nzPageSize]="pageSize"
+        [nzPageSizeOptions]="[10, 20, 50, 100]"
         nzSize="small"
         (nzQueryParams)="onQueryParamsChange($event)"
+        [nzShowTotal]="totalTemplate"
+        [nzScroll]="{ y: tableScrollY }"
     >
         <thead>
         <tr>
-            @for (col of cols; track col.field) {
-                @if (col.sortable == true) {
-                    <th [nzColumnKey]="col.field" [nzSortFn]="col.sortable">{{ col.header }}</th>
-                } @else {
-                    <th>{{ col.header }}</th>
-                }
-            }
+            <!-- 1. 核心 ID -->
+            <th id="id" nzWidth="80px">ID</th>
+
+            <!-- 2. 行为与结果 -->
+            <th id="type" nzWidth="90px">类型</th>
+            <th id="result" nzWidth="90px">结果</th>
+            <th id="failReason" nzWidth="150px">失败原因</th>
+
+            <!-- 3. 用户身份 -->
+            <th id="username" nzWidth="120px">用户名</th>
+
+            <!-- 4. 客户端环境 -->
+            <th id="ipAddress" nzWidth="130px">客户端 IP</th>
+            <th id="location" nzWidth="130px">登录地点</th>
+            <th id="browser" nzWidth="90px" nzAlign="center">浏览器</th>
+            <th id="osName" nzWidth="90px" nzAlign="center">操作系统</th>
+
+            <!-- 5. 审计时间 -->
+            <th id="loginTime" nzWidth="160px" nzColumnKey="loginTime" [nzSortFn]="true">登录时间</th>
         </tr>
         </thead>
         <tbody>
             @for (data of listOfLoginHistory; track data.id) {
                 <tr>
                     <td>{{ data.id }}</td>
-                    <td>{{ data.type }}</td>
+                    <td>
+                        <span [class.status-login]="data.type === '1' || data.type === '登录'"
+                              [class.status-logout]="data.type === '0' || data.type === '注销'">
+                            {{ data.type }}
+                        </span>
+                    </td>
                     <td>{{ data.result }}</td>
-                    <td>{{ data.failReason }}</td>
+                    <td>{{ data.failReason || '-' }}</td>
                     <td>{{ data.username }}</td>
                     <td>{{ data.ipAddress }}</td>
                     <td>{{ data.location }}</td>
-                    <td>{{ data.browser }}</td>
-                    <td>{{ data.browserVersion }}</td>
-                    <td>{{ data.osName }}</td>
+                    <td nzAlign="center">
+                        <span nz-icon
+                              [nzType]="getBrowserIcon(data.browser)"
+                              nzTheme="fill"
+                              class="tech-icon"
+                              nz-tooltip
+                              [nzTooltipTitle]="data.browser + (data.browserVersion ? ' ' + data.browserVersion : '')">
+                        </span>
+                    </td>
+                    <td nzAlign="center">
+                        <span nz-icon
+                              [nzType]="getOsIcon(data.osName)"
+                              nzTheme="outline"
+                              class="tech-icon"
+                              nz-tooltip
+                              [nzTooltipTitle]="data.osName">
+                        </span>
+                    </td>
+
                     <td>{{ data.loginTime }}</td>
                 </tr>
             }
