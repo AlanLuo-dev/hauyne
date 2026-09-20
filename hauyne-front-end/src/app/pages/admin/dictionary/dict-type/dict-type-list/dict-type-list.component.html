@@ -1,74 +1,42 @@
-<form nz-form class="dict-type-list-search-form">
-    <div nz-row>
-        <div nz-col nzXl="24" nzXXl="7">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button nz-button nzType="primary" (click)="showFormDialog()" nzSize="small">
-                        <span nz-icon nzType="plus" nzTheme="outline"></span>
-                        创建字典类型
-                    </button>
-                    <button nz-button nzType="primary" nzDanger nzSize="small" [disabled]="setOfCheckedId.size == 0"
-                            (click)="showDeleteConfirm()">
-                        <span nz-icon nzType="delete" nzTheme="outline"></span>
-                        批量删除
-                    </button>
-
-                    <button nz-button nzSize="small" (click)="visibleTrash = true;">
-                        <span nz-icon nzType="rest" nzTheme="outline"></span>
-                        回收站
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="7" nzXXl="5">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'dictTypeCode'">字典类型编码</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'dictTypeCode'" [(ngModel)]="_dictTypeCode"
-                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="7" nzXXl="5">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'dictTypeName'">字典类型名称</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'dictTypeName'" [(ngModel)]="_dictTypeName"
-                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="6" nzXXl="4">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'dictTypeName'">是否已启用</nz-form-label>
-                <nz-form-control>
-                    <nz-radio-group [(ngModel)]="selectedEnabled" [ngModelOptions]="{standalone: true}"
-                                    nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
-                    >
-                        <label nz-radio-button nzValue="true">已启用</label>
-                        <label nz-radio-button nzValue="false">已禁用</label>
-                    </nz-radio-group>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="4" nzXXl="3">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
-                        <span nz-icon nzType="search" nzTheme="outline"></span>查询
-                    </button>
-                    <button nz-button nzSize="small" (click)="reset()">
-                        <span nz-icon nzType="reload" nzTheme="outline"></span>重置
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
+<!-- 顶部筛选区域（移除 <form> 标签，使用 Flex 布局） -->
+<div class="search-card">
+    <div class="search-form-row">
+        <!-- 编码查询 -->
+        <div class="search-item">
+            <span class="search-label">字典类型编码:</span>
+            <input nz-input [(ngModel)]="_dictTypeCode" placeholder="请输入编码" nzSize="small" class="search-input" />
         </div>
 
+        <!-- 名称查询 -->
+        <div class="search-item">
+            <span class="search-label">字典类型名称:</span>
+            <input nz-input [(ngModel)]="_dictTypeName" placeholder="请输入名称" nzSize="small" class="search-input" />
+        </div>
+
+        <!-- 状态查询 -->
+        <div class="search-item">
+            <span class="search-label">是否已启用:</span>
+            <nz-radio-group [(ngModel)]="selectedEnabled" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                <label nz-radio-button nzValue="true">已启用</label>
+                <label nz-radio-button nzValue="false">已禁用</label>
+            </nz-radio-group>
+        </div>
+
+        <!-- 查询/重置 按钮组 -->
+        <div class="search-item search-actions">
+            <button nz-button nzType="primary" nzSize="small" (click)="search()">
+                <span nz-icon nzType="search" nzTheme="outline"></span>查询
+            </button>
+            <button nz-button nzSize="small" (click)="reset()">
+                <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+            </button>
+        </div>
     </div>
-</form>
+</div>
 
-<div class="search-result-list">
+<div class="table-container">
     <nz-table
+        #basicTable
         nzShowSizeChanger
         [nzData]="listOfDictType"
         [nzFrontPagination]="false"
@@ -76,6 +44,7 @@
         [nzTotal]="totalRecords"
         [nzPageSize]="pageSize"
         nzSize="small"
+        [nzTitle]="tableHeaderTemplate"
         (nzQueryParams)="onQueryParamsChange($event)"
     >
         <thead>
@@ -158,6 +127,27 @@
         </tbody>
     </nz-table>
 </div>
+
+<!-- nzTitle 插槽模板：表格顶部的全局操作按钮区 -->
+<ng-template #tableHeaderTemplate>
+    <div class="table-toolbar">
+        <div class="left-actions">
+            <button nz-button nzType="primary" (click)="showFormDialog()" nzSize="small">
+                <span nz-icon nzType="plus" nzTheme="outline"></span>
+                创建字典类型
+            </button>
+            <button nz-button nzType="primary" nzDanger nzSize="small" [disabled]="setOfCheckedId.size === 0"
+                    (click)="showDeleteConfirm()">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+                批量删除
+            </button>
+            <button nz-button nzSize="small" (click)="visibleTrash = true;">
+                <span nz-icon nzType="rest" nzTheme="outline"></span>
+                回收站
+            </button>
+        </div>
+    </div>
+</ng-template>
 
 <!-- 编辑字典类型 弹窗 -->
 @if (formDialogDisplay) {
