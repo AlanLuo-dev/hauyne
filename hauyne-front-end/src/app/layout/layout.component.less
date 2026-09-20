@@ -34,16 +34,47 @@ nz-header {
     .app-header {
         position: relative;
         height: 64px;
-        padding: 0;
-        box-shadow: 0 1px 4px rgba(0,21,41,.08);
+        padding: 0 20px;
+        box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
         background: white;
 
+        /* 使用 Flex 布局分居左右两侧 */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            white-space: nowrap; /* 关键：防止小屏幕时换行错位 */
+
+            .user-dropdown {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px; /* 控制头像、文字、图标的间距 */
+                margin-left: 12px;
+                cursor: pointer;
+            }
+        }
+
         .header-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             height: 64px;
-            padding: 15px 18px;
+            padding: 0 12px;
             font-size: 20px;
             cursor: pointer;
-            transition: all .3s,padding 0s;
+            transition: all .3s;
+
+            &:hover {
+                background: rgba(0, 0, 0, 0.025);
+            }
         }
     }
 }

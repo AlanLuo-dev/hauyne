@@ -56,20 +56,20 @@
         </ul>
     </mat-drawer>
     <mat-drawer-content>
-
         <nz-header>
-            <div class="app-header" nz-row>
-                <div nz-col nzSpan="21">
-                    <!-- 显示/隐藏 左侧导航栏 的按钮 -->
+            <div class="app-header">
+                <!-- 左侧：侧边栏切换按钮 -->
+                <div class="header-left">
                     <span class="header-trigger" (click)="this.drawerOpened = !this.drawerOpened;"
                           nz-tooltip
                           [nzTooltipTitle]="'点击' + (drawerOpened ? '隐藏' : '展示') + '导航菜单'"
-                          nzTooltipPlacement="right"
-                    >
+                          nzTooltipPlacement="right">
                         <mat-icon fontSet="material-symbols-outlined">menu</mat-icon>
                     </span>
                 </div>
-                <div nz-col nzSpan="3">
+
+                <!-- 右侧：全屏按钮与用户信息 -->
+                <div class="header-right">
                     <span class="header-trigger" (click)="toggleFullscreen()"
                           nz-tooltip [nzTooltipTitle]="isFullScreen ? '点击退出全屏' : '点击全屏'"
                           nzTooltipPlacement="bottom">
@@ -78,10 +78,10 @@
                         </mat-icon>
                     </span>
 
-                    <!-- 用户名 -->
-                    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" style="margin-right: 10px">
+                    <!-- 用户名下拉菜单 -->
+                    <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="click" class="user-dropdown">
                         <nz-avatar [nzShape]="'square'" [nzIcon]="'user'"></nz-avatar>
-                        {{realName}}
+                        <span class="username">{{ realName }}</span>
                         <span nz-icon nzType="down"></span>
                     </a>
                     <nz-dropdown-menu #menu="nzDropdownMenu">
