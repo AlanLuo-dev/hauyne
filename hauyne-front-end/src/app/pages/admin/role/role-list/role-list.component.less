@@ -5,21 +5,18 @@
     min-height: 0;
 }
 
-.role-list-search-form {
+.role-list-search-wrapper {
     flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
     padding: 8px 16px;
     margin-bottom: 16px;
     background: #fbfbfb;
     border: 1px solid #d9d9d9;
     border-radius: 6px;
-
-    .search-form-wrapper {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
 
     .left-action-group {
         display: flex;
@@ -36,15 +33,6 @@
 
         &:hover {
             border-color: #40a9ff;
-        }
-
-        .filter-legend {
-            width: auto;
-            margin-bottom: 0;
-            padding: 0 6px;
-            font-size: 12px;
-            color: #8c8c8c;
-            border-bottom: none;
         }
 
         .right-filter-group {
