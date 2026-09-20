@@ -144,7 +144,7 @@ export class DeletedDictTypeListComponent implements OnInit {
         this.pageSize = queryParams.pageSize;
         this._loading = true;
 
-        let query: DictTypeQuery = new DictTypeQuery(queryParams, this._dictTypeCode, this._dictTypeName, this.selectedEnabled);
+        let query: DictTypeQuery = new DictTypeQuery(queryParams, this._dictTypeCode, this._dictTypeName, this.selectedEnabled, null);
         this.dictTypeService.findDeletedDictTypes(query).subscribe({
             next: (res) => {
                 this._loading = false;

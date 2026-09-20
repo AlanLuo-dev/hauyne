@@ -31,6 +31,7 @@ import {OperationLogComponent} from "../../../operation-log/operation-log.compon
 import {DeletedDictTypeListComponent} from "../deleted-dict-type-list/deleted-dict-type-list.component";
 import {finalize, Observable} from "rxjs";
 import {AuthorityDirective} from "../../../../../directives/authority.directive";
+import {EnumOption} from "../../../../../common/enum-option";
 
 export interface DictType extends AuditInfo {
     id: number,
@@ -38,6 +39,7 @@ export interface DictType extends AuditInfo {
     dictTypeName: string,
     description: string;
     enabled: boolean;
+    builtin: EnumOption<boolean>;
 
     switchLoading: boolean;
 }
@@ -94,6 +96,12 @@ export class DictTypeListComponent implements OnInit {
     _dictTypeCode: string = '';
     _dictTypeName: string = '';
     selectedEnabled: boolean | null = null;
+    selectedBuiltin: boolean | null = null;
+
+    builtInOption: any[] = [
+        {value: false, label: '自定义', icon: 'unlock', class: 'sys-status-custom'},
+        {value: true, label: '系统内置', icon: 'lock', class: 'sys-status-builtin'}
+    ]
 
     enabledOption: any[] = [];
 
@@ -141,6 +149,7 @@ export class DictTypeListComponent implements OnInit {
             {field: 'dictTypeCode', header: '字典类型编码', sortable: true, width: '12%'},
             {field: 'dictTypeName', header: '字典类型名称', width: '12%'},
             {field: 'enabled', header: '是否已启用', width: '6%'},
+            {field: 'builtin', header: '是否系统内置', width: '6%'},
             {field: 'description', header: '描述', width: '28%'},
             {field: 'createdBy', header: '创建人', width: '5%'},
             {field: 'createdTime', header: '创建时间', sortable: true, width: '10%'},
@@ -181,6 +190,7 @@ export class DictTypeListComponent implements OnInit {
         this._dictTypeCode = '';
         this._dictTypeName = '';
         this.selectedEnabled = null;
+        this.selectedBuiltin = null;
         this.search();
     }
 
@@ -188,7 +198,7 @@ export class DictTypeListComponent implements OnInit {
         this.pageSize = queryParams.pageSize;
         this._loading = true;
 
-        let query: DictTypeQuery = new DictTypeQuery(queryParams, this._dictTypeCode, this._dictTypeName, this.selectedEnabled);
+        let query: DictTypeQuery = new DictTypeQuery(queryParams, this._dictTypeCode, this._dictTypeName, this.selectedEnabled, this.selectedBuiltin);
         this.dictTypeService.loadPageData<DictType, DictTypeQuery>(query).subscribe({
             next: (res) => {
                 this._loading = false;

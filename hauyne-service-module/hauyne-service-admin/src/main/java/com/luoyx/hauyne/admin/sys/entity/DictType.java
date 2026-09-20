@@ -2,10 +2,10 @@ package com.luoyx.hauyne.admin.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.mybatisplus.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * <p>
@@ -15,11 +15,9 @@ import lombok.ToString;
  * @author LuoYingxiong
  * @since 2022-05-21
  */
-@Getter
-@Setter
-@ToString
+@EqualsAndHashCode(callSuper = true)
+@Data
 @TableName("hyn_sys_dict_type")
-@SuppressWarnings("serial")
 public class DictType extends BaseEntity<DictType> {
 
     /**
@@ -42,4 +40,10 @@ public class DictType extends BaseEntity<DictType> {
      */
     @TableField(value = "is_enabled")
     private Boolean enabled;
+
+    /**
+     * 是否为系统内置角色（0=否，1=是）
+     */
+    @TableField(value = "is_builtin")
+    private YesNoEnum builtin;
 }

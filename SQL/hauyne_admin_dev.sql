@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 13/09/2026 15:59:28
+ Date: 20/09/2026 21:09:53
 */
 
 SET NAMES utf8mb4;
@@ -322,7 +322,7 @@ CREATE TABLE `hyn_sys_dict_item`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dict_type_id_dict_item_code`(`dict_type_id` ASC, `dict_item_code` ASC) USING BTREE,
   UNIQUE INDEX `uk_dict_type_id_dict_item_name`(`dict_type_id` ASC, `dict_item_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典值' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典值' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_dict_item
@@ -331,6 +331,14 @@ INSERT INTO `hyn_sys_dict_item` VALUES (5, 3, 'male', '男', 1, 1, '295959', 1, 
 INSERT INTO `hyn_sys_dict_item` VALUES (6, 3, 'female', '女', 2, 1, '', 1, '2023-02-03 20:09:03', 1, '2025-07-16 09:46:22');
 INSERT INTO `hyn_sys_dict_item` VALUES (7, 15, 'menu', '菜单', 1, 1, '', 1, '2023-03-07 22:26:30', 1, '2024-08-23 22:28:40');
 INSERT INTO `hyn_sys_dict_item` VALUES (8, 15, 'button', '按钮', 2, 1, '', 1, '2023-03-07 22:26:42', 1, '2024-08-03 16:54:53');
+INSERT INTO `hyn_sys_dict_item` VALUES (15, 42, 'Windows', 'Windows', 1, 1, '', 1, '2026-09-20 20:31:34', 1, '2026-09-20 20:31:34');
+INSERT INTO `hyn_sys_dict_item` VALUES (16, 42, 'Linux', 'Linux', 2, 1, '', 1, '2026-09-20 20:31:44', 1, '2026-09-20 20:31:44');
+INSERT INTO `hyn_sys_dict_item` VALUES (17, 42, 'macOS', 'macOS', 3, 1, '', 1, '2026-09-20 20:32:55', 1, '2026-09-20 20:32:55');
+INSERT INTO `hyn_sys_dict_item` VALUES (18, 43, 'Chrome', '谷歌浏览器', 1, 1, '', 1, '2026-09-20 20:35:27', 1, '2026-09-20 20:40:26');
+INSERT INTO `hyn_sys_dict_item` VALUES (19, 43, 'Edge', 'Edge浏览器', 5, 1, '', 1, '2026-09-20 20:36:40', 1, '2026-09-20 20:40:26');
+INSERT INTO `hyn_sys_dict_item` VALUES (20, 43, 'Firefox', '火狐浏览器', 4, 1, '', 1, '2026-09-20 20:37:13', 1, '2026-09-20 20:40:26');
+INSERT INTO `hyn_sys_dict_item` VALUES (21, 43, 'Opera', '欧朋浏览器', 3, 1, '', 1, '2026-09-20 20:38:01', 1, '2026-09-20 20:40:26');
+INSERT INTO `hyn_sys_dict_item` VALUES (22, 43, 'Safari', 'Safari浏览器', 2, 1, '', 1, '2026-09-20 20:39:10', 1, '2026-09-20 20:40:26');
 
 -- ----------------------------
 -- Table structure for hyn_sys_dict_type
@@ -341,6 +349,7 @@ CREATE TABLE `hyn_sys_dict_type`  (
   `dict_type_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字典类型编码',
   `dict_type_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '字典类型名称',
   `is_enabled` tinyint NOT NULL DEFAULT 1 COMMENT '是否启用（1=启用；0=禁用）',
+  `is_builtin` tinyint NOT NULL DEFAULT 0 COMMENT '是否系统内置（0=否，1=是）',
   `description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '' COMMENT '描述',
   `created_by` bigint NOT NULL COMMENT '创建人 id（关联 hyn_sys_user_snapshot 表的 id 字段）',
   `created_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -349,16 +358,18 @@ CREATE TABLE `hyn_sys_dict_type`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dict_type_code`(`dict_type_code` ASC) USING BTREE,
   UNIQUE INDEX `uk_dict_type_name`(`dict_type_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典类型' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 44 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典类型' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_dict_type
 -- ----------------------------
-INSERT INTO `hyn_sys_dict_type` VALUES (3, 'sex', '性别', 1, '你', 1, '2022-05-28 22:47:41', 1, '2025-05-07 12:07:07');
-INSERT INTO `hyn_sys_dict_type` VALUES (15, 'authority_type', '权限类型', 1, '我操', 1, '2023-03-07 22:25:54', 1, '2024-09-13 17:12:44');
-INSERT INTO `hyn_sys_dict_type` VALUES (25, 'volume_unit', '体积单位', 1, '哈哈', 1, '2024-08-31 15:48:12', 1, '2025-09-13 15:03:21');
-INSERT INTO `hyn_sys_dict_type` VALUES (40, 'ers', 'drtd', 1, '', 1, '2025-07-05 14:06:00', 1, '2025-09-20 07:38:52');
-INSERT INTO `hyn_sys_dict_type` VALUES (41, 'week', '星期', 1, '', 27, '2025-11-23 11:33:48', 1, '2025-12-18 21:39:55');
+INSERT INTO `hyn_sys_dict_type` VALUES (3, 'sex', '性别', 1, 0, '你', 1, '2022-05-28 22:47:41', 1, '2025-05-07 12:07:07');
+INSERT INTO `hyn_sys_dict_type` VALUES (15, 'authority_type', '权限类型', 1, 0, '我操', 1, '2023-03-07 22:25:54', 1, '2024-09-13 17:12:44');
+INSERT INTO `hyn_sys_dict_type` VALUES (25, 'volume_unit', '体积单位', 1, 0, '哈哈', 1, '2024-08-31 15:48:12', 1, '2025-09-13 15:03:21');
+INSERT INTO `hyn_sys_dict_type` VALUES (40, 'ers', 'drtd', 1, 0, '', 1, '2025-07-05 14:06:00', 1, '2025-09-20 07:38:52');
+INSERT INTO `hyn_sys_dict_type` VALUES (41, 'week', '星期', 1, 0, '', 27, '2025-11-23 11:33:48', 1, '2025-12-18 21:39:55');
+INSERT INTO `hyn_sys_dict_type` VALUES (42, 'OS', '操作系统', 1, 1, '', 1, '2026-09-20 20:30:51', 1, '2026-09-20 20:45:48');
+INSERT INTO `hyn_sys_dict_type` VALUES (43, 'Browser', '浏览器', 1, 1, '', 1, '2026-09-20 20:34:00', 1, '2026-09-20 20:45:50');
 
 -- ----------------------------
 -- Table structure for hyn_sys_login_history
@@ -377,7 +388,7 @@ CREATE TABLE `hyn_sys_login_history`  (
   `os_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '客户端操作系统名称',
   `login_time` datetime NOT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1614 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1616 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_login_history
@@ -1046,6 +1057,8 @@ INSERT INTO `hyn_sys_login_history` VALUES (1610, 1, 1, NULL, 1, '192.168.3.15',
 INSERT INTO `hyn_sys_login_history` VALUES (1611, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-12 09:01:20');
 INSERT INTO `hyn_sys_login_history` VALUES (1612, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-12 09:07:36');
 INSERT INTO `hyn_sys_login_history` VALUES (1613, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-12 09:19:15');
+INSERT INTO `hyn_sys_login_history` VALUES (1614, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-16 15:53:52');
+INSERT INTO `hyn_sys_login_history` VALUES (1615, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '152.0.0.0', 'Windows 10', '2026-09-20 20:29:11');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role
@@ -1178,7 +1191,7 @@ CREATE TABLE `hyn_sys_user`  (
 -- ----------------------------
 -- Records of hyn_sys_user
 -- ----------------------------
-INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-09-12 09:19:15', NULL, 59, 1, '2022-06-11 10:37:27', 1, '2026-09-12 09:19:15');
+INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-09-20 20:29:11', NULL, 61, 1, '2022-06-11 10:37:27', 1, '2026-09-20 20:29:10');
 INSERT INTO `hyn_sys_user` VALUES (24, 'jack', '1', 1, 1, 1, 1, 0, '2025-09-24 14:13:21', NULL, NULL, 0, 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user` VALUES (25, 'zhangsan', '$2a$10$WiUyJJj9wh6GnE1TPUbaXe6TU.550OwdGPhhzQI8IsbmrRfZeOe/a', 1, 1, 1, 1, 0, '2025-11-16 11:05:08', '2026-09-04 15:12:59', NULL, 6, 1, '2025-11-16 11:05:09', 1, '2026-09-12 16:18:40');
 

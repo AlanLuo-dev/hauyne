@@ -1,5 +1,6 @@
 package com.luoyx.hauyne.admin.sys.response;
 
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +47,9 @@ public class DictTypePageResultVO {
      */
     @Schema(description = "是否已启用【true=已启用，false=已禁用】")
     private Boolean enabled;
+
+    @Schema(description = "是否系统内置字典类型（false=否，true=是）")
+    private YesNoEnum builtin;
 
     /**
      * 创建人的真实姓名

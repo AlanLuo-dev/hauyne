@@ -21,6 +21,7 @@
             t.dict_type_name AS dictTypeName,
             t.description AS description,
             t.is_enabled AS enabled,
+            t.is_builtin AS builtin,
             c.real_name as createdBy,
             t.created_time as createdTime,
             u.real_name as lastUpdatedBy,
@@ -40,6 +41,9 @@
             </if>
             <if test="enabled != null">
                 and t.is_enabled = #{enabled}
+            </if>
+            <if test="builtin != null">
+                AND t.is_builtin = #{builtin}
             </if>
         </where>
         ORDER BY

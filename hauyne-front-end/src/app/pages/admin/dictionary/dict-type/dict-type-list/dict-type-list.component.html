@@ -21,6 +21,18 @@
                 <label nz-radio-button nzValue="false">已禁用</label>
             </nz-radio-group>
         </div>
+        <div class="search-item">
+            <span class="search-label">是否内置：</span>
+            <nz-radio-group [(ngModel)]="selectedBuiltin" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                @for (item of builtInOption; track item) {
+                    <label nz-radio-button [nzValue]="item.value">
+                            <span nz-icon [nzType]="item.icon" nzTheme="fill"
+                                  nz-tooltip [nzTooltipTitle]="item.label" [class]="item.class">
+                            </span>
+                    </label>
+                }
+            </nz-radio-group>
+        </div>
 
         <!-- 查询/重置 按钮组 -->
         <div class="search-item search-actions">
@@ -82,6 +94,17 @@
                                    [nzControl]="true" (click)="statusChange(data)" [nzLoading]="data.switchLoading"
                         >
                         </nz-switch>
+                    </td>
+                    <td>
+                        <span
+                            nz-icon
+                            [nzType]="data.builtin.value ? 'lock' : 'unlock'"
+                            nzTheme="fill"
+                            nz-tooltip
+                            [nzTooltipTitle]="data.builtin.value ? '系统内置' : '自定义'"
+                            [class.sys-status-builtin]="data.builtin.value"
+                            [class.sys-status-custom]="!data.builtin.value"
+                        ></span>
                     </td>
                     <td>{{ data.description }}</td>
                     <td>{{ data.createdBy }}</td>

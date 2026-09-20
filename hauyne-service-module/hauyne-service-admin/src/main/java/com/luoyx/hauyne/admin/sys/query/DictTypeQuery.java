@@ -1,5 +1,6 @@
 package com.luoyx.hauyne.admin.sys.query;
 
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.common.enums.EnableStatusEnum;
 import com.luoyx.hauyne.mybatisplus.query.PageQuery;
 import com.luoyx.hauyne.validation.constraint.EnumCheck;
@@ -34,4 +35,7 @@ public class DictTypeQuery extends PageQuery {
     @Schema(description = "启用状态【true=启用; false=禁用】")
     @EnumCheck(message = "启用状态的枚举值不合法", enumClazz = EnableStatusEnum.class, getterMethod = "getBoolValue")
     private Boolean enabled;
+
+    @Schema(description = "是否系统内置")
+    private YesNoEnum builtin;
 }

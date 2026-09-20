@@ -5,13 +5,15 @@ export class DictTypeQuery extends PageQuery {
     dictTypeCode: string;
     dictTypeName: string;
     enabled?: boolean | null;
+    builtin?: boolean | null;
 
-
-    constructor(queryParams: NzTableQueryParams, dictTypeCode: string, dictTypeName: string, enabled: boolean| null) {
+    constructor(queryParams: NzTableQueryParams, dictTypeCode: string, dictTypeName: string, enabled: boolean| null,
+                builtin: boolean | null) {
         super(queryParams);
         this.dictTypeCode = dictTypeCode;
         this.dictTypeName = dictTypeName;
         this.enabled = enabled;
+        this.builtin = builtin;
     }
 
 }
