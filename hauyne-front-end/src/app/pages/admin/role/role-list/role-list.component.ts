@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import {NzTableComponent, NzTableModule, NzTableQueryParams} from 'ng-zorro-antd/table';
 import {RoleService} from "../role.service";
-import {NzFormDirective} from "ng-zorro-antd/form";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
@@ -65,7 +64,6 @@ class RoleQuery extends PageQuery {
     selector: 'app-role-list',
     imports: [
         NzTableModule,
-        NzFormDirective,
         NzInputDirective, NzButtonComponent, NzIconDirective, FormsModule, ReactiveFormsModule,
         RoleEditFormComponent, NzTooltipDirective, NzPopconfirmDirective, AuthorityDirective, EventlogListComponent,
         RoleConfigAuthorityComponent, NzRadioComponent, NzRadioGroupComponent

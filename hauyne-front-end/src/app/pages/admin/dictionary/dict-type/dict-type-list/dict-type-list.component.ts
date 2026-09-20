@@ -1,11 +1,9 @@
-import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {DictTypeService} from "../dict-type.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {Column} from "../../../../../common/column";
 import {FormsModule} from "@angular/forms";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
-import {NzFormDirective, NzFormLabelComponent} from "ng-zorro-antd/form";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
@@ -51,12 +49,8 @@ export interface DictType extends AuditInfo {
     imports: [
         FormsModule,
         NzButtonComponent,
-        NzColDirective,
-        NzFormDirective,
-        NzFormLabelComponent,
         NzIconDirective,
         NzInputDirective,
-        NzRowDirective,
         NzPopconfirmDirective,
         NzTableCellDirective,
         NzTableComponent,

@@ -142,9 +142,9 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!osName) return 'desktop';
         const name = osName.toLowerCase();
         if (name.includes('win')) return 'icon-icon-Windows';
-        if (name.includes('mac') || name.includes('darwin') || name.includes('ios')) return 'apple';
+        if (name.includes('mac') || name.includes('darwin') || name.includes('ios')) return 'icon-apple';
         if (name.includes('android')) return 'android';
-        if (name.includes('linux')) return 'icon-Linux';
+        if (name.includes('linux') || name.includes('ubuntu')) return 'icon-Linux';
         return 'desktop'; // 兜底图标
     }
 
@@ -155,9 +155,10 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!browser) return 'global';
         const name = browser.toLowerCase();
         if (name.includes('chrome')) return 'icon-Chrome';
-        if (name.includes('firefox')) return 'firefox';
-        if (name.includes('safari')) return 'compass'; // 或 apple
-        if (name.includes('edge') || name.includes('ie')) return 'ie';
+        if (name.includes('firefox')) return 'icon-firefox';
+        if (name.includes('safari')) return 'icon-Safariliulanqi'; // 或 apple
+        if (name.includes('edge') || name.includes('ie')) return 'icon-a-MicrosoftEdge';
+        if (name.includes('opera')) return 'icon-opera';
         return 'global'; // 兜底图标
     }
 }

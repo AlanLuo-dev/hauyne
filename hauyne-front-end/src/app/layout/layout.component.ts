@@ -1,4 +1,4 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {NgTemplateOutlet} from "@angular/common";
 import {Router, RouterLink, RouterOutlet} from "@angular/router";
@@ -16,7 +16,6 @@ import {SystemMenu} from "./system-menu";
 import {NzDropdownModule} from "ng-zorro-antd/dropdown";
 import {ModifyPasswordComponent} from "./modify-password/modify-password.component";
 import {NzAvatarComponent} from "ng-zorro-antd/avatar";
-import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {select, Store} from "@ngrx/store";
 import {selectMenus, selectRealName} from "../store/auth/auth.selector";
@@ -42,9 +41,7 @@ import {authFailure} from "../store/auth/auth.action";
         NzContentComponent,
         NzDropdownModule,
         ModifyPasswordComponent,
-        NzAvatarComponent,
-        NzRowDirective,
-        NzColDirective
+        NzAvatarComponent
     ],
     templateUrl: './layout.component.html',
     styleUrl: './layout.component.less',
