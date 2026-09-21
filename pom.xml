@@ -321,6 +321,12 @@
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>nl.basjes.parse.useragent</groupId>
+                <artifactId>yauaa</artifactId>
+                <version>8.2.0</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
