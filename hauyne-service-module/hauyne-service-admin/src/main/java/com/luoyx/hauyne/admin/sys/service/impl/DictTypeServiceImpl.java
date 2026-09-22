@@ -2,6 +2,7 @@ package com.luoyx.hauyne.admin.sys.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.google.common.base.CaseFormat;
+import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.admin.sys.converter.DictTypeConverter;
 import com.luoyx.hauyne.admin.sys.entity.DictType;
 import com.luoyx.hauyne.admin.sys.mapper.DictItemMapper;
@@ -144,7 +145,7 @@ public class DictTypeServiceImpl extends BaseServiceImpl<DictTypeMapper, DictTyp
      */
     @Override
     public void deleteByIds(List<Long> ids) {
-        List<DictType> dictTypeList = baseMapper.selectBatchIds(ids);
+        List<DictType> dictTypeList = baseMapper.selectByIds(ids);
         if (CollectionUtils.isEmpty(dictTypeList)) {
             throw new ResourceNotFoundException("字典类型不存在");
         }
@@ -152,7 +153,10 @@ public class DictTypeServiceImpl extends BaseServiceImpl<DictTypeMapper, DictTyp
         for (Long id : ids) {
             if (!dictTypeMap.containsKey(id)) {
                 log.info("字典类型Id {} 不存在", id);
-                throw new ResourceNotFoundException("字典类型不存在");
+                throw new ValidateException("部分字典类型不存在，请刷新后重试");
+            }
+            if (YesNoEnum.YES.equals(dictTypeMap.get(id).getBuiltin())) {
+                throw new ValidateException("系统内置的字典类型禁止删除");
             }
         }
         List<String> dictTypeNames = dictItemMapper.countByDictTypeIds(ids);
@@ -187,6 +191,14 @@ public class DictTypeServiceImpl extends BaseServiceImpl<DictTypeMapper, DictTyp
      */
     @Override
     public void update(DictTypeEditDTO dictTypeEditDTO) {
+        Long id = dictTypeEditDTO.getId();
+        DictType existDictType = getById(id);
+        if (null == existDictType) {
+            throw new ResourceNotFoundException("字典类型不存在");
+        }
+        if (YesNoEnum.YES.equals(existDictType.getBuiltin())) {
+            throw new ValidateException("系统内置的字典类型禁止修改");
+        }
         checkUniqueDictType(dictTypeEditDTO);
         DictType dictType = dictTypeConverter.toEntity(dictTypeEditDTO);
         baseMapper.updateById(dictType);
