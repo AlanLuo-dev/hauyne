@@ -46,8 +46,31 @@ button {
     font-size: 14px;
 }
 
-.example-handle {
-    cursor: move;
-    width: 24px;
-    height: 24px;
+.material-symbols-outlined {
+    /* 1. 改变 display 为 flex，消除基线（baseline）对齐带来的下下方间隙 */
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    /* 2. 限制高度和行高，防止撑开 td */
+    height: 18px !important;
+    width: 18px !important;
+    line-height: 1 !important;
+
+    /* 3. 字体大小与 opsz 保持基本一致，避免 overflow */
+    font-size: 18px !important;
+
+    /* 4. 清除可能存在的默认 margin/padding */
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    cursor: grab;
+}
+
+.material-symbols-outlined:hover {
+    color: #595959;
+}
+
+.material-symbols-outlined:active {
+    cursor: grabbing;
 }

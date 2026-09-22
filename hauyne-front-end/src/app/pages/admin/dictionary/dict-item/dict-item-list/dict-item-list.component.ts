@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {DictItemService} from "../dict-item.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzDrawerComponent, NzDrawerContentDirective} from "ng-zorro-antd/drawer";
@@ -31,6 +31,7 @@ import {AuditInfo} from "../../../../../common/audit-info";
 import {CdkDrag, CdkDragHandle, CdkDragSortEvent, CdkDropList, moveItemInArray} from "@angular/cdk/drag-drop";
 import {AuthorityDirective} from "../../../../../directives/authority.directive";
 import {finalize, Observable} from "rxjs";
+import {MatIcon} from "@angular/material/icon";
 
 export interface DictItem extends AuditInfo {
     id: number,
@@ -77,7 +78,8 @@ export interface DictItem extends AuditInfo {
         CdkDropList,
         CdkDrag,
         CdkDragHandle,
-        AuthorityDirective
+        AuthorityDirective,
+        MatIcon
     ]
 })
 export class DictItemListComponent implements OnInit, OnDestroy {
@@ -156,6 +158,7 @@ export class DictItemListComponent implements OnInit, OnDestroy {
 
     // ~ 字典值表单相关 END ------------------------------------------------------
     cancelButtonDisabled: boolean = false;
+    showTooltip: boolean = false;
 
     constructor(private readonly dictItemService: DictItemService,
                 private readonly messageService: NzMessageService,
@@ -172,8 +175,8 @@ export class DictItemListComponent implements OnInit, OnDestroy {
         this.cols = [
             {field: 'reorderRow', header: '', reorderRow: true, width: '1%'},
             {field: 'id', header: 'Id', isDataKey: true, width: '1%'},
-            {field: 'dictItemCode', header: '字典值编码', sortable: true, width: '16%'},
-            {field: 'dictItemName', header: '字典值名称', sortable: true, width: '16%'},
+            {field: 'dictItemCode', header: '字典值编码',  width: '16%'},
+            {field: 'dictItemName', header: '字典值名称',  width: '16%'},
             {field: 'sort', header: '排序', sortable: true, width: '10%'},
             {field: 'enabled', header: '启用状态', width: '10%'},
             {field: 'remark', header: '备注', width: '30%'},

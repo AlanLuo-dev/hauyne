@@ -50,15 +50,12 @@
                 ${sortField}
             </when>
             <otherwise>
-                t.id
+                t.sort
             </otherwise>
         </choose>
         <choose>
             <when test="sortOrder == 'ascend'">ASC</when>
             <when test="sortOrder == 'descend'">DESC</when>
-            <otherwise>
-                DESC
-            </otherwise>
         </choose>
     </select>
     
