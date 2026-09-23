@@ -1,13 +1,21 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
 import {DictTypeService} from "../dict-type.service";
 import {NzMessageService} from "ng-zorro-antd/message";
-import {Column} from "../../../../../common/column";
 import {FormsModule} from "@angular/forms";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {
+    NzCellFixedDirective,
     NzTableCellDirective,
     NzTableComponent,
     NzTableQueryParams,
@@ -71,16 +79,14 @@ export interface DictType extends AuditInfo {
         DictItemListComponent,
         OperationLogComponent,
         DeletedDictTypeListComponent,
-        AuthorityDirective
+        AuthorityDirective,
+        NzCellFixedDirective
     ],
     styleUrls: ['./dict-type-list.component.less'],
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [NzModalService]
 })
-export class DictTypeListComponent implements OnInit {
-
-    // 列定义
-    cols: Column[] = [];
+export class DictTypeListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // 列表数据
     listOfDictType: DictType[] = [];
@@ -90,7 +96,7 @@ export class DictTypeListComponent implements OnInit {
 
     // 总记录数
     totalRecords: number = 0;
-    pageSize: number = 10;
+    pageSize: number = 20;
 
     // 过滤条件
     _dictTypeCode: string = '';
@@ -130,12 +136,61 @@ export class DictTypeListComponent implements OnInit {
 
     cancelButtonDisabled: boolean = false;
 
+    @ViewChild('tableContainer') tableContainer!: ElementRef<HTMLElement>;
+
+    // 1. 声明动态滚动高度变量
+    tableScrollY: string = '400px';
+    private resizeObserver?: ResizeObserver;
+
     constructor(private readonly dictTypeService: DictTypeService,
                 private readonly messageService: NzMessageService,
-                private readonly modal: NzModalService
+                private readonly modal: NzModalService,
+                private readonly elementRef: ElementRef
     ) {
 
 
+    }
+
+    ngAfterViewInit(): void {
+        // 延迟一帧，确保页面初始化渲染完成后计算高度
+        setTimeout(() => this.calculateTableScrollY(), 0);
+
+        // 2. 监听容器尺寸变化（兼容浏览器缩放、分辨率改变、窗口 Resize）
+        if (typeof ResizeObserver !== 'undefined') {
+            this.resizeObserver = new ResizeObserver(() => {
+                window.requestAnimationFrame(() => this.calculateTableScrollY());
+            });
+            this.resizeObserver.observe(this.tableContainer.nativeElement);
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
+    }
+
+    /**
+     * 动态计算表格内容区域可滚动的真实高度
+     */
+    /**
+     * 动态计算表格内容区域可滚动的真实高度
+     */
+    private calculateTableScrollY(): void {
+        if (!this.tableContainer) return;
+
+        // 获取 table 容器外层的实际像素高度
+        const containerHeight = this.tableContainer.nativeElement.clientHeight;
+        if (containerHeight === 0) return;
+
+        /**
+         * 扣除项说明：
+         * 1. nzSize="small" 表头高度 (~39px)
+         * 2. 底部分页栏高度 (~48px)
+         * 综合扣除约 87px - 90px
+         */
+        const calculatedHeight = containerHeight - 120;
+
+        // 赋值给 nzScroll.y
+        this.tableScrollY = `${Math.max(calculatedHeight, 100)}px`;
     }
 
     ngOnInit(): void {
@@ -144,19 +199,6 @@ export class DictTypeListComponent implements OnInit {
             {name: '禁用', code: false}
         ];
 
-        this.cols = [
-            {field: 'id', header: 'Id', isDataKey: true, width: '2%'},
-            {field: 'dictTypeCode', header: '字典类型编码', sortable: true, width: '12%'},
-            {field: 'dictTypeName', header: '字典类型名称', width: '12%'},
-            {field: 'enabled', header: '是否已启用', width: '6%'},
-            {field: 'builtin', header: '是否系统内置', width: '6%'},
-            {field: 'description', header: '描述', width: '28%'},
-            {field: 'createdBy', header: '创建人', width: '5%'},
-            {field: 'createdTime', header: '创建时间', sortable: true, width: '10%'},
-            {field: 'lastUpdatedBy', header: '修改人', width: '5%'},
-            {field: 'lastUpdatedTime', header: '修改时间', sortable: true, width: '10%'},
-            {field: 'operation', header: '操作', width: '10%'}
-        ];
     }
 
     updateCheckedSet(id: number, checked: boolean): void {

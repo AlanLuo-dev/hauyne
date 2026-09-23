@@ -46,7 +46,12 @@
     </div>
 </div>
 
-<div class="table-container">
+<div #tableContainer class="table-container">
+    <!-- 分页总条数模板 -->
+    <ng-template #totalTemplate let-total>
+        共 {{ total }} 条记录
+    </ng-template>
+
     <nz-table
         #basicTable
         nzShowSizeChanger
@@ -54,28 +59,26 @@
         [nzFrontPagination]="false"
         [nzLoading]="_loading"
         [nzTotal]="totalRecords"
+        [nzShowTotal]="totalTemplate"
         [nzPageSize]="pageSize"
         nzSize="small"
         [nzTitle]="tableHeaderTemplate"
         (nzQueryParams)="onQueryParamsChange($event)"
+        [nzScroll]="{ x: '1400px', y: tableScrollY }"
     >
         <thead>
         <tr>
-            @for (col of cols; track col.field) {
-                @if (col.field == 'id') {
-                    <th [nzChecked]="checked"
-                        (nzCheckedChange)="onAllChecked($event)"
-                        [nzIndeterminate]="indeterminate"
-                    >
-                    </th>
-                } @else {
-                    @if (col.sortable == true) {
-                        <th [nzColumnKey]="col.field" [nzSortFn]="col.sortable == true">{{ col.header }}</th>
-                    } @else {
-                        <th>{{ col.header }}</th>
-                    }
-                }
-            }
+            <th nzWidth="50px" [nzChecked]="checked" (nzCheckedChange)="onAllChecked($event)" [nzIndeterminate]="indeterminate" nzLeft></th>
+            <th nzWidth="150px" nzColumnKey="dictTypeCode" [nzSortFn]="true">字典类型编码</th>
+            <th nzWidth="160px">字典类型名称</th>
+            <th nzWidth="100px">是否已启用</th>
+            <th nzWidth="110px">是否系统内置</th>
+            <th nzWidth="200px">描述</th>
+            <th nzWidth="180px">创建人</th>
+            <th nzWidth="150px" nzColumnKey="createdTime" [nzSortFn]="true">创建时间</th>
+            <th nzWidth="100px">修改人</th>
+            <th nzWidth="150px" nzColumnKey="lastUpdatedTime" [nzSortFn]="true">修改时间</th>
+            <th nzWidth="180px" nzRight>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -111,7 +114,7 @@
                     <td>{{ data.createdTime }}</td>
                     <td>{{ data.lastUpdatedBy }}</td>
                     <td>{{ data.lastUpdatedTime }}</td>
-                    <td>
+                    <td nzRight>
                         <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle"
                                 nz-tooltip nzTooltipTitle="编辑" nzTooltipPlacement="top"
                                 (click)="showFormDialog(data.id)"
