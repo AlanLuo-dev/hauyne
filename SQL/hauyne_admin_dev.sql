@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 23/09/2026 09:11:12
+ Date: 23/09/2026 09:23:28
 */
 
 SET NAMES utf8mb4;
@@ -390,7 +390,7 @@ CREATE TABLE `hyn_sys_login_history`  (
   `user_agent` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '原始User-Agent字符串',
   `login_time` datetime NOT NULL COMMENT '登录时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1619 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1621 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录历史' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_login_history
@@ -1064,6 +1064,8 @@ INSERT INTO `hyn_sys_login_history` VALUES (1615, 1, 1, NULL, 1, '192.168.3.15',
 INSERT INTO `hyn_sys_login_history` VALUES (1616, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '153', 'Windows NT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36', '2026-09-23 09:06:31');
 INSERT INTO `hyn_sys_login_history` VALUES (1617, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Edge', '153', 'Windows NT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36 Edg/153.0.0.0', '2026-09-23 09:07:57');
 INSERT INTO `hyn_sys_login_history` VALUES (1618, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Chrome', '153', 'Windows NT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36', '2026-09-23 09:09:40');
+INSERT INTO `hyn_sys_login_history` VALUES (1619, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Firefox', '156.0', 'Windows NT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:156.0) Gecko/20100101 Firefox/156.0', '2026-09-23 09:17:29');
+INSERT INTO `hyn_sys_login_history` VALUES (1620, 1, 1, NULL, 1, '192.168.3.15', '0|0|0|内网IP|内网IP', 'Opera', '136.0.0.0', 'Windows NT', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 OPR/136.0.0.0', '2026-09-23 09:22:18');
 
 -- ----------------------------
 -- Table structure for hyn_sys_role
@@ -1196,7 +1198,7 @@ CREATE TABLE `hyn_sys_user`  (
 -- ----------------------------
 -- Records of hyn_sys_user
 -- ----------------------------
-INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-09-23 09:09:40', NULL, 64, 1, '2022-06-11 10:37:27', 1, '2026-09-23 09:09:40');
+INSERT INTO `hyn_sys_user` VALUES (1, 'admin', '$2a$10$GZLRpfj4quBa1fnnter8vuOSA1LDX3SM0dU6/y2prPjt98OjTzzyq', 1, 1, 1, 1, 1, '2022-06-21 23:38:34', '2026-09-23 09:22:18', NULL, 66, 1, '2022-06-11 10:37:27', 1, '2026-09-23 09:22:17');
 INSERT INTO `hyn_sys_user` VALUES (24, 'jack', '1', 1, 1, 1, 1, 0, '2025-09-24 14:13:21', NULL, NULL, 0, 1, '2025-09-24 22:13:11', 1, '2025-09-24 22:13:11');
 INSERT INTO `hyn_sys_user` VALUES (25, 'zhangsan', '$2a$10$WiUyJJj9wh6GnE1TPUbaXe6TU.550OwdGPhhzQI8IsbmrRfZeOe/a', 1, 1, 1, 1, 0, '2025-11-16 11:05:08', '2026-09-04 15:12:59', NULL, 6, 1, '2025-11-16 11:05:09', 1, '2026-09-12 16:18:40');
 
