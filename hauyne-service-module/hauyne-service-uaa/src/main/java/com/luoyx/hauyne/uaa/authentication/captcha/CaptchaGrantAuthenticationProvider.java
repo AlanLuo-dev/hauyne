@@ -9,11 +9,11 @@ import com.luoyx.hauyne.uaa.dto.CachedCaptchaDTO;
 import com.luoyx.hauyne.uaa.enums.LoginHistoryResultEnum;
 import com.luoyx.hauyne.uaa.enums.LoginHistoryTypeEnum;
 import com.luoyx.hauyne.uaa.util.IpAddressUtil;
-import eu.bitwalker.useragentutils.Browser;
-import eu.bitwalker.useragentutils.UserAgent;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import nl.basjes.parse.useragent.UserAgent;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -81,6 +81,9 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
 
     @Resource
     private LoginHistoryProducer loginHistoryProducer;
+
+    @Resource
+    private UserAgentAnalyzer userAgentAnalyzer;
 
     private final OAuth2AuthorizationService auth2AuthorizationService;
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
@@ -295,13 +298,28 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
         saveLoginHistoryDTO.setIpAddress(ip);
         saveLoginHistoryDTO.setLocation(IpAddressUtil.getCityInfo(ip));
 
-        String userAgentStr = request.getHeader("User-Agent");
-        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
-        Browser browser = userAgent.getBrowser();
-        saveLoginHistoryDTO.setBrowser(browser.getGroup().getName());
-        saveLoginHistoryDTO.setBrowserVersion(browser.getVersion(userAgentStr).getVersion());
-        saveLoginHistoryDTO.setOsName(userAgent.getOperatingSystem().getName());
+        String rawUserAgent = request.getHeader("User-Agent");
         saveLoginHistoryDTO.setLoginTime(LocalDateTime.now());
+        saveLoginHistoryDTO.setUserAgent(rawUserAgent);
+
+        // 2. 空值防护
+        if (StringUtils.isBlank(rawUserAgent)) {
+            saveLoginHistoryDTO.setBrowser("Unknown");
+            saveLoginHistoryDTO.setOsName("Unknown");
+        } else {
+            // 3. Yauaa 解析 (单例 Bean + 命中缓存 <0.001ms)
+            UserAgent agent = userAgentAnalyzer.parse(rawUserAgent);
+
+            // 提取浏览器 (例如: Chrome 122.0)
+            String browserName = agent.getValue(UserAgent.AGENT_NAME);
+            String browserVersion = agent.getValue(UserAgent.AGENT_VERSION);
+            saveLoginHistoryDTO.setBrowser(browserName);
+            saveLoginHistoryDTO.setBrowserVersion(browserVersion);
+
+            // 提取操作系统 (例如: Windows 10.0)
+            String osName = agent.getValue(UserAgent.OPERATING_SYSTEM_NAME);
+            saveLoginHistoryDTO.setOsName(osName);
+        }
 
         loginHistoryProducer.send(saveLoginHistoryDTO);
     }

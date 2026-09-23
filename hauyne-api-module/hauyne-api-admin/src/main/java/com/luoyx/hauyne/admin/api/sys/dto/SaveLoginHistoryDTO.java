@@ -56,6 +56,11 @@ public class SaveLoginHistoryDTO implements Serializable {
     private String osName;
 
     /**
+     * 客户端User-Agent
+     */
+    private String userAgent;
+
+    /**
      * 登录时间
      */
     private LocalDateTime loginTime;

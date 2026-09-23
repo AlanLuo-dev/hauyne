@@ -14,8 +14,10 @@ import com.luoyx.hauyne.uaa.authentication.captcha.CaptchaGrantAuthenticationPro
 import com.luoyx.hauyne.uaa.authentication.password.PasswordGrantAuthenticationConverter;
 import com.luoyx.hauyne.uaa.authentication.password.PasswordGrantAuthenticationProvider;
 import com.luoyx.hauyne.uaa.filter.CookieRefreshTokenFilter;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -378,5 +380,29 @@ public class AuthorizationServerConfig {
         captchaService.setFilterFactory(new DoubleRippleFilterFactory());
 
         return captchaService;
+    }
+
+    private UserAgentAnalyzer userAgentAnalyzer;
+
+    @Bean
+    public UserAgentAnalyzer userAgentAnalyzer() {
+        this.userAgentAnalyzer = UserAgentAnalyzer
+                .newBuilder()
+                .hideMatcherLoadStats()
+                .build();
+        return this.userAgentAnalyzer;
+    }
+
+    /**
+     * 项目启动时异步预热解析器，避免第一个用户登录时感到卡顿
+     */
+    @PostConstruct
+    public void preheat() {
+        // 提前解析一条默认 UA 触发语法树装载
+        new Thread(() -> {
+            if (userAgentAnalyzer != null) {
+                userAgentAnalyzer.parse("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+            }
+        }).start();
     }
 }

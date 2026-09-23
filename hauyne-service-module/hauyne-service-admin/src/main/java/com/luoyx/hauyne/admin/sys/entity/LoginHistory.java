@@ -70,6 +70,11 @@ public class LoginHistory extends IdEntity<LoginHistory> {
     private String osName;
 
     /**
+     * 原始User-Agent字符串
+     */
+    private String userAgent;
+
+    /**
      * 登录时间
      */
     private LocalDateTime loginTime;
