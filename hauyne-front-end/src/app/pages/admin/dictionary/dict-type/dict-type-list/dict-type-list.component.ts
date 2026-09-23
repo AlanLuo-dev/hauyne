@@ -15,6 +15,7 @@ import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzPopconfirmDirective} from "ng-zorro-antd/popconfirm";
 import {
+    NzCellAlignDirective,
     NzCellFixedDirective,
     NzTableCellDirective,
     NzTableComponent,
@@ -80,7 +81,8 @@ export interface DictType extends AuditInfo {
         OperationLogComponent,
         DeletedDictTypeListComponent,
         AuthorityDirective,
-        NzCellFixedDirective
+        NzCellFixedDirective,
+        NzCellAlignDirective
     ],
     styleUrls: ['./dict-type-list.component.less'],
     changeDetection: ChangeDetectionStrategy.Eager,

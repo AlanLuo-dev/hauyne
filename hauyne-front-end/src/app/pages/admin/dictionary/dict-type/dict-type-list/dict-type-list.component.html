@@ -15,14 +15,14 @@
 
         <!-- 状态查询 -->
         <div class="search-item">
-            <span class="search-label">是否已启用:</span>
+            <span class="search-label">启用状态:</span>
             <nz-radio-group [(ngModel)]="selectedEnabled" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
                 <label nz-radio-button nzValue="true">已启用</label>
                 <label nz-radio-button nzValue="false">已禁用</label>
             </nz-radio-group>
         </div>
         <div class="search-item">
-            <span class="search-label">是否内置：</span>
+            <span class="search-label">是否系统内置：</span>
             <nz-radio-group [(ngModel)]="selectedBuiltin" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
                 @for (item of builtInOption; track item) {
                     <label nz-radio-button [nzValue]="item.value">
@@ -71,14 +71,14 @@
             <th nzWidth="50px" [nzChecked]="checked" (nzCheckedChange)="onAllChecked($event)" [nzIndeterminate]="indeterminate" nzLeft></th>
             <th nzWidth="150px" nzColumnKey="dictTypeCode" [nzSortFn]="true">字典类型编码</th>
             <th nzWidth="160px">字典类型名称</th>
-            <th nzWidth="100px">是否已启用</th>
-            <th nzWidth="110px">是否系统内置</th>
+            <th nzWidth="80px" nzAlign="center">启用状态</th>
+            <th nzWidth="110px" nzAlign="center">是否系统内置</th>
             <th nzWidth="200px">描述</th>
             <th nzWidth="180px">创建人</th>
             <th nzWidth="150px" nzColumnKey="createdTime" [nzSortFn]="true">创建时间</th>
             <th nzWidth="100px">修改人</th>
             <th nzWidth="150px" nzColumnKey="lastUpdatedTime" [nzSortFn]="true">修改时间</th>
-            <th nzWidth="180px" nzRight>操作</th>
+            <th nzWidth="130px" nzRight>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
                     </td>
                     <td>{{ data.dictTypeCode }}</td>
                     <td>{{ data.dictTypeName }}</td>
-                    <td>
+                    <td nzAlign="center">
                         <nz-switch [(ngModel)]="data.enabled" nzSize="small"
                                    nz-tooltip [nzTooltipTitle]="data.enabled ? '已启用' : '已禁用'"
                                    nzTooltipPlacement="top"
@@ -98,7 +98,7 @@
                         >
                         </nz-switch>
                     </td>
-                    <td>
+                    <td nzAlign="center">
                         <span
                             nz-icon
                             [nzType]="data.builtin.value ? 'lock' : 'unlock'"
@@ -114,7 +114,7 @@
                     <td>{{ data.createdTime }}</td>
                     <td>{{ data.lastUpdatedBy }}</td>
                     <td>{{ data.lastUpdatedTime }}</td>
-                    <td nzRight>
+                    <td nzRight class="button-group">
                         <button nz-button [nzType]="'primary'" nzSize="small" nzShape="circle"
                                 nz-tooltip nzTooltipTitle="编辑" nzTooltipPlacement="top"
                                 (click)="showFormDialog(data.id)"
