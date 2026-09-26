@@ -5,13 +5,11 @@ import {
     ElementRef,
     OnDestroy,
     OnInit,
-    signal,
     ViewChild
 } from '@angular/core';
 import {LoginHistoryService} from "./login-history.service";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NzButtonComponent} from "ng-zorro-antd/button";
-import {NzFormDirective} from "ng-zorro-antd/form";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
@@ -43,7 +41,6 @@ export interface LoginHistory {
         FormsModule,
         ReactiveFormsModule,
         NzButtonComponent,
-        NzFormDirective,
         NzIconDirective,
         NzInputDirective,
         NzRadioComponent,
@@ -61,11 +58,8 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
     totalRecords: number = 0;
     pageSize: number = 20; // 遵循标准默认 20 条
 
-    // 过滤条件
-    type: number | null = null;
-    username: string = '';
-    startTime = signal<Date | null>(null);
-    endTime = signal<Date | null>(null);
+    // 唯一的查询状态源
+    query = new LoginHistoryQuery();
 
     @ViewChild('tableContainer') tableContainer!: ElementRef<HTMLElement>;
     @ViewChild('basicTable', { static: false }) table!: NzTableComponent<any>;
@@ -109,33 +103,31 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
         this.tableScrollY = `${Math.max(calculatedHeight, 120)}px`;
     }
 
+    // 分页/排序变动时更新 query 状态并加载
     onQueryParamsChange(queryParams: NzTableQueryParams): void {
-        this.pageSize = queryParams.pageSize;
-        this._loading = true;
+        this.query.updateQueryParams(queryParams);
+        this.loadData();
+    }
 
-        const query = new LoginHistoryQuery(queryParams, this.type, this.username, this.startTime(), this.endTime());
-        this.loginLogService.loadPageData<LoginHistory, LoginHistoryQuery>(query).subscribe({
+    search(): void {
+        this.loadData();
+    }
+
+    reset(): void {
+        this.query.resetFilter();
+        this.loadData();
+    }
+
+    private loadData(): void {
+        this._loading = true;
+        this.loginLogService.loadPageData2<LoginHistory, LoginHistoryQuery>(this.query).subscribe({
             next: (res) => {
                 this.listOfLoginHistory = res.rows;
                 this.totalRecords = res.total;
             },
-            error: () => {
-                this._loading = false;
-            },
-            complete: () => {
-                this._loading = false;
-            }
+            error: () => this._loading = false,
+            complete: () => this._loading = false
         });
-    }
-
-    search(): void {
-        this.onQueryParamsChange(this.loginLogService.createLazyLoadMetaData(this.pageSize));
-    }
-
-    reset(): void {
-        this.type = null;
-        this.username = '';
-        this.search();
     }
 
     // 在 LoginHistoryComponent 中添加以下解析方法

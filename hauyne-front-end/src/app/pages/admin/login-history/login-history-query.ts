@@ -1,33 +1,41 @@
-import {NzTableQueryParams} from "ng-zorro-antd/table";
-import {PageQuery} from "../../../common/page-query";
 import {format} from "date-fns";
+import {PageQuery2} from "../../../common/page-query-2";
 
 /**
  * 登录日志 查询条件
  */
-export class LoginHistoryQuery extends PageQuery {
+export class LoginHistoryQuery extends PageQuery2 {
 
+    // 模板直接绑定的筛选条件
     type: number | null = null;
+    username: string = '';
+    startTime: Date | null = null;
+    endTime: Date | null = null;
 
     /**
-     * 用户登录名
+     * 重置筛选条件（保留分页参数）
      */
-    username: string | null = null;
-    startTime: string | null = null;
-    endTime: string | null = null;
+    resetFilter(): void {
+        this.type = null;
+        this.username = '';
+        this.startTime = null;
+        this.endTime = null;
+    }
 
+    /**
+     * 重写 HttpParams 序列化逻辑，在此处自动对 Date 进行格式化
+     */
+    override toHttpParams(): { [key: string]: any } {
+        const params = super.toHttpParams();
 
-    constructor(queryParams: NzTableQueryParams, type: number | null, username: string, startTime: Date | null, endTime: Date | null) {
-        super(queryParams);
-        this.type = type;
-        this.username = username;
-
-        // 使用 date-fns 的 format 函数进行格式化
-        if (startTime) {
-            this.startTime = format(startTime, 'yyyy-MM-dd HH:mm:ss');
+        // 格式化日期为后端的 yyyy-MM-dd HH:mm:ss 字符串
+        if (this.startTime) {
+            params['startTime'] = format(this.startTime, 'yyyy-MM-dd HH:mm:ss');
         }
-        if (endTime) {
-            this.endTime = format(endTime, 'yyyy-MM-dd HH:mm:ss');
+        if (this.endTime) {
+            params['endTime'] = format(this.endTime, 'yyyy-MM-dd HH:mm:ss');
         }
+
+        return params;
     }
 }

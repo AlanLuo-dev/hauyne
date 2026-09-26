@@ -3,6 +3,7 @@ import {Observable} from "rxjs";
 import {PageQuery} from "./page-query";
 import {PageResult} from "./page-result";
 import {NzTableQueryParams} from "ng-zorro-antd/table";
+import {PageQuery2} from "./page-query-2";
 
 export class BaseService<ID> {
 
@@ -70,44 +71,10 @@ export class BaseService<ID> {
         return this.http.get<PageResult<U>>(this.apiUrl, {params: httpParams});
     }
 
-    /**
-     * Ng-Zorro 分页方法
-     * @param queryParams
-     */
-    // loadPage<U>(queryParams: NzTableQueryParams): Observable<PageResult<U>> {
-    //     let httpParams = new HttpParams()
-    //         .append('pageIndex', `${queryParams.pageIndex}`)
-    //         .append('pageSize', `${queryParams.pageSize}`);
-    //
-    //     const currentSort: { key: string, value: NzTableSortOrder } | undefined = queryParams
-    //         .sort
-    //         .find(
-    //             (item: { key: string, value: NzTableSortOrder }) => item.value !== null
-    //         );
-    //     const sortField: string | null = (currentSort && currentSort.key) || null;
-    //     if (sortField) {
-    //         httpParams = httpParams.append('sortField', sortField);
-    //     }
-    //     const sortOrder: string | null = (currentSort && currentSort.value) || null;
-    //     if (sortOrder) {
-    //         httpParams = httpParams.append('sortOrder', sortOrder);
-    //     }
-    //     queryParams.filter.forEach((item:{ key: string; value: any[] | any; })  => {
-    //         const key = item.key;
-    //         const value = item.value;
-    //         if (key && value) {
-    //             if (Array.isArray(value)) {
-    //                 value.forEach((element: NzSafeAny) => {
-    //                     httpParams = httpParams.append(key, element);
-    //                 });
-    //             } else {
-    //                 httpParams = httpParams.append(key, value);
-    //             }
-    //         }
-    //     });
-    //
-    //     return this.http.get<PageResult<U>>(this.apiUrl, {params: httpParams});
-    // }
+    loadPageData2<U, Q extends PageQuery2>(query: Q): Observable<PageResult<U>> {
+        const httpParams = new HttpParams({ fromObject: query.toHttpParams() });
+        return this.http.get<PageResult<U>>(this.apiUrl, { params: httpParams });
+    }
 
     /**
      * 查询单个
