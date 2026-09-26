@@ -1,5 +1,6 @@
 package com.luoyx.hauyne.admin.sys.request;
 
+import com.luoyx.hauyne.admin.api.sys.enums.IconTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -35,4 +36,10 @@ public class DictTypeCreateDTO {
      */
     @Schema(description = "描述")
     private String description;
+
+    /**
+     * 图标类型
+     */
+    @Schema(description = "图标类型")
+    private IconTypeEnum iconType;
 }

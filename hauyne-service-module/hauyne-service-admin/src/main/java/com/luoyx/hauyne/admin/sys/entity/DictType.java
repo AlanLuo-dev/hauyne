@@ -2,6 +2,7 @@ package com.luoyx.hauyne.admin.sys.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.luoyx.hauyne.admin.api.sys.enums.IconTypeEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.mybatisplus.entity.BaseEntity;
 import lombok.Data;
@@ -31,11 +32,6 @@ public class DictType extends BaseEntity<DictType> {
     private String dictTypeName;
 
     /**
-     * 描述
-     */
-    private String description;
-
-    /**
      * 是否启用（1=启用；0=禁用; 无符号）
      */
     @TableField(value = "is_enabled")
@@ -46,4 +42,14 @@ public class DictType extends BaseEntity<DictType> {
      */
     @TableField(value = "is_builtin")
     private YesNoEnum builtin;
+
+    /**
+     * 图标类型（iconfont=iconfont图标，material-symbols=Material Symbols图标，ng-zorro=NG-ZORRO UI库自带图标）
+     */
+    private IconTypeEnum iconType;
+
+    /**
+     * 描述
+     */
+    private String description;
 }

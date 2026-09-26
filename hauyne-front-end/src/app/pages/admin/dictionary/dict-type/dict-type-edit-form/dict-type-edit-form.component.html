@@ -57,6 +57,21 @@
                     </nz-switch>
                 </nz-form-control>
             </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="iconType">图标类型</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback >
+                    <nz-select id="iconType" formControlName="iconType" nzPlaceHolder="选择图标类型"
+                               nzSize="small"
+                    >
+                        @for (option of iconTypeOptions; track option) {
+                            <nz-option
+                                [nzValue]="option.value" [nzLabel]="option.label">
+                            </nz-option>
+                        }
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="description">描述</nz-form-label>
                 <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="验证中..." [nzErrorTip]="descriptionErrorTpl">

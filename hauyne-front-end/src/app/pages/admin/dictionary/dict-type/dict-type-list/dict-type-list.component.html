@@ -33,6 +33,15 @@
                 }
             </nz-radio-group>
         </div>
+        <!-- 图标类型查询 -->
+        <div class="search-item">
+            <span class="search-label">图标类型：</span>
+            <nz-radio-group [(ngModel)]="selectedIconType" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                @for (item of iconTypeOptions; track item) {
+                    <label nz-radio-button [nzValue]="item.value">{{ item.label }}</label>
+                }
+            </nz-radio-group>
+        </div>
 
         <!-- 查询/重置 按钮组 -->
         <div class="search-item search-actions">
@@ -73,6 +82,7 @@
             <th nzWidth="160px">字典类型名称</th>
             <th nzWidth="80px" nzAlign="center">启用状态</th>
             <th nzWidth="110px" nzAlign="center">是否系统内置</th>
+            <th nzWidth="110px" nzAlign="center">图标类型</th>
             <th nzWidth="200px">描述</th>
             <th nzWidth="180px">创建人</th>
             <th nzWidth="150px" nzColumnKey="createdTime" [nzSortFn]="true">创建时间</th>
@@ -109,6 +119,7 @@
                             [class.sys-status-custom]="!data.builtin.value"
                         ></span>
                     </td>
+                    <td nzAlign="center">{{ data.iconType?.label }}</td>
                     <td>{{ data.description }}</td>
                     <td>{{ data.createdBy }}</td>
                     <td>{{ data.createdTime }}</td>

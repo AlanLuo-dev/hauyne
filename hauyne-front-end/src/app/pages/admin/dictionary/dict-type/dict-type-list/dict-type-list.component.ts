@@ -49,6 +49,7 @@ export interface DictType extends AuditInfo {
     description: string;
     enabled: boolean;
     builtin: EnumOption<boolean>;
+    iconType: EnumOption<string>;
 
     switchLoading: boolean;
 }
@@ -105,11 +106,27 @@ export class DictTypeListComponent implements OnInit, AfterViewInit, OnDestroy {
     _dictTypeName: string = '';
     selectedEnabled: boolean | null = null;
     selectedBuiltin: boolean | null = null;
+    selectedIconType: string | null = null;
 
     builtInOption: any[] = [
         {value: false, label: '自定义', icon: 'unlock', class: 'sys-status-custom'},
         {value: true, label: '系统内置', icon: 'lock', class: 'sys-status-builtin'}
     ]
+
+    iconTypeOptions: any[] = [
+        {
+            label: 'iconfont',
+            value: 'iconfont'
+        },
+        {
+            label: 'Material Symbols',
+            value: 'material-symbols'
+        },
+        {
+            label: 'NG-ZORRO',
+            value: 'ng-zorro'
+        }
+    ];
 
     enabledOption: any[] = [];
 
@@ -235,6 +252,7 @@ export class DictTypeListComponent implements OnInit, AfterViewInit, OnDestroy {
         this._dictTypeName = '';
         this.selectedEnabled = null;
         this.selectedBuiltin = null;
+        this.selectedIconType = null;
         this.search();
     }
 
@@ -242,7 +260,7 @@ export class DictTypeListComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pageSize = queryParams.pageSize;
         this._loading = true;
 
-        let query: DictTypeQuery = new DictTypeQuery(queryParams, this._dictTypeCode, this._dictTypeName, this.selectedEnabled, this.selectedBuiltin);
+        let query: DictTypeQuery = new DictTypeQuery(queryParams, this._dictTypeCode, this._dictTypeName, this.selectedEnabled, this.selectedBuiltin, this.selectedIconType);
         this.dictTypeService.loadPageData<DictType, DictTypeQuery>(query).subscribe({
             next: (res) => {
                 this._loading = false;

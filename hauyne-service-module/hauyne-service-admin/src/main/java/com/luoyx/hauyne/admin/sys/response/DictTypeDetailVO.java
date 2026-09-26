@@ -1,6 +1,7 @@
 package com.luoyx.hauyne.admin.sys.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.luoyx.hauyne.admin.api.sys.enums.IconTypeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,12 @@ public class DictTypeDetailVO {
      */
     @Schema(description = "是否已启用【true=已启用，false=已禁用】")
     private Boolean enabled;
+
+    /**
+     * 图标类型
+     */
+    @Schema(description = "图标类型")
+    private IconTypeEnum iconType;
 
     /**
      * 创建人id

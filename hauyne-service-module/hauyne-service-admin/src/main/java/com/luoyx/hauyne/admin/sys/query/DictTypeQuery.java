@@ -1,5 +1,6 @@
 package com.luoyx.hauyne.admin.sys.query;
 
+import com.luoyx.hauyne.admin.api.sys.enums.IconTypeEnum;
 import com.luoyx.hauyne.admin.api.sys.enums.YesNoEnum;
 import com.luoyx.hauyne.common.enums.EnableStatusEnum;
 import com.luoyx.hauyne.mybatisplus.query.PageQuery;
@@ -38,4 +39,10 @@ public class DictTypeQuery extends PageQuery {
 
     @Schema(description = "是否系统内置")
     private YesNoEnum builtin;
+
+    /**
+     * 图标类型
+     */
+    @Schema(description = "图标类型")
+    private IconTypeEnum iconType;
 }

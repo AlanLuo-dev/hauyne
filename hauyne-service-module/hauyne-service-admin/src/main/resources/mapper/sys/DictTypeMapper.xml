@@ -22,6 +22,7 @@
             t.description AS description,
             t.is_enabled AS enabled,
             t.is_builtin AS builtin,
+            t.icon_type AS iconType,
             c.real_name as createdBy,
             t.created_time as createdTime,
             u.real_name as lastUpdatedBy,
@@ -44,6 +45,9 @@
             </if>
             <if test="builtin != null">
                 AND t.is_builtin = #{builtin}
+            </if>
+            <if test="iconType != null">
+                and t.icon_type = #{iconType}
             </if>
         </where>
         ORDER BY

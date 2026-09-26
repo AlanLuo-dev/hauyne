@@ -10,6 +10,7 @@ import {NzColDirective, NzRowDirective} from "ng-zorro-antd/grid";
 import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzSwitchComponent} from "ng-zorro-antd/switch";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 
 @Component({
     selector: 'app-dict-type-edit-form',
@@ -26,7 +27,9 @@ import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
         NzRowDirective,
         NzSwitchComponent,
         NzTooltipDirective,
-        FormsModule
+        FormsModule,
+        NzSelectComponent,
+        NzOptionComponent
     ],
     changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './dict-type-edit-form.component.html'
@@ -56,6 +59,21 @@ export class DictTypeEditFormComponent implements OnInit {
      */
     @Output() triggerDictTypeListRefreshEmitter: EventEmitter<void> = new EventEmitter<void>();
 
+    iconTypeOptions: any[] = [
+        {
+            label: 'iconfont',
+            value: 'iconfont'
+        },
+        {
+            label: 'Material Symbols',
+            value: 'material-symbols'
+        },
+        {
+            label: 'NG-ZORRO',
+            value: 'ng-zorro'
+        }
+    ];
+
     /**
      * 构造函数
      * @param fb
@@ -75,16 +93,22 @@ export class DictTypeEditFormComponent implements OnInit {
                 validators: [Validators.required],
                 updateOn: 'blur'
             }],
-            enabled: [false],
+            enabled: [true],
+            iconType: [null],
             description: ['', {validators: Validators.maxLength(50), updateOn: 'change'}]
-        }, {updateOn: 'submit'});
+        });
     }
 
     ngOnInit(): void {
         const id = this.dictTypeId;
         if (id) {
             this.dictTypeService.getOne<any>(id).subscribe(data => {
-                this.dictTypeForm.patchValue(data);
+                // 转换后端数据：如果 iconType 是对象，则提取其 value 字段，否则保持原样
+                const formData = {
+                    ...data,
+                    iconType: data.iconType?.value ?? data.iconType
+                };
+                this.dictTypeForm.patchValue(formData);
                 this.dictTypeForm.addControl('id', new FormControl(data.id, Validators.required));
                 this.dictTypeForm.addControl('enabled', new FormControl(data.enabled, Validators.required));
                 this.dictTypeCode.addAsyncValidators(this.dictTypeService.dictTypeCodeAsyncValidator(id));
@@ -186,6 +210,10 @@ export class DictTypeEditFormComponent implements OnInit {
 
     get enabled(): FormControl {
         return this.dictTypeForm.get('enabled') as FormControl;
+    }
+
+    get iconType(): FormControl {
+        return this.dictTypeForm.get('iconType') as FormControl;
     }
 
     get descriptionFormControl(): FormControl {
