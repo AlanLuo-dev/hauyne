@@ -5,18 +5,20 @@ import {
     ElementRef,
     OnDestroy,
     OnInit,
+    signal,
     ViewChild
 } from '@angular/core';
-import { LoginHistoryService } from "./login-history.service";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NzButtonComponent } from "ng-zorro-antd/button";
-import { NzFormDirective } from "ng-zorro-antd/form";
-import { NzIconDirective } from "ng-zorro-antd/icon";
-import { NzInputDirective } from "ng-zorro-antd/input";
-import { NzRadioComponent, NzRadioGroupComponent } from "ng-zorro-antd/radio";
-import { NzTableComponent, NzTableModule, NzTableQueryParams } from "ng-zorro-antd/table";
-import { LoginHistoryQuery } from "./login-history-query";
+import {LoginHistoryService} from "./login-history.service";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {NzButtonComponent} from "ng-zorro-antd/button";
+import {NzFormDirective} from "ng-zorro-antd/form";
+import {NzIconDirective} from "ng-zorro-antd/icon";
+import {NzInputDirective} from "ng-zorro-antd/input";
+import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
+import {NzTableComponent, NzTableModule, NzTableQueryParams} from "ng-zorro-antd/table";
+import {LoginHistoryQuery} from "./login-history-query";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
+import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
 
 export interface LoginHistory {
     id: number;
@@ -47,7 +49,8 @@ export interface LoginHistory {
         NzRadioComponent,
         NzRadioGroupComponent,
         NzTableModule,
-        NzTooltipDirective
+        NzTooltipDirective,
+        NzDatePickerModule
     ]
 })
 export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -61,6 +64,8 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
     // 过滤条件
     type: number | null = null;
     username: string = '';
+    startTime = signal<Date | null>(null);
+    endTime = signal<Date | null>(null);
 
     @ViewChild('tableContainer') tableContainer!: ElementRef<HTMLElement>;
     @ViewChild('basicTable', { static: false }) table!: NzTableComponent<any>;
@@ -108,7 +113,7 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pageSize = queryParams.pageSize;
         this._loading = true;
 
-        const query = new LoginHistoryQuery(queryParams, this.type, this.username);
+        const query = new LoginHistoryQuery(queryParams, this.type, this.username, this.startTime(), this.endTime());
         this.loginLogService.loadPageData<LoginHistory, LoginHistoryQuery>(query).subscribe({
             next: (res) => {
                 this.listOfLoginHistory = res.rows;

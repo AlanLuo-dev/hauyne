@@ -1,36 +1,52 @@
-<form nz-form class="login-history-list-search-form">
-    <div class="search-form-wrapper">
-        <!-- 仅右侧保留查询字段与按钮区域 -->
-        <fieldset class="filter-fieldset">
-            <div class="right-filter-group">
-                <div class="filter-item">
-                    <span class="filter-label">类型：</span>
-                    <nz-radio-group [(ngModel)]="type" [ngModelOptions]="{standalone: true}"
-                                    nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
-                    >
-                        <label nz-radio-button [nzValue]="1">登录</label>
-                        <label nz-radio-button [nzValue]="0">注销</label>
-                    </nz-radio-group>
-                </div>
+<div class="search-form-container">
+    <div class="right-filter-group">
+        <!-- 1. 类型单选 -->
+        <div class="filter-item">
+            <span class="filter-label">类型：</span>
+            <nz-radio-group [(ngModel)]="type"
+                            nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
+            >
+                <label nz-radio-button [nzValue]="1">登录</label>
+                <label nz-radio-button [nzValue]="0">注销</label>
+            </nz-radio-group>
+        </div>
 
-                <div class="filter-item">
-                    <span class="filter-label">用户名：</span>
-                    <input nz-input [(ngModel)]="username" [ngModelOptions]="{standalone: true}"
-                           nzSize="small" class="filter-input" placeholder="请输入用户名" (keyup.enter)="search()"/>
-                </div>
+        <!-- 2. 用户名输入 -->
+        <div class="filter-item">
+            <span class="filter-label">用户名：</span>
+            <input nz-input [(ngModel)]="username"
+                   nzSize="small" class="filter-input" placeholder="输入用户名" (keyup.enter)="search()"/>
+        </div>
 
-                <div class="button-group">
-                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
-                        <span nz-icon nzType="search" nzTheme="outline"></span>查询
-                    </button>
-                    <button nz-button nzSize="small" (click)="reset()">
-                        <span nz-icon nzType="reload" nzTheme="outline"></span>重置
-                    </button>
-                </div>
-            </div>
-        </fieldset>
+        <!-- 3. 时间范围 -->
+        <div class="filter-item">
+            <span class="filter-label">登录时间范围：</span>
+            <nz-date-picker [(ngModel)]="startTime"
+                            nzSize="small"
+                            nzPlaceHolder="开始时间"
+                            nzShowTime
+                            nzFormat="yyyy-MM-dd HH:mm:ss"
+            />
+            &nbsp;~&nbsp;
+            <nz-date-picker [(ngModel)]="endTime"
+                            nzSize="small"
+                            nzPlaceHolder="结束时间"
+                            nzShowTime
+                            nzFormat="yyyy-MM-dd HH:mm:ss"
+            />
+        </div>
+
+        <!-- 4. 按钮组 -->
+        <div class="button-group">
+            <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
+                <span nz-icon nzType="search" nzTheme="outline"></span>查询
+            </button>
+            <button nz-button nzSize="small" (click)="reset()">
+                <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+            </button>
+        </div>
     </div>
-</form>
+</div>
 
 <div #tableContainer class="table-container">
     <ng-template #totalTemplate let-total>

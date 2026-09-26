@@ -24,6 +24,8 @@ import {provideStore} from "@ngrx/store";
 import {AuthEffects} from "./store/auth/auth.effect";
 import {authReducer} from "./store/auth/auth.reducer";
 import {reducer} from "./store/counter/counter.reducer";
+import {provideNzDateFnsAdapter} from "ng-zorro-antd/core/time";
+import {zhCN} from "date-fns/locale";
 
 const antDesignIcons = AllIcons as {
     [key: string]: IconDefinition;
@@ -36,6 +38,10 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideAnimationsAsync(),
         provideNzI18n(zh_CN),
+        provideNzDateFnsAdapter({
+            locale: zhCN,
+            firstDayOfWeek: 1
+        }),
         importProvidersFrom(FormsModule),
         provideAnimationsAsync(),
         // 拦截器配置 总入口

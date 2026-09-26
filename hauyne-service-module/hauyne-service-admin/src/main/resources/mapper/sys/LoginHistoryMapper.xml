@@ -59,11 +59,11 @@
             <if test="osName != null and osName != ''">
                 and sl.os_name = #{osName, jdbcType=VARCHAR}
             </if>
-            <if test="startTime != null and startTime != ''">
-                and sl.login_time <![CDATA[ >= ]]> STR_TO_DATE(#{startTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+            <if test="startTime != null">
+                and sl.login_time <![CDATA[ >= ]]> #{startTime}
             </if>
-            <if test="endTime != null and endTime != ''">
-                and sl.login_time <![CDATA[ <= ]]> STR_TO_DATE(#{endTime, jdbcType=VARCHAR},'%Y-%m-%d %H:%i:%s')
+            <if test="endTime != null">
+                and sl.login_time <![CDATA[ <= ]]> #{endTime}
             </if>
         </where>
         ORDER BY

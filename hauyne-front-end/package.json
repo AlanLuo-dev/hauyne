@@ -26,6 +26,7 @@
         "@ngrx/router-store": "^22.0.1",
         "@ngrx/store": "^22.0.1",
         "@ngrx/store-devtools": "^22.0.1",
+        "date-fns": "^4.4.0",
         "material-symbols": "^0.47.0",
         "ng-zorro-antd": "^22.0.1",
         "rxjs": "~7.8.2",

@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 /**
  * 登录历史查询参数
  *
@@ -50,11 +52,11 @@ public class LoginHistoryQuery extends PageQuery {
      * 开始时间
      */
     @Schema(description = "开始时间")
-    private String startTime;
+    private LocalDateTime startTime;
 
     /**
      * 结束时间
      */
     @Schema(description = "结束时间")
-    private String endTime;
+    private LocalDateTime endTime;
 }
