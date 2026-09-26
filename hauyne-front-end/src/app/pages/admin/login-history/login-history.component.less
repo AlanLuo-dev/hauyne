@@ -91,5 +91,11 @@
 }
 
 .tech-icon {
-    font-size: large;
+    font-size: 18px;             /* 控制图标实际大小 */
+    display: inline-flex;        /* 采用 inline-flex 布局 */
+    align-items: center;        /* 垂直方向几何居中 */
+    justify-content: center;    /* 水平方向几何居中 */
+    vertical-align: top;        /* ⚠️ 关键点：用 top/baseline 替代 middle，防止被字体 x-height 往下压 */
+    height: 100%;                /* ⚠️ 关键点：高度撑满父级容器（td 或 button），从而基于容器物理高度垂直居中 */
+    line-height: 1;              /* 重置行高消除间隙 */
 }

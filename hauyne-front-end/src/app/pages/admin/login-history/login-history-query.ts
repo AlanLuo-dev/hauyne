@@ -9,6 +9,7 @@ export class LoginHistoryQuery extends PageQuery2 {
     // 模板直接绑定的筛选条件
     type: number | null = null;
     username: string = '';
+    browser: string = '';
     startTime: Date | null = null;
     endTime: Date | null = null;
 
@@ -18,6 +19,7 @@ export class LoginHistoryQuery extends PageQuery2 {
     resetFilter(): void {
         this.type = null;
         this.username = '';
+        this.browser = '';
         this.startTime = null;
         this.endTime = null;
     }

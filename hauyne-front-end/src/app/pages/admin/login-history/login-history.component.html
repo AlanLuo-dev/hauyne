@@ -18,7 +18,29 @@
                    nzSize="small" class="filter-input" placeholder="输入用户名" (keyup.enter)="search()"/>
         </div>
 
-        <!-- 3. 时间范围（直接绑定 Date 类型的 startTime/endTime） -->
+        <!-- 3. 浏览器输入 -->
+        <div class="filter-item">
+            <span class="filter-label">浏览器：</span>
+            <nz-radio-group [(ngModel)]="query.browser"
+                            nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
+            >
+                <label nz-radio-button [nzValue]="'chrome'">
+                    <span nz-icon
+                          nzIconfont="icon-Chrome"
+                          nzTheme="fill"
+                          class="tech-icon"
+                          nz-tooltip
+                          nzTooltipTitle="Chrome浏览器">
+                    </span>
+                </label>
+                <label nz-radio-button [nzValue]="'firefox'">Firefox</label>
+                <label nz-radio-button [nzValue]="'edge'">Edge</label>
+                <label nz-radio-button [nzValue]="'safari'">Safari</label>
+                <label nz-radio-button [nzValue]="'opera'">Opera</label>
+            </nz-radio-group>
+        </div>
+
+        <!-- 4. 时间范围（直接绑定 Date 类型的 startTime/endTime） -->
         <div class="filter-item">
             <span class="filter-label">登录时间范围：</span>
             <nz-date-picker [(ngModel)]="query.startTime"
