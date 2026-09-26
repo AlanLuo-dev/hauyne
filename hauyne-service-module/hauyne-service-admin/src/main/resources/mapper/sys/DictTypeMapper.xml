@@ -56,7 +56,7 @@
                 ${sortField}
             </when>
             <otherwise>
-                t.id
+                t.is_builtin desc, t.id
             </otherwise>
         </choose>
         <choose>
