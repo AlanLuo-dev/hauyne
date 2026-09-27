@@ -5,13 +5,15 @@ import com.luoyx.hauyne.admin.sys.entity.DictItem;
 import com.luoyx.hauyne.admin.sys.query.DictItemCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.DictItemNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.DictItemQuery;
-import com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO;
+import com.luoyx.hauyne.admin.sys.response.DictItemDetailVO;
+import com.luoyx.hauyne.admin.sys.response.DictItemDropdownDTO;
 import com.luoyx.hauyne.admin.sys.response.DictItemResultVO;
 import com.luoyx.hauyne.common.enums.EnableStatusEnum;
 import com.luoyx.hauyne.mybatisplus.mapper.GenericMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -77,12 +79,12 @@ public interface DictItemMapper extends GenericMapper<DictItem> {
     List<String> countByDictTypeIds(@Param("dictTypeIds") List<Long> dictTypeIds);
 
     /**
-     * 按字典类型编码 查询字典选项，升序排序
+     * 按字典类型编码 查询字典选项
      *
-     * @param dictTypeCode 字典类型编码
-     * @return 字典选项列表，升序排序
+     * @param dictTypeCodes 字典类型编码列表
+     * @return 字典选项列表
      */
-    List<DictItemDropdownVO> selectDropdownData(@Param("dictTypeCode") String dictTypeCode);
+    List<DictItemDropdownDTO> selectDropdownData(@Param("dictTypeCodes") Set<String> dictTypeCodes);
 
     /**
      * 启用
@@ -95,4 +97,12 @@ public interface DictItemMapper extends GenericMapper<DictItem> {
         dictItem.setEnabled(enableStatusEnum.getBoolValue());
         updateById(dictItem);
     }
+
+    /**
+     * 查询字典选项的详情
+     *
+     * @param id 字典选项id
+     * @return 字典选项详情
+     */
+    DictItemDetailVO details(Long id);
 }

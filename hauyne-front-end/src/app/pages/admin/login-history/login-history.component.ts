@@ -17,6 +17,8 @@ import {NzTableComponent, NzTableModule, NzTableQueryParams} from "ng-zorro-antd
 import {LoginHistoryQuery} from "./login-history-query";
 import {NzTooltipDirective} from "ng-zorro-antd/tooltip";
 import {NzDatePickerModule} from "ng-zorro-antd/date-picker";
+import {DictTypeService} from "../dictionary/dict-type/dict-type.service";
+import {Option} from "../dictionary/dict-type/dict-dropdown";
 
 export interface LoginHistory {
     id: number;
@@ -61,6 +63,11 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
     // 唯一的查询状态源
     query = new LoginHistoryQuery();
 
+    browserOptions: Option[] = [];
+    osOptions: Option[] = [];
+    browserOptionMap = new Map<string, Option>();
+    osOptionMap = new Map<string, Option>();
+
     @ViewChild('tableContainer') tableContainer!: ElementRef<HTMLElement>;
     @ViewChild('basicTable', { static: false }) table!: NzTableComponent<any>;
 
@@ -68,7 +75,25 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
     tableScrollY: string = '400px';
     private resizeObserver?: ResizeObserver;
 
-    constructor(private readonly loginLogService: LoginHistoryService) {}
+    constructor(private readonly loginLogService: LoginHistoryService,
+                private readonly dictTypeService: DictTypeService) {
+        this.dictTypeService.loadDropdownData(['Browser', 'OS'])
+            .subscribe(data => {
+                const dictMap = new Map(
+                    data.map(item => [item.dictTypeCode, item.options])
+                );
+
+                this.browserOptions = dictMap.get('Browser') ?? [];
+                this.osOptions = dictMap.get('OS') ?? [];
+
+                this.browserOptionMap = new Map(
+                    this.browserOptions.map(item => [item.value, item])
+                );
+                this.osOptionMap = new Map(
+                    this.osOptions.map(item => [item.value, item])
+                );
+            });
+    }
 
     ngOnInit(): void {}
 
@@ -115,7 +140,6 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
 
     reset(): void {
         this.query.resetFilter();
-        this.loadData();
     }
 
     private loadData(): void {
@@ -130,32 +154,4 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    // 在 LoginHistoryComponent 中添加以下解析方法
-
-    /**
-     * 根据操作系统名称匹配 Ant Design 图标
-     */
-    getOsIcon(osName: string): string {
-        if (!osName) return 'desktop';
-        const name = osName.toLowerCase();
-        if (name.includes('win')) return 'icon-icon-Windows';
-        if (name.includes('mac') || name.includes('darwin') || name.includes('ios')) return 'icon-apple';
-        if (name.includes('android')) return 'android';
-        if (name.includes('linux') || name.includes('ubuntu')) return 'icon-Linux';
-        return 'desktop'; // 兜底图标
-    }
-
-    /**
-     * 根据浏览器名称匹配 Ant Design 图标
-     */
-    getBrowserIcon(browser: string): string {
-        if (!browser) return 'global';
-        const name = browser.toLowerCase();
-        if (name.includes('chrome')) return 'icon-Chrome';
-        if (name.includes('firefox')) return 'icon-firefox';
-        if (name.includes('safari')) return 'icon-Safariliulanqi'; // 或 apple
-        if (name.includes('edge') || name.includes('ie')) return 'icon-a-MicrosoftEdge';
-        if (name.includes('opera')) return 'icon-opera';
-        return 'global'; // 兜底图标
-    }
 }

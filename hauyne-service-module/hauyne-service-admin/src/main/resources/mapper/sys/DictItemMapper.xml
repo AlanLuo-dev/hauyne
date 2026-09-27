@@ -22,6 +22,8 @@
             t.dict_item_name AS dictItemName,
             t.sort as sort,
             t.is_enabled AS enabled,
+            t.is_builtin AS builtin,
+            t.icon AS icon,
             t.remark AS remark,
             c.real_name as createdBy,
             t.created_time as createdTime,
@@ -42,6 +44,9 @@
             </if>
             <if test="enabled != null">
                 and t.is_enabled = #{enabled}
+            </if>
+            <if test="builtin != null">
+                AND t.is_builtin = #{builtin}
             </if>
         </where>
         ORDER BY
@@ -77,17 +82,47 @@
     </select>
 
     <!-- 按字典类型编码 查询字典选项，升序排序 -->
-    <select id="selectDropdownData" parameterType="java.lang.String" resultType="com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO">
+    <select id="selectDropdownData" parameterType="java.lang.String" resultType="com.luoyx.hauyne.admin.sys.response.DictItemDropdownDTO">
         SELECT
-            i.dict_item_code as value,
-            i.dict_item_name as label
+            t.dict_type_code AS dictTypeCode,
+            i.dict_item_code AS VALUE,
+            i.dict_item_name AS label,
+            t.icon_type AS iconType,
+            i.icon AS icon
         FROM
             hyn_sys_dict_item i
             INNER JOIN hyn_sys_dict_type t ON i.dict_type_id = t.id
-        WHERE i.is_enabled = 1
-            AND t.is_enabled= 1
-            AND t.dict_type_code = #{dictTypeCode}
-        order by i.sort
+        WHERE
+            i.is_enabled = 1
+            AND t.is_enabled = 1
+            AND t.dict_type_code IN
+            <foreach collection="dictTypeCodes" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        ORDER BY
+            t.dict_type_code,
+            i.sort
     </select>
 
+    <!-- 查询字典选项的详情 -->
+    <select id="details" parameterType="java.lang.Long" resultType="com.luoyx.hauyne.admin.sys.response.DictItemDetailVO">
+        select
+            id,
+            dict_type_id as dictTypeId,
+            dict_item_code as dictItemCode,
+            dict_item_name as dictItemName,
+            sort as sort,
+            is_enabled as enabled,
+            is_builtin as builtin,
+            icon,
+            remark,
+            created_by as createdBy,
+            created_time as createdTime,
+            last_updated_by as lastUpdatedBy,
+            last_updated_time as lastUpdatedTime
+        from
+            hyn_sys_dict_item
+        where
+            id = #{id}
+    </select>
 </mapper>

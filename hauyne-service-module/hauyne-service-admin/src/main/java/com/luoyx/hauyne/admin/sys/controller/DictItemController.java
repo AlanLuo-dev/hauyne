@@ -1,7 +1,6 @@
 package com.luoyx.hauyne.admin.sys.controller;
 
 
-import com.luoyx.hauyne.admin.sys.converter.DictItemConverter;
 import com.luoyx.hauyne.admin.sys.entity.DictItem;
 import com.luoyx.hauyne.admin.sys.query.DictItemCodeUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.DictItemNameUniqueCheckQuery;
@@ -56,7 +55,6 @@ public class DictItemController {
     public static final String DICT_ITEM_URL = "/sys/dict-items";
 
     private final DictItemService dictItemService;
-    private final DictItemConverter dictItemConverter;
 
     /**
      * 查询字典选项列表
@@ -80,8 +78,8 @@ public class DictItemController {
     //    @PreAuthorize("hasAuthority('sys-dict-item:view')")
     @Operation(summary = "查询字典选项的详情")
     @GetMapping(value = "/{id}")
-    public DictItemDetailVO view(@Parameter(description = "字典选项id") @PathVariable(value = "id") Long id) {
-        return dictItemConverter.toDictItemDetailVO(dictItemService.getById(id));
+    public DictItemDetailVO details(@Parameter(description = "字典选项id") @PathVariable(value = "id") Long id) {
+        return dictItemService.details(id);
     }
 
     /**

@@ -24,23 +24,38 @@
             <nz-radio-group [(ngModel)]="query.browser"
                             nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
             >
-                <label nz-radio-button [nzValue]="'chrome'">
-                    <span nz-icon
-                          nzIconfont="icon-Chrome"
-                          nzTheme="fill"
-                          class="tech-icon"
-                          nz-tooltip
-                          nzTooltipTitle="Chrome浏览器">
-                    </span>
-                </label>
-                <label nz-radio-button [nzValue]="'firefox'">Firefox</label>
-                <label nz-radio-button [nzValue]="'edge'">Edge</label>
-                <label nz-radio-button [nzValue]="'safari'">Safari</label>
-                <label nz-radio-button [nzValue]="'opera'">Opera</label>
+                @for (item of browserOptions; track item.value) {
+                    <label nz-radio-button [nzValue]="item.value">
+                        <span nz-icon
+                              [nzIconfont]="item.icon"
+                              nzTheme="fill"
+                              class="tech-icon"
+                              nz-tooltip
+                              [nzTooltipTitle]="item.label">
+                        </span>
+                    </label>
+                }
             </nz-radio-group>
         </div>
 
-        <!-- 4. 时间范围（直接绑定 Date 类型的 startTime/endTime） -->
+        <!-- 操作系统 -->
+        <div class="filter-item">
+            <span class="filter-label">操作系统：</span>
+            <nz-radio-group [(ngModel)]="query.osName" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                @for (item of osOptions; track item.value) {
+                    <label nz-radio-button [nzValue]="item.value">
+                        <span nz-icon
+                              [nzIconfont]="item.icon"
+                              nzTheme="fill"
+                              class="tech-icon"
+                              nz-tooltip
+                              [nzTooltipTitle]="item.label">
+                        </span>
+                    </label>
+                }
+            </nz-radio-group>
+        </div>
+
         <div class="filter-item">
             <span class="filter-label">登录时间范围：</span>
             <nz-date-picker [(ngModel)]="query.startTime"
@@ -82,7 +97,8 @@
         [nzFrontPagination]="false"
         [nzLoading]="_loading"
         [nzTotal]="totalRecords"
-        [nzPageSize]="pageSize"
+        [nzPageIndex]="query.pageIndex"
+        [nzPageSize]="query.pageSize"
         [nzPageSizeOptions]="[10, 20, 50, 100]"
         nzSize="small"
         (nzQueryParams)="onQueryParamsChange($event)"
@@ -128,21 +144,24 @@
                     <td>{{ data.ipAddress }}</td>
                     <td>{{ data.location }}</td>
                     <td nzAlign="center">
-                        <span nz-icon
-                              [nzIconfont]="getBrowserIcon(data.browser)"
-                              nzTheme="fill"
-                              class="tech-icon"
-                              nz-tooltip
-                              [nzTooltipTitle]="data.browser + (data.browserVersion ? ' ' + data.browserVersion : '')">
+                        @let browser = browserOptionMap.get(data.browser);
+                        <span
+                            nz-icon
+                            [nzIconfont]="browser?.icon"
+                            nzTheme="fill"
+                            class="tech-icon"
+                            nz-tooltip
+                            [nzTooltipTitle]="data.browser + (data.browserVersion ? ' ' + data.browserVersion : '')">
                         </span>
                     </td>
                     <td nzAlign="center">
+                        @let os = osOptionMap.get(data.osName);
                         <span nz-icon
-                              [nzIconfont]="getOsIcon(data.osName)"
+                              [nzIconfont]="os?.icon"
                               nzTheme="outline"
                               class="tech-icon"
                               nz-tooltip
-                              [nzTooltipTitle]="data.osName">
+                              [nzTooltipTitle]="os?.label">
                         </span>
                     </td>
 

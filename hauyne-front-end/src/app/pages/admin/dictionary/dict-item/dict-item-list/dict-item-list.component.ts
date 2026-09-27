@@ -3,6 +3,7 @@ import {DictItemService} from "../dict-item.service";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {NzDrawerComponent, NzDrawerContentDirective} from "ng-zorro-antd/drawer";
 import {
+    NzCellAlignDirective,
     NzTableCellDirective,
     NzTableComponent,
     NzTableQueryParams,
@@ -32,6 +33,7 @@ import {CdkDrag, CdkDragHandle, CdkDragSortEvent, CdkDropList, moveItemInArray} 
 import {AuthorityDirective} from "../../../../../directives/authority.directive";
 import {finalize, Observable} from "rxjs";
 import {MatIcon} from "@angular/material/icon";
+import {EnumOption} from "../../../../../common/enum-option";
 
 export interface DictItem extends AuditInfo {
     id: number,
@@ -39,6 +41,8 @@ export interface DictItem extends AuditInfo {
     dictItemName: string,
     description: string;
     enabled: boolean;
+    builtin: EnumOption<boolean>;
+    icon: string;
     sort: number;
     remark: string;
     switchLoading: boolean;
@@ -79,7 +83,8 @@ export interface DictItem extends AuditInfo {
         CdkDrag,
         CdkDragHandle,
         AuthorityDirective,
-        MatIcon
+        MatIcon,
+        NzCellAlignDirective
     ]
 })
 export class DictItemListComponent implements OnInit, OnDestroy {
@@ -179,6 +184,8 @@ export class DictItemListComponent implements OnInit, OnDestroy {
             {field: 'dictItemName', header: '字典值名称',  width: '16%'},
             {field: 'sort', header: '排序', sortable: true, width: '10%'},
             {field: 'enabled', header: '启用状态', width: '10%'},
+            {field: 'builtin', header: '是否系统内置', width: '10%'},
+            {field: 'icon', header: '图标', width: '10%'},
             {field: 'remark', header: '备注', width: '30%'},
             {field: 'createdByFullName', header: '创建人', width: '5%'},
             {field: 'createdTime', header: '创建时间', sortable: true, width: '10%'},

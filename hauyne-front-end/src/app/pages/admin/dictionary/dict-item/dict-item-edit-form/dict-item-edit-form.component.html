@@ -79,6 +79,19 @@
                 </nz-form-item>
             }
 
+            <!-- 图标 -->
+            <nz-form-item>
+                <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="icon">图标</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="iconErrTpl">
+                    <input id="icon" type="text" nz-input autocomplete="off" formControlName="icon" />
+                    <ng-template #iconErrTpl>
+                        @if (iconFormControl.dirty && iconFormControl.errors?.['maxlength']) {
+                            图标不能超过{{iconFormControl.errors?.['maxlength'].requiredLength}}个字
+                        }
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
             <!-- 备注 -->
             <nz-form-item>
                 <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="remark">备注</nz-form-label>

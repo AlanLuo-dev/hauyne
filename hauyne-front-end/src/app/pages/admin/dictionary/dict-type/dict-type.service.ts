@@ -7,6 +7,7 @@ import {Injectable} from "@angular/core";
 import {DictTypeQuery} from "./dict-type-query";
 import {PageResult} from "../../../../common/page-result";
 import {DeletedDictType} from "./deleted-dict-type-list/deleted-dict-type-list.component";
+import {DictDropdown} from "./dict-dropdown";
 
 
 @Injectable({
@@ -60,8 +61,8 @@ export class DictTypeService extends AdminBaseService<number> {
      * 加载数据字典 作为下拉框的数据来源
      * @param dictTypeCode
      */
-    loadDropdownData(dictTypeCode: string): Observable<any> {
-        return this.http.get(`${this.apiUrl}/${dictTypeCode}/dropdown`);
+    loadDropdownData(dictTypeCode: string[]): Observable<DictDropdown[]> {
+        return this.http.get<DictDropdown[]>(`${this.apiUrl}/${dictTypeCode.join(',')}/dropdown`);
     }
 
     /**

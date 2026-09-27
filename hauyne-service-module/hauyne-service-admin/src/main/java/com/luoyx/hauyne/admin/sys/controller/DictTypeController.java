@@ -5,7 +5,7 @@ import com.luoyx.hauyne.admin.sys.query.DictTypeQuery;
 import com.luoyx.hauyne.admin.sys.request.DictTypeCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.DictTypeEditDTO;
 import com.luoyx.hauyne.admin.sys.response.DeletedDictTypePageResultVO;
-import com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO;
+import com.luoyx.hauyne.admin.sys.response.DictDropdownVO;
 import com.luoyx.hauyne.admin.sys.response.DictTypeDetailVO;
 import com.luoyx.hauyne.admin.sys.response.DictTypePageResultVO;
 import com.luoyx.hauyne.admin.sys.service.DictItemService;
@@ -176,11 +176,18 @@ public class DictTypeController {
      * @param dictTypeCode 字典类型编码
      * @return
      */
-    @Operation(summary = "按字典类型编码查询字典选项，用作下拉框数据", description = "只查询已启用的字典选项")
-    @GetMapping(value = "/{dictTypeCode}/dropdown")
-    public List<DictItemDropdownVO> loadDropdownData(@Parameter(description = "字典类型编码")
-                                                     @PathVariable(value = "dictTypeCode") String dictTypeCode) {
-        return dictItemService.selectDropdownData(dictTypeCode);
+//    @Operation(summary = "按字典类型编码查询字典选项，用作下拉框数据", description = "只查询已启用的字典选项")
+//    @GetMapping(value = "/{dictTypeCode}/dropdown")
+//    public List<DictItemDropdownVO> loadDropdownData(@Parameter(description = "字典类型编码")
+//                                                     @PathVariable(value = "dictTypeCode") String dictTypeCode) {
+//        return dictItemService.selectDropdownData(dictTypeCode);
+//    }
+
+    @Operation(summary = "按字典类型编码查询字典选项，用作下拉框数据")
+    @GetMapping("/{dictTypeCodes}/dropdown")
+    public List<DictDropdownVO> loadDropdownData(@Parameter(description = "字典类型编码，多个编码使用逗号分隔")
+                                                   @PathVariable List<String> dictTypeCodes) {
+        return dictItemService.selectDropdownData(dictTypeCodes);
     }
 
     /**

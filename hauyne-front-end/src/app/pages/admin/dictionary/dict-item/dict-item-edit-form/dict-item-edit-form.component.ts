@@ -72,6 +72,7 @@ export class DictItemEditFormComponent implements OnInit {
             dictItemCode: ['', {validators: [Validators.required, Validators.maxLength(50)], updateOn: 'blur'}],
             dictItemName: ['', {validators: [Validators.required, Validators.maxLength(50)], updateOn: 'blur'}],
             sort: ['', {validators: [Validators.required], updateOn: 'blur'}],
+            icon: [null, {validators: Validators.maxLength(50), updateOn: 'change'}],
             remark: ['', {validators: Validators.maxLength(60), updateOn: 'change'}]
         }, {updateOn: 'submit'});
     }
@@ -179,6 +180,10 @@ export class DictItemEditFormComponent implements OnInit {
 
     get enabledFormControl(): FormControl {
         return this.dictItemForm.get('enabled') as FormControl;
+    }
+
+    get iconFormControl(): FormControl {
+        return this.dictItemForm.get('icon') as FormControl;
     }
 
     get remarkFormControl(): FormControl {

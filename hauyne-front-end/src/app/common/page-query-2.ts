@@ -4,12 +4,12 @@ export class PageQuery2 {
     /**
      * 页码，默认为1
      */
-    private pageIndex: number = 1;
+    pageIndex: number = 1;
 
     /**
      * 每页显示行数，默认20
      */
-    private pageSize: number = 20;
+    pageSize: number = 20;
 
     /**
      * 排序字段
@@ -51,5 +51,16 @@ export class PageQuery2 {
                 newObj[key] = value;
                 return newObj;
             }, {} as { [key: string]: any });
+    }
+
+    /**
+     * 重置分页、排序及表格筛选条件
+     */
+    reset(): void {
+        this.pageIndex = 1;
+        this.pageSize = 20;
+        this.sortField = null;
+        this.sortOrder = null;
+        this.filter = [];
     }
 }

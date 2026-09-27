@@ -10,7 +10,9 @@ import com.luoyx.hauyne.admin.sys.query.DictItemNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.DictItemQuery;
 import com.luoyx.hauyne.admin.sys.request.DictItemCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.DictItemEditDTO;
-import com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO;
+import com.luoyx.hauyne.admin.sys.response.DictItemDetailVO;
+import com.luoyx.hauyne.admin.sys.response.DictItemDropdownDTO;
+import com.luoyx.hauyne.admin.sys.response.DictDropdownVO;
 import com.luoyx.hauyne.admin.sys.response.DictItemResultVO;
 import com.luoyx.hauyne.admin.sys.service.DictItemService;
 import com.luoyx.hauyne.common.enums.EnableStatusEnum;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -78,12 +81,39 @@ public class DictItemServiceImpl extends BaseServiceImpl<DictItemMapper, DictIte
     /**
      * 按字典类型编码 查询字典选项，升序排序
      *
-     * @param dictTypeCode 字典类型编码
+     * @param dictTypeCodes 字典类型编码
      * @return
      */
     @Override
-    public List<DictItemDropdownVO> selectDropdownData(String dictTypeCode) {
-        return baseMapper.selectDropdownData(dictTypeCode);
+    public List<DictDropdownVO> selectDropdownData(List<String> dictTypeCodes) {
+        Set<String> dictTypeCodeSet = new LinkedHashSet<>(dictTypeCodes);
+        List<DictItemDropdownDTO> dictItemDropdownList = baseMapper.selectDropdownData(dictTypeCodeSet);
+        Map<String, List<DictItemDropdownDTO>> dictItemDropdownMap = dictItemDropdownList.stream()
+                .collect(
+                        Collectors.groupingBy(
+                                DictItemDropdownDTO::getDictTypeCode,
+                                LinkedHashMap::new,
+                                Collectors.toList()
+                        )
+                );
+        List<DictDropdownVO> dictDropdownVoList = new ArrayList<>();
+        for (Map.Entry<String, List<DictItemDropdownDTO>> entry : dictItemDropdownMap.entrySet()) {
+            DictDropdownVO vo = new DictDropdownVO();
+            vo.setDictTypeCode(entry.getKey());
+            vo.setOptions(entry.getValue().stream()
+                    .map(dto -> {
+                        DictDropdownVO.OptionVO option = new DictDropdownVO.OptionVO();
+                        option.setValue(dto.getValue());
+                        option.setLabel(dto.getLabel());
+                        option.setIconType(dto.getIconType());
+                        option.setIcon(dto.getIcon());
+                        return option;
+                    })
+                    .toList());
+            dictDropdownVoList.add(vo);
+        }
+
+        return dictDropdownVoList;
     }
 
 
@@ -264,4 +294,14 @@ public class DictItemServiceImpl extends BaseServiceImpl<DictItemMapper, DictIte
         return baseMapper.countByDictTypeId(dictTypeId);
     }
 
+    /**
+     * 查询字典选项的详情
+     *
+     * @param id 字典选项id
+     * @return 字典选项详情
+     */
+    @Override
+    public DictItemDetailVO details(Long id) {
+        return baseMapper.details(id);
+    }
 }

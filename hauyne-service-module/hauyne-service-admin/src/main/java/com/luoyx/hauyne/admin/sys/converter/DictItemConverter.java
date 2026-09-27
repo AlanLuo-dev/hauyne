@@ -4,7 +4,7 @@ import com.luoyx.hauyne.admin.sys.entity.DictItem;
 import com.luoyx.hauyne.admin.sys.request.DictItemCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.DictItemEditDTO;
 import com.luoyx.hauyne.admin.sys.response.DictItemDetailVO;
-import com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO;
+import com.luoyx.hauyne.admin.sys.response.DictItemDropdownDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -38,6 +38,6 @@ public interface DictItemConverter {
 
     @Mapping(target = "label", source = "dictItemCode")
     @Mapping(target = "value", source = "dictItemName")
-    DictItemDropdownVO toDictItemOptionVO(DictItem dictItem);
+    DictItemDropdownDTO toDictItemOptionVO(DictItem dictItem);
 
 }

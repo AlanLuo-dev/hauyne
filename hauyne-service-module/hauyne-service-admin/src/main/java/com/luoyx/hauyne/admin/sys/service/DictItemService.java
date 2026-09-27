@@ -6,7 +6,8 @@ import com.luoyx.hauyne.admin.sys.query.DictItemNameUniqueCheckQuery;
 import com.luoyx.hauyne.admin.sys.query.DictItemQuery;
 import com.luoyx.hauyne.admin.sys.request.DictItemCreateDTO;
 import com.luoyx.hauyne.admin.sys.request.DictItemEditDTO;
-import com.luoyx.hauyne.admin.sys.response.DictItemDropdownVO;
+import com.luoyx.hauyne.admin.sys.response.DictItemDetailVO;
+import com.luoyx.hauyne.admin.sys.response.DictDropdownVO;
 import com.luoyx.hauyne.admin.sys.response.DictItemResultVO;
 import com.luoyx.hauyne.mybatisplus.service.BaseService;
 
@@ -44,7 +45,7 @@ public interface DictItemService extends BaseService<DictItem> {
      * @param dictTypeCode 字典类型编码
      * @return
      */
-    List<DictItemDropdownVO> selectDropdownData(String dictTypeCode);
+    List<DictDropdownVO> selectDropdownData(List<String> dictTypeCodes);
 
     /**
      * 检查 新增字典表单参数
@@ -109,4 +110,11 @@ public interface DictItemService extends BaseService<DictItem> {
 
     int countByDictTypeId(Long dictTypeId);
 
+    /**
+     * 查询字典选项的详情
+     *
+     * @param id 字典选项id
+     * @return 字典选项详情
+     */
+    DictItemDetailVO details(Long id);
 }

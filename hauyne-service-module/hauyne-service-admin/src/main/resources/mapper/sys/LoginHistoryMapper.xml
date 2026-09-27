@@ -57,7 +57,17 @@
                 and sl.browser = #{browser, jdbcType=VARCHAR}
             </if>
             <if test="osName != null and osName != ''">
-                and sl.os_name = #{osName, jdbcType=VARCHAR}
+                <if test="osName == 'Windows'">
+                    <bind name="anyWindows" value="'Windows' + '%'"/>
+                    and sl.os_name like #{anyWindows}
+                </if>
+                <if test="osName == 'macOS'">
+                    <bind name="anyMacOS" value="'macOS' + '%'"/>
+                    and sl.os_name like #{anyMacOS}
+                </if>
+                <if test="osName == 'Linux'">
+                    and (sl.os_name like 'Linux%' or sl.os_name like 'Ubuntu%')
+                </if>
             </if>
             <if test="startTime != null">
                 and sl.login_time <![CDATA[ >= ]]> #{startTime}

@@ -10,6 +10,7 @@ export class LoginHistoryQuery extends PageQuery2 {
     type: number | null = null;
     username: string = '';
     browser: string = '';
+    osName: string | null = null;
     startTime: Date | null = null;
     endTime: Date | null = null;
 
@@ -20,8 +21,10 @@ export class LoginHistoryQuery extends PageQuery2 {
         this.type = null;
         this.username = '';
         this.browser = '';
+        this.osName = null;
         this.startTime = null;
         this.endTime = null;
+        super.reset();
     }
 
     /**

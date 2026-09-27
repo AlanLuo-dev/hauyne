@@ -11,7 +11,7 @@
  Target Server Version : 80033
  File Encoding         : 65001
 
- Date: 26/09/2026 17:11:52
+ Date: 27/09/2026 21:03:02
 */
 
 SET NAMES utf8mb4;
@@ -324,7 +324,7 @@ CREATE TABLE `hyn_sys_dict_item`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_dict_type_id_dict_item_code`(`dict_type_id` ASC, `dict_item_code` ASC) USING BTREE,
   UNIQUE INDEX `uk_dict_type_id_dict_item_name`(`dict_type_id` ASC, `dict_item_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典值' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '数据字典值' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of hyn_sys_dict_item
@@ -333,14 +333,14 @@ INSERT INTO `hyn_sys_dict_item` VALUES (5, 3, 'male', '男', 1, 0, NULL, 1, '295
 INSERT INTO `hyn_sys_dict_item` VALUES (6, 3, 'female', '女', 1, 0, NULL, 2, '', 1, '2023-02-03 20:09:03', 1, '2025-07-16 09:46:22');
 INSERT INTO `hyn_sys_dict_item` VALUES (7, 15, 'menu', '菜单', 1, 0, NULL, 1, '', 1, '2023-03-07 22:26:30', 1, '2024-08-23 22:28:40');
 INSERT INTO `hyn_sys_dict_item` VALUES (8, 15, 'button', '按钮', 1, 0, NULL, 2, '', 1, '2023-03-07 22:26:42', 1, '2024-08-03 16:54:53');
-INSERT INTO `hyn_sys_dict_item` VALUES (15, 42, 'Windows', 'Windows', 1, 0, NULL, 1, '', 1, '2026-09-20 20:31:34', 1, '2026-09-20 20:31:34');
-INSERT INTO `hyn_sys_dict_item` VALUES (16, 42, 'Linux', 'Linux', 1, 0, NULL, 2, '', 1, '2026-09-20 20:31:44', 1, '2026-09-20 20:31:44');
-INSERT INTO `hyn_sys_dict_item` VALUES (17, 42, 'macOS', 'macOS', 1, 0, NULL, 3, '', 1, '2026-09-20 20:32:55', 1, '2026-09-20 20:32:55');
-INSERT INTO `hyn_sys_dict_item` VALUES (18, 43, 'Chrome', '谷歌浏览器', 1, 0, NULL, 1, '', 1, '2026-09-20 20:35:27', 1, '2026-09-22 08:41:17');
-INSERT INTO `hyn_sys_dict_item` VALUES (19, 43, 'Edge', 'Edge浏览器', 1, 0, NULL, 2, '', 1, '2026-09-20 20:36:40', 1, '2026-09-22 08:41:17');
-INSERT INTO `hyn_sys_dict_item` VALUES (20, 43, 'Firefox', '火狐浏览器', 1, 0, NULL, 3, '', 1, '2026-09-20 20:37:13', 1, '2026-09-22 08:41:17');
-INSERT INTO `hyn_sys_dict_item` VALUES (21, 43, 'Opera', '欧朋浏览器', 1, 0, NULL, 5, '', 1, '2026-09-20 20:38:01', 1, '2026-09-22 08:41:17');
-INSERT INTO `hyn_sys_dict_item` VALUES (22, 43, 'Safari', 'Safari浏览器', 1, 0, NULL, 4, '', 1, '2026-09-20 20:39:10', 1, '2026-09-22 08:41:17');
+INSERT INTO `hyn_sys_dict_item` VALUES (15, 42, 'Windows', 'Windows', 1, 1, 'icon-icon-Windows', 1, '', 1, '2026-09-20 20:31:34', 1, '2026-09-27 20:53:45');
+INSERT INTO `hyn_sys_dict_item` VALUES (16, 42, 'Linux', 'Linux', 1, 1, 'icon-Linux', 3, '', 1, '2026-09-20 20:31:44', 1, '2026-09-27 20:53:45');
+INSERT INTO `hyn_sys_dict_item` VALUES (17, 42, 'macOS', 'macOS', 1, 1, 'icon-apple', 2, '', 1, '2026-09-20 20:32:55', 1, '2026-09-27 20:53:45');
+INSERT INTO `hyn_sys_dict_item` VALUES (18, 43, 'Chrome', '谷歌浏览器', 1, 1, 'icon-Chrome', 1, '', 1, '2026-09-20 20:35:27', 1, '2026-09-27 08:38:17');
+INSERT INTO `hyn_sys_dict_item` VALUES (19, 43, 'Edge', 'Edge浏览器', 1, 1, 'icon-a-MicrosoftEdge', 2, '', 1, '2026-09-20 20:36:40', 1, '2026-09-27 08:39:09');
+INSERT INTO `hyn_sys_dict_item` VALUES (20, 43, 'Firefox', '火狐浏览器', 1, 1, 'icon-firefox', 3, '', 1, '2026-09-20 20:37:13', 1, '2026-09-27 08:38:32');
+INSERT INTO `hyn_sys_dict_item` VALUES (21, 43, 'Opera', '欧朋浏览器', 1, 1, 'icon-opera', 5, '', 1, '2026-09-20 20:38:01', 1, '2026-09-27 08:39:22');
+INSERT INTO `hyn_sys_dict_item` VALUES (22, 43, 'Safari', 'Safari浏览器', 1, 1, 'icon-Safariliulanqi', 4, '', 1, '2026-09-20 20:39:10', 1, '2026-09-27 08:38:48');
 
 -- ----------------------------
 -- Table structure for hyn_sys_dict_type
