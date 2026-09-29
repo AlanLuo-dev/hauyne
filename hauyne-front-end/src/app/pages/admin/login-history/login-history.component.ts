@@ -135,11 +135,27 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     search(): void {
-        this.loadData();
+        if (this.query.pageIndex === 1) {
+            this.loadData();
+        } else {
+            // 页码改变会通过 [(nzPageIndex)] 触发 nzQueryParams 事件，从而自动调用 loadData()
+            this.query.pageIndex = 1;
+        }
     }
 
     reset(): void {
-        this.query.resetFilter();
+        const isAlreadyFirstPage = this.query.pageIndex === 1;
+
+        // 1. 调用通用重置逻辑
+        this.query = new LoginHistoryQuery();
+
+        // 2. 状态判断：若原本就在第 1 页，nzQueryParams 判定页码没变不会触发，需要显式加载
+        if (isAlreadyFirstPage) {
+            this.loadData();
+        } else {
+            // 若原本不在第 1 页，设置为 1 会自动触发 (nzQueryParams) -> onQueryParamsChange -> loadData()
+            this.query.pageIndex = 1;
+        }
     }
 
     private loadData(): void {

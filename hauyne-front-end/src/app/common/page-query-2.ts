@@ -52,15 +52,4 @@ export class PageQuery2 {
                 return newObj;
             }, {} as { [key: string]: any });
     }
-
-    /**
-     * 重置分页、排序及表格筛选条件
-     */
-    reset(): void {
-        this.pageIndex = 1;
-        this.pageSize = 20;
-        this.sortField = null;
-        this.sortOrder = null;
-        this.filter = [];
-    }
 }

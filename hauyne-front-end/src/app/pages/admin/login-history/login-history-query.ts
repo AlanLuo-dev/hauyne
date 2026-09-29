@@ -8,24 +8,11 @@ export class LoginHistoryQuery extends PageQuery2 {
 
     // 模板直接绑定的筛选条件
     type: number | null = null;
-    username: string = '';
-    browser: string = '';
+    username: string | null = null;
+    browser: string | null = null;
     osName: string | null = null;
     startTime: Date | null = null;
     endTime: Date | null = null;
-
-    /**
-     * 重置筛选条件（保留分页参数）
-     */
-    resetFilter(): void {
-        this.type = null;
-        this.username = '';
-        this.browser = '';
-        this.osName = null;
-        this.startTime = null;
-        this.endTime = null;
-        super.reset();
-    }
 
     /**
      * 重写 HttpParams 序列化逻辑，在此处自动对 Date 进行格式化
