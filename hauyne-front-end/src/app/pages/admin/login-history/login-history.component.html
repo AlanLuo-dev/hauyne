@@ -67,7 +67,7 @@
             </button>
             <!-- 展开 / 折叠 切换链接 -->
             <a class="collapse-toggle" (click)="toggleCollapse()">
-                {{ isCollapse ? '高级筛选' : '收起' }}
+                <span>{{ isCollapse ? '高级筛选' : '收起' }}</span>
                 <span nz-icon [nzType]="isCollapse ? 'down' : 'up'"></span>
             </a>
         </div>

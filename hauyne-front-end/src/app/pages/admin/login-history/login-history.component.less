@@ -44,6 +44,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0; /* 防止按钮组被压缩抖动 */
 
             .collapse-toggle {
                 font-size: 13px;
@@ -52,7 +53,13 @@
                 margin-left: 4px;
                 display: inline-flex;
                 align-items: center;
+                justify-content: center; /* 图标与文字居中对齐 */
                 gap: 2px;
+
+                /* ⚠️ 核心解决点：固定宽度并禁止收缩，防止“高级筛选”与“收起”字数不一引发抖动 */
+                width: 72px;
+                flex-shrink: 0;
+                white-space: nowrap;
 
                 &:hover {
                     color: #40a9ff;
