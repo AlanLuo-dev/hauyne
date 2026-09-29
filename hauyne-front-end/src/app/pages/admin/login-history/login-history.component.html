@@ -1,61 +1,80 @@
 <div class="search-form-container">
-    <div class="right-filter-group">
-        <!-- 1. 类型单选 -->
-        <div class="filter-item">
-            <span class="filter-label">类型：</span>
-            <nz-radio-group [(ngModel)]="query.type"
-                            nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
-            >
-                <label nz-radio-button [nzValue]="1">登录</label>
-                <label nz-radio-button [nzValue]="0">注销</label>
-            </nz-radio-group>
+    <!-- 1. 常驻主行（第一行） -->
+    <div class="main-filter-row">
+        <div class="filter-items-group">
+            <!-- 1.1 类型单选 -->
+            <div class="filter-item">
+                <span class="filter-label">类型：</span>
+                <nz-radio-group [(ngModel)]="query.type"
+                                nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                    <label nz-radio-button [nzValue]="1">登录</label>
+                    <label nz-radio-button [nzValue]="0">注销</label>
+                </nz-radio-group>
+            </div>
+
+            <!-- 1.2 用户名输入 -->
+            <div class="filter-item">
+                <span class="filter-label">用户名：</span>
+                <input nz-input [(ngModel)]="query.username"
+                       nzSize="small" placeholder="输入用户名" (keyup.enter)="search()"/>
+            </div>
+
+            <!-- 1.3 浏览器选择 -->
+            <div class="filter-item">
+                <span class="filter-label">浏览器：</span>
+                <nz-radio-group [(ngModel)]="query.browser"
+                                nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                    @for (item of browserOptions; track item.value) {
+                        <label nz-radio-button [nzValue]="item.value">
+                            <span nz-icon
+                                  [nzIconfont]="item.icon"
+                                  nzTheme="fill"
+                                  class="tech-icon"
+                                  nz-tooltip
+                                  [nzTooltipTitle]="item.label">
+                            </span>
+                        </label>
+                    }
+                </nz-radio-group>
+            </div>
+
+            <!-- 1.4 操作系统选择 -->
+            <div class="filter-item">
+                <span class="filter-label">操作系统：</span>
+                <nz-radio-group [(ngModel)]="query.osName" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                    @for (item of osOptions; track item.value) {
+                        <label nz-radio-button [nzValue]="item.value">
+                            <span nz-icon
+                                  [nzIconfont]="item.icon"
+                                  nzTheme="outline"
+                                  class="tech-icon"
+                                  nz-tooltip
+                                  [nzTooltipTitle]="item.label">
+                            </span>
+                        </label>
+                    }
+                </nz-radio-group>
+            </div>
         </div>
 
-        <!-- 2. 用户名输入 -->
-        <div class="filter-item">
-            <span class="filter-label">用户名：</span>
-            <input nz-input [(ngModel)]="query.username"
-                   nzSize="small" class="filter-input" placeholder="输入用户名" (keyup.enter)="search()"/>
+        <!-- 1.5 按钮组（含展开/收起切换） -->
+        <div class="button-group">
+            <button nz-button nzType="primary" nzSize="small" (click)="search()">
+                <span nz-icon nzType="search" nzTheme="outline"></span>查询
+            </button>
+            <button nz-button nzSize="small" (click)="reset()">
+                <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+            </button>
+            <!-- 展开 / 折叠 切换链接 -->
+            <a class="collapse-toggle" (click)="toggleCollapse()">
+                {{ isCollapse ? '高级筛选' : '收起' }}
+                <span nz-icon [nzType]="isCollapse ? 'down' : 'up'"></span>
+            </a>
         </div>
+    </div>
 
-        <!-- 3. 浏览器输入 -->
-        <div class="filter-item">
-            <span class="filter-label">浏览器：</span>
-            <nz-radio-group [(ngModel)]="query.browser"
-                            nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
-            >
-                @for (item of browserOptions; track item.value) {
-                    <label nz-radio-button [nzValue]="item.value">
-                        <span nz-icon
-                              [nzIconfont]="item.icon"
-                              nzTheme="fill"
-                              class="tech-icon"
-                              nz-tooltip
-                              [nzTooltipTitle]="item.label">
-                        </span>
-                    </label>
-                }
-            </nz-radio-group>
-        </div>
-
-        <!-- 操作系统 -->
-        <div class="filter-item">
-            <span class="filter-label">操作系统：</span>
-            <nz-radio-group [(ngModel)]="query.osName" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
-                @for (item of osOptions; track item.value) {
-                    <label nz-radio-button [nzValue]="item.value">
-                        <span nz-icon
-                              [nzIconfont]="item.icon"
-                              nzTheme="fill"
-                              class="tech-icon"
-                              nz-tooltip
-                              [nzTooltipTitle]="item.label">
-                        </span>
-                    </label>
-                }
-            </nz-radio-group>
-        </div>
-
+    <!-- 2. 展开行（第二行：登录时间范围） -->
+    <div class="extra-filter-row" [hidden]="isCollapse">
         <div class="filter-item">
             <span class="filter-label">登录时间范围：</span>
             <nz-date-picker [(ngModel)]="query.startTime"
@@ -71,16 +90,6 @@
                             nzShowTime
                             nzFormat="yyyy-MM-dd HH:mm:ss"
             />
-        </div>
-
-        <!-- 4. 按钮组 -->
-        <div class="button-group">
-            <button nz-button nzType="primary" nzSize="small" (click)="search()">
-                <span nz-icon nzType="search" nzTheme="outline"></span>查询
-            </button>
-            <button nz-button nzSize="small" (click)="reset()">
-                <span nz-icon nzType="reload" nzTheme="outline"></span>重置
-            </button>
         </div>
     </div>
 </div>

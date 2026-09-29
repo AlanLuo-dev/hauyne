@@ -7,43 +7,67 @@
 
 .search-form-container {
     flex: 0 0 auto;
-    padding: 8px 16px;
-    margin-bottom: 16px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
     background: #fbfbfb;
     border: 1px solid #d9d9d9;
     border-radius: 6px;
 
-    display: flex;
-    justify-content: flex-end; /* 靠右对齐 */
-    align-items: center;
-
-    .right-filter-group {
+    /* 共享的 filter-item 基础样式 */
+    .filter-item {
         display: flex;
         align-items: center;
-        flex-wrap: wrap;
+        white-space: nowrap;
+
+        .filter-label {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.85);
+            margin-right: 6px;
+        }
+    }
+
+    /* 第一行：主过滤区 + 按钮 */
+    .main-filter-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between; /* 选项靠左，按钮靠右 */
         gap: 16px;
 
-        .filter-item {
+        .filter-items-group {
             display: flex;
             align-items: center;
-            white-space: nowrap;
-
-            .filter-label {
-                font-size: 14px;
-                color: rgba(0, 0, 0, 0.85);
-                margin-right: 8px;
-            }
-
-            .filter-input {
-                width: 150px;
-            }
+            flex-wrap: wrap;
+            gap: 12px 16px;
         }
 
         .button-group {
             display: flex;
             align-items: center;
             gap: 8px;
+
+            .collapse-toggle {
+                font-size: 13px;
+                color: #1890ff;
+                user-select: none;
+                margin-left: 4px;
+                display: inline-flex;
+                align-items: center;
+                gap: 2px;
+
+                &:hover {
+                    color: #40a9ff;
+                }
+            }
         }
+    }
+
+    /* 第二行：展开的高级过滤区（时间范围） */
+    .extra-filter-row {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed #e8e8e8; /* 增加虚线区分折叠区域 */
+        display: flex;
+        align-items: center;
     }
 }
 

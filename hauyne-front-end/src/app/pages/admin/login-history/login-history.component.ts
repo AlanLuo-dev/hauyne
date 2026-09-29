@@ -170,4 +170,13 @@ export class LoginHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
+    // 默认折叠（不显示时间范围）
+    isCollapse: boolean = true;
+
+    // 切换折叠状态
+    toggleCollapse(): void {
+        this.isCollapse = !this.isCollapse;
+        // 展开/收起改变了搜索框物理高度，必须重新触发表格高度自适应计算
+        setTimeout(() => this.calculateTableScrollY(), 0);
+    }
 }
