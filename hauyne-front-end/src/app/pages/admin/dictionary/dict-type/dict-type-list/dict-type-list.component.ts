@@ -41,6 +41,8 @@ import {DeletedDictTypeListComponent} from "../deleted-dict-type-list/deleted-di
 import {finalize, Observable} from "rxjs";
 import {AuthorityDirective} from "../../../../../directives/authority.directive";
 import {EnumOption} from "../../../../../common/enum-option";
+import {LoginHistoryQuery} from "../../../login-history/login-history-query";
+import {LoginHistory} from "../../../login-history/login-history.component";
 
 export interface DictType extends AuditInfo {
     id: number,
@@ -99,14 +101,7 @@ export class DictTypeListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // 总记录数
     totalRecords: number = 0;
-    pageSize: number = 20;
-
-    // 过滤条件
-    _dictTypeCode: string = '';
-    _dictTypeName: string = '';
-    selectedEnabled: boolean | null = null;
-    selectedBuiltin: boolean | null = null;
-    selectedIconType: string | null = null;
+    query: DictTypeQuery = new DictTypeQuery();
 
     builtInOption: any[] = [
         {value: false, label: '自定义', icon: 'unlock', class: 'sys-status-custom'},
@@ -244,24 +239,37 @@ export class DictTypeListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     search(): void {
-        this.onQueryParamsChange(this.dictTypeService.createLazyLoadMetaData(this.pageSize));
+        if (this.query.pageIndex === 1) {
+            this.loadData();
+        } else {
+            // 页码改变会通过 [(nzPageIndex)] 触发 nzQueryParams 事件，从而自动调用 loadData()
+            this.query.pageIndex = 1;
+        }
     }
 
     reset(): void {
-        this._dictTypeCode = '';
-        this._dictTypeName = '';
-        this.selectedEnabled = null;
-        this.selectedBuiltin = null;
-        this.selectedIconType = null;
-        this.search();
+        const isAlreadyFirstPage = this.query.pageIndex === 1;
+
+        // 1. 调用通用重置逻辑
+        this.query = new DictTypeQuery();
+
+        // 2. 状态判断：若原本就在第 1 页，nzQueryParams 判定页码没变不会触发，需要显式加载
+        if (isAlreadyFirstPage) {
+            this.loadData();
+        } else {
+            // 若原本不在第 1 页，设置为 1 会自动触发 (nzQueryParams) -> onQueryParamsChange -> loadData()
+            this.query.pageIndex = 1;
+        }
     }
 
     onQueryParamsChange(queryParams: NzTableQueryParams): void {
-        this.pageSize = queryParams.pageSize;
-        this._loading = true;
+        this.query.updateQueryParams(queryParams);
+        this.loadData();
+    }
 
-        let query: DictTypeQuery = new DictTypeQuery(queryParams, this._dictTypeCode, this._dictTypeName, this.selectedEnabled, this.selectedBuiltin, this.selectedIconType);
-        this.dictTypeService.loadPageData<DictType, DictTypeQuery>(query).subscribe({
+    private loadData(): void {
+        this._loading = true;
+        this.dictTypeService.loadPageData2<DictType, DictTypeQuery>(this.query).subscribe({
             next: (res) => {
                 this._loading = false;
                 this.listOfDictType = res.rows;

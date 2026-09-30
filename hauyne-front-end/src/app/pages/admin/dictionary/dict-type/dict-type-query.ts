@@ -1,21 +1,9 @@
-import {NzTableQueryParams} from "ng-zorro-antd/table";
-import {PageQuery} from "../../../../common/page-query";
+import {PageQuery2} from "../../../../common/page-query-2";
 
-export class DictTypeQuery extends PageQuery {
-    dictTypeCode: string;
-    dictTypeName: string;
+export class DictTypeQuery extends PageQuery2 {
+    dictTypeCode: string | null = null;
+    dictTypeName: string | null = null;
     enabled?: boolean | null;
     builtin?: boolean | null;
     iconType?: string | null;
-
-    constructor(queryParams: NzTableQueryParams, dictTypeCode: string, dictTypeName: string, enabled: boolean| null,
-                builtin: boolean | null, iconType?: string | null) {
-        super(queryParams);
-        this.dictTypeCode = dictTypeCode;
-        this.dictTypeName = dictTypeName;
-        this.enabled = enabled;
-        this.builtin = builtin;
-        this.iconType = iconType;
-    }
-
 }

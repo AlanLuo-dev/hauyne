@@ -4,26 +4,26 @@
         <!-- 编码查询 -->
         <div class="search-item">
             <span class="search-label">字典类型编码:</span>
-            <input nz-input [(ngModel)]="_dictTypeCode" placeholder="请输入编码" nzSize="small" class="search-input" />
+            <input nz-input [(ngModel)]="query.dictTypeCode" placeholder="请输入编码" nzSize="small" class="search-input" />
         </div>
 
         <!-- 名称查询 -->
         <div class="search-item">
             <span class="search-label">字典类型名称:</span>
-            <input nz-input [(ngModel)]="_dictTypeName" placeholder="请输入名称" nzSize="small" class="search-input" />
+            <input nz-input [(ngModel)]="query.dictTypeName" placeholder="请输入名称" nzSize="small" class="search-input" />
         </div>
 
         <!-- 状态查询 -->
         <div class="search-item">
             <span class="search-label">启用状态:</span>
-            <nz-radio-group [(ngModel)]="selectedEnabled" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+            <nz-radio-group [(ngModel)]="query.enabled" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
                 <label nz-radio-button nzValue="true">已启用</label>
                 <label nz-radio-button nzValue="false">已禁用</label>
             </nz-radio-group>
         </div>
         <div class="search-item">
             <span class="search-label">是否系统内置：</span>
-            <nz-radio-group [(ngModel)]="selectedBuiltin" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+            <nz-radio-group [(ngModel)]="query.builtin" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
                 @for (item of builtInOption; track item) {
                     <label nz-radio-button [nzValue]="item.value">
                             <span nz-icon [nzType]="item.icon" nzTheme="fill"
@@ -36,7 +36,7 @@
         <!-- 图标类型查询 -->
         <div class="search-item">
             <span class="search-label">图标类型：</span>
-            <nz-radio-group [(ngModel)]="selectedIconType" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+            <nz-radio-group [(ngModel)]="query.iconType" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
                 @for (item of iconTypeOptions; track item) {
                     <label nz-radio-button [nzValue]="item.value">{{ item.label }}</label>
                 }
@@ -69,7 +69,8 @@
         [nzLoading]="_loading"
         [nzTotal]="totalRecords"
         [nzShowTotal]="totalTemplate"
-        [nzPageSize]="pageSize"
+        [(nzPageIndex)]="query.pageIndex"
+        [(nzPageSize)]="query.pageSize"
         nzSize="small"
         [nzTitle]="tableHeaderTemplate"
         (nzQueryParams)="onQueryParamsChange($event)"

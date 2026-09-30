@@ -13,7 +13,7 @@
                     <nz-form-item class="ant-form-item">
                         <nz-form-label [nzFor]="'dictTypeCode'">字典类型编码</nz-form-label>
                         <nz-form-control>
-                            <input nz-input [attr.id]="'dictTypeCode'" [(ngModel)]="_dictTypeCode"
+                            <input nz-input [attr.id]="'dictTypeCode'" [(ngModel)]="query.dictTypeCode"
                                    [ngModelOptions]="{standalone: true}" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
@@ -22,7 +22,7 @@
                     <nz-form-item class="ant-form-item">
                         <nz-form-label [nzFor]="'dictTypeName'">字典类型名称</nz-form-label>
                         <nz-form-control>
-                            <input nz-input [attr.id]="'dictTypeName'" [(ngModel)]="_dictTypeName"
+                            <input nz-input [attr.id]="'dictTypeName'" [(ngModel)]="query.dictTypeName"
                                    [ngModelOptions]="{standalone: true}" nzSize="small"/>
                         </nz-form-control>
                     </nz-form-item>
@@ -31,7 +31,7 @@
                     <nz-form-item class="ant-form-item">
                         <nz-form-label [nzFor]="'dictTypeName'">是否已启用</nz-form-label>
                         <nz-form-control>
-                            <nz-radio-group [(ngModel)]="selectedEnabled" [ngModelOptions]="{standalone: true}"
+                            <nz-radio-group [(ngModel)]="query.enabled" [ngModelOptions]="{standalone: true}"
                                             nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()"
                             >
                                 <label nz-radio-button nzValue="true">已启用</label>
@@ -64,7 +64,8 @@
                 [nzFrontPagination]="false"
                 [nzLoading]="_loading"
                 [nzTotal]="totalRecords"
-                [nzPageSize]="pageSize"
+                [(nzPageIndex)]="query.pageIndex"
+                [(nzPageSize)]="query.pageSize"
                 nzSize="small"
                 (nzQueryParams)="onQueryParamsChange($event)"
             >
