@@ -39,10 +39,8 @@
                                [(ngModel)]="selectedAuthorityType" [ngModelOptions]="{standalone: true}"
                                (ngModelChange)="onSelectChange($event)" nzSize="small"
                     >
-                        @for (option of authorityTypeOptions; track option) {
-                            <nz-option
-                                [nzValue]="option.value" [nzLabel]="option.label">
-                            </nz-option>
+                        @for (option of authorityTypeOptions; track option.value) {
+                            <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
                         }
                     </nz-select>
                     <ng-template #authorityTypeErrTpl>

@@ -20,7 +20,7 @@
                     <div class="filter-item">
                         <span class="filter-label">权限类型：</span>
                         <nz-radio-group [(ngModel)]="authorityType" [ngModelOptions]="{standalone: true}" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
-                            @for (item of authorityTypeOption; track item) {
+                            @for (item of authorityTypeOptions; track item.value) {
                                 <label nz-radio-button [nzValue]="item.value">{{ item.label }}</label>
                             }
                         </nz-radio-group>

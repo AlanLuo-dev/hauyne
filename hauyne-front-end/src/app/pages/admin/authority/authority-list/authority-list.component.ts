@@ -28,6 +28,7 @@ import {DictTypeService} from "../../dictionary/dict-type/dict-type.service";
 import {AuthorityEditFormComponent} from "../authority-edit-form/authority-edit-form.component";
 import {finalize, Observable} from "rxjs";
 import {EnumOption} from "../../../../common/enum-option";
+import {Option} from "../../dictionary/dict-type/dict-dropdown";
 
 export interface Authority extends AuditInfo {
     // key: string;
@@ -134,7 +135,7 @@ export class AuthorityListComponent implements OnInit, AfterViewInit, OnDestroy 
     authorityName: string = '';
     authorityType: string = '';
 
-    authorityTypeOption: any[] = [];
+    authorityTypeOptions: Option[] = [];
 
     // 用于记录展开状态的集合
     expandedNodes: Set<number> = new Set<number>();
@@ -165,10 +166,10 @@ export class AuthorityListComponent implements OnInit, AfterViewInit, OnDestroy 
                 private readonly dictTypeService: DictTypeService,
                 private readonly messageService: NzMessageService,
                 private readonly cdr: ChangeDetectorRef) {
-
-        this.dictTypeService.loadDropdownData('authority_type').subscribe(res => {
-            this.authorityTypeOption = res;
-        })
+        this.dictTypeService.loadDropdownData(['authority_type'])
+            .subscribe(res => {
+                this.authorityTypeOptions = res[0]?.options ?? [];
+            });
     }
 
     @HostListener('window:resize')

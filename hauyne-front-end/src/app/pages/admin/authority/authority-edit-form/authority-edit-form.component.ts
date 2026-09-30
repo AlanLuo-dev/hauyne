@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {filter, map, startWith, Subject, take, tap} from "rxjs";
 import {switchMap} from "rxjs/operators";
@@ -15,6 +15,7 @@ import {NzOptionComponent, NzSelectComponent} from "ng-zorro-antd/select";
 import {IconPickerComponent} from "../icon-picker/icon-picker.component";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
+import {Option} from "../../dictionary/dict-type/dict-dropdown";
 
 @Component({
     selector: 'app-authority-edit-form',
@@ -65,7 +66,7 @@ export class AuthorityEditFormComponent implements OnInit {
     /**
      * 权限类型下拉列表
      */
-    authorityTypeOptions: any[] = [];
+    authorityTypeOptions: Option[] = [];
 
     selectedAuthorityType: string = '';
 
@@ -77,9 +78,9 @@ export class AuthorityEditFormComponent implements OnInit {
                 private authorityService: AuthorityService,
                 private dictTypeService: DictTypeService,
                 private messageService: NzMessageService) {
-        this.dictTypeService.loadDropdownData("authority_type")
+        this.dictTypeService.loadDropdownData(["authority_type"])
             .subscribe(data => {
-                this.authorityTypeOptions = data;
+                this.authorityTypeOptions = data[0]?.options ?? [];
             });
 
         this.authorityForm = this.fb.group({
