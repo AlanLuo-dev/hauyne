@@ -24,5 +24,5 @@ public class RoleQuery extends PageQuery {
     private String roleName;
 
     @Schema(description = "是否内置")
-    private YesNoEnum builtIn;
+    private YesNoEnum builtin;
 }

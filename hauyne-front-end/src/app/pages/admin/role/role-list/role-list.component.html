@@ -18,17 +18,17 @@
         <div class="right-filter-group">
             <div class="filter-item">
                 <span class="filter-label">角色编码：</span>
-                <input nz-input [(ngModel)]="roleCode" nzSize="small" class="filter-input" />
+                <input nz-input [(ngModel)]="query.roleCode" nzSize="small" class="filter-input" />
             </div>
 
             <div class="filter-item">
                 <span class="filter-label">角色名称：</span>
-                <input nz-input [(ngModel)]="roleName" nzSize="small" class="filter-input" />
+                <input nz-input [(ngModel)]="query.roleName" nzSize="small" class="filter-input" />
             </div>
 
             <div class="filter-item">
                 <span class="filter-label">是否内置：</span>
-                <nz-radio-group [(ngModel)]="builtIn" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
+                <nz-radio-group [(ngModel)]="query.builtin" nzSize="small" nzButtonStyle="solid" (ngModelChange)="search()">
                     @for (item of builtInOption; track item) {
                         <label nz-radio-button [nzValue]="item.value">
                             <span nz-icon [nzType]="item.icon" nzTheme="fill"
@@ -43,7 +43,7 @@
                 <button nz-button nzType="primary" nzSize="small" (click)="search()" *appAuthority="'sys-role:find-page'">
                     <span nz-icon nzType="search" nzTheme="outline"></span>查询
                 </button>
-                <button nz-button nzSize="small" (click)="resetForm()" *appAuthority="'sys-role:find-page'">
+                <button nz-button nzSize="small" (click)="reset()" *appAuthority="'sys-role:find-page'">
                     <span nz-icon nzType="reload" nzTheme="outline"></span>重置
                 </button>
             </div>
@@ -64,7 +64,8 @@
         [nzLoading]="loading"
         [nzTotal]="total"
         [nzShowTotal]="totalTemplate"
-        [nzPageSize]="pageSize"
+        [(nzPageIndex)]="query.pageIndex"
+        [(nzPageSize)]="query.pageSize"
         nzSize="small"
         (nzQueryParams)="onQueryParamsChange($event)"
         [nzScroll]="{y: tableScrollY }"

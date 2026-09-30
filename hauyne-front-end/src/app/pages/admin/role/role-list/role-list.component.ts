@@ -5,7 +5,6 @@ import {NzInputDirective} from "ng-zorro-antd/input";
 import {NzButtonComponent} from "ng-zorro-antd/button";
 import {NzIconDirective} from "ng-zorro-antd/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {PageQuery} from "../../../../common/page-query";
 import {RoleEditFormComponent} from "../role-edit-form/role-edit-form.component";
 import {NzModalService} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
@@ -18,6 +17,7 @@ import {EventlogListComponent} from "../../../eventlog/eventlog-list/eventlog-li
 import {RoleConfigAuthorityComponent} from "../role-config-authority/role-config-authority.component";
 import {EnumOption} from "../../../../common/enum-option";
 import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
+import {PageQuery2} from "../../../../common/page-query-2";
 
 export interface Role extends AuditInfo {
     id: number;
@@ -28,12 +28,7 @@ export interface Role extends AuditInfo {
 }
 
 
-interface SearchParam {
-    roleCode: string;
-    roleName: string;
-}
-
-class RoleQuery extends PageQuery {
+class RoleQuery extends PageQuery2 {
     /**
      * 角色编码
      */
@@ -47,17 +42,7 @@ class RoleQuery extends PageQuery {
     /**
      * 是否系统内置
      */
-    builtIn: boolean | null = null;
-
-    constructor(queryParams: NzTableQueryParams,
-                roleCode: string | null = null,
-                roleName: string | null = null,
-                builtIn: boolean | null = null) {
-        super(queryParams);
-        this.roleCode = roleCode;
-        this.roleName = roleName;
-        this.builtIn = builtIn;
-    }
+    builtin: boolean | null = null;
 }
 
 @Component({
@@ -78,7 +63,6 @@ export class RoleListComponent implements AfterViewInit, OnDestroy {
     // 数据结果
     listOfRole: Role[] = [];
 
-    pageSize: number = 20;
     total: number = 0;
 
     loading = true;
@@ -87,9 +71,7 @@ export class RoleListComponent implements AfterViewInit, OnDestroy {
     indeterminate = false;
     setOfCheckedId: Set<number> = new Set<number>();
 
-    roleCode: string | null = null;
-    roleName: string | null = null;
-    builtIn: boolean | null = null;
+    query: RoleQuery = new RoleQuery();
 
     builtInOption: any[] = [
         {value: false, label: '自定义', icon: 'unlock', class: 'sys-status-custom'},
@@ -172,22 +154,39 @@ export class RoleListComponent implements AfterViewInit, OnDestroy {
         this.tableScrollY = `${Math.max(calculatedHeight, 100)}px`;
     }
 
+
     search(): void {
-        this.onQueryParamsChange(this.roleService.createLazyLoadMetaData(this.pageSize));
+        if (this.query.pageIndex === 1) {
+            this.loadData();
+        } else {
+            // 页码改变会通过 [(nzPageIndex)] 触发 nzQueryParams 事件，从而自动调用 loadData()
+            this.query.pageIndex = 1;
+        }
     }
 
-    resetForm(): void {
-        this.roleCode = null;
-        this.roleName = null;
-        this.builtIn = null;
-        this.search();
+    reset(): void {
+        const isAlreadyFirstPage = this.query.pageIndex === 1;
+
+        // 1. 调用通用重置逻辑
+        this.query = new RoleQuery();
+
+        // 2. 状态判断：若原本就在第 1 页，nzQueryParams 判定页码没变不会触发，需要显式加载
+        if (isAlreadyFirstPage) {
+            this.loadData();
+        } else {
+            // 若原本不在第 1 页，设置为 1 会自动触发 (nzQueryParams) -> onQueryParamsChange -> loadData()
+            this.query.pageIndex = 1;
+        }
     }
 
     onQueryParamsChange(queryParams: NzTableQueryParams): void {
-        this.pageSize = queryParams.pageSize;
-        const roleQuery: RoleQuery = new RoleQuery(queryParams, this.roleCode, this.roleName, this.builtIn);
+        this.query.updateQueryParams(queryParams);
+        this.loadData();
+    }
+
+    private loadData(): void {
         this.loading = true;
-        this.roleService.loadPageData<Role, RoleQuery>(roleQuery)
+        this.roleService.loadPageData2<Role, RoleQuery>(this.query)
             .subscribe({
                 next: (value) => {
                     this.listOfRole = value.rows;
