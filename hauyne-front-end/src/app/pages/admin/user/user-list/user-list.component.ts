@@ -7,24 +7,24 @@ import {
     OnInit,
     ViewChild
 } from '@angular/core';
-import { PageQuery } from "../../../../common/page-query";
-import { NzTableModule, NzTableQueryParams } from "ng-zorro-antd/table";
-import { NzModalService } from "ng-zorro-antd/modal";
-import { NzMessageService } from "ng-zorro-antd/message";
-import { UserService } from "../user.service";
-import { FormsModule } from "@angular/forms";
-import { NzButtonModule } from "ng-zorro-antd/button";
-import { NzIconModule } from "ng-zorro-antd/icon";
-import { NzInputModule } from "ng-zorro-antd/input";
-import { RoleService } from "../../role/role.service";
-import { NzSelectModule } from "ng-zorro-antd/select";
-import { UserEditFormComponent } from "../user-edit-form/user-edit-form.component";
-import { RoleDropdown } from "../../role/role-dropdown";
-import { NzPopconfirmModule } from "ng-zorro-antd/popconfirm";
-import { NzTooltipModule } from "ng-zorro-antd/tooltip";
-import { finalize, Observable } from "rxjs";
-import { ResetPasswordComponent } from "../reset-password/reset-password.component";
-import { EnumOption } from "../../../../common/enum-option";
+import {NzTableModule, NzTableQueryParams} from "ng-zorro-antd/table";
+import {NzModalService} from "ng-zorro-antd/modal";
+import {NzMessageService} from "ng-zorro-antd/message";
+import {UserService} from "../user.service";
+import {FormsModule} from "@angular/forms";
+import {NzButtonModule} from "ng-zorro-antd/button";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {NzInputModule} from "ng-zorro-antd/input";
+import {RoleService} from "../../role/role.service";
+import {NzSelectModule} from "ng-zorro-antd/select";
+import {UserEditFormComponent} from "../user-edit-form/user-edit-form.component";
+import {RoleDropdown} from "../../role/role-dropdown";
+import {NzPopconfirmModule} from "ng-zorro-antd/popconfirm";
+import {NzTooltipModule} from "ng-zorro-antd/tooltip";
+import {finalize, Observable} from "rxjs";
+import {ResetPasswordComponent} from "../reset-password/reset-password.component";
+import {EnumOption} from "../../../../common/enum-option";
+import {UserQuery} from "./user-query";
 
 export interface User {
     id: number;
@@ -46,36 +46,6 @@ export interface User {
     builtin: EnumOption<boolean>;
     createdTime: string;
     lastUpdatedTime: string;
-}
-
-export class UserQuery extends PageQuery {
-    username: string;
-    roleCode: string;
-    nickname: string;
-    realName: string;
-    gender: number | null = null;
-    phone: string;
-    enabled: boolean | null = null;
-
-    constructor(
-        queryParams: NzTableQueryParams,
-        username: string,
-        roleCode: string,
-        nickname: string,
-        realName: string,
-        gender: number | null,
-        phone: string,
-        enabled: boolean | null
-    ) {
-        super(queryParams);
-        this.username = username;
-        this.roleCode = roleCode;
-        this.nickname = nickname;
-        this.realName = realName;
-        this.gender = gender;
-        this.phone = phone;
-        this.enabled = enabled;
-    }
 }
 
 @Component({
@@ -101,19 +71,10 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     // 数据结果
     listOfUser: User[] = [];
 
-    pageIndex: number = 1;
-    pageSize: number = 10;
     total: number = 0;
     loading: boolean = true;
 
-    /* 过滤条件 */
-    username: string = '';
-    roleCode: string = '';
-    nickname: string = '';
-    realName: string = '';
-    gender: number | null = null;
-    phone: string = '';
-    enabled: boolean | null = null;
+    query: UserQuery = new UserQuery();
 
     roles: RoleDropdown[] = [];
 
@@ -181,52 +142,37 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     search(): void {
-        if (this.pageIndex === 1) {
+        if (this.query.pageIndex === 1) {
             this.loadData();
         } else {
-            this.pageIndex = 1;
+            // 页码改变会通过 [(nzPageIndex)] 触发 nzQueryParams 事件，从而自动调用 loadData()
+            this.query.pageIndex = 1;
         }
     }
 
-    resetForm(): void {
-        const isAlreadyFirstPage = this.pageIndex === 1;
+    reset(): void {
+        const isAlreadyFirstPage = this.query.pageIndex === 1;
 
-        this.username = '';
-        this.roleCode = '';
-        this.nickname = '';
-        this.realName = '';
-        this.gender = null;
-        this.phone = '';
-        this.enabled = null;
+        // 1. 调用通用重置逻辑
+        this.query = new UserQuery();
 
+        // 2. 状态判断：若原本就在第 1 页，nzQueryParams 判定页码没变不会触发，需要显式加载
         if (isAlreadyFirstPage) {
             this.loadData();
         } else {
-            this.pageIndex = 1;
+            // 若原本不在第 1 页，设置为 1 会自动触发 (nzQueryParams) -> onQueryParamsChange -> loadData()
+            this.query.pageIndex = 1;
         }
     }
 
     onQueryParamsChange(queryParams: NzTableQueryParams): void {
-        this.pageSize = queryParams.pageSize;
-        this.pageIndex = queryParams.pageIndex;
-        this.loadData(queryParams);
+        this.query.updateQueryParams(queryParams);
+        this.loadData();
     }
 
-    private loadData(queryParams?: NzTableQueryParams): void {
-        const params = queryParams || this.userService.createLazyLoadMetaData(this.pageSize);
-        const userQuery = new UserQuery(
-            params,
-            this.username,
-            this.roleCode,
-            this.nickname,
-            this.realName,
-            this.gender,
-            this.phone,
-            this.enabled
-        );
-
+    private loadData(): void {
         this.loading = true;
-        this.userService.loadPageData<User, UserQuery>(userQuery).subscribe({
+        this.userService.loadPageData2<User, UserQuery>(this.query).subscribe({
             next: (value) => {
                 this.listOfUser = value.rows;
                 this.total = value.total;

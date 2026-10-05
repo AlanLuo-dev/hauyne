@@ -4,19 +4,19 @@
         <!-- 用户名查询 -->
         <div class="search-item">
             <span class="search-label">用户名:</span>
-            <input nz-input [(ngModel)]="username" placeholder="请输入用户名" nzSize="small" class="search-input" />
+            <input nz-input [(ngModel)]="query.username" placeholder="请输入用户名" nzSize="small" class="search-input" />
         </div>
 
         <!-- 昵称查询 -->
         <div class="search-item">
             <span class="search-label">昵称:</span>
-            <input nz-input [(ngModel)]="nickname" placeholder="请输入昵称" nzSize="small" class="search-input" />
+            <input nz-input [(ngModel)]="query.nickname" placeholder="请输入昵称" nzSize="small" class="search-input" />
         </div>
 
         <!-- 角色查询 -->
         <div class="search-item">
             <span class="search-label">角色:</span>
-            <nz-select [(ngModel)]="roleCode" nzSize="small" nzPlaceHolder="请选择角色" class="search-select">
+            <nz-select [(ngModel)]="query.roleCode" nzSize="small" nzPlaceHolder="请选择角色" class="search-select">
                 <nz-option nzValue="" nzLabel="全部"></nz-option>
                 @for (role of roles; track role.roleCode) {
                     <nz-option [nzValue]="role.roleCode" [nzLabel]="role.roleName"></nz-option>
@@ -29,7 +29,7 @@
             <button nz-button nzType="primary" nzSize="small" (click)="search()">
                 <span nz-icon nzType="search" nzTheme="outline"></span>查询
             </button>
-            <button nz-button nzSize="small" (click)="resetForm()">
+            <button nz-button nzSize="small" (click)="reset()">
                 <span nz-icon nzType="reload" nzTheme="outline"></span>重置
             </button>
         </div>
@@ -51,8 +51,8 @@
         [nzLoading]="loading"
         [nzTotal]="total"
         [nzShowTotal]="totalTemplate"
-        [(nzPageIndex)]="pageIndex"
-        [(nzPageSize)]="pageSize"
+        [(nzPageIndex)]="query.pageIndex"
+        [(nzPageSize)]="query.pageSize"
         nzSize="small"
         [nzTitle]="tableHeaderTemplate"
         (nzQueryParams)="onQueryParamsChange($event)"
@@ -75,7 +75,7 @@
             <th nzWidth="80px" nzAlign="center">性别</th>
             <th nzWidth="120px">职位</th>
             <th nzWidth="180px">备注</th>
-            <th nzWidth="100px" nzAlign="center">是否为系统内置</th>
+            <th nzWidth="130px" nzAlign="center">是否为系统内置</th>
             <th nzWidth="160px" nzColumnKey="createdTime" [nzSortFn]="true">创建时间</th>
             <th nzWidth="160px" nzColumnKey="lastUpdatedTime" [nzSortFn]="true">修改时间</th>
             <th nzWidth="130px" nzRight>操作</th>
