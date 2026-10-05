@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luoyx.hauyne.uaa.sys.mapper.OnlineSessionMapper">
+
+    <resultMap id="OnlineSessionResultMap"
+               type="com.luoyx.hauyne.uaa.sys.entity.OnlineSession">
+
+        <id property="id" column="id"/>
+
+        <result property="sessionId" column="session_id"/>
+        <result property="authorizationId" column="authorization_id"/>
+
+        <result property="userId" column="user_id"/>
+        <result property="principalName" column="principal_name"/>
+
+        <result property="clientId" column="client_id"/>
+        <result property="grantType" column="grant_type"/>
+
+        <result property="ipAddress" column="ip_address"/>
+        <result property="location" column="location"/>
+
+        <result property="userAgent" column="user_agent"/>
+        <result property="browser" column="browser"/>
+        <result property="browserVersion" column="browser_version"/>
+        <result property="osName" column="os_name"/>
+
+        <result property="loginTime" column="login_time"/>
+        <result property="lastActiveTime" column="last_active_time"/>
+
+        <result property="accessTokenExpiresAt"
+                column="access_token_expires_at"/>
+
+        <result property="refreshTokenExpiresAt"
+                column="refresh_token_expires_at"/>
+
+        <result property="status" column="status"/>
+
+        <result property="logoutTime" column="logout_time"/>
+        <result property="logoutReason" column="logout_reason"/>
+
+    </resultMap>
+
+
+    <insert id="insert"
+            parameterType="com.luoyx.hauyne.uaa.sys.entity.OnlineSession"
+            useGeneratedKeys="true"
+            keyProperty="id">
+
+        INSERT INTO hyn_sys_online_session (
+        session_id,
+        authorization_id,
+        user_id,
+        principal_name,
+        client_id,
+        grant_type,
+        ip_address,
+        location,
+        user_agent,
+        browser,
+        browser_version,
+        os_name,
+        login_time,
+        last_active_time,
+        access_token_expires_at,
+        refresh_token_expires_at,
+        status
+        )
+        VALUES (
+        #{sessionId},
+        #{authorizationId},
+        #{userId},
+        #{principalName},
+        #{clientId},
+        #{grantType},
+        #{ipAddress},
+        #{location},
+        #{userAgent},
+        #{browser},
+        #{browserVersion},
+        #{osName},
+        #{loginTime},
+        #{lastActiveTime},
+        #{accessTokenExpiresAt},
+        #{refreshTokenExpiresAt},
+        #{status}
+        )
+
+    </insert>
+
+
+    <select id="selectBySessionId"
+            resultMap="OnlineSessionResultMap">
+
+        SELECT *
+        FROM hyn_sys_online_session
+        WHERE session_id = #{sessionId}
+
+    </select>
+
+
+    <select id="selectByAuthorizationId"
+            resultMap="OnlineSessionResultMap">
+
+        SELECT *
+        FROM hyn_sys_online_session
+        WHERE authorization_id = #{authorizationId}
+
+    </select>
+
+
+    <select id="selectOnlineSessions"
+            resultMap="OnlineSessionResultMap">
+
+        SELECT *
+        FROM hyn_sys_online_session
+        WHERE status = 1
+        ORDER BY last_active_time DESC
+
+    </select>
+
+
+    <select id="selectOnlineSessionsByUserId"
+            resultMap="OnlineSessionResultMap">
+
+        SELECT *
+        FROM hyn_sys_online_session
+        WHERE user_id = #{userId}
+        AND status = 1
+        ORDER BY last_active_time DESC
+
+    </select>
+
+
+    <update id="updateLastActiveTime">
+
+        UPDATE hyn_sys_online_session
+        SET last_active_time = #{lastActiveTime}
+        WHERE session_id = #{sessionId}
+        AND status = 1
+
+    </update>
+
+
+    <update id="markOffline">
+
+        UPDATE hyn_sys_online_session
+        SET status = 0,
+        logout_time = #{logoutTime},
+        logout_reason = #{logoutReason}
+        WHERE authorization_id = #{authorizationId}
+        AND status = 1
+
+    </update>
+
+
+    <update id="markOfflineBySessionId">
+
+        UPDATE hyn_sys_online_session
+        SET status = 0,
+        logout_time = #{logoutTime},
+        logout_reason = #{logoutReason}
+        WHERE session_id = #{sessionId}
+        AND status = 1
+
+    </update>
+
+
+    <update id="markOfflineByUserId">
+
+        UPDATE hyn_sys_online_session
+        SET status = 0,
+        logout_time = #{logoutTime},
+        logout_reason = #{logoutReason}
+        WHERE user_id = #{userId}
+        AND status = 1
+
+    </update>
+
+
+    <update id="updateTokenExpiresAt">
+
+        UPDATE hyn_sys_online_session
+        SET access_token_expires_at = #{accessTokenExpiresAt},
+        refresh_token_expires_at = #{refreshTokenExpiresAt}
+        WHERE authorization_id = #{authorizationId}
+
+    </update>
+
+</mapper>

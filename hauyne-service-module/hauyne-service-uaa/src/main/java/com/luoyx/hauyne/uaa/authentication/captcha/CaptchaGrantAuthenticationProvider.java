@@ -3,14 +3,19 @@ package com.luoyx.hauyne.uaa.authentication.captcha;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luoyx.hauyne.framework.utils.rsa.RSAUtil;
 import com.luoyx.hauyne.security.pojo.CurrentSysUser;
+import com.luoyx.hauyne.uaa.constant.OnlineSessionConstants;
 import com.luoyx.hauyne.uaa.dto.CachedCaptchaDTO;
 import com.luoyx.hauyne.uaa.enums.LoginHistoryResultEnum;
 import com.luoyx.hauyne.uaa.enums.LoginHistoryTypeEnum;
+import com.luoyx.hauyne.uaa.sys.entity.OnlineSession;
+import com.luoyx.hauyne.uaa.sys.service.OnlineSessionService;
 import com.luoyx.hauyne.uaa.sys.service.impl.LoginHistoryAsyncService;
 import com.luoyx.hauyne.uaa.util.IpAddressUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import nl.basjes.parse.useragent.UserAgent;
+import nl.basjes.parse.useragent.UserAgentAnalyzer;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -44,6 +49,7 @@ import java.security.Principal;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -65,6 +71,12 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
 
     @Resource
     private LoginHistoryAsyncService loginHistoryAsyncService;
+
+    @Resource
+    private UserAgentAnalyzer userAgentAnalyzer;
+
+    @Resource
+    private OnlineSessionService onlineSessionService;
 
     private final OAuth2AuthorizationService auth2AuthorizationService;
     private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
@@ -170,6 +182,10 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
                 .authenticated(userDetails, clientPrincipal, userDetails.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(captchaGrantAuthenticationToken.getDetails());
 
+        String sessionId = UUID.randomUUID()
+                .toString()
+                .replace("-", "");
+
         // Initialize the DefaultOAuth2TokenContext
         DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
@@ -177,14 +193,24 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
                 .authorizationServerContext(AuthorizationServerContextHolder.getContext())
                 .authorizationGrantType(authorizationGrantType)
                 .authorizedScopes(requestScopeSet)
-                .authorizationGrant(captchaGrantAuthenticationToken);
+                .authorizationGrant(captchaGrantAuthenticationToken)
+                .put(
+                        OnlineSessionConstants.SESSION_ID_ATTRIBUTE,
+                        sessionId
+                );
+
 
         // Initialize the OAuth2Authorization
         OAuth2Authorization.Builder authorizationBuilder = OAuth2Authorization.withRegisteredClient(registeredClient)
                 .principalName(userDetails.getUsername())
                 .authorizedScopes(requestScopeSet)
                 .attribute(Principal.class.getName(), usernamePasswordAuthenticationToken)
+                .attribute(
+                        OnlineSessionConstants.SESSION_ID_ATTRIBUTE,
+                        sessionId
+                )
                 .authorizationGrantType(authorizationGrantType);
+
 
         // -------- Access token -------
         OAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
@@ -254,6 +280,50 @@ public class CaptchaGrantAuthenticationProvider implements AuthenticationProvide
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String ipAddress = IpAddressUtil.getHttpServletRequestIpAddress(request);
         String rawUserAgent = request.getHeader("User-Agent");
+
+        String location = IpAddressUtil.getCityInfo(ipAddress);
+
+        String browser = "Unknown";
+        String browserVersion = "Unknown";
+        String osName = "Unknown";
+
+        if (StringUtils.isNotBlank(rawUserAgent)) {
+
+            UserAgent agent =
+                    userAgentAnalyzer.parse(rawUserAgent);
+
+            browser =
+                    agent.getValue(UserAgent.AGENT_NAME);
+
+            browserVersion =
+                    agent.getValue(UserAgent.AGENT_VERSION);
+
+            osName =
+                    agent.getValue(UserAgent.OPERATING_SYSTEM_NAME);
+
+            if (osName.startsWith("Windows")) {
+                osName = "Windows";
+            }
+        }
+
+        OnlineSession onlineSession =
+                onlineSessionService.create(
+                        sessionId,
+                        authorization,
+                        currentSysUser.getId(),
+                        userDetails.getUsername(),
+                        registeredClient.getClientId(),
+                        authorizationGrantType.getValue(),
+                        ipAddress,
+                        location,
+                        rawUserAgent,
+                        browser,
+                        browserVersion,
+                        osName
+                );
+
+
+
         loginHistoryAsyncService.saveLoginHistory(
                 LoginHistoryTypeEnum.LOGIN,
                 LoginHistoryResultEnum.LOGIN_SUCCESS,

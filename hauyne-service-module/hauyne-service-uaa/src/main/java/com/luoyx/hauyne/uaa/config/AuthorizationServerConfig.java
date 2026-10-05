@@ -13,6 +13,7 @@ import com.luoyx.hauyne.uaa.authentication.captcha.CaptchaGrantAuthenticationCon
 import com.luoyx.hauyne.uaa.authentication.captcha.CaptchaGrantAuthenticationProvider;
 import com.luoyx.hauyne.uaa.authentication.password.PasswordGrantAuthenticationConverter;
 import com.luoyx.hauyne.uaa.authentication.password.PasswordGrantAuthenticationProvider;
+import com.luoyx.hauyne.uaa.constant.OnlineSessionConstants;
 import com.luoyx.hauyne.uaa.filter.CookieRefreshTokenFilter;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -295,6 +296,18 @@ public class AuthorizationServerConfig {
                         claimsMap.put("scope", scopes);
                     });
 
+                    String sessionId = context.get(OnlineSessionConstants.SESSION_ID_ATTRIBUTE);
+                    if (sessionId == null && context.getAuthorization() != null) {
+                        sessionId = context.getAuthorization()
+                                .getAttribute(OnlineSessionConstants.SESSION_ID_ATTRIBUTE);
+                    }
+
+                    if (sessionId != null) {
+                        context.getClaims().claim(
+                                OnlineSessionConstants.SESSION_ID_CLAIM,
+                                sessionId
+                        );
+                    }
                 }
             }
         };
