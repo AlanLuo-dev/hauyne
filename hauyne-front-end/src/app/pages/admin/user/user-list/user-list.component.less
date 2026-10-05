@@ -1,45 +1,114 @@
-.user-list-search-form {
-    padding: 24px;
-    background: #fbfbfb;
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
+:host {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
 }
 
-.search-result-list {
-    margin-top: 16px;
-    border: 1px dashed #e9e9e9;
-    border-radius: 6px;
-    background-color: #fafafa;
-    min-height: 200px;
-    text-align: center;
+// 顶部筛选区容器
+.search-card {
+    flex-shrink: 0; // 筛选区高度固定，不被压缩
+    padding: 16px 24px;
+    background: #ffffff;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    margin-bottom: 8px;
+
+    .search-form-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px 24px; // 行间距 16px，列间距 24px
+
+        .search-item {
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+
+            .search-label {
+                margin-right: 8px;
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.85);
+            }
+
+            .search-input {
+                width: 180px;
+            }
+
+            .search-select {
+                width: 180px;
+            }
+        }
+
+        .search-actions {
+            margin-left: auto; // 将查询/重置按钮推至最右侧
+            button {
+                margin-left: 8px;
+            }
+        }
+    }
 }
 
-[nz-form-label] {
-    overflow: visible;
-}
-
-button {
-    margin-left: 8px;
-}
-
-.search-area {
-    text-align: left;
-}
-.ant-form-item {
-    flex: none;
-    flex-wrap: nowrap;
-    margin-right: 16px;
-    margin-bottom: 0;
-    text-align: right;
-    height: 32px;
-}
-
-::ng-deep .user-list-search-form .ant-form-item-label > label {
-    position: relative;
-    display: inline-flex;
+// 表格插槽工具栏样式
+.table-toolbar {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    max-width: 100%;
-    height: 24px;
-    color: rgba(0, 0, 0, 0.85);
-    font-size: 14px;
+    padding: 4px 0;
+
+    .left-actions {
+        display: flex;
+        gap: 8px;
+    }
+}
+
+/* 核心容器：将内部布局转化为 Flex 上下分布 */
+.table-container {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+
+    .ant-table-title {
+        padding: 12px 16px;
+        background: #ffffff;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+
+    ::ng-deep {
+        /* 强行拉满表格组件容器高度 */
+        nz-table,
+        .ant-table-wrapper,
+        .ant-spin-nested-loading,
+        .ant-spin-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 旋转/数据主体占满剩余空间 */
+        .ant-spin-container {
+            justify-content: space-between;
+        }
+
+        /* 表格区域 */
+        .ant-table {
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* 底部分页条：固定吸附底部 */
+        .ant-pagination {
+            flex: 0 0 auto;
+            margin: 12px 0 0 0 !important;
+            padding: 0 8px;
+        }
+
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+    }
 }

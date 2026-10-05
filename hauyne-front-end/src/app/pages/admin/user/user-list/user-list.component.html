@@ -1,155 +1,126 @@
-<form nz-form class="user-list-search-form">
-    <div nz-row>
-        <div nz-col nzXl="8" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button nz-button nzType="primary" nzSize="small" (click)="showUserFormDialog()">
-                        <span nz-icon nzType="plus" nzTheme="outline"></span>
-                        创建用户
-                    </button>
-                    <button nz-button nzType="primary" nzDanger nzSize="small" [disabled]="setOfCheckedId.size == 0"
-                            (click)="showDeleteConfirm()"
-                    >
-                        <span nz-icon nzType="delete" nzTheme="outline"></span>
-                        删除用户
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
+<!-- 顶部筛选区域 -->
+<div class="search-card">
+    <div class="search-form-row">
+        <!-- 用户名查询 -->
+        <div class="search-item">
+            <span class="search-label">用户名:</span>
+            <input nz-input [(ngModel)]="username" placeholder="请输入用户名" nzSize="small" class="search-input" />
         </div>
 
-        <div nz-col nzXl="6" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'username'">用户名</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'username'" [(ngModel)]="username"
-                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
+        <!-- 昵称查询 -->
+        <div class="search-item">
+            <span class="search-label">昵称:</span>
+            <input nz-input [(ngModel)]="nickname" placeholder="请输入昵称" nzSize="small" class="search-input" />
         </div>
 
-        <div nz-col nzXl="6" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label>角色</nz-form-label>
-                <nz-form-control>
-                    <nz-select [(ngModel)]="this.roleCode" [ngModelOptions]="{standalone: true}" nzSize="small"
-                               [nzPlaceHolder]="'请选择角色'"
-                    >
-                        @for (role of this.roles; track role.roleCode) {
-                            <nz-option [id]="role.roleId" [nzLabel]="role.roleName"
-                                       [nzValue]="role.roleCode"></nz-option>
-                        }
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
+        <!-- 角色查询 -->
+        <div class="search-item">
+            <span class="search-label">角色:</span>
+            <nz-select [(ngModel)]="roleCode" nzSize="small" nzPlaceHolder="请选择角色" class="search-select">
+                <nz-option nzValue="" nzLabel="全部"></nz-option>
+                @for (role of roles; track role.roleCode) {
+                    <nz-option [nzValue]="role.roleCode" [nzLabel]="role.roleName"></nz-option>
+                }
+            </nz-select>
         </div>
 
-        <div nz-col nzXl="6" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-label [nzFor]="'nickname'">昵称</nz-form-label>
-                <nz-form-control>
-                    <input nz-input [attr.id]="'nickname'" [(ngModel)]="nickname"
-                           [ngModelOptions]="{standalone: true}" nzSize="small"/>
-                </nz-form-control>
-            </nz-form-item>
-        </div>
-        <div nz-col nzXl="4" nzXXl="6">
-            <nz-form-item class="ant-form-item">
-                <nz-form-control>
-                    <button nz-button [nzType]="'primary'" nzSize="small" (click)="search()">
-                        <span nz-icon nzType="search" nzTheme="outline"></span>查询
-                    </button>
-                    <button nz-button nzSize="small" (click)="resetForm()">
-                        <span nz-icon nzType="reload" nzTheme="outline"></span>重置
-                    </button>
-                </nz-form-control>
-            </nz-form-item>
+        <!-- 查询/重置 按钮组 -->
+        <div class="search-item search-actions">
+            <button nz-button nzType="primary" nzSize="small" (click)="search()">
+                <span nz-icon nzType="search" nzTheme="outline"></span>查询
+            </button>
+            <button nz-button nzSize="small" (click)="resetForm()">
+                <span nz-icon nzType="reload" nzTheme="outline"></span>重置
+            </button>
         </div>
     </div>
-</form>
+</div>
 
-<!-- START 表格 -->
-<div class="search-result-list">
+<!-- 表格区域容器 -->
+<div #tableContainer class="table-container">
+    <!-- 分页总条数模板 -->
+    <ng-template #totalTemplate let-total>
+        共 {{ total }} 条记录
+    </ng-template>
+
     <nz-table
+        #basicTable
         nzShowSizeChanger
         [nzData]="listOfUser"
         [nzFrontPagination]="false"
         [nzLoading]="loading"
         [nzTotal]="total"
-        [nzPageSize]="pageSize"
+        [nzShowTotal]="totalTemplate"
+        [(nzPageIndex)]="pageIndex"
+        [(nzPageSize)]="pageSize"
         nzSize="small"
+        [nzTitle]="tableHeaderTemplate"
         (nzQueryParams)="onQueryParamsChange($event)"
+        [nzScroll]="{ x: '1800px', y: tableScrollY }"
     >
         <thead>
         <tr>
-            @for (col of cols; track col.field) {
-                @if (col.field == 'id') {
-                    <th [nzChecked]="checked"
-                        (nzCheckedChange)="onAllChecked($event)"
-                        [nzIndeterminate]="indeterminate"
-                    >
-                    </th>
-                } @else {
-                    @if (col.sortable == true) {
-                        <th [nzColumnKey]="col.field" [nzSortFn]="col.sortable">{{ col.header }}</th>
-                    }
-<!--                    @else if (col.field == 'operation'){-->
-<!--                        <th>{{ col.header }}</th>-->
-<!--                    } -->
-
-                    @else {
-                        <th>{{ col.header }}</th>
-                    }
-                }
-            }
+            <th nzWidth="50px" [nzChecked]="checked" (nzCheckedChange)="onAllChecked($event)" [nzIndeterminate]="indeterminate" nzLeft></th>
+            <th nzWidth="80px" nzAlign="center">头像</th>
+            <th nzWidth="120px" nzColumnKey="username" [nzSortFn]="true">用户名</th>
+            <th nzWidth="120px">真实姓名</th>
+            <th nzWidth="120px">昵称</th>
+            <th nzWidth="120px">角色</th>
+            <th nzWidth="120px">手机</th>
+            <th nzWidth="150px">E-mail</th>
+            <th nzWidth="110px" nzAlign="center">账号状态</th>
+            <th nzWidth="110px" nzAlign="center">锁定状态</th>
+            <th nzWidth="110px" nzAlign="center">密码状态</th>
+            <th nzWidth="90px" nzAlign="center">启用状态</th>
+            <th nzWidth="80px" nzAlign="center">性别</th>
+            <th nzWidth="120px">职位</th>
+            <th nzWidth="180px">备注</th>
+            <th nzWidth="100px" nzAlign="center">是否为系统内置</th>
+            <th nzWidth="160px" nzColumnKey="createdTime" [nzSortFn]="true">创建时间</th>
+            <th nzWidth="160px" nzColumnKey="lastUpdatedTime" [nzSortFn]="true">修改时间</th>
+            <th nzWidth="130px" nzRight>操作</th>
         </tr>
         </thead>
         <tbody>
             @for (data of listOfUser; track data.id) {
                 <tr>
-                    <td [nzChecked]="setOfCheckedId.has(data.id)"
-                        (nzCheckedChange)="onItemChecked(data.id, $event)"
-                    >
-                    </td>
-                    <td>{{ data.avatar }}</td>
+                    <td nzLeft [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+                    <td nzAlign="center">{{ data.avatar }}</td>
                     <td>{{ data.username }}</td>
                     <td>{{ data.realName }}</td>
                     <td>{{ data.nickname }}</td>
                     <td>{{ data.roleName }}</td>
                     <td>{{ data.phone }}</td>
                     <td>{{ data.email }}</td>
-                    <td>{{ data.accountNonExpired.label }}</td>
-                    <td>{{ data.accountNonLocked.label }}</td>
-                    <td>{{ data.credentialsNonExpired.label }}</td>
-                    <td>{{ data.enabled.label }}</td>
-                    <td>{{ data.gender?.label }}</td>
+                    <td nzAlign="center">{{ data.accountNonExpired?.label }}</td>
+                    <td nzAlign="center">{{ data.accountNonLocked?.label }}</td>
+                    <td nzAlign="center">{{ data.credentialsNonExpired?.label }}</td>
+                    <td nzAlign="center">{{ data.enabled?.label }}</td>
+                    <td nzAlign="center">{{ data.gender?.label }}</td>
                     <td>{{ data.position }}</td>
                     <td>{{ data.remark }}</td>
-                    <td>{{ data.self.label }}</td>
-                    <td>{{ data.builtin.label }}</td>
+                    <td nzAlign="center">{{ data.builtin?.label }}</td>
                     <td>{{ data.createdTime }}</td>
                     <td>{{ data.lastUpdatedTime }}</td>
-                    <td>
-                        <button nz-button [nzType]="'primary'" nzSize="small"
-                                nzShape="circle"
+                    <td nzRight class="button-group">
+                        <button nz-button nzType="primary" nzSize="small" nzShape="circle"
                                 nz-tooltip nzTooltipTitle="编辑" nzTooltipPlacement="top"
                                 (click)="showUserFormDialog(data.id)"
                         >
                             <span nz-icon nzType="edit" nzTheme="outline"></span>
                         </button>
 
-                        <button nz-button nzSize="small"
-                                nzShape="circle"
+                        <button nz-button nzSize="small" nzShape="circle"
                                 nz-tooltip nzTooltipTitle="重置密码" nzTooltipPlacement="top"
                                 (click)="resetPasswordDialog(data.id, data.username)"
                         >
-                            <nz-icon nzType="key" nzTheme="outline" />
+                            <span nz-icon nzType="key" nzTheme="outline"></span>
                         </button>
 
-                        <button nz-button [nzType]="'primary'" nzSize="small"
-                                nzShape="circle" nzDanger
+                        <button nz-button nzType="primary" nzSize="small" nzShape="circle" nzDanger
                                 nz-tooltip nzTooltipTitle="删除用户" nzTooltipPlacement="top"
                                 nz-popconfirm
-                                [nzPopconfirmTitle]="'你确定要删除用户「' + data.username + '」吗？'"
+                                [nzPopconfirmTitle]="'你确定要删除用户【' + data.username + '】吗？'"
                                 (click)="userIdToDelete = data.id"
                                 [nzBeforeConfirm]="beforeConfirm"
                                 nzPopconfirmPlacement="top"
@@ -163,27 +134,37 @@
         </tbody>
     </nz-table>
 </div>
-<!-- END 表格 -->
 
-<!-- START 新增、编辑用户表单 -->
+<!-- nzTitle 插槽模板：表格顶部的全局操作按钮区 -->
+<ng-template #tableHeaderTemplate>
+    <div class="table-toolbar">
+        <div class="left-actions">
+            <button nz-button nzType="primary" nzSize="small" (click)="showUserFormDialog()">
+                <span nz-icon nzType="plus" nzTheme="outline"></span>
+                创建用户
+            </button>
+            <button nz-button nzType="primary" nzDanger nzSize="small" [disabled]="setOfCheckedId.size === 0" (click)="showDeleteConfirm()">
+                <span nz-icon nzType="delete" nzTheme="outline"></span>
+                批量删除
+            </button>
+        </div>
+    </div>
+</ng-template>
+
+<!-- 新增/编辑用户弹窗 -->
 @if (userFormDialogDisplay) {
-    <app-user-edit-form [(userFormDialogDisplay)]="userFormDialogDisplay" [userId]="userId" [formTitle]="formTitle"
-                        (triggerUserListRefreshEmitter)="search()"
-    >
-
+    <app-user-edit-form [(userFormDialogDisplay)]="userFormDialogDisplay"
+                        [userId]="userId"
+                        [formTitle]="formTitle"
+                        (triggerUserListRefreshEmitter)="search()">
     </app-user-edit-form>
 }
 
-<!-- END 新增、编辑用户表单 -->
-
-<!-- START 重置密码表单 -->
+<!-- 重置密码弹窗 -->
 @if (resetPasswordDialogDisplay) {
     <app-reset-password [(formDialogDisplay)]="resetPasswordDialogDisplay"
                         (triggerUserListRefreshEmitter)="search()"
                         [userId]="userId!"
-                        [username]="usernameToResetPassword"
-    >
-
+                        [username]="usernameToResetPassword">
     </app-reset-password>
 }
-<!-- END 重置密码表单 -->

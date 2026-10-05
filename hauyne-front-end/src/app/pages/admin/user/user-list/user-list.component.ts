@@ -1,114 +1,72 @@
-import {Component, ChangeDetectionStrategy} from '@angular/core';
-import {PageQuery} from "../../../../common/page-query";
-import {NzTableModule, NzTableQueryParams} from "ng-zorro-antd/table";
-import {Column} from "../../../../common/column";
-import {NzModalService} from "ng-zorro-antd/modal";
-import {NzMessageService} from "ng-zorro-antd/message";
-import {UserService} from "../user.service";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {NzButtonModule} from "ng-zorro-antd/button";
-import {NzGridModule} from "ng-zorro-antd/grid";
-import {NzIconModule} from "ng-zorro-antd/icon";
-import {NzInputModule} from "ng-zorro-antd/input";
-import {RoleService} from "../../role/role.service";
-import {NzSelectModule} from "ng-zorro-antd/select";
-import {UserEditFormComponent} from "../user-edit-form/user-edit-form.component";
-import {RoleDropdown} from "../../role/role-dropdown";
-import {NzPopconfirmModule} from "ng-zorro-antd/popconfirm";
-import {NzTooltipModule} from "ng-zorro-antd/tooltip";
-import {finalize, Observable} from "rxjs";
-import {ResetPasswordComponent} from "../reset-password/reset-password.component";
-import {NzFormLabelComponent} from "ng-zorro-antd/form";
-import {EnumOption} from "../../../../common/enum-option";
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    OnDestroy,
+    OnInit,
+    ViewChild
+} from '@angular/core';
+import { PageQuery } from "../../../../common/page-query";
+import { NzTableModule, NzTableQueryParams } from "ng-zorro-antd/table";
+import { NzModalService } from "ng-zorro-antd/modal";
+import { NzMessageService } from "ng-zorro-antd/message";
+import { UserService } from "../user.service";
+import { FormsModule } from "@angular/forms";
+import { NzButtonModule } from "ng-zorro-antd/button";
+import { NzIconModule } from "ng-zorro-antd/icon";
+import { NzInputModule } from "ng-zorro-antd/input";
+import { RoleService } from "../../role/role.service";
+import { NzSelectModule } from "ng-zorro-antd/select";
+import { UserEditFormComponent } from "../user-edit-form/user-edit-form.component";
+import { RoleDropdown } from "../../role/role-dropdown";
+import { NzPopconfirmModule } from "ng-zorro-antd/popconfirm";
+import { NzTooltipModule } from "ng-zorro-antd/tooltip";
+import { finalize, Observable } from "rxjs";
+import { ResetPasswordComponent } from "../reset-password/reset-password.component";
+import { EnumOption } from "../../../../common/enum-option";
 
-/**
- * 查询结果
- */
 export interface User {
-    /** 主键id */
     id: number;
-
-    /** 用户名 */
     username: string;
-
-    /** 角色名 */
     roleName: string;
-
-    /** 手机号 */
     phone: string;
-
-    /** 电子邮箱 */
     email: string;
-
-    /** 帐户是否过期 */
     accountNonExpired: EnumOption<boolean>;
-
-    /** 帐户是否锁定 */
     accountNonLocked: EnumOption<boolean>;
-
-
-    /** 密码是否过期 */
     credentialsNonExpired: EnumOption<boolean>;
-
-    /** 是否已启用 */
     enabled: EnumOption<boolean>;
-
-    /** 昵称 */
     nickname: string;
-
-    /** 用户真实姓名 */
     realName: string;
-
-    /** 性别 */
     gender: EnumOption<number> | null;
-
-    /** 头像 */
     avatar: string;
-
-    /** 职位 */
     position: string;
-
-    /** 备注 */
     remark: string;
-
-    /** 是否是自己 */
     self: EnumOption<boolean>;
-
-    /** 是否是内置用户 */
     builtin: EnumOption<boolean>;
-
     createdTime: string;
     lastUpdatedTime: string;
 }
 
-/**
- * 查询条件
- */
 export class UserQuery extends PageQuery {
-    /** 用户名 */
     username: string;
-
-    /** 角色编码 */
     roleCode: string;
-
-    /** 昵称 */
     nickname: string;
-
-    /** 真实姓名 */
     realName: string;
-
-    /** 性别(1=男 0=女) */
     gender: number | null = null;
-
-    /** 手机号 */
     phone: string;
-
-    /** 是否可用（true=是；false=否） */
     enabled: boolean | null = null;
 
-
-    constructor(queryParams: NzTableQueryParams, username: string, roleCode: string, nickname: string,
-                realName: string, gender: number | null, phone: string, enabled: boolean | null) {
+    constructor(
+        queryParams: NzTableQueryParams,
+        username: string,
+        roleCode: string,
+        nickname: string,
+        realName: string,
+        gender: number | null,
+        phone: string,
+        enabled: boolean | null
+    ) {
         super(queryParams);
         this.username = username;
         this.roleCode = roleCode;
@@ -125,68 +83,44 @@ export class UserQuery extends PageQuery {
     imports: [
         FormsModule,
         NzButtonModule,
-        NzGridModule,
         NzIconModule,
         NzInputModule,
-        ReactiveFormsModule,
         NzSelectModule,
         UserEditFormComponent,
         NzPopconfirmModule,
         NzTooltipModule,
         ResetPasswordComponent,
-        NzTableModule,
-        NzFormLabelComponent
+        NzTableModule
     ],
     templateUrl: './user-list.component.html',
+    styleUrl: './user-list.component.less',
     changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './user-list.component.less'
+    providers: [NzModalService]
 })
-export class UserListComponent {
-
-    // 列定义
-    cols: Column[] = [];
-
+export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     // 数据结果
     listOfUser: User[] = [];
 
+    pageIndex: number = 1;
     pageSize: number = 10;
-    total = 1;
+    total: number = 0;
+    loading: boolean = true;
 
-    loading = true;
-
-
-    /** start 过滤条件 ******************/
-    /** 用户名 */
+    /* 过滤条件 */
     username: string = '';
-
-    /** 角色编码 */
     roleCode: string = '';
-
-    /** 昵称 */
     nickname: string = '';
-
-    /** 真实姓名 */
     realName: string = '';
-
-    /** 性别(1=男 0=女) */
     gender: number | null = null;
-
-    /** 手机号 */
     phone: string = '';
-
-    /** 是否可用（true=是；false=否） */
     enabled: boolean | null = null;
-
-    /** end 过滤条件 ******************/
-
 
     roles: RoleDropdown[] = [];
 
-    /* START 复选框处理相关字段 */
+    /* 复选框处理相关 */
     checked: boolean = false;
-    indeterminate = false;
+    indeterminate: boolean = false;
     setOfCheckedId: Set<number> = new Set<number>();
-    /* END 复选框处理相关字段 */
 
     userFormDialogDisplay: boolean = false;
     formTitle: string = '';
@@ -195,53 +129,68 @@ export class UserListComponent {
     userIdToDelete!: number;
     cancelButtonDisabled: boolean = false;
 
-    /**
-     * 重置密码弹窗开关
-     */
+    /* 重置密码弹窗开关 */
     resetPasswordDialogDisplay: boolean = false;
     usernameToResetPassword!: string;
 
-    constructor(private userService: UserService,
-                private roleService: RoleService,
-                private modal: NzModalService,
-                private messageService: NzMessageService) {
+    /* 动态表格高度控制 */
+    @ViewChild('tableContainer') tableContainer!: ElementRef<HTMLElement>;
+    tableScrollY: string = '400px';
+    private resizeObserver?: ResizeObserver;
 
-        // 初始化列定义
-        this.cols = [
-            {field: 'id', header: 'Id', isDataKey: true},
-            {field: 'avatar', header: '头像', width: '50px'},
-            {field: 'username', header: '用户名', width: '100px'},
-            {field: 'realName', header: '真实姓名', width: '100px'},
-            {field: 'nickname', header: '昵称', width: '100px'},
-            {field: 'roleName', header: '角色', width: '100px'},
-            {field: 'phone', header: '手机', width: '100px'},
-            {field: 'email', header: 'E-mail', width: '100px'},
-            {field: 'accountNonExpired', header: '账号过期状态', width: '100px'},
-            {field: 'accountNonLocked', header: '账号锁定状态', width: '100px'},
-            {field: 'credentialsNonExpired', header: '密码过期状态', width: '100px'},
-            {field: 'enabled', header: '启用状态', width: '100px'},
-            {field: 'gender', header: '性别', width: '100px'},
-            {field: 'position', header: '职位', width: '100px'},
-            {field: 'remark', header: '备注', width: '200px'},
-            {field: 'self', header: '是否是自己', width: '100px'},
-            {field: 'builtin', header: '是否是内置用户', width: '100px'},
-            {field: 'createdTime', header: '创建时间', sortable: true, width: '180px'},
-            {field: 'lastUpdatedTime', header: '修改时间', sortable: true, width: '180px'},
-            {field: 'operation', header: '操作', width: '100px'}
-        ];
+    constructor(
+        private userService: UserService,
+        private roleService: RoleService,
+        private modal: NzModalService,
+        private messageService: NzMessageService
+    ) {}
 
-        this.roleService.selectDropdown().subscribe(
-            (value) => {
-                this.roles = value;
-            }
-        )
+    ngOnInit(): void {
+        this.roleService.selectDropdown().subscribe((value) => {
+            this.roles = value;
+        });
+    }
+
+    ngAfterViewInit(): void {
+        setTimeout(() => this.calculateTableScrollY(), 0);
+
+        if (typeof ResizeObserver !== 'undefined') {
+            this.resizeObserver = new ResizeObserver(() => {
+                window.requestAnimationFrame(() => this.calculateTableScrollY());
+            });
+            this.resizeObserver.observe(this.tableContainer.nativeElement);
+        }
+    }
+
+    ngOnDestroy(): void {
+        this.resizeObserver?.disconnect();
+    }
+
+    /**
+     * 动态计算表格内容区域可滚动的真实高度
+     */
+    private calculateTableScrollY(): void {
+        if (!this.tableContainer) return;
+
+        const containerHeight = this.tableContainer.nativeElement.clientHeight;
+        if (containerHeight === 0) return;
+
+        // 扣除表头(~39px)、全局工具栏(~45px)与底部分页(~48px)的总保留高度
+        const calculatedHeight = containerHeight - 120;
+        this.tableScrollY = `${Math.max(calculatedHeight, 100)}px`;
     }
 
     search(): void {
-        this.onQueryParamsChange(this.userService.createLazyLoadMetaData(this.pageSize));
+        if (this.pageIndex === 1) {
+            this.loadData();
+        } else {
+            this.pageIndex = 1;
+        }
     }
 
     resetForm(): void {
+        const isAlreadyFirstPage = this.pageIndex === 1;
+
         this.username = '';
         this.roleCode = '';
         this.nickname = '';
@@ -249,29 +198,49 @@ export class UserListComponent {
         this.gender = null;
         this.phone = '';
         this.enabled = null;
-        this.search();
+
+        if (isAlreadyFirstPage) {
+            this.loadData();
+        } else {
+            this.pageIndex = 1;
+        }
     }
 
     onQueryParamsChange(queryParams: NzTableQueryParams): void {
         this.pageSize = queryParams.pageSize;
-        const userQuery: UserQuery = new UserQuery(queryParams, this.username, this.roleCode, this.nickname,
-            this.realName, this.gender, this.phone, this.enabled
+        this.pageIndex = queryParams.pageIndex;
+        this.loadData(queryParams);
+    }
+
+    private loadData(queryParams?: NzTableQueryParams): void {
+        const params = queryParams || this.userService.createLazyLoadMetaData(this.pageSize);
+        const userQuery = new UserQuery(
+            params,
+            this.username,
+            this.roleCode,
+            this.nickname,
+            this.realName,
+            this.gender,
+            this.phone,
+            this.enabled
         );
+
         this.loading = true;
         this.userService.loadPageData<User, UserQuery>(userQuery).subscribe({
             next: (value) => {
                 this.listOfUser = value.rows;
                 this.total = value.total;
+                this.loading = false;
             },
             error: (err) => {
                 console.error('Error:', err);
                 this.loading = false;
             },
-            complete: () => this.loading = false
+            complete: () => (this.loading = false)
         });
     }
 
-    /* START 复选框处理逻辑 */
+    /* 复选框逻辑 */
     updateCheckedSet(id: number, checked: boolean): void {
         if (checked) {
             this.setOfCheckedId.add(id);
@@ -281,13 +250,13 @@ export class UserListComponent {
     }
 
     onAllChecked(checked: boolean): void {
-        this.listOfUser.forEach(({id}) => this.updateCheckedSet(id, checked));
+        this.listOfUser.forEach(({ id }) => this.updateCheckedSet(id, checked));
         this.refreshCheckedStatus();
     }
 
     refreshCheckedStatus(): void {
-        this.checked = this.listOfUser.every(({id}) => this.setOfCheckedId.has(id));
-        this.indeterminate = this.listOfUser.some(({id}) => this.setOfCheckedId.has(id)) && !this.checked;
+        this.checked = this.listOfUser.every(({ id }) => this.setOfCheckedId.has(id));
+        this.indeterminate = this.listOfUser.some(({ id }) => this.setOfCheckedId.has(id)) && !this.checked;
     }
 
     onItemChecked(id: number, checked: boolean): void {
@@ -295,13 +264,8 @@ export class UserListComponent {
         this.refreshCheckedStatus();
     }
 
-    /* END 复选框处理逻辑 */
-
-    /**
-     * 显示用户表单弹窗
-     * @param userId 要编辑的用户Id
-     */
-    showUserFormDialog(userId?: number) {
+    /* 弹窗逻辑 */
+    showUserFormDialog(userId?: number): void {
         this.userFormDialogDisplay = true;
         this.formTitle = (userId ? '编辑' : '创建') + '用户';
         this.userId = userId;
@@ -313,41 +277,31 @@ export class UserListComponent {
         this.usernameToResetPassword = username;
     }
 
-    /**
-     * 删除单个用户
-     */
+    /* 删除确认与执行 */
     beforeConfirm = (): Observable<boolean> => {
         this.cancelButtonDisabled = true;
-        return new Observable(observer => {
-            this.userService.deleteById(this.userIdToDelete)
-                .pipe(
-                    finalize(() => {
-                        observer.complete(); // 确保在流结束时完成订阅
-                    })
-                )
-                .subscribe(
-                    {
-                        next: x => {
-                            observer.next(true);
-                            this.setOfCheckedId.clear();
-                            this.refreshCheckedStatus();
-                            this.messageService.create('success', '操作成功');
-                            this.search();
-                            this.cancelButtonDisabled = false;
-                        },
-                        error: err => {
-                            observer.next(false);
-                            this.messageService.create('error', err.error?.errorTips);
-                            this.cancelButtonDisabled = false;
-                        }
+        return new Observable((observer) => {
+            this.userService
+                .deleteById(this.userIdToDelete)
+                .pipe(finalize(() => observer.complete()))
+                .subscribe({
+                    next: () => {
+                        observer.next(true);
+                        this.setOfCheckedId.clear();
+                        this.refreshCheckedStatus();
+                        this.messageService.create('success', '操作成功');
+                        this.search();
+                        this.cancelButtonDisabled = false;
+                    },
+                    error: (err) => {
+                        observer.next(false);
+                        this.messageService.create('error', err.error?.errorTips || '删除失败');
+                        this.cancelButtonDisabled = false;
                     }
-                )
+                });
         });
-    }
+    };
 
-    /**
-     * 批量删除用户 确认弹窗
-     */
     showDeleteConfirm(): void {
         const modalRef = this.modal.confirm({
             nzTitle: '你确定要删除选中的用户吗？',
@@ -357,7 +311,6 @@ export class UserListComponent {
             nzCancelText: '取消',
             nzOnOk: () =>
                 new Promise<void>((resolve, reject) => {
-                    // 禁用取消按钮
                     modalRef.updateConfig({
                         nzCancelDisabled: true,
                         nzClosable: false
@@ -369,19 +322,18 @@ export class UserListComponent {
                             this.refreshCheckedStatus();
                             this.messageService.create('success', '操作成功');
                             this.search();
-                            resolve(); // 关闭弹窗
+                            resolve();
                         },
                         error: (err) => {
                             this.messageService.create('error', err.error?.errorTips || '删除失败');
                             modalRef.updateConfig({
                                 nzCancelDisabled: false,
                                 nzClosable: true
-                            }); // 恢复取消按钮
-                            reject(); // 阻止关闭弹窗
+                            });
+                            reject();
                         }
                     });
                 })
         });
     }
-
 }
