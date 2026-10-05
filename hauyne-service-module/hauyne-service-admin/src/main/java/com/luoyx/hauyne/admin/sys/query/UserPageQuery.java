@@ -68,4 +68,10 @@ public class UserPageQuery extends PageQuery {
 
     @Schema(description = "创建时间（结束时间）")
     private LocalDateTime endCreatedTime;
+
+    /**
+     * 是否系统内置
+     */
+    @Schema(description = "是否系统内置")
+    private Boolean builtin;
 }

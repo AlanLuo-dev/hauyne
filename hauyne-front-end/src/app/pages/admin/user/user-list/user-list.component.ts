@@ -25,6 +25,7 @@ import {finalize, Observable} from "rxjs";
 import {ResetPasswordComponent} from "../reset-password/reset-password.component";
 import {EnumOption} from "../../../../common/enum-option";
 import {UserQuery} from "./user-query";
+import {NzRadioComponent, NzRadioGroupComponent} from "ng-zorro-antd/radio";
 
 export interface User {
     id: number;
@@ -60,7 +61,9 @@ export interface User {
         NzPopconfirmModule,
         NzTooltipModule,
         ResetPasswordComponent,
-        NzTableModule
+        NzTableModule,
+        NzRadioComponent,
+        NzRadioGroupComponent
     ],
     templateUrl: './user-list.component.html',
     styleUrl: './user-list.component.less',
@@ -77,6 +80,11 @@ export class UserListComponent implements OnInit, AfterViewInit, OnDestroy {
     query: UserQuery = new UserQuery();
 
     roles: RoleDropdown[] = [];
+
+    builtInOption: any[] = [
+        {value: false, label: '自定义', icon: 'unlock', class: 'sys-status-custom'},
+        {value: true, label: '系统内置', icon: 'lock', class: 'sys-status-builtin'}
+    ]
 
     /* 复选框处理相关 */
     checked: boolean = false;

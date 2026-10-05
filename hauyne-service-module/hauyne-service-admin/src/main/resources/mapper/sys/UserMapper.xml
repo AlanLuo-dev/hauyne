@@ -124,6 +124,9 @@
                             AND u.created_time <= #{endCreatedTime}
                         ]]>
                     </if>
+                    <if test="builtin != null">
+                        AND u.is_builtin = #{builtin}
+                    </if>
                 </where>
                 GROUP BY u.id
             ) AS t ON t.userId = u.id

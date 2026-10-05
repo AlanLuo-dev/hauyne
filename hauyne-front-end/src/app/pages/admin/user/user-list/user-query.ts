@@ -8,4 +8,5 @@ export class UserQuery extends PageQuery2 {
     gender: number | null = null;
     phone: string | null = null;
     enabled: boolean | null = null;
+    builtin: boolean | null = null;
 }
