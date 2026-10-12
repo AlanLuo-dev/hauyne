@@ -2,6 +2,13 @@
 
 Hauyne 是一个基于 Spring Boot、Spring Cloud 和 Angular 的前后端分离后台管理项目。后端采用 Maven 多模块结构，提供统一认证、系统管理、权限控制、审计日志、网关、文件服务等能力；前端使用 Angular 与 NG-ZORRO 构建管理界面。
 
+## 项目预览
+
+![Hauyne Admin 角色权限配置界面](docs/images/role-config-authority.png)
+
+*角色权限配置：支持以树形结构展示菜单和操作权限，并可进行父子联动勾选。*
+
+
 ## 主要技术
 
 - **后端**：Java 17、Spring Boot 4、Spring Cloud、Spring Security、Spring Authorization Server
@@ -114,6 +121,7 @@ npm install
 3. **Gateway**：`hauyne-service-gateway`
 4. **UAA**：`hauyne-service-uaa`
 5. **Admin**：`hauyne-service-admin`
+6. **EventLog**：`hauyne-service-eventlog`
 
 请等待每个服务启动完成后，再启动下一个服务。启动过程中如果出现连接异常，请先检查 MySQL、Redis、RabbitMQ 是否已启动，以及配置中心中的连接信息是否与本地环境一致。
 
