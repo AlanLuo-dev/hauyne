@@ -8,6 +8,10 @@ Hauyne 是一个基于 Spring Boot、Spring Cloud 和 Angular 的前后端分离
 
 *角色权限配置：支持以树形结构展示菜单和操作权限，并可进行父子联动勾选。*
 
+## Swagger接口文档（Gateway网关聚合）
+
+![](docs/images/Swagger.png)
+* 使用IP 127.0.0.1 访问 （访问localhost目前还存在 Servers的显示问题）*
 
 ## 主要技术
 
